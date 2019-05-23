@@ -14,7 +14,7 @@
 	<name>his-medical-system</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>9</java.version>
 	</properties>
 
 	<!-- scope: compile(by default), test, runtime, provided, system  -->
@@ -37,6 +37,7 @@
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 			<version>9.0.13</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<!-- this is used to integrate mybatis -->
@@ -63,16 +64,6 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-
-		<resources>
-			<resource>
-				<directory>src/main/java/com/example/demo/model/mapper</directory>
-				<includes>
-					<include>*.xml</include>
-				</includes>
-			</resource>
-		</resources>
-
 	</build>
 
 
