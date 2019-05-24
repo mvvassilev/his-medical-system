@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no,minimum-scale=1">
+    <title>HIS Medical System</title>
+    <link rel="stylesheet" href="../layui/css/layui.css" media="all">
+</head>
+<body>
+
+<!--framework head-->
+<div class="layui-layout-admin">
+    <!--头部-->
+    <div class="layui-header">
+        <div class="layui-logo">NEU HIS System</div>
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href></a ></li>
+            <li class="layui-nav-item"><a href="">.......</a ></li>
+            <li class="layui-nav-item layui-this"><a href="">.......</a ></li>
+            <li class="layui-nav-item"><a href="">.......</a ></li>
+            <li class="layui-nav-item">
+                <a href=" ">Management</a >
+                <dl class="layui-nav-child" style="border-radius: 7%"> <!-- Secondary menu -->
+                    <dd class="d-element"><a href="">Department</a ></dd>
+                    <dd class="d-element"><a href="">Patient</a ></dd>
+                    <dd class="d-element"><a href="">Doctor</a ></dd>
+                    <dd class="d-element"><a href="">Settlement</a ></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">.......</a ></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href=""><img src="https://gss3.bdstatic.com/-Po3dSag_xI4khGkpoWK1HF6hhy/baike/crop%3D0%2C22%2C602%2C396%3Bc0%3Dbaike80%2C5%2C5%2C80%2C26/sign=00e2de70f4039245b5fabb4fbaa488f0/9f510fb30f2442a71a1fd518d943ad4bd113027d.jpg" class="layui-nav-img">HIS-team</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <!--左侧-->
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="hbkNavbar">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">Department</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">User</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Registration Level</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Settlement Category</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Diagnosis Directory</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Non-Medical Items</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Shift Arrangement</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--中间主体-->
+    <div class="layui-body" id="container">
+        <div class="layui-tab" lay-filter="tabs" lay-allowClose="true">
+            <table class="layui-hide" id="test" lay-filter="test"></table>
+        </div>
+    </div>
+</div>
+
+<script src="../layui/layui.all.js"></script>
+<script src="../layui/layui.js"></script>
+<script>
+    layui.use('element', function(){
+        var element = layui.element;
+        element.on('nav(hbkNavbar)',function(elem){
+            /*使用DOM操作获取超链接的自定义data属性值*/
+            var options = eval('('+elem.context.children[0].dataset.options+')');
+            var url = options.url;
+            var title = options.title;
+            element.tabAdd('tabs',{
+                title : title,
+                content : '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>',
+                id : '111'
+            });
+        });
+    });
+</script>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">check</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">edit</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">delete</a>
+</script>
+
+<script type="text/html" id="toolbarDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+</script>
+
+<script src="//res.layui.com/layui/dist/layui.js?t=1554901098009"></script>
+<script>
+    layui.config({
+        version: '1554901098009' //为了更新 js 缓存，可忽略
+    });
+    layui.use(['laydate', 'laypage', 'layer', 'table'], function(){
+        var laydate = layui.laydate //日期
+            ,laypage = layui.laypage //分页
+            ,table = layui.table
+            ,layer = layui.layer //弹层;
+
+        table.render({
+            elem: '#test'
+            ,height: 420
+            ,title: 'Departmenr table'
+            ,page: true //开启分页
+            ,toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            ,cols: [[
+                {type: 'checkbox', fixed: 'left'}
+                ,{field:'deptcode', width:'25%', title: 'Department Code', sort: true}
+                ,{field:'deptname', width:'25%', title: 'Department Name'}
+                ,{field:'deptcat', width:'25%', title: 'Department Category'}
+                ,{field:'deptclass', width:'25%', title: 'Department Class'}
+                ,{fixed: 'right', width: 165, align:'center', toolbar: '#barDemo'}
+            ]]
+            , data: [{
+                "deptcode": "AZBK"
+                , "deptname": "艾滋病科"
+                , "deptcat": "传染病科"
+                , "deptclass": "临床科室"
+            }]
+        });
+
+        //监听头工具栏事件
+        table.on('toolbar(test)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id)
+                ,data = checkStatus.data; //获取选中的数据
+            switch(obj.event){
+                case 'add':
+                    layer.msg('添加');
+                    break;
+                case 'update':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else if(data.length > 1){
+                        layer.msg('只能同时编辑一个');
+                    } else {
+                        layer.alert('编辑 [id]：'+ checkStatus.data[0].id);
+                    }
+                    break;
+                case 'delete':
+                    if(data.length === 0){
+                        layer.msg('请选择一行');
+                    } else {
+                        layer.msg('删除');
+                    }
+                    break;
+            };
+        });
+
+        //监听行工具事件
+        table.on('tool(test)', function(obj){ //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                ,layEvent = obj.event; //获得 lay-event 对应的值
+            if(layEvent === 'detail'){
+                layer.msg('查看操作');
+            } else if(layEvent === 'del'){
+                layer.confirm('真的删除行么', function(index){
+                    obj.del(); //删除对应行（tr）的DOM结构
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if(layEvent === 'edit'){
+                layer.msg('编辑操作');
+            }
+        });
+    });
+</script>
+</body>
+</html>
