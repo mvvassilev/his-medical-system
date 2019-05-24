@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>HIS Medical System</title>
+    <link rel="stylesheet" href="../layui/css/layui.css">
+</head>
+<body>
+<div class="layui-layout-admin">
+    <!--头部-->
+    <div class="layui-header">
+        <div class="layui-logo">NEU HIS System</div>
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href></a></li>
+            <li class="layui-nav-item"><a href="">.......</a></li>
+            <li class="layui-nav-item layui-this"><a href="">.......</a></li>
+            <li class="layui-nav-item"><a href="">.......</a></li>
+            <li class="layui-nav-item">
+                <a href=" ">Management</a>
+                <dl class="layui-nav-child" style="border-radius: 7%"> <!-- Secondary menu -->
+                    <dd class="d-element"><a href="">Department</a></dd>
+                    <dd class="d-element"><a href="">Patient</a></dd>
+                    <dd class="d-element"><a href="">Doctor</a></dd>
+                    <dd class="d-element"><a href="">Settlement</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="">.......</a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href=""><img src="http://m.zhengjinfan.cn/images/0.jpg" class="layui-nav-img">Huang BaoKang</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <!--左侧-->
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="hbkNavbar">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">Department</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">User</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Registration Level</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Settlement Category</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Diagnosis Directory</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Non-Medical Items</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="">Shift Arrangement</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="layui-body" id="container">
+        <div class="layui-tab" lay-filter="tabs" lay-allowClose="true">
+            <table id="demo" lay-filter="test"></table>
+        </div>
+    </div>
+</div>
+<script src="../layui/layui.all.js"></script>
+<script src="../layui/layui.js"></script>
+
+<script>
+    layui.use('element', function () {
+        var element = layui.element;
+        element.on('nav(hbkNavbar)', function (elem) {
+            /*使用DOM操作获取超链接的自定义data属性值*/
+            var options = eval('(' + elem.context.children[0].dataset.options + ')');
+            var url = options.url;
+            var title = options.title;
+            element.tabAdd('tabs', {
+                title: title,
+                content: '<iframe scrolling="auto" frameborder="0"  src="' + url + '" style="width:100%;height:100%;"></iframe>',
+                id: '111'
+            });
+        });
+    });
+</script>
+
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
+        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
+        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
+    </div>
+</script>
+
+<script>
+    //JS 调用
+    table.render({
+        elem: '#demo'
+        , toolbar: '#toolbarDemo'
+        //,//其他参数
+    });
+
+    //监听事件
+    table.on('toolbar(test)', function (obj) {
+        var checkStatus = table.checkStatus(obj.config.id);
+        switch (obj.event) {
+            case 'add':
+                layer.msg('添加');
+                break;
+            case 'delete':
+                layer.msg('删除');
+                break;
+            case 'update':
+                layer.msg('编辑');
+                break;
+        }
+        ;
+    });
+</script>
+
+<script>
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , height: 312
+            , page: true //开启分页
+            , toolbar: true //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , totalRow: true //开启合计行
+            , cols: [[ //表头
+                {field: 'userid', title: 'User ID', width: 150, sort: true, fixed: 'left'}
+                , {field: 'username', title: 'User Name', width: 150}
+                , {field: 'realname', title: 'Real name', width: 150, sort: true}
+                , {field: 'deptcode', title: 'Department Code', width: 150}
+                , {field: 'usercat', title: 'Vocation', width: 150}
+                , {field: 'position', title: 'Position', width: 150, sort: true}
+                , {field: 'shiftOrNot', title: 'Shift Or Not', width: 150, sort: true}
+            ]]
+            , data: [{
+                "userid": "10001"
+                , "username": "Kz"
+                , "realname": "Kevin"
+                , "deptcode": "Male"
+                , "usercat": "Physician"
+                , "position": "Head"
+                , "shiftOrNot": "Yes"
+            }, {
+                "userid": "10001"
+                , "username": "Kz"
+                , "realname": "Kevin"
+                , "deptcode": "Male"
+                , "usercat": "Physician"
+                , "position": "Head"
+                , "shiftOrNot": "Yes"
+            }, {
+                "userid": "10001"
+                , "username": "Kz"
+                , "realname": "Kevin"
+                , "deptcode": "Male"
+                , "usercat": "Physician"
+                , "position": "Head"
+                , "shiftOrNot": "Yes"
+            }]
+        });
+
+    });
+</script>
+
+</body>
+</html>
