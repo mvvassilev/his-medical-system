@@ -7,25 +7,113 @@
   <link rel="stylesheet" href="../layui/css/layui.css">
 </head>
 <body>
-    <ul class="layui-nav" lay-filter="">
-    <li class="layui-nav-item"><a href="">.......</a></li>
-    <li class="layui-nav-item layui-this"><a href="">.......</a></li>
-    <li class="layui-nav-item"><a href="">.......</a></li>
-    <li class="layui-nav-item">
-        <a href="javascript:;">Management</a>
-        <dl class="layui-nav-child"> <!-- Secondary menu -->
-        <dd><a href="">Department</a></dd>
-        <dd><a href="">.......</a></dd>
-        <dd><a href="">.......</a></dd>
-        </dl>
-    </li>
-    <li class="layui-nav-item"><a href="">.......</a></li>
-    </ul>
+<!--    <ul class="layui-nav" lay-filter="">-->
+<!--    <li class="layui-nav-item"><a href="">.......</a></li>-->
+<!--    <li class="layui-nav-item layui-this"><a href="">.......</a></li>-->
+<!--    <li class="layui-nav-item"><a href="">.......</a></li>-->
+<!--    <li class="layui-nav-item">-->
+<!--        <a href="javascript:;">Management</a>-->
+<!--        <dl class="layui-nav-child"> &lt;!&ndash; Secondary menu &ndash;&gt;-->
+<!--        <dd><a href="">Department</a></dd>-->
+<!--        <dd><a href="">.......</a></dd>-->
+<!--        <dd><a href="">.......</a></dd>-->
+<!--        </dl>-->
+<!--    </li>-->
+<!--    <li class="layui-nav-item"><a href="">.......</a></li>-->
+<!--    </ul>-->
+
+
+    <div class="layui-layout-admin">
+        <!--头部-->
+        <div class="layui-header">
+            <div class="layui-logo">NEU HIS System</div>
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href></a ></li>
+                <li class="layui-nav-item"><a href="">.......</a ></li>
+                <li class="layui-nav-item layui-this"><a href="">.......</a ></li>
+                <li class="layui-nav-item"><a href="">.......</a ></li>
+                <li class="layui-nav-item">
+                    <a href=" ">Management</a >
+                    <dl class="layui-nav-child" style="border-radius: 7%"> <!-- Secondary menu -->
+                        <dd class="d-element"><a href="">Department</a ></dd>
+                        <dd class="d-element"><a href="">Patient</a ></dd>
+                        <dd class="d-element"><a href="">Doctor</a ></dd>
+                        <dd class="d-element"><a href="">Settlement</a ></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">.......</a ></li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href=""><img src="http://m.zhengjinfan.cn/images/0.jpg" class="layui-nav-img">Huang BaoKang</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">安全设置</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <!--左侧-->
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <ul class="layui-nav layui-nav-tree" lay-filter="hbkNavbar">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">Department</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="">User</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="">Registration Level</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="">Settlement Category</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="">Diagnosis Directory</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="">Non-Medical Items</a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="">Shift Arrangement</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--中间主体-->
+        <div class="layui-body" id="container">
+            <div class="layui-tab" lay-filter="tabs" lay-allowClose="true">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">首页</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">首页内容</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
 <script src="../layui/layui.all.js"></script>  
 <script src="../layui/layui.js"></script>
 <script>
-    Layui.use('element', function(){
+    layui.use('element', function(){
         var element = layui.element;
+        element.on('nav(hbkNavbar)',function(elem){
+            /*使用DOM操作获取超链接的自定义data属性值*/
+            var options = eval('('+elem.context.children[0].dataset.options+')');
+            var url = options.url;
+            var title = options.title;
+            element.tabAdd('tabs',{
+                title : title,
+                content : '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>',
+                id : '111'
+            });
+        });
     });
 </script>
 </body>
