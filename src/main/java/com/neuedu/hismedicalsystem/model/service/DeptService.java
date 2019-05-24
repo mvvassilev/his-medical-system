@@ -14,8 +14,12 @@ public class DeptService {
     @Resource
     private DeptMapper deptMapper;
 
-    public List<Dept> getAllDepts(){
-        return deptMapper.getAllDepts();
+    public void test(){
+        System.out.println(deptMapper);
+    }
+
+    public List<Dept> getDepts(Dept condition){
+        return deptMapper.getDepts(condition);
     }
 
 }

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <input type="text" v-model="deptcode" placeholder="deptcode"/>
+    <input type="text" v-model="deptname" placeholder="deptname"/>
+    <button type="button" @click="search">search</button>
+
+    <table>
+        <tr v-for="dept in depts">
+            <td>{{dept.deptcode}}</td>
+            <td>{{dept.deptname}}</td>
+            <td>{{dept.deptcat}}</td>
+            <td>{{dept.deptclass}}</td>
+        </tr>
+    </table>
+</div>
+
+
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            deptcode: "",
+            deptname: "",
+            depts: []
+        },
+        methods: {
+            search: function () {
+
+                var that = this;
+                console.log(that.deptcode);
+                console.log(that.deptname);
+
+                axios.post('/dept/depts', {
+
+                    deptcode: that.deptcode,
+                    deptname: that.deptname,
+
+                })
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.depts = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            }
+
+        }
+    })
+
+</script>
+
+</body>
+</html>

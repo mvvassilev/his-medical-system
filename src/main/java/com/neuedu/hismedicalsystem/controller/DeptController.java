@@ -12,15 +12,15 @@ import java.sql.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/deptManage")
+@RequestMapping("/dept")
 public class DeptController {
 
     @Autowired
     private DeptService deptService;
 
-    @RequestMapping("/getAllDepts")
-    public List<Dept> getAllDepts(){
-        return deptService.getAllDepts();
+    @RequestMapping("/depts")
+    public List<Dept> getDepts(@RequestBody Dept condition){
+        return deptService.getDepts(condition);
     }
 
 
