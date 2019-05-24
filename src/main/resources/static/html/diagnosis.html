@@ -88,18 +88,35 @@
             <li class="layui-nav-item"><a href="">Products</a></li>
             <li class="layui-nav-item"><a href="">Big Data</a></li>
         </ul>
-        <div class="form-layout">
+        <div class="form-layout" style="top: 150px;">
             <form class="layui-form" action="">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">Type</label>
+                    <label class="layui-form-label">Action</label>
                     <div class="layui-input-block">
-                    <input type="text" name="title" required lay-verify="required" placeholder="Enter type..." autocomplete="off" class="layui-input">
+                        <select name="query" lay-verify="required">
+                            <option value="">Choose an action:</option>
+                            <option value="0">Create</option>
+                            <option value="1">Update</option>
+                            <option value="2">Delete</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">Name</label>
+                    <div class="layui-input-block">
+                    <input type="text" name="title" required lay-verify="required" placeholder="Enter diagnosis name..." autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">Description </label>
+                    <label class="layui-form-label">Description</label>
                     <div class="layui-input-block">
-                    <textarea name="desc" placeholder="Enter description..." class="layui-textarea"></textarea>
+                    <textarea name="desc" placeholder="Enter diagnosis description" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">Treatment</label>
+                    <div class="layui-input-block">
+                    <textarea name="desc" placeholder="Enter diagnosis treatment" class="layui-textarea"></textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
