@@ -94,40 +94,6 @@
     });
 </script>
 
-<script type="text/html" id="toolbarDemo">
-    <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" lay-event="add">添加</button>
-        <button class="layui-btn layui-btn-sm" lay-event="delete">删除</button>
-        <button class="layui-btn layui-btn-sm" lay-event="update">编辑</button>
-    </div>
-</script>
-
-<script>
-    //JS 调用
-    table.render({
-        elem: '#demo'
-        , toolbar: '#toolbarDemo'
-        //,//其他参数
-    });
-
-    //监听事件
-    table.on('toolbar(test)', function (obj) {
-        var checkStatus = table.checkStatus(obj.config.id);
-        switch (obj.event) {
-            case 'add':
-                layer.msg('添加');
-                break;
-            case 'delete':
-                layer.msg('删除');
-                break;
-            case 'update':
-                layer.msg('编辑');
-                break;
-        }
-        ;
-    });
-</script>
-
 <script>
     layui.use('table', function () {
         var table = layui.table;
@@ -137,16 +103,17 @@
             elem: '#demo'
             , height: 312
             , page: true //开启分页
-            , toolbar: true //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , toolbar: '#toolbarDemo'
             , totalRow: true //开启合计行
             , cols: [[ //表头
-                {field: 'userid', title: 'User ID', width: 150, sort: true, fixed: 'left'}
-                , {field: 'username', title: 'User Name', width: 150}
-                , {field: 'realname', title: 'Real name', width: 150, sort: true}
-                , {field: 'deptcode', title: 'Department Code', width: 150}
-                , {field: 'usercat', title: 'Vocation', width: 150}
-                , {field: 'position', title: 'Position', width: 150, sort: true}
-                , {field: 'shiftOrNot', title: 'Shift Or Not', width: 150, sort: true}
+                {field: 'userid', title: 'User ID', width: 130, sort: true, fixed: 'left'}
+                , {field: 'username', title: 'User Name', width: 130}
+                , {field: 'realname', title: 'Real name', width: 130, sort: true}
+                , {field: 'deptcode', title: 'Department Code', width: 130}
+                , {field: 'usercat', title: 'Vocation', width: 130}
+                , {field: 'position', title: 'Position', width: 130, sort: true}
+                , {field: 'shiftOrNot', title: 'Shift Or Not', width: 130, sort: true}
+                ,{fixed: 'right', width:150, align:'center', toolbar: '#barDemo'} //这里的toolbar值是模板元素的选择器
             ]]
             , data: [{
                 "userid": "10001"
@@ -176,6 +143,20 @@
         });
 
     });
+</script>
+
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="detail">detail</a>
+  <a class="layui-btn layui-btn-xs" lay-event="edit">edit</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">del</a>
+
+</script>
+
+<script type="text/html" id="toolbarDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-sm">嚓</a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
+    <a class="layui-btn layui-btn-primary layui-btn-sm"><i class="layui-icon"></i></a>
 </script>
 
 </body>
