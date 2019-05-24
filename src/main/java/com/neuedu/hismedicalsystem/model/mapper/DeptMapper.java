@@ -1,0 +1,9 @@
+package com.neuedu.hismedicalsystem.model.mapper;
+
+import com.neuedu.hismedicalsystem.model.po.Dept;
+
+import java.util.List;
+
+public interface DeptMapper {
+    public List<Dept> getAllDepts();
+}
