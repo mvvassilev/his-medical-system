@@ -59,10 +59,10 @@
             <div class="layui-side-scroll">
                 <ul class="layui-nav layui-nav-tree" lay-filter="hbkNavbar">
                     <li class="layui-nav-item">
-                        <a href="javascript:;">Department</a>
+                        <a href="department.html">Department</a>
                     </li>
                     <li class="layui-nav-item">
-                        <a href="">User</a>
+                        <a href="user.html">User</a>
                     </li>
                     <li class="layui-nav-item">
                         <a href="">Registration Level</a>
@@ -71,7 +71,7 @@
                         <a href="">Settlement Category</a>
                     </li>
                     <li class="layui-nav-item">
-                        <a id="diagnosis" href="" onclick="setSrc('diagnosis')">Diagnosis Directory</a>
+                        <a href="javascript:setSrc('diagnosis')">Diagnosis Directory</a>
                     </li>
                     <li class="layui-nav-item">
                         <a href="">Non-Medical Items</a>
@@ -94,14 +94,31 @@
 <script src="../layui/layui.all.js"></script>  
 <script src="../layui/layui.js"></script>
 <script>
-    function setSrc(asd){
-        console.log("asd");
+    
+    function setSrc(asd) {
+        console.log(asd);
         document.getElementById("frame").src = `./management/${asd}.html`;
-    }
+    };
+
+    Layui.use('element', function(){
+        var element = layui.element;
+    });
+
+    Layui.use('form', function(){
+        var form = layui.form;
+  
+        // Monitor the submission
+        Form.on('submit(formDemo)', function(data){
+            Layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    
+    /*
     layui.use('element', function(){
         var element = layui.element;
         element.on('nav(hbkNavbar)',function(elem){
-            /*使用DOM操作获取超链接的自定义data属性值*/
+            /*使用DOM操作获取超链接的自定义data属性值
             var options = eval('('+elem.context.children[0].dataset.options+')');
             var url = options.url;
             var title = options.title;
@@ -111,7 +128,7 @@
                 id : '111'
             });
         });
-    });
+    }); */
 </script>
 </body>
 </html>
