@@ -39,8 +39,8 @@
                         <dd class="d-element"><a href="">Department</a ></dd>
                         <dd class="d-element"><a href="">Patient</a ></dd>
                         <dd class="d-element"><a href="">Doctor</a ></dd>
-                        <dd class="d-element"><a href="settlement.html">Settlement</a ></dd>
-                        <dd class="d-element"><a href="diagnosis.html">Diagnosis</a ></dd>
+                        <dd class="d-element"><a href="management/settlement.html">Settlement</a ></dd>
+                        <dd class="d-element"><a href="management/diagnosis.html">Diagnosis</a ></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item"><a href="">.......</a ></li>
@@ -71,7 +71,7 @@
                         <a href="">Settlement Category</a>
                     </li>
                     <li class="layui-nav-item">
-                        <a href="">Diagnosis Directory</a>
+                        <a id="diagnosis" href="" onclick="setSrc('diagnosis')">Diagnosis Directory</a>
                     </li>
                     <li class="layui-nav-item">
                         <a href="">Non-Medical Items</a>
@@ -84,15 +84,8 @@
         </div>
 
         <!--中间主体-->
-        <div class="layui-body" id="container">
-            <div class="layui-tab" lay-filter="tabs" lay-allowClose="true">
-                <ul class="layui-tab-title">
-                    <li class="layui-this">首页</li>
-                </ul>
-                <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">首页内容</div>
-                </div>
-            </div>
+        <div class="layui-body" id="container" style="margin-left: 10px">
+            <iframe id="frame" frameborder="0" width="98%" height="100%" src=""></iframe>
         </div>
 
     </div>
@@ -101,6 +94,10 @@
 <script src="../layui/layui.all.js"></script>  
 <script src="../layui/layui.js"></script>
 <script>
+    function setSrc(asd){
+        console.log("asd");
+        document.getElementById("frame").src = `./management/${asd}.html`;
+    }
     layui.use('element', function(){
         var element = layui.element;
         element.on('nav(hbkNavbar)',function(elem){

@@ -4,78 +4,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>HIS Medical System</title>
-    <link rel="stylesheet" href="../layui/css/layui.css">
+    <link rel="stylesheet" href="../../layui/css/layui.css">
 </head>
 <body>
 <div class="layui-layout-admin">
-    <!--头部-->
-    <div class="layui-header">
-        <div class="layui-logo">NEU HIS System</div>
-        <ul class="layui-nav layui-layout-left">
-            <li class="layui-nav-item"><a href></a></li>
-            <li class="layui-nav-item"><a href="">.......</a></li>
-            <li class="layui-nav-item layui-this"><a href="">.......</a></li>
-            <li class="layui-nav-item"><a href="">.......</a></li>
-            <li class="layui-nav-item">
-                <a href=" ">Management</a>
-                <dl class="layui-nav-child" style="border-radius: 7%"> <!-- Secondary menu -->
-                    <dd class="d-element"><a href="">Department</a></dd>
-                    <dd class="d-element"><a href="">Patient</a></dd>
-                    <dd class="d-element"><a href="">Doctor</a></dd>
-                    <dd class="d-element"><a href="">Settlement</a></dd>
-                </dl>
-            </li>
-            <li class="layui-nav-item"><a href="">.......</a></li>
-        </ul>
-        <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
-                <a href=""><img src="http://m.zhengjinfan.cn/images/0.jpg" class="layui-nav-img">Huang BaoKang</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
-                    <dd><a href="">安全设置</a></dd>
-                </dl>
-            </li>
-        </ul>
-    </div>
-
-    <!--左侧-->
-    <div class="layui-side layui-bg-black">
-        <div class="layui-side-scroll">
-            <ul class="layui-nav layui-nav-tree" lay-filter="hbkNavbar">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">Department</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="">User</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="">Registration Level</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="">Settlement Category</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="">Diagnosis Directory</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="">Non-Medical Items</a>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="">Shift Arrangement</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-
-    <div class="layui-body" id="container">
-        <div class="layui-tab" lay-filter="tabs" lay-allowClose="true">
-            <table id="demo" lay-filter="test"></table>
-        </div>
-    </div>
+    <table id="demo" lay-filter="test"></table>
 </div>
-<script src="../layui/layui.all.js"></script>
-<script src="../layui/layui.js"></script>
+<script src="../../layui/layui.all.js"></script>
+<script src="../../layui/layui.js"></script>
 
 <script>
     layui.use('element', function () {
