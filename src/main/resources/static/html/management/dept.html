@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="department">
+        <input type="text" v-model="deptcode" placeholder="Code"/>
+        <input type="text" v-model="deptclass" placeholder="Class"/>
+        <input type="text" v-model="deptname" placeholder="Name"/>
+        <input type="text" v-model="deptcat" placeholder="Category"/>
+        <button type="button" @click="search">search</button>
+
+
+        <template>
+            <el-table
+                    :data="depts"
+                    style="width: 100%">
+                <el-table-column
+                        prop="deptcode"
+                        label="Code"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="deptclass"
+                        label="Class"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="deptname"
+                        label="Name"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="deptcat"
+                        label="Category">
+                </el-table-column>
+            </el-table>
+        </template>
+    </div>
+</body>
+
+
+
+<script>
+    var app = new Vue({
+        el: '#department',
+        data: {
+            deptcode: "",
+            deptclass: "",
+            deptname: "",
+            deptcat:"",
+            depts: []
+        },
+        methods: {
+            search: function () {
+                var that = this;
+                axios.post('/dept/depts', {
+                    deptcode: that.deptcode,
+                    deptclass: that.deptclass,
+                    deptname: that.deptname,
+                    deptcat: that.deptcat,
+                })
+                .then(function (response) {
+                    console.log(response.data);
+                    that.depts = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+        }
+    })
+</script>
+</html>

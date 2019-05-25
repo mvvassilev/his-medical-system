@@ -9,9 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @MapperScan("com.neuedu.hismedicalsystem.model.mapper")
 public class HisMedicalSystemApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(HisMedicalSystemApplication.class, args);
 	}
-
 }

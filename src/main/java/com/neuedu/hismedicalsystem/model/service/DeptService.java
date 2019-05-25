@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class DeptService {
-
     @Resource
     private DeptMapper deptMapper;
 
@@ -21,5 +20,4 @@ public class DeptService {
     public List<Dept> getDepts(Dept condition){
         return deptMapper.getDepts(condition);
     }
-
 }

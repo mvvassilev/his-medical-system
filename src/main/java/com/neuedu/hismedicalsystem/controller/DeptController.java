@@ -22,6 +22,4 @@ public class DeptController {
     public List<Dept> getDepts(@RequestBody Dept condition){
         return deptService.getDepts(condition);
     }
-
-
 }

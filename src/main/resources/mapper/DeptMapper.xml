@@ -7,13 +7,18 @@
     <select id="getDepts" resultType="Dept">
         select * from dept
         <where>
-            <if test="deptcode != null">
+            <if test="deptcode != null and deptcode!='' ">
                 and deptcode = #{deptcode}
             </if>
-            <if test="deptname != null ">
+            <if test="deptname != null and deptname!='' ">
                 and deptname = #{deptname}
             </if>
-
+            <if test="deptclass != null and deptclass!='' ">
+                and deptclass = #{deptclass}
+            </if>
+            <if test="deptcat != null and deptcat!='' ">
+                and deptcat = #{deptcat}
+            </if>
         </where>
     </select>
 </mapper>
