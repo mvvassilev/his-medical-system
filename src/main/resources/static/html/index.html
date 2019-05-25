@@ -1,88 +1,97 @@
-<!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>HIS Medical System</title>
-  <link rel="stylesheet" href="../layui/css/layui.css">
-  <link rel='stylesheet' href='../css/front.css'>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
+
 <body>
-    <div class="layui-layout-admin">
-        <!--头部-->
-        <div class="layui-header">
-            <a href="index.html"><div class="layui-logo">NEU HIS System</div></a>
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item"><a href></a ></li>
-                <li class="layui-nav-item"><a href="">.......</a ></li>
-                <li class="layui-nav-item layui-this"><a href="">.......</a ></li>
-                <li class="layui-nav-item"><a href="">.......</a ></li>
-                <li class="layui-nav-item">
-                    <a href=" ">Management</a >
-                    <dl class="layui-nav-child"> <!-- Secondary menu -->
-                        <dd class="d-element"><a href="">Department</a ></dd>
-                        <dd class="d-element"><a href="">Patient</a ></dd>
-                        <dd class="d-element"><a href="">Doctor</a ></dd>
-                        <dd class="d-element"><a href="management/settlement.html">Settlement</a ></dd>
-                        <dd class="d-element"><a href="management/diagnosis.html">Diagnosis</a ></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">.......</a ></li>
-                <li class="layui-nav-item">
-                    <a href=""><img src="http://m.zhengjinfan.cn/images/0.jpg" class="layui-nav-img">Huang BaoKang</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="">基本资料</a></dd>
-                        <dd><a href="">安全设置</a></dd>
-                    </dl>
-                </li>
-            </ul>
-        </div>
-
-        <!--左侧-->
-        <div class="layui-side layui-bg-black">
-            <div class="layui-side-scroll">
-                <ul class="layui-nav layui-nav-tree" lay-filter="hbkNavbar">
-                    <li class="layui-nav-item">
-                        <a href="javascript:setSrc('department')">Department</a>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:setSrc('user')">User</a>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:setSrc('registration-level')">Registration Level</a>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:setSrc('settlement')">Settlement Category</a>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:setSrc('diagnosis')">Diagnosis Directory</a>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:setSrc('non-medical')">Non-Medical Items</a>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:setSrc('shift-arrangement')">Shift Arrangement</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!--中间主体-->
-        <div class="layui-body" id="container" style="margin-left: 10px">
-            <iframe id="frame" frameborder="0" width="98%" height="100%" src=""></iframe>
-        </div>
-
+    <div id="app">
+        <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+            background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+            <el-menu-item index="1">Processing Center</el-menu-item>
+            <el-submenu index="2">
+                <template slot="title">Workspace</template>
+                <el-menu-item index="2-1">item one</el-menu-item>
+                <el-menu-item index="2-2">item two</el-menu-item>
+                <el-menu-item index="2-3">item three</el-menu-item>
+                <el-submenu index="2-4">
+                    <template slot="title">item four</template>
+                    <el-menu-item index="2-4-1">item one</el-menu-item>
+                    <el-menu-item index="2-4-2">item two</el-menu-item>
+                    <el-menu-item index="2-4-3">item three</el-menu-item>
+                </el-submenu>
+            </el-submenu>
+            <el-menu-item index="3" disabled>Info</el-menu-item>
+            <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">Orders</a></el-menu-item>
+        </el-menu>
+        <div class="line"></div>
+        <el-row :span="24">
+            <el-col :span="3">
+                <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                    background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
+                    style="height: 100vh">
+                    <el-submenu index="1">
+                        <template slot="title">
+                            <i class="el-icon-location"></i>
+                            <span>Navigator One</span>
+                        </template>
+                        <el-menu-item-group title="Group One">
+                            <el-menu-item index="1-1">item one</el-menu-item>
+                            <el-menu-item index="1-2">item one</el-menu-item>
+                        </el-menu-item-group>
+                        <el-menu-item-group title="Group Two">
+                            <el-menu-item index="1-3">item three</el-menu-item>
+                        </el-menu-item-group>
+                        <el-submenu index="1-4">
+                            <template slot="title">item four</template>
+                            <el-menu-item index="1-4-1">item one</el-menu-item>
+                        </el-submenu>
+                    </el-submenu>
+                    <el-menu-item index="2">
+                        <i class="el-icon-menu"></i>
+                        <span>Navigator Two</span>
+                    </el-menu-item>
+                    <el-menu-item index="3" disabled>
+                        <i class="el-icon-document"></i>
+                        <span>Navigator Three</span>
+                    </el-menu-item>
+                    <el-menu-item index="4">
+                        <i class="el-icon-setting"></i>
+                        <span>Navigator Four</span>
+                    </el-menu-item>
+                </el-menu>
+            </el-col>
+            <el-col :span="21">
+                <iframe frameborder="10" width="100%" height="100%" src="dept.html"></iframe>
+            </el-col>
+        </el-row>
     </div>
-
-
-<script src="../layui/layui.all.js"></script>  
-<script src="../layui/layui.js"></script>
-<script>
-    
-    function setSrc(asd) {
-        console.log(asd);
-        document.getElementById("frame").src = `./management/${asd}.html`;
-    };
-</script>
 </body>
+
+
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                activeIndex: '1',
+                activeIndex2: '1'
+            };
+        },
+        methods: {
+            handleSelect(key, keyPath) {
+                console.log(key, keyPath);
+            }
+        }
+    })
+</script>
+
+
 </html>
