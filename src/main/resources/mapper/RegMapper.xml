@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hismedicalsystem.model.mapper.RegMapper">
+
+    <select id="getRegs" resultType="Reg">
+        select * from register
+        <where>
+            <if test="regid != null and regid!='' ">
+                and regid = #{regid}
+            </if>
+            <if test="isDefault != null and isDefault!='' ">
+                and isDefault = #{isDefault}
+            </if>
+            <if test="price != null and price!='' ">
+                and price = #{price}
+            </if>
+            <if test="order != null and order!='' ">
+                and order = #{order}
+            </if>
+            <if test="rpid != null and rpid!='' ">
+                and rpid = #{rpid}
+            </if>
+            <if test="deptcode != null and deptcode!='' ">
+                and deptcode = #{deptcode}
+            </if>
+            <if test="did != null and did!='' ">
+                and did = #{did}
+            </if>
+            <if test="newRecord != null and newRecord!='' ">
+                and newRecord = #{newRecord}
+            </if>
+            <if test="date != null and date!='' ">
+                and date = #{date}
+            </if>
+        </where>
+    </select>
+</mapper>
