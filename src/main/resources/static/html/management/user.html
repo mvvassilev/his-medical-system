@@ -13,38 +13,59 @@
 </head>
 
 <body>
-    <div id="department">
+    <div id="management">
         <input type="text" v-model="userid" placeholder="ID"/>
-        <input type="text" v-model="username" placeholder="username"/>
+        <input type="text" v-model="username" placeholder="User"/>
+        <input type="text" v-model="pwd" placeholder="Password"/>
+        <input type="text" v-model="realname" placeholder="Name"/>
+        <input type="text" v-model="deptcode" placeholder="Department code"/>
+        <input type="text" v-model="usercat" placeholder="Category"/>
+        <input type="text" v-model="position" placeholder="Position"/>
+        <input type="text" v-model="shiftOrNot" placeholder="Shift or not"/>
         <button type="button" @click="search">search</button>
 
-        <table>
-            <tr v-for="emp in emps">
-                <td>{{emp.empno}}</td>
-                <td>{{emp.ename}}</td>
-                <td>{{emp.job}}</td>
-                <td>{{emp.hiredate}}</td>
-                <td>{{emp.hiredatestr}}</td>
-            </tr>
-        </table>
 
         <template>
             <el-table
-                    :data="emps"
+                    :data="users"
                     style="width: 100%">
                 <el-table-column
-                        prop="empno"
-                        label="日期"
+                        prop="userid"
+                        label="ID"
                         width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="ename"
-                        label="姓名"
+                        prop="username"
+                        label="User"
                         width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="job"
-                        label="地址">
+                        prop="pwd"
+                        label="Password"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="realname"
+                        label="Name">
+                </el-table-column>
+                <el-table-column
+                        prop="deptcode"
+                        label="Department Code"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="usercat"
+                        label="Category"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="position"
+                        label="Position"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="shiftOrNot"
+                        label="Shift or Not">
                 </el-table-column>
             </el-table>
         </template>
@@ -55,39 +76,39 @@
 
 <script>
     var app = new Vue({
-        el: '#department',
+        el: '#management',
         data: {
-            empno: "",
-            ename: "",
-            job: "",
-            emps: []
+            userid: "",
+            username: "",
+            pwd: "",
+            realname:"",
+            deptcode: "",
+            usercat: "",
+            position: "",
+            shiftOrNot: "",
+            users: []
         },
         methods: {
             search: function () {
-
                 var that = this;
-                console.log(that.empno);
-                console.log(that.ename);
-                console.log(that.job);
-
-
-                axios.post('/test/emps', {
-
-                    empno: that.empno,
-                    ename: that.ename,
-                    job: that.job
-
+                axios.post('/management/users', {
+                    userid: that.userid,
+                    username: that.username,
+                    pwd: that.pwd,
+                    realname: that.realname,
+                    deptcode: that.deptcode,
+                    usercat: that.usercat,
+                    position: that.position,
+                    shiftOrNot: that.shiftOrNot
                 })
-                    .then(function (response) {
-                        console.log(response.data);
-                        that.emps = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-
+                .then(function (response) {
+                    console.log(response.data);
+                    that.users = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             }
-
         }
     })
 </script>
