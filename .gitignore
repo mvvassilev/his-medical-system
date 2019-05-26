@@ -16,6 +16,8 @@ HELP.md
 *.iws
 *.iml
 *.ipr
+*.properties
+pom.xml
 
 ### NetBeans ###
 /nbproject/private/
@@ -27,3 +29,5 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+*.properties
+pom.xml
