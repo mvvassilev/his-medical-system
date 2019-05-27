@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface DeptMapper {
     public List<Dept> getDepts(Dept condition);
+
+    public void delDept(String deptcode);
 }

@@ -21,4 +21,8 @@
             </if>
         </where>
     </select>
+
+    <delete id="delDept">
+        delete from dept where deptcode=#{deptcode}
+    </delete>
 </mapper>

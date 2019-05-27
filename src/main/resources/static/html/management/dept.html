@@ -77,6 +77,20 @@
                 .catch(function (error) {
                     console.log(error);
                 });
+            },
+
+            delDept:function () {
+                var that = this;
+                axios.post('/management/delDept',{
+                    deptcode: that.deptcode,
+                })
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.depts = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     })

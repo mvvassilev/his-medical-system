@@ -20,4 +20,6 @@ public class DeptService {
     public List<Dept> getDepts(Dept condition){
         return deptMapper.getDepts(condition);
     }
+
+    public void delDept(String deptcode) {deptMapper.delDept(deptcode);}
 }

@@ -42,4 +42,7 @@ public class ManagementController {
     public List<Reg> getRegs(@RequestBody Reg condition){
         return regService.getRegs(condition);
     }
+
+    @RequestMapping("/deldept")
+    public  void delDept(@RequestBody String deptcode) {deptService.delDept(deptcode);}
 }
