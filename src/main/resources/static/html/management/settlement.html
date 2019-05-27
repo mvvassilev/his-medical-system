@@ -1,53 +1,137 @@
-<!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>HIS Medical System</title>
-    <link rel='shortcut icon' href="../../images/logo.png"/>
-    <link rel="stylesheet" href="../../layui/css/layui.css">
-    <link rel='stylesheet' href="../../css/front.css">
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
+
 <body>
-    <div class="layui-layout-admin">
-        <div class="form-layout">
-            <form class="layui-form" action="">
-                <div class="layui-form-item">
-                    <label class="layui-form-label">Type</label>
-                    <div class="layui-input-block">
-                    <input type="text" name="title" required lay-verify="required" placeholder="Enter type..." autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">Description </label>
-                    <div class="layui-input-block">
-                    <textarea name="desc" placeholder="Enter description..." class="layui-textarea"></textarea>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="formDemo">Submit</button>
-                    <button type="reset" class="layui-btn layui-btn-primary">reset</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <div id="management">
+        <input type="text" v-model="billid" placeholder="ID"/>
+        <input type="text" v-model="itemcode" placeholder="Code"/>
+        <input type="text" v-model="billdate" placeholder="Date"/>
+        <input type="text" v-model="pid" placeholder="Patient ID"/>
+        <input type="text" v-model="billcat" placeholder="Category"/>
+        <input type="text" v-model="count" placeholder="Count"/>
+        <input type="text" v-model="totalprice" placeholder="Total"/>
+        <input type="text" v-model="feecode" placeholder="Fee Code"/>
+        <input type="text" v-model="isPaid" placeholder="Paid"/>
+        <input type="text" v-model="isPrint" placeholder="Print"/>
+        <input type="text" v-model="isDone" placeholder="isDone"/>
+        <button type="button" @click="search">search</button>
+
+
+        <template>
+            <el-table
+                    :data="settlements"
+                    style="width: 100%">
+                <el-table-column
+                        prop="billid"
+                        label="ID"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="itemcode"
+                        label="Code"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="billdate"
+                        label="Date"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="pid"
+                        label="Patient ID">
+                </el-table-column>
+                <el-table-column
+                        prop="billcat"
+                        label="Category"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="count"
+                        label="Count"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="totalprice"
+                        label="Total"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="feecode"
+                        label="Fee Code"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="isPaid"
+                        label="Paid"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="isPrint"
+                        label="Print"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="isDone"
+                        label="Done"
+                        width="180">
+                </el-table-column>
+            </el-table>
+        </template>
     </div>
-<script src="../../layui/layui.all.js"></script>
-<script src="../../layui/layui.js"></script>
-<script>
-    Layui.use('element', function(){
-        var element = layui.element;
-    });
-    Layui.use('form', function(){
-        var form = layui.form;
-  
-        // Monitor the submission
-        Form.on('submit(formDemo)', function(data){
-            Layer.msg(JSON.stringify(data.field));
-            return false;
-        });
-    });
-</script>
 </body>
+
+
+
+<script>
+    var app = new Vue({
+        el: '#management',
+        data: {
+            userid: "",
+            username: "",
+            pwd: "",
+            realname:"",
+            deptcode: "",
+            usercat: "",
+            position: "",
+            shiftOrNot: "",
+            users: []
+        },
+        methods: {
+            search: function () {
+                var that = this;
+                axios.post('/management/settlement', {
+                    billid: that.billid,
+                    itemcode: that.itemcode,
+                    billdate: that.billdate,
+                    pid: that.pid,
+                    billcat: that.billcat,
+                    count: that.count,
+                    totalprice: that.totalprice,
+                    feecode: that.feecode,
+                    isPaid: that.isPaid,
+                    isPrint: that.isPrint,
+                    isDone: that.isDone
+                })
+                .then(function (response) {
+                    console.log(response.data);
+                    that.settlements = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
+        }
+    })
+</script>
 </html>

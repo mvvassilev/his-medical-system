@@ -13,40 +13,76 @@
 </head>
 
 <body>
-    <div id="department">
-        <input type="text" v-model="deptcode" placeholder="Code"/>
-        <input type="text" v-model="deptclass" placeholder="Class"/>
-        <input type="text" v-model="deptname" placeholder="Name"/>
-        <input type="text" v-model="deptcat" placeholder="Category"/>
-        <button type="button" @click="search">search</button>
+<div id="department">
+
+    <el-row :gutter="20">
+        <el-col :span="16">
+            <input type="text" v-model="deptcode" placeholder="Code"/>
+            <input type="text" v-model="deptclass" placeholder="Class"/>
+            <input type="text" v-model="deptname" placeholder="Name"/>
+            <input type="text" v-model="deptcat" placeholder="Category"/>
+            <button type="button" @click="search">search</button>
+        </el-col>
+        <el-col :span="8">
+            <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
+        </el-col>
+    </el-row>
 
 
-        <template>
-            <el-table
-                    :data="depts"
-                    style="width: 100%">
-                <el-table-column
-                        prop="deptcode"
-                        label="Code"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="deptclass"
-                        label="Class"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="deptname"
-                        label="Name"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="deptcat"
-                        label="Category">
-                </el-table-column>
-            </el-table>
-        </template>
-    </div>
+    <template>
+        <el-table
+                :data="depts"
+                style="width: 100%">
+            <el-table-column
+                    prop="deptcode"
+                    label="Code"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="deptclass"
+                    label="Class"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="deptname"
+                    label="Name"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="deptcat"
+                    label="Category">
+            </el-table-column>
+            <el-table-column fixed="right" label="Operations" width="120">
+                <template slot-scope="scope">
+                    <el-button @click="deleteDepartment(scope.$index, scope.row)" type="text" size="small">delete</el-button>
+                    <el-button @click="updateDepartment(scope.$index, scope.row)" type="text" size="small">update</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+
+    <el-dialog title="Department" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="Code" :label-width="formLabelWidth">
+                <el-input v-model="form.deptcode" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Class" :label-width="formLabelWidth">
+                <el-input v-model="form.deptclass" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Name" :label-width="formLabelWidth">
+                <el-input v-model="form.deptname" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Category" :label-width="formLabelWidth">
+                <el-input v-model="form.deptcat" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="onSubmit">确 定</el-button>
+        </div>
+    </el-dialog>
+
+</div>
 </body>
 
 
@@ -59,7 +95,16 @@
             deptclass: "",
             deptname: "",
             deptcat:"",
-            depts: []
+            depts: [],
+
+            dialogFormVisible: false,
+            form: {
+                deptcode: "",
+                deptclass: "",
+                deptname: "",
+                deptcat:"",
+            },
+            formLabelWidth: '120px'
         },
         methods: {
             search: function () {
@@ -70,9 +115,22 @@
                     deptname: that.deptname,
                     deptcat: that.deptcat,
                 })
-                .then(function (response) {
-                    console.log(response.data);
-                    that.depts = response.data;
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.depts = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            onSubmit: function(){
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/addDept', {
+                    deptcode: that.form.deptcode,
+                    deptclass: that.form.deptclass,
+                    deptname: that.form.deptname,
+                    deptcat: that.form.deptcat,
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -91,6 +149,14 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+
+            },
+            deleteDepartment: function (index, row)  {
+                console.log(row);
+            },
+            updateDepartment: function (index, row) {
+                this.dialogFormVisible = true;
+                this.form = row;
             }
         }
     })

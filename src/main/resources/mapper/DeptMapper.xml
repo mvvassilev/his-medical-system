@@ -22,6 +22,11 @@
         </where>
     </select>
 
+    <insert id="addDept">
+      insert into dept (deptcode,deptname,deptclass,deptcat)
+      values (#{deptcode},#{deptname},#{deptclass},#{deptcat})
+    </insert>
+
     <delete id="delDept">
         delete from dept where deptcode=#{deptcode}
     </delete>
