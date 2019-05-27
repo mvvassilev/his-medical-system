@@ -24,7 +24,7 @@
             <button type="button" @click="search">search</button>
         </el-col>
         <el-col :span="8">
-            <el-button type="text" @click="addDept">打开嵌套表单的 Dialog</el-button>
+            <el-button type="text" @click="showDialogForm('Add')">打开嵌套表单的 Dialog</el-button>
         </el-col>
     </el-row>
 
@@ -55,13 +55,14 @@
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
                     <el-button @click="deleteDepartment(scope.$index, scope.row)" type="text" size="small">delete</el-button>
-                    <el-button @click="updateDepartment(scope.$index, scope.row)" type="text" size="small">update</el-button>
+                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update</el-button>
                 </template>
             </el-table-column>
         </el-table>
     </template>
 
-    <el-dialog title="Department" :visible.sync="dialogFormVisible">
+    <!-- Add Department -->
+    <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="Code" :label-width="formLabelWidth">
                 <el-input v-model="form.deptcode" autocomplete="off"></el-input>
@@ -77,8 +78,8 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="onSubmit">确 定</el-button>
+            <el-button @click="dialogFormVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="onSubmit">{{methodType}}</el-button>
         </div>
     </el-dialog>
 
@@ -91,13 +92,19 @@
     var app = new Vue({
         el: '#department',
         data: {
+
+
             deptcode: "",
             deptclass: "",
             deptname: "",
             deptcat:"",
             depts: [],
 
+            methodType: "",//调用方法，add or update
+            formTitle:"",
             dialogFormVisible: false,
+            updatingIndex:-1,
+            updatingObject:{},
             form: {
                 deptcode: "",
                 deptclass: "",
@@ -123,7 +130,12 @@
                         console.log(error);
                     });
             },
+
             onSubmit: function(){
+
+            },
+
+            onSubmitAdd: function(){
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/addDept', {
@@ -132,34 +144,41 @@
                     deptname: that.form.deptname,
                     deptcat: that.form.deptcat,
                 })
-                    .then(function (response) {
-                        console.log(response.data);
-                        // that.depts=response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                .then(function (response) {
+                    console.log(response.data);
+                    // that.depts=response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
-            addDept:function(){
-                this.showDialogForm();
+
+            onSubmitUpdate: function(){
+                console.log("update")
             },
-            deleteDepartment: function (index, row)  {
-                console.log(row);
-            },
-            updateDepartment: function (index, row) {
-                this.showDialogForm();
-                // let t = this.form;
-                this.form = row;
-                // row = t;
-            },
-            showDialogForm: function () {
-                this.form = {
-                    deptcode: "",
-                    deptclass: "",
-                    deptname: "",
-                    deptcat: "",
+
+            showDialogForm: function (method,index,row) {
+                if(method=="Add"){
+                    this.form = {
+                        deptcode: "",
+                        deptclass: "",
+                        deptname: "",
+                        deptcat: "",
+                    }
                 }
+                if(method=="Update")
+                    this.form = row;
+                console.log(this.form);
+
                 this.dialogFormVisible = true;
+                this.methodType = method;
+                this.formTitle = method+" Department";
+                this.updatingIndex = index;
+                this.updatingObject = row;
+                console.log("Method using " + this.methodType);
+                console.log("index "+index)
+                console.log("row ");
+                console.log(row)
             }
         }
     })
