@@ -54,7 +54,7 @@
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
-                    <el-button @click="deleteDepartment(scope.$index, scope.row)" type="text" size="small">delete</el-button>
+                    <el-button @click="delDept(scope.$index, scope.row)" type="text" size="small">delete</el-button>
                     <el-button @click="updateDepartment(scope.$index, scope.row)" type="text" size="small">update</el-button>
                 </template>
             </el-table-column>
@@ -137,22 +137,22 @@
                 });
             },
 
-            delDept:function () {
+            delDept:function (index, row) {
                 var that = this;
-                axios.post('/management/delDept',{
-                    deptcode: that.deptcode,
-                })
+                var params = new URLSearchParams();
+                params.append('deptcode', row.deptcode);
+                axios.post('/management/delDept', params)
                     .then(function (response) {
-                        console.log(response.data);
-                        that.depts = response.data;
+                        // console.log(index.data);
+                        /*console.log(that.deptcode);
+                        console.log(response.deptcode);
+                        that.deptcode = row.deptcode;
+                        that.deptcode = response.deptcode;*/
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
 
-            },
-            deleteDepartment: function (index, row)  {
-                console.log(row);
             },
             updateDepartment: function (index, row) {
                 this.dialogFormVisible = true;

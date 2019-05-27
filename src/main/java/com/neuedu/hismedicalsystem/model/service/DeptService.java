@@ -27,5 +27,6 @@ public class DeptService {
         deptMapper.addDept(dept);
     }
 
+    @Transactional
     public void delDept(String deptcode) {deptMapper.delDept(deptcode);}
 }

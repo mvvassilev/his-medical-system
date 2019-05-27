@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/management")
 public class ManagementController {
-    
+
     @Autowired
     private UserService userService;
 
@@ -63,8 +63,10 @@ public class ManagementController {
         return regService.getRegs(condition);
     }
 
-    @RequestMapping("/deldept")
-    public  void delDept(@RequestBody String deptcode) {deptService.delDept(deptcode);}
+    @RequestMapping("/delDept")
+    public void delDept(String deptcode) {
+        deptService.delDept(deptcode);
+    }
 
     @RequestMapping("/settlement")
     public List<Settlement> getSettlements(@RequestBody Settlement condition){
