@@ -14,35 +14,28 @@
 
 <body>
     <div id="department">
-        <input type="text" v-model="deptcode" placeholder="Code"/>
-        <input type="text" v-model="deptclass" placeholder="Class"/>
-        <input type="text" v-model="deptname" placeholder="Name"/>
-        <input type="text" v-model="deptcat" placeholder="Category"/>
+        <input type="text" v-model="deptcode" placeholder="Code" />
+        <input type="text" v-model="deptclass" placeholder="Class" />
+        <input type="text" v-model="deptname" placeholder="Name" />
+        <input type="text" v-model="deptcat" placeholder="Category" />
         <button type="button" @click="search">search</button>
 
 
         <template>
-            <el-table
-                    :data="depts"
-                    style="width: 100%">
-                <el-table-column
-                        prop="deptcode"
-                        label="Code"
-                        width="180">
+            <el-table :data="depts" style="width: 100%">
+                <el-table-column prop="deptcode" label="Code" width="180">
                 </el-table-column>
-                <el-table-column
-                        prop="deptclass"
-                        label="Class"
-                        width="180">
+                <el-table-column prop="deptclass" label="Class" width="180">
                 </el-table-column>
-                <el-table-column
-                        prop="deptname"
-                        label="Name"
-                        width="180">
+                <el-table-column prop="deptname" label="Name" width="180">
                 </el-table-column>
-                <el-table-column
-                        prop="deptcat"
-                        label="Category">
+                <el-table-column prop="deptcat" label="Category" width="180">
+                </el-table-column>
+                <el-table-column fixed="right" label="Operations" width="120">
+                    <template slot-scope="scope">
+                        <el-button @click="deleteDepartment" type="text" size="small">delete</el-button>
+                        <el-button @click="updateDepartment" type="text" size="small">update</el-button>
+                    </template>
                 </el-table-column>
             </el-table>
         </template>
@@ -58,7 +51,7 @@
             deptcode: "",
             deptclass: "",
             deptname: "",
-            deptcat:"",
+            deptcat: "",
             depts: []
         },
         methods: {
@@ -70,15 +63,22 @@
                     deptname: that.deptname,
                     deptcat: that.deptcat,
                 })
-                .then(function (response) {
-                    console.log(response.data);
-                    that.depts = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.depts = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            deleteDepartment: function () {
+                console.log('delete called');
+            },
+            updateDepartment: function () {
+                console.log('update called');
             }
         }
     })
 </script>
+
 </html>
