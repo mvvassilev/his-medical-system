@@ -20,4 +20,6 @@ public class UserService {
     public List<User> getUsers(User condition){
         return userMapper.getUsers(condition);
     }
+
+    public void updateUser(User condition){ userMapper.updateUser(condition);}
 }

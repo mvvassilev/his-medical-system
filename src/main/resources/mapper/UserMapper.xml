@@ -33,4 +33,10 @@
             </if>
         </where>
     </select>
+
+    <update id="updateUser">
+        update user set username = #{username},pwd = #{pwd},realname = #{username},deptcode = #{deptcode}
+         ,usercat = #{usercat},position = #{position},shiftOrNot = #{shiftOrNot}  where userid = #{userid}
+    </update>
+
 </mapper>

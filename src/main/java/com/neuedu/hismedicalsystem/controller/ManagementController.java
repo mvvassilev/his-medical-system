@@ -38,12 +38,15 @@ public class ManagementController {
         return userService.getUsers(condition);
     }
 
+    @RequestMapping("/updateUser")
+    public void updateUser(@RequestBody User condition){
+        userService.updateUser(condition);
+    }
+
     @RequestMapping("/depts")
     public List<Dept> getDepts(@RequestBody Dept condition){
         return deptService.getDepts(condition);
     }
-
-
 
     @RequestMapping("/addDept")
     public String addDept(@RequestBody Dept dept) {
@@ -55,6 +58,11 @@ public class ManagementController {
             return "{\"result\":false}";
         }
         return "{\"result\":true}";
+    }
+
+    @RequestMapping("/updateDept")
+    public void updateDept(@RequestBody Dept condition){
+        deptService.updateDept(condition);
     }
 
 
