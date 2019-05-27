@@ -26,4 +26,14 @@
       insert into dept (deptcode,deptname,deptclass,deptcat)
       values (#{deptcode},#{deptname},#{deptclass},#{deptcat})
     </insert>
+
+    <delete id="delDept">
+        delete from dept where deptcode=#{deptcode}
+    </delete>
+
+    <update id="updateUser">
+        update dept set deptname = #{deptname},deptclass = #{deptclass},deptcat = #{deptcat}
+        where deptcode = #{deptcode}
+    </update>
+
 </mapper>

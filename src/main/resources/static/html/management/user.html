@@ -13,65 +13,64 @@
 </head>
 
 <body>
-    <div id="management">
-        <input type="text" v-model="userid" placeholder="ID"/>
-        <input type="text" v-model="username" placeholder="User"/>
-        <input type="text" v-model="pwd" placeholder="Password"/>
-        <input type="text" v-model="realname" placeholder="Name"/>
-        <input type="text" v-model="deptcode" placeholder="Department code"/>
-        <input type="text" v-model="usercat" placeholder="Category"/>
-        <input type="text" v-model="position" placeholder="Position"/>
-        <input type="text" v-model="shiftOrNot" placeholder="Shift or not"/>
-        <button type="button" @click="search">search</button>
+<div id="management">
+    <input type="text" v-model="userid" placeholder="ID"/>
+    <input type="text" v-model="username" placeholder="User"/>
+    <input type="text" v-model="pwd" placeholder="Password"/>
+    <input type="text" v-model="realname" placeholder="Name"/>
+    <input type="text" v-model="deptcode" placeholder="Department code"/>
+    <input type="text" v-model="usercat" placeholder="Category"/>
+    <input type="text" v-model="position" placeholder="Position"/>
+    <input type="text" v-model="shiftOrNot" placeholder="Shift or not"/>
+    <button type="button" @click="search">search</button>
 
 
-        <template>
-            <el-table
-                    :data="users"
-                    style="width: 100%">
-                <el-table-column
-                        prop="userid"
-                        label="ID"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="username"
-                        label="User"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="pwd"
-                        label="Password"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="realname"
-                        label="Name">
-                </el-table-column>
-                <el-table-column
-                        prop="deptcode"
-                        label="Department Code"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="usercat"
-                        label="Category"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="position"
-                        label="Position"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="shiftOrNot"
-                        label="Shift or Not">
-                </el-table-column>
-            </el-table>
-        </template>
-    </div>
+    <template>
+        <el-table
+                :data="users"
+                style="width: 100%">
+            <el-table-column
+                    prop="userid"
+                    label="ID"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="username"
+                    label="User"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="pwd"
+                    label="Password"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="realname"
+                    label="Name">
+            </el-table-column>
+            <el-table-column
+                    prop="deptcode"
+                    label="Department Code"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="usercat"
+                    label="Category"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="position"
+                    label="Position"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="shiftOrNot"
+                    label="Shift or Not">
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
 </body>
-
 
 
 <script>
@@ -81,7 +80,7 @@
             userid: "",
             username: "",
             pwd: "",
-            realname:"",
+            realname: "",
             deptcode: "",
             usercat: "",
             position: "",
@@ -101,13 +100,33 @@
                     position: that.position,
                     shiftOrNot: that.shiftOrNot
                 })
-                .then(function (response) {
-                    console.log(response.data);
-                    that.users = response.data;
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.users = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            update: function () {
+                var that = this;
+                axios.post('/management/updateUsers', {
+                    userid: that.userid,
+                    username: that.username,
+                    pwd: that.pwd,
+                    realname: that.realname,
+                    deptcode: that.deptcode,
+                    usercat: that.usercat,
+                    position: that.position,
+                    shiftOrNot: that.shiftOrNot
                 })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.users = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     })
