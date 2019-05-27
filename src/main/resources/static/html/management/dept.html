@@ -24,7 +24,7 @@
             <button type="button" @click="search">search</button>
         </el-col>
         <el-col :span="8">
-            <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
+            <el-button type="text" @click="addDept">打开嵌套表单的 Dialog</el-button>
         </el-col>
     </el-row>
 
@@ -140,12 +140,26 @@
                         console.log(error);
                     });
             },
+            addDept:function(){
+                this.showDialogForm();
+            },
             deleteDepartment: function (index, row)  {
                 console.log(row);
             },
             updateDepartment: function (index, row) {
-                this.dialogFormVisible = true;
+                this.showDialogForm();
+                // let t = this.form;
                 this.form = row;
+                // row = t;
+            },
+            showDialogForm: function () {
+                this.form = {
+                    deptcode: "",
+                    deptclass: "",
+                    deptname: "",
+                    deptcat: "",
+                }
+                this.dialogFormVisible = true;
             }
         }
     })
