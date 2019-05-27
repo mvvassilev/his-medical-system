@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface UserMapper {
     public List<User> getUsers(User condition);
+
+    public void updateUser(User condition);
 }

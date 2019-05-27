@@ -26,4 +26,10 @@ public class DeptService {
     public void addDept(Dept dept) throws Exception {
         deptMapper.addDept(dept);
     }
+
+    @Transactional
+    public void delDept(String deptcode) {deptMapper.delDept(deptcode);}
+
+    @Transactional
+    public void updateDept(Dept dept) {deptMapper.updateDept(dept);}
 }

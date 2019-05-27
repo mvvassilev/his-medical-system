@@ -59,6 +59,21 @@
                 </template>
             </el-table-column>
         </el-table>
+        <el-switch v-model="value">
+         </el-switch>
+
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5, 10, 20, 40]"
+
+                :page-size="pagesize"
+                :hide-on-single-page="value"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="depts.length">
+        </el-pagination>
+
     </template>
 
     <!-- Add Department -->
@@ -92,13 +107,16 @@
     var app = new Vue({
         el: '#department',
         data: {
-
-
             deptcode: "",
             deptclass: "",
             deptname: "",
-            deptcat:"",
+            deptcat: "",
             depts: [],
+
+            value: false,
+            currentPage: 1, //初始页
+            pagesize: 10,    //    每页的数据
+
 
             methodType: "",//调用方法，add or update
             formTitle:"",
@@ -115,6 +133,7 @@
         },
         methods: {
             search: function () {
+                this.currentPage = 1;
                 var that = this;
                 axios.post('/management/depts', {
                     deptcode: that.deptcode,
@@ -155,6 +174,27 @@
 
             onSubmitUpdate: function(){
                 console.log("update")
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            delDept: function (index, row) {
+                var that = this;
+                var params = new URLSearchParams();
+                params.append('deptcode', row.deptcode);
+                axios.post('/management/delDept', params)
+                    .then(function (response) {
+                        // console.log(index.data);
+                        /*console.log(that.deptcode);
+                        console.log(response.deptcode);
+                        that.deptcode = row.deptcode;
+                        that.deptcode = response.deptcode;*/
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
             },
 
             showDialogForm: function (method,index,row) {
@@ -179,6 +219,29 @@
                 console.log("index "+index)
                 console.log("row ");
                 console.log(row)
+            updateDepartment: function (index, row) {
+                this.dialogFormVisible = true;
+                this.form = row;
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/updateDept', {
+                    deptcode: that.form.deptcode,
+                    deptclass: that.form.deptclass,
+                    deptname: that.form.deptname,
+                    deptcat: that.form.deptcat
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
             }
         }
     })

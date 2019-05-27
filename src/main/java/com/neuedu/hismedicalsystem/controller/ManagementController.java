@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/management")
 public class ManagementController {
-    
+
     @Autowired
     private UserService userService;
 
@@ -38,12 +38,15 @@ public class ManagementController {
         return userService.getUsers(condition);
     }
 
+    @RequestMapping("/updateUser")
+    public void updateUser(@RequestBody User condition){
+        userService.updateUser(condition);
+    }
+
     @RequestMapping("/depts")
     public List<Dept> getDepts(@RequestBody Dept condition){
         return deptService.getDepts(condition);
     }
-
-
 
     @RequestMapping("/addDept")
     public String addDept(@RequestBody Dept dept) {
@@ -57,10 +60,20 @@ public class ManagementController {
         return "{\"result\":true}";
     }
 
+    @RequestMapping("/updateDept")
+    public void updateDept(@RequestBody Dept condition){
+        deptService.updateDept(condition);
+    }
+
 
     @RequestMapping("/registration")
     public List<Reg> getRegs(@RequestBody Reg condition){
         return regService.getRegs(condition);
+    }
+
+    @RequestMapping("/delDept")
+    public void delDept(String deptcode) {
+        deptService.delDept(deptcode);
     }
 
     @RequestMapping("/settlement")

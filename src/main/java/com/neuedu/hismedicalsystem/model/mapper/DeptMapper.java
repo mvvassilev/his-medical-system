@@ -7,5 +7,9 @@ import java.util.List;
 public interface DeptMapper {
     public List<Dept> getDepts(Dept condition);
 
+    public void delDept(String deptcode);
+
     void addDept(Dept dept);
+
+    void updateDept(Dept dept);
 }
