@@ -16,20 +16,6 @@
 <body>
     <div id="department">
 
-<<<<<<< HEAD
-        <el-row :gutter="20">
-            <el-col :span="16">
-                <input type="text" v-model="deptcode" placeholder="Code" />
-                <input type="text" v-model="deptclass" placeholder="Class" />
-                <input type="text" v-model="deptname" placeholder="Name" />
-                <input type="text" v-model="deptcat" placeholder="Category" />
-                <button type="button" @click="search">search</button>
-            </el-col>
-            <el-col :span="8">
-                <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
-            </el-col>
-        </el-row>
-=======
     <el-row :gutter="20">
         <el-col :span="16">
             <input type="text" v-model="deptcode" placeholder="Code"/>
@@ -42,7 +28,6 @@
             <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
         </el-col>
     </el-row>
->>>>>>> d03c029976507ad5fa7df3432438febb6a2dcc36
 
         <el-pagination :hide-on-single-page="true" layout="prev, pager, next" :total="20">
             <template>
@@ -67,28 +52,6 @@
             </template>
         </el-pagination>
 
-<<<<<<< HEAD
-        <el-dialog title="Department" :visible.sync="dialogFormVisible">
-            <el-form :model="form">
-                <el-form-item label="Code" :label-width="formLabelWidth">
-                    <el-input v-model="form.deptcode" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="Class" :label-width="formLabelWidth">
-                    <el-input v-model="form.deptclass" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="Name" :label-width="formLabelWidth">
-                    <el-input v-model="form.deptname" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="Category" :label-width="formLabelWidth">
-                    <el-input v-model="form.deptcat" autocomplete="off"></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="onSubmit">确 定</el-button>
-            </div>
-        </el-dialog>
-=======
     <template>
         <el-table
                 :data="depts.slice((currentPage-1)*pagesize,currentPage*pagesize)"
@@ -136,7 +99,6 @@
         </el-pagination>
 
     </template>
->>>>>>> d03c029976507ad5fa7df3432438febb6a2dcc36
 
     </div>
 </body>
@@ -184,10 +146,6 @@
                     });
             },
             onSubmit: function () {
-<<<<<<< HEAD
-=======
-
->>>>>>> d03c029976507ad5fa7df3432438febb6a2dcc36
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/addDept', {
@@ -207,36 +165,19 @@
                 params.append('deptcode', row.deptcode);
                 axios.post('/management/delDept', params)
                     .then(function (response) {
-<<<<<<< HEAD
-                        console.log(response.data);
-=======
                         // console.log(index.data);
                         /*console.log(that.deptcode);
                         console.log(response.deptcode);
                         that.deptcode = row.deptcode;
                         that.deptcode = response.deptcode;*/
->>>>>>> d03c029976507ad5fa7df3432438febb6a2dcc36
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
-<<<<<<< HEAD
-                that.form = null;
-            },
-            deleteDepartment: function (index, row) {
-                console.log(row)
-=======
-
->>>>>>> d03c029976507ad5fa7df3432438febb6a2dcc36
             },
             updateDepartment: function (index, row) {
                 this.dialogFormVisible = true;
                 this.form = row;
-<<<<<<< HEAD
-                this.form.data = {
-
-                }
-=======
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/updateDept', {
@@ -257,7 +198,6 @@
             handleCurrentChange: function(currentPage) {
                 this.currentPage = currentPage;
                 console.log(currentPage);
->>>>>>> d03c029976507ad5fa7df3432438febb6a2dcc36
             }
 
         }
