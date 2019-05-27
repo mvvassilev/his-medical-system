@@ -21,4 +21,9 @@
             </if>
         </where>
     </select>
+
+    <insert id="addDept">
+      insert into dept (deptcode,deptname,deptclass,deptcat)
+      values (#{deptcode},#{deptname},#{deptclass},#{deptcat})
+    </insert>
 </mapper>

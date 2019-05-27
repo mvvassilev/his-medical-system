@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface DeptMapper {
     public List<Dept> getDepts(Dept condition);
+
+    void addDept(Dept dept);
 }

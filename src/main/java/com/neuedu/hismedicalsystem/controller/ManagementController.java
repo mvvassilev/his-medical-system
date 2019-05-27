@@ -29,7 +29,7 @@ public class ManagementController {
 
     @Autowired
     private RegService regService;
-    
+
     @Autowired
     private SettlementService settlementService;
 
@@ -42,7 +42,22 @@ public class ManagementController {
     public List<Dept> getDepts(@RequestBody Dept condition){
         return deptService.getDepts(condition);
     }
-    
+
+
+
+    @RequestMapping("/addDept")
+    public String addDept(@RequestBody Dept dept) {
+        System.out.println(dept.getDeptcode());
+        try{
+            deptService.addDept(dept);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+        return "{\"result\":true}";
+    }
+
+
     @RequestMapping("/registration")
     public List<Reg> getRegs(@RequestBody Reg condition){
         return regService.getRegs(condition);
