@@ -16,18 +16,18 @@
 <body>
     <div id="department">
 
-    <el-row :gutter="20">
-        <el-col :span="16">
-            <input type="text" v-model="deptcode" placeholder="Code"/>
-            <input type="text" v-model="deptclass" placeholder="Class"/>
-            <input type="text" v-model="deptname" placeholder="Name"/>
-            <input type="text" v-model="deptcat" placeholder="Category"/>
-            <button type="button" @click="search" @current-change="handleCurrentChange">search</button>
-        </el-col>
-        <el-col :span="8">
-            <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
-        </el-col>
-    </el-row>
+        <el-row :gutter="20">
+            <el-col :span="16">
+                <input type="text" v-model="deptcode" placeholder="Code" />
+                <input type="text" v-model="deptclass" placeholder="Class" />
+                <input type="text" v-model="deptname" placeholder="Name" />
+                <input type="text" v-model="deptcat" placeholder="Category" />
+                <button type="button" @click="search" @current-change="handleCurrentChange">search</button>
+            </el-col>
+            <el-col :span="8">
+                <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
+            </el-col>
+        </el-row>
 
         <el-pagination :hide-on-single-page="true" layout="prev, pager, next" :total="20">
             <template>
@@ -47,58 +47,36 @@
                             <el-button @click="updateDepartment(scope.$index, scope.row)" type="text" size="small">
                                 update</el-button>
                         </template>
-                    </el-table-column>
-                </el-table>
+            </el-table-column>
+            </el-table>
             </template>
         </el-pagination>
 
-    <template>
-        <el-table
-                :data="depts.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-                style="width: 100%">
-            <el-table-column
-                    prop="deptcode"
-                    label="Code"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="deptclass"
-                    label="Class"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="deptname"
-                    label="Name"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="deptcat"
-                    label="Category">
-            </el-table-column>
-            <el-table-column fixed="right" label="Operations" width="120">
-                <template slot-scope="scope">
-                    <el-button @click="delDept(scope.$index, scope.row)" type="text" size="small">delete</el-button>
-                    <el-button @click="updateDepartment(scope.$index, scope.row)" type="text" size="small">update
-                    </el-button>
-                </template>
-            </el-table-column>
+        <template>
+            <el-table :data="depts.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+                <el-table-column prop="deptcode" label="Code" width="180">
+                </el-table-column>
+                <el-table-column prop="deptclass" label="Class" width="180">
+                </el-table-column>
+                <el-table-column prop="deptname" label="Name" width="180">
+                </el-table-column>
+                <el-table-column prop="deptcat" label="Category">
+                </el-table-column>
+                <el-table-column fixed="right" label="Operations" width="120">
+                    <template slot-scope="scope">
+                        <el-button @click="delDept(scope.$index, scope.row)" type="text" size="small">delete</el-button>
+                        <el-button @click="updateDepartment(scope.$index, scope.row)" type="text" size="small">update
+                        </el-button>
+                    </template>
+        </el-table-column>
         </el-table>
         <el-switch v-model="value">
-         </el-switch>
+        </el-switch>
 
-        <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[5, 10, 20, 40]"
-
-                :page-size="pagesize"
-                :hide-on-single-page="value"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="depts.length">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10, 20, 40]" :page-size="pagesize" :hide-on-single-page="value" layout="total, sizes, prev, pager, next, jumper" :total="depts.length">
         </el-pagination>
 
-    </template>
+        </template>
 
     </div>
 </body>
@@ -115,7 +93,7 @@
 
             value: false,
             currentPage: 1, //初始页
-            pagesize: 10,    //    每页的数据
+            pagesize: 10, //    每页的数据
 
 
             dialogFormVisible: false,
@@ -128,65 +106,65 @@
             formLabelWidth: '120px'
         },
         methods: {
-            search: function () {
+            search: function() {
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/depts', {
-                    deptcode: that.deptcode,
-                    deptclass: that.deptclass,
-                    deptname: that.deptname,
-                    deptcat: that.deptcat,
-                })
-                    .then(function (response) {
+                        deptcode: that.deptcode,
+                        deptclass: that.deptclass,
+                        deptname: that.deptname,
+                        deptcat: that.deptcat,
+                    })
+                    .then(function(response) {
                         console.log(response.data);
                         that.depts = response.data;
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
-            onSubmit: function () {
+            onSubmit: function() {
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/addDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat,
-                })
-                    .catch(function (error) {
+                        deptcode: that.form.deptcode,
+                        deptclass: that.form.deptclass,
+                        deptname: that.form.deptname,
+                        deptcat: that.form.deptcat,
+                    })
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
 
-            delDept: function (index, row) {
+            delDept: function(index, row) {
                 var that = this;
                 var params = new URLSearchParams();
                 params.append('deptcode', row.deptcode);
                 axios.post('/management/delDept', params)
-                    .then(function (response) {
+                    .then(function(response) {
                         // console.log(index.data);
                         /*console.log(that.deptcode);
                         console.log(response.deptcode);
                         that.deptcode = row.deptcode;
                         that.deptcode = response.deptcode;*/
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
-            updateDepartment: function (index, row) {
+            updateDepartment: function(index, row) {
                 this.dialogFormVisible = true;
                 this.form = row;
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/updateDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat
-                })
-                    .catch(function (error) {
+                        deptcode: that.form.deptcode,
+                        deptclass: that.form.deptclass,
+                        deptname: that.form.deptname,
+                        deptcat: that.form.deptcat
+                    })
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
