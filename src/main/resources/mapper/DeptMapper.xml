@@ -31,7 +31,7 @@
         delete from dept where deptcode=#{deptcode}
     </delete>
 
-    <update id="updateUser">
+    <update id="updateDept">
         update dept set deptname = #{deptname},deptclass = #{deptclass},deptcat = #{deptcat}
         where deptcode = #{deptcode}
     </update>
