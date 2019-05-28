@@ -26,7 +26,7 @@
             <button type="button" @click="search">search</button>
         </el-col>
         <el-col :span="8">
-            <el-button type="text" @click="showDialogForm('Add')">打开嵌套表单的 Dialog</el-button>
+            <el-button type="text" @click="showDialogForm('Add')">Add New Entry</el-button>
         </el-col>
     </el-row>
 
@@ -65,7 +65,7 @@
 
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
-                    <el-button @click="delNonMedicItem(scope.$index, scope.row)" type="text" size="small">delete
+                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete
                     </el-button>
                     <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">
                         update
@@ -93,7 +93,7 @@
 
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-            <el-form-item label="Code" :label-width="formLabelWidth">
+            <el-form-item v-if="methodType=='Add'" label="Code" :label-width="formLabelWidth">
                 <el-input v-model="form.itemcode" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Feecode" :label-width="formLabelWidth">
@@ -118,6 +118,19 @@
         </div>
     </el-dialog>
 
+    <!--    Delete Dialogue -->
+    <el-dialog
+            title="Confirm Delete"
+            :visible.sync="deleteDialogVisible"
+            width="30%"
+    >
+        <span>Are you sure you want to delete this?</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteDialogVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="delNonMedicItem">Confirm</el-button>
+        </span>
+    </el-dialog>
+
 </div>
 </body>
 
@@ -138,6 +151,9 @@
             currentPage: 1, //初始页
             pagesize: 10,    //    每页的数据
 
+            deleteDialogVisible: false,//控制弹出删除窗口
+            deletingIndex: -1,
+            deletingObject:{},
 
             methodType: "",//add or update
             formTitle: "",
@@ -176,11 +192,34 @@
                     });
             },
 
+            refresh: function () {
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/management/nonmedics', {
+                    itemcode: "",
+                    feecode: "",
+                    deptcode: "",
+                    nmedname: "",
+                    size: "",
+                    price: "",
+                })
+                    .then(function (response) {
+                        console.log(that.form.itemcode);
+                        console.log(response.data);
+                        that.nonmedics = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
             onSubmit: function () {
                 if (this.methodType == "Add")
                     this.onSubmitAdd();
                 if (this.methodType == "Update")
                     this.onSubmitUpdate();
+                this.dialogFormVisible = false;
+                this.refresh();
             },
 
             onSubmitAdd: function () {
@@ -219,10 +258,15 @@
                     });
             },
 
-            delNonMedicItem: function (index, row) {
-                var that = this;
+            showDeleteDialogForm: function(index, row){
+                this.deleteDialogVisible = true;
+                this.deletingIndex = index;
+                this.deletingObject = row;
+            },
+
+            delNonMedicItem: function () {
                 var params = new URLSearchParams();
-                params.append('itemcode', row.itemcode);
+                params.append('itemcode', this.deletingObject.itemcode);
                 axios.post('/management/delNonMedic', params)
                     .then(function (response) {
                         // console.log(index.data);
@@ -234,6 +278,8 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+                this.deleteDialogVisible = false;
+                this.refresh();
 
             },
 
@@ -248,19 +294,22 @@
                         price: "",
                     }
                 }
-                if (method == "Update")
-                    this.form = row;
-                console.log(this.form);
+                if (method == "Update") {
+                    this.form = {
+                        itemcode: row.itemcode,
+                        feecode: row.feecode,
+                        deptcode: row.deptcode,
+                        nmedname: row.nmedname,
+                        size: row.size,
+                        price: row.price,
+                    }
+                }
 
                 this.dialogFormVisible = true;
                 this.methodType = method;
                 this.formTitle = method + " Non-Medical Item";
                 this.updatingIndex = index;
                 this.updatingObject = row;
-                console.log("Method using " + this.methodType);
-                console.log("index " + index)
-                console.log("row ");
-                console.log(row)
             },
 
 
