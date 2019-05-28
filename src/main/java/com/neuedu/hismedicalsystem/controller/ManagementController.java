@@ -14,28 +14,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/management")
 public class ManagementController {
-
+    /**
+     * user
+     */
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private DeptService deptService;
-
-    @Autowired
-    private DisService disService;
-
-    @Autowired
-    private NonMedicService nonMedicService;
-
-    @Autowired
-    private ConstService constService;
-
-    @Autowired
-    private BillCategoryService billCategoryService;
-
     @RequestMapping("/users")
-    public List<User> getUsers(){
-        return userService.getUsers();
+    public List<User> getUsers(@RequestBody User condition){
+        return userService.getUsers(condition);
     }
 
     @RequestMapping("/updateUser")
@@ -43,14 +30,15 @@ public class ManagementController {
         userService.updateUser(condition);
     }
 
+    /**
+     * dept
+     */
+    @Autowired
+    private DeptService deptService;
+
     @RequestMapping("/depts")
     public List<Dept> getDepts(@RequestBody Dept condition){
         return deptService.getDepts(condition);
-    }
-
-    @RequestMapping("/dis")
-    public List<Disease> getDis(@RequestBody Disease condition) {
-        return disService.getDis(condition);
     }
 
     @RequestMapping("/addDept")
@@ -75,37 +63,19 @@ public class ManagementController {
         deptService.delDept(deptcode);
     }
 
-    @RequestMapping("/nonmedics")
-    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition) {
-        return nonMedicService.getNonMedicItems(condition);
-    }
+    /**
+     * disease
+     */
+    @Autowired
+    private DisService disService;
 
-    @RequestMapping("/addNonMedic")
-    public String addDept(@RequestBody NonMedic condition) {
-
-        try {
-            nonMedicService.addNonMedicItem(condition);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "{\"result\":false}";
-        }
-        return "{\"result\":true}";
-    }
-
-    @RequestMapping("/updateNonMedic")
-    public void updateNonMedic(@RequestBody NonMedic condition) {
-        nonMedicService.updateNonMedicItem(condition);
-    }
-
-    @RequestMapping("/delNonMedic")
-    public void delNonMedic(String itemcode) {
-        nonMedicService.delNonMedicItem(itemcode);
-    }
+    @RequestMapping("/dis")
+    public List<Disease> getDis(@RequestBody Disease condition){ return disService.getDis(condition);}
 
     @RequestMapping("/addDis")
     public String addDis(@RequestBody Disease disease) {
         System.out.println(disease.getIcdcode());
-        try {
+        try{
             disService.addDis(disease);
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,36 +90,40 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateDis")
-    public void updateDis(@RequestBody Disease condition) {
+    public void updateDis(@RequestBody Disease condition){
         disService.updateDis(condition);
     }
 
-    @RequestMapping("/bill")
-    public List<BillCategory> getBillCategories(@RequestBody BillCategory condition){
-        return billCategoryService.getBillCategories(condition);
+    /**
+     * non-medical
+     */
+    @Autowired
+    private NonMedicService nonMedicService;
+
+    @RequestMapping("/nonmedics")
+    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition){
+        return nonMedicService.getNonMedicItems(condition);
     }
 
-    @RequestMapping("/consts")
-    public List<Constant> getConsts(@RequestBody Constant condition){
-        return constService.getConsts(condition);
-    }
+    @RequestMapping("/addNonMedic")
+    public String addDept(@RequestBody NonMedic condition) {
 
-    @RequestMapping("/updateConst")
-    public void updateConst(@RequestBody Constant condition){
-        constService.updateConst(condition);
-    }
-
-    @RequestMapping("/addConst")
-    public void addConst(@RequestBody Constant condition){
-        try {
-            constService.addConst(condition);
+        try{
+            nonMedicService.addNonMedicItem(condition);
         } catch (Exception e) {
             e.printStackTrace();
+            return "{\"result\":false}";
         }
+        return "{\"result\":true}";
     }
 
-    @RequestMapping("/delConst")
-    public void delConst(@RequestBody int constid){
-        constService.delConst(constid);
+    @RequestMapping("/updateNonMedic")
+    public void updateNonMedic(@RequestBody NonMedic condition){
+        nonMedicService.updateNonMedicItem(condition);
+    }
+
+    @RequestMapping("/delNonMedic")
+    public void delNonMedic(String itemcode) {
+        nonMedicService.delNonMedicItem(itemcode);
     }
 }

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+<div id="shift">
+    <el-row :gutter="20">
+        <el-col :span="12">
+            <el-date-picker
+                    v-model="value"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    range-separator="To"
+                    start-placeholder="Start Date"
+                    end-placeholder="End Date"
+                    :picker-options="pickerOptions">
+            </el-date-picker>
+        </el-col>
+        <el-col :span="4">
+            <el-button icon="el-icon-search" type="primary" @click="">search</el-button>
+        </el-col>
+        <el-col :span="4">
+            <el-button type="primary">Add New Rules</el-button>
+        </el-col>
+        <el-col :span="4">
+            <el-button type="primary" @click="showRuleDialogForm">Query Rules</el-button>
+        </el-col>
+    </el-row>
+
+    <template>
+        <el-table
+                :data="shift.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                style="width: 100%">
+            <el-table-column
+                    prop="date"
+                    label="Date"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="uRid"
+                    label="Department"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="uRid"
+                    label="Doctor"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="aorp"
+                    label="AM or PM"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="itemcode"
+                    label="Register level"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="ration"
+                    label="Quota">
+            </el-table-column>
+
+        </el-table>
+            <el-switch v-model="value">
+        </el-switch>
+
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5, 10, 20, 40]"
+
+                :page-size="pagesize"
+                :hide-on-single-page="value"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="disease.length">
+        </el-pagination>
+
+    </template>
+</div>
+
+<div id="rule">
+    <el-dialog
+            title="Shift Arrangement"
+            :visible.sync="dialogVisible"
+            width="70%">
+        <el-row :gutter="20">
+            <el-col :span="18">
+
+                <el-input v-model="" style="width:300px" placeholder="DeptCode"></el-input>
+                <el-button type="primary" @click="">search</el-button>
+            </el-col>
+        </el-row>
+        <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+      </span>
+    </el-dialog>
+</div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#shift',
+        data: {
+            pickerOptions: {
+                shortcuts: [{
+                    text: 'Latest week',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: 'Latest month',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: 'Latest three months',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }]
+            },
+            value: ''
+
+        },
+        methods: {
+
+            showRuleDialogForm: function () {
+
+                dialog.dialogVisible = true;
+
+            },
+        }
+    })
+
+    var dialog = new Vue({
+        el: '#rule',
+        data: {
+
+            dialogVisible: false,
+
+        }
+    })
+</script>
+
+</html>

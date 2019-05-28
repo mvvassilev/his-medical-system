@@ -21,7 +21,7 @@
             <input type="text" v-model="discode" placeholder="Disease Code"/>
             <input type="text" v-model="disname" placeholder="Name"/>
             <input type="text" v-model="discat" placeholder="Category"/>
-            <button type="button" @click="search">search</button>
+            <el-button icon="el-icon-search" @click="search"></el-button>
         </el-col>
         <el-col :span="8">
             <el-button type="text" @click="showDialogForm('Add')">Add New Entry</el-button>
