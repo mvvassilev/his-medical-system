@@ -1,13 +1,7 @@
 package com.neuedu.hismedicalsystem.controller;
 
-import com.neuedu.hismedicalsystem.model.po.Dept;
-import com.neuedu.hismedicalsystem.model.po.User;
-import com.neuedu.hismedicalsystem.model.po.Reg;
-import com.neuedu.hismedicalsystem.model.po.Settlement;
-import com.neuedu.hismedicalsystem.model.service.DeptService;
-import com.neuedu.hismedicalsystem.model.service.UserService;
-import com.neuedu.hismedicalsystem.model.service.RegService;
-import com.neuedu.hismedicalsystem.model.service.SettlementService;
+import com.neuedu.hismedicalsystem.model.po.*;
+import com.neuedu.hismedicalsystem.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +26,9 @@ public class ManagementController {
 
     @Autowired
     private SettlementService settlementService;
+
+    @Autowired
+    private NonMedicService nonMedicService;
 
     @RequestMapping("/users")
     public List<User> getUsers(@RequestBody User condition){
@@ -79,5 +76,32 @@ public class ManagementController {
     @RequestMapping("/settlement")
     public List<Settlement> getSettlements(@RequestBody Settlement condition){
         return settlementService.getSettlements(condition);
+    }
+
+    @RequestMapping("/nonmedics")
+    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition){
+        return nonMedicService.getNonMedicItems(condition);
+    }
+
+    @RequestMapping("/addNonMedic")
+    public String addDept(@RequestBody NonMedic condition) {
+
+        try{
+            nonMedicService.addNonMedicItem(condition);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+        return "{\"result\":true}";
+    }
+
+    @RequestMapping("/updateNonMedic")
+    public void updateNonMedic(@RequestBody NonMedic condition){
+        nonMedicService.updateNonMedicItem(condition);
+    }
+
+    @RequestMapping("/delNonMedic")
+    public void delNonMedic(String itemcode) {
+        nonMedicService.delNonMedicItem(itemcode);
     }
 }
