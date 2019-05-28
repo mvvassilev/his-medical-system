@@ -31,7 +31,7 @@
 
     <template>
         <el-table
-                :data="depts"
+                :data="depts.slice((currentPage-1)*pagesize,currentPage*pagesize)"
                 style="width: 100%">
             <el-table-column
                     prop="deptcode"
@@ -54,7 +54,7 @@
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
-                    <el-button @click="deleteDepartment(scope.$index, scope.row)" type="text" size="small">delete</el-button>
+                    <el-button @click="delDept(scope.$index, scope.row)" type="text" size="small">delete</el-button>
                     <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update</el-button>
                 </template>
             </el-table-column>
@@ -76,7 +76,7 @@
 
     </template>
 
-    <!-- Add Department -->
+
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="Code" :label-width="formLabelWidth">
@@ -151,7 +151,10 @@
             },
 
             onSubmit: function(){
-
+                if(this.methodType=="Add")
+                    this.onSubmitAdd();
+                if(this.methodType=="Update")
+                    this.onSubmitUpdate();
             },
 
             onSubmitAdd: function(){
@@ -172,8 +175,15 @@
                 });
             },
 
-            onSubmitUpdate: function(){
-                console.log("update")
+            onSubmitUpdate: function () {
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/updateDept', {
+                    deptcode: that.form.deptcode,
+                    deptclass: that.form.deptclass,
+                    deptname: that.form.deptname,
+                    deptcat: that.form.deptcat
+                })
                     .catch(function (error) {
                         console.log(error);
                     });
@@ -198,7 +208,7 @@
             },
 
             showDialogForm: function (method,index,row) {
-                if(method=="Add"){
+                if (method == "Add") {
                     this.form = {
                         deptcode: "",
                         deptclass: "",
@@ -206,34 +216,22 @@
                         deptcat: "",
                     }
                 }
-                if(method=="Update")
+                if (method == "Update")
                     this.form = row;
                 console.log(this.form);
 
                 this.dialogFormVisible = true;
                 this.methodType = method;
-                this.formTitle = method+" Department";
+                this.formTitle = method + " Department";
                 this.updatingIndex = index;
                 this.updatingObject = row;
                 console.log("Method using " + this.methodType);
-                console.log("index "+index)
+                console.log("index " + index)
                 console.log("row ");
                 console.log(row)
-            updateDepartment: function (index, row) {
-                this.dialogFormVisible = true;
-                this.form = row;
-                var that = this;
-                console.log(that.form);
-                axios.post('/management/updateDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
             },
+
+
 
             handleSizeChange: function(pagesize) {
                 this.pagesize = pagesize;
