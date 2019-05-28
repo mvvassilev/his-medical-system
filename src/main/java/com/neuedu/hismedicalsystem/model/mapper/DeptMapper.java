@@ -9,7 +9,7 @@ public interface DeptMapper {
 
     public void delDept(String deptcode);
 
-    void addDept(Dept dept);
+    public void addDept(Dept dept);
 
-    void updateDept(Dept dept);
+    public void updateDept(Dept dept);
 }

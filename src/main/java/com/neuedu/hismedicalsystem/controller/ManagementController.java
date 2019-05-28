@@ -1,13 +1,15 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.neuedu.hismedicalsystem.model.po.BillCategory;
 import com.neuedu.hismedicalsystem.model.po.Dept;
 import com.neuedu.hismedicalsystem.model.po.User;
 import com.neuedu.hismedicalsystem.model.po.Reg;
-import com.neuedu.hismedicalsystem.model.po.Settlement;
+import com.neuedu.hismedicalsystem.model.po.Constant;
 import com.neuedu.hismedicalsystem.model.service.DeptService;
 import com.neuedu.hismedicalsystem.model.service.UserService;
 import com.neuedu.hismedicalsystem.model.service.RegService;
-import com.neuedu.hismedicalsystem.model.service.SettlementService;
+import com.neuedu.hismedicalsystem.model.service.BillCategoryService;
+import com.neuedu.hismedicalsystem.model.service.ConstService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +33,10 @@ public class ManagementController {
     private RegService regService;
 
     @Autowired
-    private SettlementService settlementService;
+    private ConstService constService;
+
+    @Autowired
+    private BillCategoryService billCategoryService;
 
     @RequestMapping("/users")
     public List<User> getUsers(@RequestBody User condition){
@@ -76,8 +81,32 @@ public class ManagementController {
         deptService.delDept(deptcode);
     }
 
-    @RequestMapping("/settlement")
-    public List<Settlement> getSettlements(@RequestBody Settlement condition){
-        return settlementService.getSettlements(condition);
+    @RequestMapping("/bill")
+    public List<BillCategory> getBillCategories(@RequestBody BillCategory condition){
+        return billCategoryService.getBillCategories(condition);
+    }
+
+    @RequestMapping("/consts")
+    public List<Constant> getConsts(@RequestBody Constant condition){
+        return constService.getConsts(condition);
+    }
+
+    @RequestMapping("/updateConst")
+    public void updateConst(@RequestBody Constant condition){
+        constService.updateConst(condition);
+    }
+
+    @RequestMapping("/addConst")
+    public void addConst(@RequestBody Constant condition){
+        try {
+            constService.addConst(condition);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping("/delConst")
+    public void delConst(@RequestBody int constid){
+        constService.delConst(constid);
     }
 }
