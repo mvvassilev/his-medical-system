@@ -1,15 +1,7 @@
 package com.neuedu.hismedicalsystem.controller;
 
-import com.neuedu.hismedicalsystem.model.po.BillCategory;
-import com.neuedu.hismedicalsystem.model.po.Dept;
-import com.neuedu.hismedicalsystem.model.po.User;
-import com.neuedu.hismedicalsystem.model.po.Reg;
-import com.neuedu.hismedicalsystem.model.po.Constant;
-import com.neuedu.hismedicalsystem.model.service.DeptService;
-import com.neuedu.hismedicalsystem.model.service.UserService;
-import com.neuedu.hismedicalsystem.model.service.RegService;
-import com.neuedu.hismedicalsystem.model.service.BillCategoryService;
-import com.neuedu.hismedicalsystem.model.service.ConstService;
+import com.neuedu.hismedicalsystem.model.po.*;
+import com.neuedu.hismedicalsystem.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +22,10 @@ public class ManagementController {
     private DeptService deptService;
 
     @Autowired
-    private RegService regService;
+    private DisService disService;
+
+    @Autowired
+    private NonMedicService nonMedicService;
 
     @Autowired
     private ConstService constService;
@@ -53,6 +48,11 @@ public class ManagementController {
         return deptService.getDepts(condition);
     }
 
+    @RequestMapping("/dis")
+    public List<Disease> getDis(@RequestBody Disease condition) {
+        return disService.getDis(condition);
+    }
+
     @RequestMapping("/addDept")
     public String addDept(@RequestBody Dept dept) {
         System.out.println(dept.getDeptcode());
@@ -70,15 +70,58 @@ public class ManagementController {
         deptService.updateDept(condition);
     }
 
-
-    @RequestMapping("/registration")
-    public List<Reg> getRegs(@RequestBody Reg condition){
-        return regService.getRegs(condition);
-    }
-
     @RequestMapping("/delDept")
     public void delDept(String deptcode) {
         deptService.delDept(deptcode);
+    }
+
+    @RequestMapping("/nonmedics")
+    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition) {
+        return nonMedicService.getNonMedicItems(condition);
+    }
+
+    @RequestMapping("/addNonMedic")
+    public String addDept(@RequestBody NonMedic condition) {
+
+        try {
+            nonMedicService.addNonMedicItem(condition);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+        return "{\"result\":true}";
+    }
+
+    @RequestMapping("/updateNonMedic")
+    public void updateNonMedic(@RequestBody NonMedic condition) {
+        nonMedicService.updateNonMedicItem(condition);
+    }
+
+    @RequestMapping("/delNonMedic")
+    public void delNonMedic(String itemcode) {
+        nonMedicService.delNonMedicItem(itemcode);
+    }
+
+    @RequestMapping("/addDis")
+    public String addDis(@RequestBody Disease disease) {
+        System.out.println(disease.getIcdcode());
+        try {
+            disService.addDis(disease);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+        return "{\"result\":true}";
+    }
+
+    @RequestMapping("/delDis")
+    public void delDis(String icdcode) {
+        disService.delDis(icdcode);
+    }
+
+    @RequestMapping("/updateDis")
+    public void updateDis(@RequestBody Disease condition) {
+        disService.updateDis(condition);
     }
 
     @RequestMapping("/bill")
