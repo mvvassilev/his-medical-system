@@ -22,13 +22,7 @@ public class ManagementController {
     private DeptService deptService;
 
     @Autowired
-    private RegService regService;
-
-    @Autowired
     private DisService disService;
-
-    @Autowired
-    private SettlementService settlementService;
 
     @Autowired
     private NonMedicService nonMedicService;
@@ -68,22 +62,10 @@ public class ManagementController {
         deptService.updateDept(condition);
     }
 
-
-    @RequestMapping("/registration")
-    public List<Reg> getRegs(@RequestBody Reg condition){
-        return regService.getRegs(condition);
-    }
-
     @RequestMapping("/delDept")
     public void delDept(String deptcode) {
         deptService.delDept(deptcode);
     }
-
-    @RequestMapping("/settlement")
-    public List<Settlement> getSettlements(@RequestBody Settlement condition){
-        return settlementService.getSettlements(condition);
-    }
-
 
     @RequestMapping("/nonmedics")
     public List<NonMedic> getnonmedics(@RequestBody NonMedic condition){
