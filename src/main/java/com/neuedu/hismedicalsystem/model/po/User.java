@@ -7,72 +7,84 @@ public class User {
     private String username;
     private String pwd;
     private String realname;
-    private List<String> deptcodes;
     private String usercat;
     private String position;
     private boolean shiftOrNot;
+    private List<Dept> depts;
+    private String strDeptnames = "";
 
-    public void setUserId(int userid){
-        this.userid = userid;
+    public String getStrDeptnames() {
+        return strDeptnames;
     }
 
-    public int getUserId(){
+    public void setStrDeptnames(String strDeptnames) {
+        this.strDeptnames = strDeptnames;
+    }
+
+    public int getUserid() {
         return userid;
     }
 
-    public void setUsername(String username){
-        this.username = username;
+    public void setUserid(int userid) {
+        this.userid = userid;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
 
-    public void setPwd(String pwd){
-        this.pwd = pwd;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getPwd(){
+    public String getPwd() {
         return pwd;
     }
 
-    public void setRealname(String realname){
-        this.realname = realname;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
-    public String getRealname(){
+    public String getRealname() {
         return realname;
     }
 
-    public void setUsercat(String usercat){
-        this.usercat = usercat;
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 
-    public String getUsercat(){
+    public String getUsercat() {
         return usercat;
     }
 
-    public void setPosition(String position){
-        this.position = position;
+    public void setUsercat(String usercat) {
+        this.usercat = usercat;
     }
 
-    public String getPosition(){
+    public String getPosition() {
         return position;
     }
 
-    public void setShiftOrNot(boolean shiftOrNot){
-        this.shiftOrNot = shiftOrNot;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
-    public boolean getShiftOrNot(){
+    public boolean isShiftOrNot() {
         return shiftOrNot;
     }
 
-    public List<String> getDeptcodes() {
-        return deptcodes;
+    public void setShiftOrNot(boolean shiftOrNot) {
+        this.shiftOrNot = shiftOrNot;
     }
 
-    public void setDeptcodes(List<String> deptcodes) {
-        this.deptcodes = deptcodes;
+    public List<Dept> getDepts() {
+        return depts;
+    }
+
+    public void setDepts(List<Dept> depts) {
+        for(Dept d : depts){
+            strDeptnames = strDeptnames + " " + d.getDeptname();
+        }
+        this.depts = depts;
     }
 }

@@ -34,8 +34,8 @@ public class ManagementController {
     private NonMedicService nonMedicService;
 
     @RequestMapping("/users")
-    public List<User> getUsers(@RequestBody User condition){
-        return userService.getUsers(condition);
+    public List<User> getUsers(){
+        return userService.getUsers();
     }
 
     @RequestMapping("/updateUser")

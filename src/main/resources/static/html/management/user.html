@@ -13,92 +13,192 @@
 </head>
 
 <body>
-<div id="management">
-    <input type="text" v-model="userid" placeholder="ID"/>
-    <input type="text" v-model="username" placeholder="User"/>
-    <input type="text" v-model="pwd" placeholder="Password"/>
-    <input type="text" v-model="realname" placeholder="Name"/>
-    <input type="text" v-model="deptcode" placeholder="Department code"/>
-    <input type="text" v-model="usercat" placeholder="Category"/>
-    <input type="text" v-model="position" placeholder="Position"/>
-    <input type="text" v-model="shiftOrNot" placeholder="Shift or not"/>
-    <button type="button" @click="search">search</button>
-
+<div id="user">
+    <el-row :gutter="20">
+        <el-col :span="16">
+            <input type="text" v-model="userid" placeholder="ID"/>
+            <input type="text" v-model="username" placeholder="User"/>
+            <input type="text" v-model="pwd" placeholder="Password"/>
+            <input type="text" v-model="realname" placeholder="Name"/>
+            <input type="text" v-model="usercat" placeholder="Category"/>
+            <input type="text" v-model="position" placeholder="Position"/>
+            <input type="text" v-model="shiftOrNot" placeholder="Shift or not"/>
+<!--            <input type="text" v-model="department" placeholder="Department"/>-->
+            <button type="button" @click="search">search</button>
+        </el-col>
+        <el-col :span="8">
+            <el-button type="text" @click="showDialogForm('Add')">Add New Entry</el-button>
+        </el-col>
+    </el-row>
 
     <template>
         <el-table
-                :data="users"
+                :data="users.slice((currentPage-1)*pagesize,currentPage*pagesize)"
                 style="width: 100%">
             <el-table-column
                     prop="userid"
                     label="ID"
-                    width="180">
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="username"
                     label="User"
-                    width="180">
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="pwd"
                     label="Password"
-                    width="180">
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="realname"
-                    label="Name">
-            </el-table-column>
-            <el-table-column
-                    prop="deptcode"
-                    label="Department Code"
-                    width="180">
+                    label="Name"
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="usercat"
                     label="Category"
-                    width="180">
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="position"
                     label="Position"
-                    width="180">
+                    width="150">
             </el-table-column>
             <el-table-column
                     prop="shiftOrNot"
-                    label="Shift or Not">
+                    label="Shift or Not"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="strDeptnames"
+                    label="Departments"
+                    width="200">
+            </el-table-column>
+            <el-table-column fixed="right" label="Operations" width="120">
+                <template slot-scope="scope">
+                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete</el-button>
+                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update</el-button>
+                </template>
             </el-table-column>
         </el-table>
+
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5, 10, 20, 40]"
+
+                :page-size="pagesize"
+                :hide-on-single-page="value"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="users.length">
+        </el-pagination>
     </template>
+
+    <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item v-if="methodType=='Add'" label="userid" :label-width="formLabelWidth">
+                <el-input v-model="form.userid" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="User Name" :label-width="formLabelWidth">
+                <el-input v-model="form.username" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Password" :label-width="formLabelWidth">
+                <el-input v-model="form.pwd" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Real Name" :label-width="formLabelWidth">
+                <el-input v-model="form.realname" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Category" :label-width="formLabelWidth">
+                <el-input v-model="form.usercat" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Position" :label-width="formLabelWidth">
+                <el-input v-model="form.position" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Shift Or Not" :label-width="formLabelWidth">
+                <el-input v-model="form.shiftOrNot" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Department" :label-width="formLabelWidth">
+                <el-input v-model="form.strDeptnames" autocomplete="off"></el-input>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="onSubmit">{{methodType}}</el-button>
+        </div>
+    </el-dialog>
+
+    <!--    Delete Dialogue -->
+    <el-dialog
+            title="Confirm Delete"
+            :visible.sync="deleteDialogVisible"
+            width="30%"
+    >
+        <span>Are you sure you want to delete this?</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteDialogVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="onSubmitDelete">Confirm</el-button>
+        </span>
+    </el-dialog>
 </div>
 </body>
 
 
 <script>
     var app = new Vue({
-        el: '#management',
+        el: '#user',
         data: {
+            //searching attributes
             userid: "",
             username: "",
             pwd: "",
             realname: "",
-            deptcode: "",
             usercat: "",
             position: "",
             shiftOrNot: "",
-            users: []
+            users: [],
+
+            //Form Dialog
+            methodType: "",//调用方法，Add or Update
+            formTitle:"",
+            dialogFormVisible: false,
+            //Delete
+            deleteDialogVisible: false,//控制弹出删除窗口
+            deletingIndex: -1,
+            deletingObject:{},
+            //Update
+            updatingIndex:-1,
+            updatingObject:{},
+
+            form: {
+                userid: "",
+                username: "",
+                pwd: "",
+                realname: "",
+                usercat: "",
+                position: "",
+                shiftOrNot: "",
+            },
+            formLabelWidth: '120px',
+
+            //splitpages
+            value: false,
+            currentPage: 1, //初始页
+            pagesize: 10,    //    每页的数据
         },
         methods: {
             search: function () {
                 var that = this;
                 axios.post('/management/users', {
-                    userid: that.userid,
-                    username: that.username,
-                    pwd: that.pwd,
-                    realname: that.realname,
-                    deptcode: that.deptcode,
-                    usercat: that.usercat,
-                    position: that.position,
-                    shiftOrNot: that.shiftOrNot
+                    // userid: that.userid,
+                    // username: that.username,
+                    // pwd: that.pwd,
+                    // realname: that.realname,
+                    // usercat: that.usercat,
+                    // position: that.position,
+                    // shiftOrNot: that.shiftOrNot
                 })
                     .then(function (response) {
                         console.log(response.data);
@@ -108,25 +208,144 @@
                         console.log(error);
                     });
             },
-            update: function () {
+            // update: function () {
+            //     var that = this;
+            //     axios.post('/management/updateUsers', {
+            //         userid: that.userid,
+            //         username: that.username,
+            //         pwd: that.pwd,
+            //         realname: that.realname,
+            //         deptcode: that.deptcode,
+            //         usercat: that.usercat,
+            //         position: that.position,
+            //         shiftOrNot: that.shiftOrNot
+            //     })
+            //         .then(function (response) {
+            //             console.log(response.data);
+            //             that.users = response.data;
+            //         })
+            //         .catch(function (error) {
+            //             console.log(error);
+            //         });
+            // }
+            refresh:function(){
+                this.currentPage = 1;
                 var that = this;
-                axios.post('/management/updateUsers', {
-                    userid: that.userid,
-                    username: that.username,
-                    pwd: that.pwd,
-                    realname: that.realname,
-                    deptcode: that.deptcode,
-                    usercat: that.usercat,
-                    position: that.position,
-                    shiftOrNot: that.shiftOrNot
+                axios.post('/management/depts', {
+                    deptcode: "",
+                    deptclass: "",
+                    deptname: "",
+                    deptcat: "",
                 })
                     .then(function (response) {
                         console.log(response.data);
-                        that.users = response.data;
+                        that.depts = response.data;
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+
+            /*---------------Update Or Add-----------------*/
+            showDialogForm: function (method,index,row) {
+                if (method == "Add") {
+                    this.form = {
+                        deptcode: "",
+                        deptclass: "",
+                        deptname: "",
+                        deptcat: "",
+                    }
+                }
+                if (method == "Update"){
+                    this.form = {
+                        deptcode: row.deptcode,
+                        deptclass: row.deptclass,
+                        deptname: row.deptname,
+                        deptcat: row.deptcat,
+                    }
+                }
+                // this.form = row;
+
+                this.dialogFormVisible = true;
+                this.methodType = method;
+                this.formTitle = method + " Department";
+                this.updatingIndex = index;
+                this.updatingObject = row;
+            },
+
+            onSubmit: function(){
+                if(this.methodType=="Add")
+                    this.onSubmitAdd();
+                if(this.methodType=="Update")
+                    this.onSubmitUpdate();
+                this.dialogFormVisible = false;
+                this.refresh();
+            },
+
+            onSubmitAdd: function(){
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/addDept', {
+                    deptcode: that.form.deptcode,
+                    deptclass: that.form.deptclass,
+                    deptname: that.form.deptname,
+                    deptcat: that.form.deptcat,
+                })
+                    .then(function (response) {
+                        console.log(response.data);
+                        // that.depts=response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            onSubmitUpdate: function () {
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/updateDept', {
+                    deptcode: that.form.deptcode,
+                    deptclass: that.form.deptclass,
+                    deptname: that.form.deptname,
+                    deptcat: that.form.deptcat
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            /*---------------Delete----------------------*/
+            showDeleteDialogForm: function(index, row){
+                this.deleteDialogVisible = true;
+                this.deletingIndex = index;
+                this.deletingObject = row;
+            },
+
+            onSubmitDelete: function(){
+                var params = new URLSearchParams();
+                params.append('deptcode', this.deletingObject.deptcode);
+                axios.post('/management/delDept', params)
+                    .then(function (response) {
+                        // console.log(index.data);
+                        /*console.log(that.deptcode);
+                        console.log(response.deptcode);
+                        that.deptcode = row.deptcode;
+                        that.deptcode = response.deptcode;*/
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                this.deleteDialogVisible = false;
+                this.refresh();
+            },
+
+
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
             }
         }
     })
