@@ -13,14 +13,14 @@
 </head>
 
 <body>
-<div id="department">
+<div id="disease">
 
     <el-row :gutter="20">
         <el-col :span="16">
-            <input type="text" v-model="deptcode" placeholder="Code"/>
-            <input type="text" v-model="deptclass" placeholder="Class"/>
-            <input type="text" v-model="deptname" placeholder="Name"/>
-            <input type="text" v-model="deptcat" placeholder="Category"/>
+            <input type="text" v-model="icdcode" placeholder="ICDCode"/>
+            <input type="text" v-model="discode" placeholder="Disease Code"/>
+            <input type="text" v-model="disname" placeholder="Name"/>
+            <input type="text" v-model="discat" placeholder="Category"/>
             <button type="button" @click="search">search</button>
         </el-col>
         <el-col :span="8">
@@ -31,25 +31,25 @@
 
     <template>
         <el-table
-                :data="depts.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                :data="disease.slice((currentPage-1)*pagesize,currentPage*pagesize)"
                 style="width: 100%">
             <el-table-column
-                    prop="deptcode"
-                    label="Code"
+                    prop="icdcode"
+                    label="ICDCode"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="deptclass"
-                    label="Class"
+                    prop="discode"
+                    label="Disease Code"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="deptname"
+                    prop="disname"
                     label="Name"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="deptcat"
+                    prop="discat"
                     label="Category">
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
@@ -60,7 +60,7 @@
             </el-table-column>
         </el-table>
         <el-switch v-model="value">
-         </el-switch>
+        </el-switch>
 
         <el-pagination
                 @size-change="handleSizeChange"
@@ -71,24 +71,24 @@
                 :page-size="pagesize"
                 :hide-on-single-page="value"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="depts.length">
+                :total="disease.length">
         </el-pagination>
 
     </template>
 
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-            <el-form-item v-if="methodType=='Add'" label="Code" :label-width="formLabelWidth">
-                <el-input v-model="form.deptcode" autocomplete="off"></el-input>
+            <el-form-item v-if="methodType=='Add'" label="ICDCode" :label-width="formLabelWidth">
+                <el-input v-model="form.icdcode" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Class" :label-width="formLabelWidth">
-                <el-input v-model="form.deptclass" autocomplete="off"></el-input>
+            <el-form-item label="Disease Code" :label-width="formLabelWidth">
+                <el-input v-model="form.discode" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Name" :label-width="formLabelWidth">
-                <el-input v-model="form.deptname" autocomplete="off"></el-input>
+                <el-input v-model="form.disname" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Category" :label-width="formLabelWidth">
-                <el-input v-model="form.deptcat" autocomplete="off"></el-input>
+                <el-input v-model="form.discat" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -97,7 +97,7 @@
         </div>
     </el-dialog>
 
-<!--    Delete Dialogue -->
+    <!--    Delete Dialogue -->
     <el-dialog
             title="Confirm Delete"
             :visible.sync="deleteDialogVisible"
@@ -106,7 +106,7 @@
         <span>Are you sure you want to delete this?</span>
         <span slot="footer" class="dialog-footer">
             <el-button @click="deleteDialogVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="onSubmitDelete">Confirm</el-button>
+            <el-button type="primary" @click="delDis">Confirm</el-button>
         </span>
     </el-dialog>
 
@@ -117,13 +117,13 @@
 
 <script>
     var app = new Vue({
-        el: '#department',
+        el: '#disease',
         data: {
-            deptcode: "",
-            deptclass: "",
-            deptname: "",
-            deptcat: "",
-            depts: [],
+            icdcode: "",
+            discode: "",
+            disname: "",
+            discat: "",
+            disease: [],
 
             value: false,
             currentPage: 1, //初始页
@@ -133,16 +133,16 @@
             deletingIndex: -1,
             deletingObject:{},
 
-            methodType: "",//调用方法，Add or Update
+            methodType: "",//调用方法，add or update
             formTitle:"",
             dialogFormVisible: false,
             updatingIndex:-1,
             updatingObject:{},
             form: {
-                deptcode: "",
-                deptclass: "",
-                deptname: "",
-                deptcat:"",
+                icdcode: "",
+                discode: "",
+                disname: "",
+                discat:"",
             },
             formLabelWidth: '120px'
         },
@@ -150,64 +150,37 @@
             search: function () {
                 this.currentPage = 1;
                 var that = this;
-                axios.post('/management/depts', {
-                    deptcode: that.deptcode,
-                    deptclass: that.deptclass,
-                    deptname: that.deptname,
-                    deptcat: that.deptcat,
+                axios.post('/management/dis', {
+                    icdcode: that.icdcode,
+                    discode: that.discode,
+                    disname: that.disname,
+                    discat: that.discat,
                 })
                     .then(function (response) {
                         console.log(response.data);
-                        that.depts = response.data;
+                        that.disease = response.data;
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
             },
 
-            refresh:function(){
+            refresh: function () {
                 this.currentPage = 1;
                 var that = this;
-                axios.post('/management/depts', {
-                    deptcode: "",
-                    deptclass: "",
-                    deptname: "",
-                    deptcat: "",
+                axios.post('/management/dis', {
+                    icdcode: "",
+                    discode: "",
+                    disname: "",
+                    discat: "",
                 })
-                .then(function (response) {
-                    console.log(response.data);
-                    that.depts = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
-
-            /*---------------Update Or Add-----------------*/
-            showDialogForm: function (method,index,row) {
-                if (method == "Add") {
-                    this.form = {
-                        deptcode: "",
-                        deptclass: "",
-                        deptname: "",
-                        deptcat: "",
-                    }
-                }
-                if (method == "Update"){
-                    this.form = {
-                        deptcode: row.deptcode,
-                        deptclass: row.deptclass,
-                        deptname: row.deptname,
-                        deptcat: row.deptcat,
-                    }
-                }
-                    // this.form = row;
-
-                this.dialogFormVisible = true;
-                this.methodType = method;
-                this.formTitle = method + " Department";
-                this.updatingIndex = index;
-                this.updatingObject = row;
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.disease = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
 
             onSubmit: function(){
@@ -222,45 +195,45 @@
             onSubmitAdd: function(){
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/addDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat,
+                axios.post('/management/addDis', {
+                    icdcode: that.form.icdcode,
+                    discode: that.form.discode,
+                    disname: that.form.disname,
+                    discat: that.form.discat,
                 })
-                .then(function (response) {
-                    console.log(response.data);
-                    // that.depts=response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                    .then(function (response) {
+                        console.log(response.data);
+                        // that.depts=response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
 
             onSubmitUpdate: function () {
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/updateDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat
+                axios.post('/management/updateDis', {
+                    icdcode: that.form.icdcode,
+                    discode: that.form.discode,
+                    disname: that.form.disname,
+                    discat: that.form.discat,
                 })
                     .catch(function (error) {
                         console.log(error);
                     });
             },
-            /*---------------Delete----------------------*/
+
             showDeleteDialogForm: function(index, row){
                 this.deleteDialogVisible = true;
                 this.deletingIndex = index;
                 this.deletingObject = row;
             },
 
-            onSubmitDelete: function(){
+            delDis: function () {
                 var params = new URLSearchParams();
-                params.append('deptcode', this.deletingObject.deptcode);
-                axios.post('/management/delDept', params)
+                params.append('icdcode', this.deletingObject.icdcode);
+                axios.post('/management/delDis', params)
                     .then(function (response) {
                         // console.log(index.data);
                         /*console.log(that.deptcode);
@@ -274,6 +247,33 @@
                 this.deleteDialogVisible = false;
                 this.refresh();
             },
+
+            showDialogForm: function (method,index,row) {
+                if (method == "Add") {
+                    this.form = {
+                        icdcode: "",
+                        discode: "",
+                        disname: "",
+                        discat: "",
+                    }
+                }
+                if (method == "Update"){
+                    this.form = {
+                        icdcode: row.icdcode,
+                        discode: row.discode,
+                        disname: row.disname,
+                        discat: row.discat,
+                    }
+                }
+                // console.log(this.form);
+
+                this.dialogFormVisible = true;
+                this.methodType = method;
+                this.formTitle = method + " Disease";
+                this.updatingIndex = index;
+                this.updatingObject = row;
+            },
+
 
 
             handleSizeChange: function(pagesize) {

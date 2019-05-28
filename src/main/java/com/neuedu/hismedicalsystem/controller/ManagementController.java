@@ -25,6 +25,9 @@ public class ManagementController {
     private RegService regService;
 
     @Autowired
+    private DisService disService;
+
+    @Autowired
     private SettlementService settlementService;
 
     @Autowired
@@ -44,6 +47,9 @@ public class ManagementController {
     public List<Dept> getDepts(@RequestBody Dept condition){
         return deptService.getDepts(condition);
     }
+
+    @RequestMapping("/dis")
+    public List<Disease> getDis(@RequestBody Disease condition){ return disService.getDis(condition);}
 
     @RequestMapping("/addDept")
     public String addDept(@RequestBody Dept dept) {
@@ -76,6 +82,28 @@ public class ManagementController {
     @RequestMapping("/settlement")
     public List<Settlement> getSettlements(@RequestBody Settlement condition){
         return settlementService.getSettlements(condition);
+    }
+
+    @RequestMapping("/addDis")
+    public String addDis(@RequestBody Disease disease) {
+        System.out.println(disease.getIcdcode());
+        try{
+            disService.addDis(disease);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+        return "{\"result\":true}";
+    }
+
+    @RequestMapping("/delDis")
+    public void delDis(String icdcode) {
+        disService.delDis(icdcode);
+    }
+
+    @RequestMapping("/updateDis")
+    public void updateDis(@RequestBody Disease condition){
+        disService.updateDis(condition);
     }
 
     @RequestMapping("/nonmedics")

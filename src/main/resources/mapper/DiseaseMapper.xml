@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hismedicalsystem.model.mapper.DisMapper">
+    <select id="getDis" resultType="Disease">
+        select * from disease
+        <where>
+            <if test="icdcode != null and icdcode!='' ">
+                and icdcode = #{icdcode}
+            </if>
+            <if test="disname != null and disname!='' ">
+                and disname = #{disname}
+            </if>
+            <if test="discode != null and discode!='' ">
+                and discode = #{discode}
+            </if>
+            <if test="discat != null and discat!='' ">
+                and discat = #{discat}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addDis">
+      insert into disease (icdcode,disname,discode,discat)
+      values (#{icdcode},#{disname},#{discode},#{discat})
+    </insert>
+
+    <delete id="delDis">
+        delete from disease where icdcode=#{icdcode}
+    </delete>
+
+    <update id="updateDis">
+        update disease set disname = #{disname},discode = #{discode},discat = #{discat}
+        where icdcode = #{icdcode}
+    </update>
+</mapper>
