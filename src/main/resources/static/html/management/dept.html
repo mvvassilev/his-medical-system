@@ -78,7 +78,7 @@
 
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-            <el-form-item label="Code" :label-width="formLabelWidth">
+            <el-form-item v-if="methodType=='Add'" label="Code" :label-width="formLabelWidth">
                 <el-input v-model="form.deptcode" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Class" :label-width="formLabelWidth">
@@ -250,7 +250,7 @@
                         console.log(error);
                     });
             },
-            /*---------------Delete------------------------*/
+            /*---------------Delete----------------------*/
             showDeleteDialogForm: function(index, row){
                 this.deleteDialogVisible = true;
                 this.deletingIndex = index;
