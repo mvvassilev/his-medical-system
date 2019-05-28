@@ -84,27 +84,6 @@ public class ManagementController {
         return settlementService.getSettlements(condition);
     }
 
-    @RequestMapping("/addDis")
-    public String addDis(@RequestBody Disease disease) {
-        System.out.println(disease.getIcdcode());
-        try{
-            disService.addDis(disease);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "{\"result\":false}";
-        }
-        return "{\"result\":true}";
-    }
-
-    @RequestMapping("/delDis")
-    public void delDis(String icdcode) {
-        disService.delDis(icdcode);
-    }
-
-    @RequestMapping("/updateDis")
-    public void updateDis(@RequestBody Disease condition){
-        disService.updateDis(condition);
-    }
 
     @RequestMapping("/nonmedics")
     public List<NonMedic> getnonmedics(@RequestBody NonMedic condition){
@@ -131,5 +110,27 @@ public class ManagementController {
     @RequestMapping("/delNonMedic")
     public void delNonMedic(String itemcode) {
         nonMedicService.delNonMedicItem(itemcode);
+    }
+
+    @RequestMapping("/addDis")
+    public String addDis(@RequestBody Disease disease) {
+        System.out.println(disease.getIcdcode());
+        try{
+            disService.addDis(disease);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+        return "{\"result\":true}";
+    }
+
+    @RequestMapping("/delDis")
+    public void delDis(String icdcode) {
+        disService.delDis(icdcode);
+    }
+
+    @RequestMapping("/updateDis")
+    public void updateDis(@RequestBody Disease condition){
+        disService.updateDis(condition);
     }
 }
