@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hismedicalsystem.model.mapper.NonMedicMapper">
+
+    <select id="getNonMedicItems" resultType="NonMedic">
+        select * from non_medic
+        <where>
+            <if test="itemcode != null and itemcode!='' ">
+                and itemcode = #{itemcode}
+            </if>
+            <if test="feecode != null and feecode!='' ">
+                and feecode = #{feecode}
+            </if>
+            <if test="deptcode != null and deptcode!='' ">
+                and deptcode = #{deptcode}
+            </if>
+            <if test="nmedname != null and nmedname!='' ">
+                and nmedname = #{nmedname}
+            </if>
+            <if test="size != null and size!='' ">
+                and size = #{size}
+            </if>
+            <if test="price != null and price!=''">
+                and price = #{price}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addNonMedicItem">
+      insert into non_medic (itemcode,feecode,deptcode,nmedname,size,price)
+      values (#{itemcode},#{feecode},#{deptcode},#{nmedname},#{size},#{price})
+    </insert>
+
+    <delete id="delNonMedicItem">
+        delete from non_medic where itemcode=#{itemcode}
+    </delete>
+
+    <update id="updateNonMedicItem">
+        update non_medic set nmedname = #{nmedname},feecode = #{feecode},deptcode = #{deptcode},size = #{size},price= #{price}
+        where itemcode = #{itemcode}
+    </update>
+
+</mapper>

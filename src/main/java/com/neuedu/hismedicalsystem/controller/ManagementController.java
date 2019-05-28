@@ -30,6 +30,9 @@ public class ManagementController {
     @Autowired
     private SettlementService settlementService;
 
+    @Autowired
+    private NonMedicService nonMedicService;
+
     @RequestMapping("/users")
     public List<User> getUsers(@RequestBody User condition){
         return userService.getUsers(condition);
@@ -79,6 +82,34 @@ public class ManagementController {
     @RequestMapping("/settlement")
     public List<Settlement> getSettlements(@RequestBody Settlement condition){
         return settlementService.getSettlements(condition);
+    }
+
+
+    @RequestMapping("/nonmedics")
+    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition){
+        return nonMedicService.getNonMedicItems(condition);
+    }
+
+    @RequestMapping("/addNonMedic")
+    public String addDept(@RequestBody NonMedic condition) {
+
+        try{
+            nonMedicService.addNonMedicItem(condition);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+        return "{\"result\":true}";
+    }
+
+    @RequestMapping("/updateNonMedic")
+    public void updateNonMedic(@RequestBody NonMedic condition){
+        nonMedicService.updateNonMedicItem(condition);
+    }
+
+    @RequestMapping("/delNonMedic")
+    public void delNonMedic(String itemcode) {
+        nonMedicService.delNonMedicItem(itemcode);
     }
 
     @RequestMapping("/addDis")
