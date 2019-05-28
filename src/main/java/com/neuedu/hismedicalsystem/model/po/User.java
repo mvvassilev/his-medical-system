@@ -1,11 +1,13 @@
 package com.neuedu.hismedicalsystem.model.po;
 
+import java.util.List;
+
 public class User {
     private int userid;
     private String username;
     private String pwd;
     private String realname;
-    private String deptcode;
+    private List<String> deptcodes;
     private String usercat;
     private String position;
     private boolean shiftOrNot;
@@ -42,14 +44,6 @@ public class User {
         return realname;
     }
 
-    public void setDetpcode(String deptcode){
-        this.deptcode = deptcode;
-    }
-
-    public String getDeptcode(){
-        return deptcode;
-    }
-
     public void setUsercat(String usercat){
         this.usercat = usercat;
     }
@@ -72,5 +66,13 @@ public class User {
 
     public boolean getShiftOrNot(){
         return shiftOrNot;
+    }
+
+    public List<String> getDeptcodes() {
+        return deptcodes;
+    }
+
+    public void setDeptcodes(List<String> deptcodes) {
+        this.deptcodes = deptcodes;
     }
 }
