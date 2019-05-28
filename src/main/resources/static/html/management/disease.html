@@ -1,0 +1,247 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+<div id="disease">
+
+    <el-row :gutter="20">
+        <el-col :span="16">
+            <input type="text" v-model="icdcode" placeholder="ICDCode"/>
+            <input type="text" v-model="discode" placeholder="Disease Code"/>
+            <input type="text" v-model="disname" placeholder="Name"/>
+            <input type="text" v-model="discat" placeholder="Category"/>
+            <button type="button" @click="search">search</button>
+        </el-col>
+        <el-col :span="8">
+            <el-button type="text" @click="showDialogForm('Add')">Add</el-button>
+        </el-col>
+    </el-row>
+
+
+    <template>
+        <el-table
+                :data="disease.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                style="width: 100%">
+            <el-table-column
+                    prop="icdcode"
+                    label="ICDCode"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="discode"
+                    label="Disease Code"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="disname"
+                    label="Name"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="discat"
+                    label="Category">
+            </el-table-column>
+            <el-table-column fixed="right" label="Operations" width="120">
+                <template slot-scope="scope">
+                    <el-button @click="delDis(scope.$index, scope.row)" type="text" size="small">delete</el-button>
+                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+        <el-switch v-model="value">
+        </el-switch>
+
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5, 10, 20, 40]"
+
+                :page-size="pagesize"
+                :hide-on-single-page="value"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="disease.length">
+        </el-pagination>
+
+    </template>
+
+
+    <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="ICDCode" :label-width="formLabelWidth">
+                <el-input v-model="form.icdcode" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Disease Code" :label-width="formLabelWidth">
+                <el-input v-model="form.discode" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Name" :label-width="formLabelWidth">
+                <el-input v-model="form.disname" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Category" :label-width="formLabelWidth">
+                <el-input v-model="form.discat" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="onSubmit">{{methodType}}</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+</body>
+
+
+
+<script>
+    var app = new Vue({
+        el: '#disease',
+        data: {
+            icdcode: "",
+            discode: "",
+            disname: "",
+            discat: "",
+            disease: [],
+
+            value: false,
+            currentPage: 1, //初始页
+            pagesize: 10,    //    每页的数据
+
+
+            methodType: "",//调用方法，add or update
+            formTitle:"",
+            dialogFormVisible: false,
+            updatingIndex:-1,
+            updatingObject:{},
+            form: {
+                icdcode: "",
+                discode: "",
+                disname: "",
+                discat:"",
+            },
+            formLabelWidth: '120px'
+        },
+        methods: {
+            search: function () {
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/management/dis', {
+                    icdcode: that.icdcode,
+                    discode: that.discode,
+                    disname: that.disname,
+                    discat: that.discat,
+                })
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.disease = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            onSubmit: function(){
+                if(this.methodType=="Add")
+                    this.onSubmitAdd();
+                if(this.methodType=="Update")
+                    this.onSubmitUpdate();
+            },
+
+            onSubmitAdd: function(){
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/addDis', {
+                    icdcode: that.form.icdcode,
+                    discode: that.form.discode,
+                    disname: that.form.disname,
+                    discat: that.form.discat,
+                })
+                    .then(function (response) {
+                        console.log(response.data);
+                        // that.depts=response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            onSubmitUpdate: function () {
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/updateDis', {
+                    icdcode: that.form.icdcode,
+                    discode: that.form.discode,
+                    disname: that.form.disname,
+                    discat: that.form.discat,
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            delDis: function (index, row) {
+                var that = this;
+                var params = new URLSearchParams();
+                params.append('icdcode', row.icdcode);
+                axios.post('/management/delDis', params)
+                    .then(function (response) {
+                        // console.log(index.data);
+                        /*console.log(that.deptcode);
+                        console.log(response.deptcode);
+                        that.deptcode = row.deptcode;
+                        that.deptcode = response.deptcode;*/
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            },
+
+            showDialogForm: function (method,index,row) {
+                if (method == "Add") {
+                    this.form = {
+                        icdcode: "",
+                        discode: "",
+                        disname: "",
+                        discat:"",
+                    }
+                }
+                if (method == "Update")
+                    this.form = row;
+                console.log(this.form);
+
+                this.dialogFormVisible = true;
+                this.methodType = method;
+                this.formTitle = method + " Disease";
+                this.updatingIndex = index;
+                this.updatingObject = row;
+                console.log("Method using " + this.methodType);
+                console.log("index " + index)
+                console.log("row ");
+                console.log(row)
+            },
+
+
+
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
+            }
+        }
+    })
+</script>
+</html>
