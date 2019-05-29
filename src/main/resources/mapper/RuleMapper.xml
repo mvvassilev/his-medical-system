@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hismedicalsystem.model.mapper.RuleMapper">
+
+    <select id="getRules" resultType="Rule">
+        select r.ruleid as ruleid, r.rulename as rulename, u.username as username,
+         d.deptname as deptname, r.timecode as timecode from
+
+        ((userrdept ud join user u on u.userid = ud.userid)
+        join dept d on d.deptcode = ud.deptcode)
+        join rule r on r.uRid = ud.uRid
+
+        where deptname = #{deptname}
+    </select>
+
+    <!--<resultMap type="Rule" id="_rule">
+        <id property="ruleid" column="r.ruleid" />
+        <result property="rulename" column="r.rulename"/>
+        <result property="username" column="u.username"/>
+        <result property="deptname" column="d.deptname"/>
+        <result property="timecode" column="r.timecode"/>
+    </resultMap>-->
+
+    <!--
+        <insert id="Rule">
+          insert into dept (deptcode,deptname,deptclass,deptcat)
+          values (#{deptcode},#{deptname},#{deptclass},#{deptcat})
+        </insert>
+
+        <delete id="delDept">
+            delete from dept where deptcode=#{deptcode}
+        </delete>
+
+        <update id="updateDept">
+            update dept set deptname = #{deptname},deptclass = #{deptclass},deptcat = #{deptcat}
+            where deptcode = #{deptcode}
+        </update>-->
+
+</mapper>
