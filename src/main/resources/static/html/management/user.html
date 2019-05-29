@@ -120,19 +120,7 @@
                 <el-input v-model="form.shiftOrNot" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Department" :label-width="formLabelWidth">
-                <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
-                <el-select
-                        v-model="selectdepts"
-                        multiple
-                        collapse-tags
-                        placeholder="Select">
-                    <el-option
-                            v-for="item in depts"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+                <el-input v-model="form.strDeptnames" autocomplete="off"></el-input>
             </el-form-item>
 
         </el-form>
@@ -174,7 +162,7 @@
 
             //Form Dialog
             methodType: "",//调用方法，Add or Update
-            formTitle: "",
+            formTitle:"",
             dialogFormVisible: false,
             //Delete
             deleteDialogVisible: false,//控制弹出删除窗口
@@ -183,22 +171,6 @@
             //Update
             updatingIndex:-1,
             updatingObject:{},
-            depts: [{
-                    value: 'Option1',
-                    label: 'Option1'
-                    }, {
-                    value: 'Option2',
-                    label: 'Option2'
-                    }, {
-                    value: 'Option3',
-                    label: 'Option3'
-                    }, {
-                    value: 'Option4',
-                    label: 'Option4'
-                    }, {
-                    value: 'Option5',
-                    label: 'Option5'
-                    }],
 
             form: {
                 userid: "",
@@ -209,7 +181,6 @@
                 position: "",
                 shiftOrNot: "",
             },
-            selectdepts: [],
             formLabelWidth: '120px',
 
             //splitpages
@@ -237,6 +208,26 @@
                         console.log(error);
                     });
             },
+            // update: function () {
+            //     var that = this;
+            //     axios.post('/management/updateUsers', {
+            //         userid: that.userid,
+            //         username: that.username,
+            //         pwd: that.pwd,
+            //         realname: that.realname,
+            //         deptcode: that.deptcode,
+            //         usercat: that.usercat,
+            //         position: that.position,
+            //         shiftOrNot: that.shiftOrNot
+            //     })
+            //         .then(function (response) {
+            //             console.log(response.data);
+            //             that.users = response.data;
+            //         })
+            //         .catch(function (error) {
+            //             console.log(error);
+            //         });
+            // }
             refresh:function(){
                 this.currentPage = 1;
                 var that = this;

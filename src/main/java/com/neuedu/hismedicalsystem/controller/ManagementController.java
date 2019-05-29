@@ -21,9 +21,10 @@ public class ManagementController {
     @Autowired
     private UserService userService;
 
+
     @RequestMapping("/users")
-    public List<User> getUsers(@RequestBody User condition){
-        return userService.getUsers(condition);
+    public List<User> getUsers(){
+        return userService.getUsers();
     }
 
     @RequestMapping("/updateUser")
@@ -64,6 +65,7 @@ public class ManagementController {
         deptService.delDept(deptcode);
     }
 
+
     /**
      * disease
      */
@@ -102,14 +104,14 @@ public class ManagementController {
     private NonMedicService nonMedicService;
 
     @RequestMapping("/nonmedics")
-    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition){
+    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition) {
         return nonMedicService.getNonMedicItems(condition);
     }
 
     @RequestMapping("/addNonMedic")
     public String addDept(@RequestBody NonMedic condition) {
 
-        try{
+        try {
             nonMedicService.addNonMedicItem(condition);
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,7 +121,7 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateNonMedic")
-    public void updateNonMedic(@RequestBody NonMedic condition){
+    public void updateNonMedic(@RequestBody NonMedic condition) {
         nonMedicService.updateNonMedicItem(condition);
     }
 
@@ -134,8 +136,39 @@ public class ManagementController {
     @Autowired
     private ShiftService shiftService;
 
+
     @RequestMapping("/shift")
-    public List<Shift> getShift(Date dates, Date datee){
-        return shiftService.getShift(dates,datee);
+    public List<Shift> getShift(Date dates, Date datee) {
+        return shiftService.getShift(dates, datee);
+    }
+
+    /**
+     * constant
+     */
+    @Autowired
+    private ConstService constService;
+
+    @RequestMapping("/consts")
+    public List<Constant> getConsts(@RequestBody Constant condition){
+        return constService.getConsts(condition);
+    }
+
+    @RequestMapping("/updateConst")
+    public void updateConst(@RequestBody Constant condition){
+        constService.updateConst(condition);
+    }
+
+    @RequestMapping("/addConst")
+    public void addConst(@RequestBody Constant condition){
+        try {
+            constService.addConst(condition);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping("/delConst")
+    public void delConst(@RequestBody int constid){
+        constService.delConst(constid);
     }
 }
