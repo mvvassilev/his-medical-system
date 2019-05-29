@@ -54,6 +54,10 @@
         </collection>
     </resultMap>
 
+    <update id="updateUserRDept">
+        update userrdept set deptcode = #{deptcode},uRid = {uRid} where userid = #{userid}
+    </update>
+
     <update id="updateUser">
         update user set username = #{username},pwd = #{pwd},realname = #{username},deptcode = #{deptcode}
          ,usercat = #{usercat},position = #{position},shiftOrNot = #{shiftOrNot}  where userid = #{userid}
