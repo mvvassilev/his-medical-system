@@ -185,4 +185,10 @@ public class ManagementController {
         userService.updateUser(condition);
     }
 
+    @RequestMapping("/deleteUser")
+    public void deleteUser(String userid) {
+        userService.deleteUser(userid);
+    }
+
+
 }

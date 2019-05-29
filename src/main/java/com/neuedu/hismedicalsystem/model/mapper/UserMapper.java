@@ -8,4 +8,8 @@ public interface UserMapper {
     public List<User> getUsers();
 
     public void updateUser(User condition);
+
+    public void deleteUser(String userid);
+
+    public void deleteUserFromUserRDept(String userid);
 }
