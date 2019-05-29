@@ -39,63 +39,51 @@
             <el-button type="primary" @click="showRuleDialogForm">Query Rules</el-button>
         </el-col>
     </el-row>
-
-        <el-table
-                ref="multipleTable"
-                :data="shift"
-                style="width: 100%"
-                @selection-change="handleSelectionChange">
-            <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    prop="dutydate"
-                    label="Date"
-                    width="180"
-                    :formatter="dateFormatter">
-            </el-table-column>
-            <el-table-column
-                    prop="deptname"
-                    label="Department"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="username"
-                    label="Doctor"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="aorp"
-                    label="AM or PM"
-                    width="180"
-                    :formatter="aorpFormatter">
-            </el-table-column>
-            <el-table-column
-                    prop="nmedname"
-                    label="Register level"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="ration"
-                    label="Quota">
-            </el-table-column>
-        </el-table>
-        <div style="margin-top: 20px">
-            <el-button @click="toggleSelection()">Cancel Selection</el-button>
-        </div>
-        <!--<el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[5, 10, 20, 40]"
-
-                :page-size="pagesize"
-                :hide-on-single-page="value"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="shift.length">
-        </el-pagination>-->
-
+    <el-table
+            ref="multipleTable"
+            :data="shift"
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
+        <el-table-column
+                prop="dutydate"
+                label="Date"
+                width="180"
+                :formatter="dateFormatter">
+        </el-table-column>
+        <el-table-column
+                prop="deptname"
+                label="Department"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="realname"
+                label="Doctor"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="aorp"
+                label="AM or PM"
+                width="180"
+                :formatter="aorpFormatter">
+        </el-table-column>
+        <el-table-column
+                prop="nmedname"
+                label="Register level"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="ration"
+                label="Quota">
+        </el-table-column>
+    </el-table>
+    <div style="margin-top: 20px">
+        <el-button @click="toggleSelection()">Cancel Selection</el-button>
+        <el-button type="warning">Delete All</el-button>
+    </div>
 </div>
 
 <div id="rule">

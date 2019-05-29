@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ShiftMapper {
     public List<Shift> getShift(@Param("dates") Date dates, @Param("datee") Date datee);
+
+    public void delShift(int shiftid);
 }

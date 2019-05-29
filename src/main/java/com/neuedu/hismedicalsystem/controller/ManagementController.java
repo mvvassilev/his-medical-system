@@ -166,6 +166,11 @@ public class ManagementController {
         return shiftService.getShift(dates, datee);
     }
 
+    @RequestMapping("/delShift")
+    public void delShift(int shiftid) {
+        shiftService.delShift(shiftid);
+    }
+
     /**
      * user
      */
