@@ -23,7 +23,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-parent</artifactId>
+			<version>1.4.2.RELEASE</version>
 		</dependency>
 
 		<dependency>
