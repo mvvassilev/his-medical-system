@@ -24,4 +24,10 @@ public class UserService {
 
     @Transactional
     public void updateUser(User condition){ userMapper.updateUser(condition);}
+
+    @Transactional
+    public void deleteUser(String userid){
+        userMapper.deleteUser(userid);
+        userMapper.deleteUserFromUserRDept(userid);
+    }
 }
