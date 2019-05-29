@@ -2,6 +2,7 @@ package com.neuedu.hismedicalsystem.controller;
 
 import com.neuedu.hismedicalsystem.model.po.*;
 import com.neuedu.hismedicalsystem.model.service.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -125,5 +126,16 @@ public class ManagementController {
     @RequestMapping("/delNonMedic")
     public void delNonMedic(String itemcode) {
         nonMedicService.delNonMedicItem(itemcode);
+    }
+
+    /**
+     * shift
+     */
+    @Autowired
+    private ShiftService shiftService;
+
+    @RequestMapping("/shift")
+    public List<Shift> getShift(Date dates, Date datee){
+        return shiftService.getShift(dates,datee);
     }
 }

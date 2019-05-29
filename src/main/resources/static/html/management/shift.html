@@ -19,6 +19,7 @@
         <el-col :span="12">
             <el-date-picker
                     v-model="value"
+                    value-format="yyyy-MM-dd"
                     type="daterange"
                     align="right"
                     unlink-panels
@@ -29,7 +30,7 @@
             </el-date-picker>
         </el-col>
         <el-col :span="4">
-            <el-button icon="el-icon-search" type="primary" @click="">search</el-button>
+            <el-button icon="el-icon-search" type="primary" @click="search">search</el-button>
         </el-col>
         <el-col :span="4">
             <el-button type="primary">Add New Rules</el-button>
@@ -39,32 +40,33 @@
         </el-col>
     </el-row>
 
-    <template>
         <el-table
-                :data="shift.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                :data="shift"
                 style="width: 100%">
             <el-table-column
-                    prop="date"
+                    prop="dutydate"
                     label="Date"
-                    width="180">
+                    width="180"
+                    :formatter="dateFormatter">
             </el-table-column>
             <el-table-column
-                    prop="uRid"
+                    prop="deptname"
                     label="Department"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="uRid"
+                    prop="username"
                     label="Doctor"
                     width="180">
             </el-table-column>
             <el-table-column
                     prop="aorp"
                     label="AM or PM"
-                    width="180">
+                    width="180"
+                    :formatter="aorpFormatter">
             </el-table-column>
             <el-table-column
-                    prop="itemcode"
+                    prop="nmedname"
                     label="Register level"
                     width="180">
             </el-table-column>
@@ -72,12 +74,8 @@
                     prop="ration"
                     label="Quota">
             </el-table-column>
-
         </el-table>
-            <el-switch v-model="value">
-        </el-switch>
-
-        <el-pagination
+        <!--<el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="currentPage"
@@ -86,10 +84,9 @@
                 :page-size="pagesize"
                 :hide-on-single-page="value"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="disease.length">
-        </el-pagination>
+                :total="shift.length">
+        </el-pagination>-->
 
-    </template>
 </div>
 
 <div id="rule">
@@ -142,18 +139,66 @@
                     }
                 }]
             },
-            value: ''
+            dutydate:"",
+            deptname:"",
+            username:"",
+            aorp:false,
+            nmedname:"",
+            ration:"",
+            datee:"",
+            dates:"",
+            shift:[],
+            value: [],
+
+            /*currentPage: 1, //初始页
+            pagesize: 10,    //    每页的数据*/
+
+            deleteDialogVisible: false,//控制弹出删除窗口
+            deletingIndex: -1,
+            deletingObject:{},
+
+            dialogFormVisible: false,
+            updatingIndex:-1,
+            updatingObject:{},
+
 
         },
         methods: {
+            dateFormatter(row){
+                return row.dutydate.substr(0,10)
+            },
+            aorpFormatter(row){
+                if(row.aorp==true){
+                    return "A.M."
+                }
+                if(row.aorp==false){
+                    return "P.M."
+                }
+            },
+            search: function () {
+                var params = new URLSearchParams();
+                params.append("dates", this.value[0]);
+                params.append("datee", this.value[1]);
+                //this.currentPage = 1;
+                var that = this;
+                axios.post('/management/shift',params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        console.log(that.value[0]);
+                        console.log(that.dates);
+                        that.shift = response.data;
+                        console.log(that.shift);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
 
             showRuleDialogForm: function () {
-
                 dialog.dialogVisible = true;
-
             },
         }
-    })
+    });
 
     var dialog = new Vue({
         el: '#rule',
@@ -162,7 +207,7 @@
             dialogVisible: false,
 
         }
-    })
+    });
 </script>
 
 </html>
