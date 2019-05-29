@@ -15,21 +15,35 @@ import java.util.List;
 @RestController
 @RequestMapping("/management")
 public class ManagementController {
+
     /**
-     * user
+     * constant
      */
     @Autowired
-    private UserService userService;
+    private ConstService constService;
 
-
-    @RequestMapping("/users")
-    public List<User> getUsers(){
-        return userService.getUsers();
+    @RequestMapping("/addConst")
+    public void addConst(@RequestBody Constant condition){
+        try {
+            constService.addConst(condition);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @RequestMapping("/updateUser")
-    public void updateUser(@RequestBody User condition){
-        userService.updateUser(condition);
+    @RequestMapping("/delConst")
+    public void delConst(@RequestBody int constid){
+        constService.delConst(constid);
+    }
+
+    @RequestMapping("/updateConst")
+    public void updateConst(@RequestBody Constant condition){
+        constService.updateConst(condition);
+    }
+
+    @RequestMapping("/consts")
+    public List<Constant> getConsts(@RequestBody Constant condition){
+        return constService.getConsts(condition);
     }
 
     /**
@@ -37,11 +51,6 @@ public class ManagementController {
      */
     @Autowired
     private DeptService deptService;
-
-    @RequestMapping("/depts")
-    public List<Dept> getDepts(@RequestBody Dept condition){
-        return deptService.getDepts(condition);
-    }
 
     @RequestMapping("/addDept")
     public String addDept(@RequestBody Dept dept) {
@@ -55,25 +64,26 @@ public class ManagementController {
         return "{\"result\":true}";
     }
 
-    @RequestMapping("/updateDept")
-    public void updateDept(@RequestBody Dept condition){
-        deptService.updateDept(condition);
-    }
-
     @RequestMapping("/delDept")
     public void delDept(String deptcode) {
         deptService.delDept(deptcode);
     }
 
+    @RequestMapping("/updateDept")
+    public void updateDept(@RequestBody Dept condition){
+        deptService.updateDept(condition);
+    }
+
+    @RequestMapping("/depts")
+    public List<Dept> getDepts(@RequestBody Dept condition){
+        return deptService.getDepts(condition);
+    }
 
     /**
      * disease
      */
     @Autowired
     private DisService disService;
-
-    @RequestMapping("/dis")
-    public List<Disease> getDis(@RequestBody Disease condition){ return disService.getDis(condition);}
 
     @RequestMapping("/addDis")
     public String addDis(@RequestBody Disease disease) {
@@ -97,16 +107,14 @@ public class ManagementController {
         disService.updateDis(condition);
     }
 
+    @RequestMapping("/dis")
+    public List<Disease> getDis(@RequestBody Disease condition){ return disService.getDis(condition);}
+
     /**
      * non-medical
      */
     @Autowired
     private NonMedicService nonMedicService;
-
-    @RequestMapping("/nonmedics")
-    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition) {
-        return nonMedicService.getNonMedicItems(condition);
-    }
 
     @RequestMapping("/addNonMedic")
     public String addDept(@RequestBody NonMedic condition) {
@@ -120,14 +128,30 @@ public class ManagementController {
         return "{\"result\":true}";
     }
 
+    @RequestMapping("/delNonMedic")
+    public void delNonMedic(String itemcode) {
+        nonMedicService.delNonMedicItem(itemcode);
+    }
+
     @RequestMapping("/updateNonMedic")
     public void updateNonMedic(@RequestBody NonMedic condition) {
         nonMedicService.updateNonMedicItem(condition);
     }
 
-    @RequestMapping("/delNonMedic")
-    public void delNonMedic(String itemcode) {
-        nonMedicService.delNonMedicItem(itemcode);
+    @RequestMapping("/nonmedics")
+    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition) {
+        return nonMedicService.getNonMedicItems(condition);
+    }
+
+    /**
+     * rule
+     */
+    @Autowired
+    private RuleService ruleService;
+
+    @RequestMapping("/getRules")
+    public List<Rule> getRules(String deptname){
+        return ruleService.getRules(deptname);
     }
 
     /**
@@ -143,32 +167,20 @@ public class ManagementController {
     }
 
     /**
-     * constant
+     * user
      */
     @Autowired
-    private ConstService constService;
+    private UserService userService;
 
-    @RequestMapping("/consts")
-    public List<Constant> getConsts(@RequestBody Constant condition){
-        return constService.getConsts(condition);
+
+    @RequestMapping("/users")
+    public List<User> getUsers(){
+        return userService.getUsers();
     }
 
-    @RequestMapping("/updateConst")
-    public void updateConst(@RequestBody Constant condition){
-        constService.updateConst(condition);
+    @RequestMapping("/updateUser")
+    public void updateUser(@RequestBody User condition){
+        userService.updateUser(condition);
     }
 
-    @RequestMapping("/addConst")
-    public void addConst(@RequestBody Constant condition){
-        try {
-            constService.addConst(condition);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @RequestMapping("/delConst")
-    public void delConst(@RequestBody int constid){
-        constService.delConst(constid);
-    }
 }

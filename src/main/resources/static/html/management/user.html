@@ -23,7 +23,7 @@
             <input type="text" v-model="usercat" placeholder="Category"/>
             <input type="text" v-model="position" placeholder="Position"/>
             <input type="text" v-model="shiftOrNot" placeholder="Shift or not"/>
-<!--            <input type="text" v-model="department" placeholder="Department"/>-->
+            <!--            <input type="text" v-model="department" placeholder="Department"/>-->
             <button type="button" @click="search">search</button>
         </el-col>
         <el-col :span="8">
@@ -68,12 +68,13 @@
             <el-table-column
                     prop="shiftOrNot"
                     label="Shift or Not"
-                    width="150">
+                    width="150"
+                    :formatter="shiftFormatter">
             </el-table-column>
             <el-table-column
-                    prop="strDeptnames"
                     label="Departments"
-                    width="200">
+                    width="200"
+                    :formatter="deptFormatter">
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
@@ -120,7 +121,19 @@
                 <el-input v-model="form.shiftOrNot" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Department" :label-width="formLabelWidth">
-                <el-input v-model="form.strDeptnames" autocomplete="off"></el-input>
+                <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
+                <el-select
+                        v-model="selectdepts"
+                        multiple
+                        collapse-tags
+                        placeholder="Select">
+                    <el-option
+                            v-for="item in depts"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
             </el-form-item>
 
         </el-form>
@@ -158,11 +171,12 @@
             usercat: "",
             position: "",
             shiftOrNot: "",
+
             users: [],
 
             //Form Dialog
             methodType: "",//调用方法，Add or Update
-            formTitle:"",
+            formTitle: "",
             dialogFormVisible: false,
             //Delete
             deleteDialogVisible: false,//控制弹出删除窗口
@@ -171,6 +185,22 @@
             //Update
             updatingIndex:-1,
             updatingObject:{},
+            depts: [{
+                value: 'Option1',
+                label: 'Option1'
+            }, {
+                value: 'Option2',
+                label: 'Option2'
+            }, {
+                value: 'Option3',
+                label: 'Option3'
+            }, {
+                value: 'Option4',
+                label: 'Option4'
+            }, {
+                value: 'Option5',
+                label: 'Option5'
+            }],
 
             form: {
                 userid: "",
@@ -181,6 +211,7 @@
                 position: "",
                 shiftOrNot: "",
             },
+            selectdepts: [],
             formLabelWidth: '120px',
 
             //splitpages
@@ -189,6 +220,22 @@
             pagesize: 10,    //    每页的数据
         },
         methods: {
+            shiftFormatter(row){
+                if(row.shiftOrNot)
+                    return "Yes"
+                else
+                    return "No"
+            },
+            deptFormatter(row){
+                deptStr = ""
+                for(i = 0; i < row.depts.length; i++){
+                    if(i==0)
+                        deptStr += row.depts[i].deptname
+                    else
+                        deptStr += " | "+ row.depts[i].deptname
+                }
+                return deptStr
+            },
             search: function () {
                 var that = this;
                 axios.post('/management/users', {
@@ -201,33 +248,23 @@
                     // shiftOrNot: that.shiftOrNot
                 })
                     .then(function (response) {
-                        console.log(response.data);
                         that.users = response.data;
+                        // for(var i=0; i<that.users.length;i++)
+                        // {
+                        //     if(that.users[i].shiftOrNot){
+                        //         that.users[i].shiftOrNot = "Yes"
+                        //     }
+                        //     else{
+                        //         that.users[i].shiftOrNot = "No"
+                        //     }
+                        // }
+                        console.log(that.users);
+
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
             },
-            // update: function () {
-            //     var that = this;
-            //     axios.post('/management/updateUsers', {
-            //         userid: that.userid,
-            //         username: that.username,
-            //         pwd: that.pwd,
-            //         realname: that.realname,
-            //         deptcode: that.deptcode,
-            //         usercat: that.usercat,
-            //         position: that.position,
-            //         shiftOrNot: that.shiftOrNot
-            //     })
-            //         .then(function (response) {
-            //             console.log(response.data);
-            //             that.users = response.data;
-            //         })
-            //         .catch(function (error) {
-            //             console.log(error);
-            //         });
-            // }
             refresh:function(){
                 this.currentPage = 1;
                 var that = this;

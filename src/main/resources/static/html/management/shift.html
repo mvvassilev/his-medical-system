@@ -97,12 +97,62 @@
         <el-row :gutter="20">
             <el-col :span="18">
 
-                <el-input v-model="" style="width:300px" placeholder="DeptCode"></el-input>
-                <el-button type="primary" @click="">search</el-button>
+                <el-input v-model="deptname" style="width:300px" placeholder="Enter DeptName"></el-input>
+                <el-button type="primary" @click="searchRules">search</el-button>
             </el-col>
         </el-row>
+        <el-table
+                ref="multipleTable"
+                :data="rules"
+                style="width: 100%"
+                tooltip-effect="dark"
+                @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="ruleid"
+                    label="ID"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="rulename"
+                    label="RuleName"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="username"
+                    label="UserName"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="deptname"
+                    label="DeptName"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="timecode"
+                    label="TimeArrange">
+            </el-table-column>
+        </el-table>
+        <div style="margin-top: 20px">
+            <el-button @click="toggleSelection()">Cancel Selection</el-button>
+        </div>
+        <div class="block">
+            <el-date-picker
+                    v-model="ruledate"
+                    type="daterange"
+                    value-format="yyyy-MM-dd"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+            </el-date-picker>
+            <el-button type="primary" @click="arrangeShift">Arrange Now!</el-button>
+        </div>
+
         <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button @click="dialogVisible = false">Close</el-button>
       </span>
     </el-dialog>
 </div>
@@ -206,8 +256,49 @@
 
             dialogVisible: false,
 
+            deptname: "",
+            rules: [],
+            multipleSelection: [],
+
+            ruledate:[]
+        },
+        methods: {
+
+            searchRules: function () {
+                var params = new URLSearchParams();
+                params.append('deptname', this.deptname);
+                //this.currentPage = 1;
+                var that = this;
+                axios.post('/management/getRules', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.rules = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+
+            arrangeShift:function() {
+                console.log("ARRANGE!"+this.ruledate[0]);
+            }
+
         }
-    });
+    })
 </script>
 
 </html>
