@@ -41,8 +41,14 @@
     </el-row>
 
         <el-table
+                ref="multipleTable"
                 :data="shift"
-                style="width: 100%">
+                style="width: 100%"
+                @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
             <el-table-column
                     prop="dutydate"
                     label="Date"
@@ -75,6 +81,9 @@
                     label="Quota">
             </el-table-column>
         </el-table>
+        <div style="margin-top: 20px">
+            <el-button @click="toggleSelection()">Cancel Selection</el-button>
+        </div>
         <!--<el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
@@ -244,6 +253,18 @@
                     });
             },
 
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
             showRuleDialogForm: function () {
                 dialog.dialogVisible = true;
             },
