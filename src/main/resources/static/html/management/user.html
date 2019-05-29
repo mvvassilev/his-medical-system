@@ -99,6 +99,21 @@
 
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
+            <el-form-item label="Department" :label-width="formLabelWidth">
+                <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
+                <el-select
+                        v-model="selectdepts"
+                        multiple
+                        placeholder="Select"
+                        style="width: 80%">
+                    <el-option
+                            v-for="item in depts"
+                            :key="item.deptcode"
+                            :label="item.deptname"
+                            :value="item.deptname">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item v-if="methodType=='Add'" label="userid" :label-width="formLabelWidth">
                 <el-input v-model="form.userid" autocomplete="off"></el-input>
             </el-form-item>
@@ -120,21 +135,7 @@
             <el-form-item label="Shift Or Not" :label-width="formLabelWidth">
                 <el-input v-model="form.shiftOrNot" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Department" :label-width="formLabelWidth">
-                <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
-                <el-select
-                        v-model="selectdepts"
-                        multiple
-                        collapse-tags
-                        placeholder="Select">
-                    <el-option
-                            v-for="item in depts"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+
 
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -185,22 +186,7 @@
             //Update
             updatingIndex:-1,
             updatingObject:{},
-            depts: [{
-                value: 'Option1',
-                label: 'Option1'
-            }, {
-                value: 'Option2',
-                label: 'Option2'
-            }, {
-                value: 'Option3',
-                label: 'Option3'
-            }, {
-                value: 'Option4',
-                label: 'Option4'
-            }, {
-                value: 'Option5',
-                label: 'Option5'
-            }],
+            depts: [],
 
             form: {
                 userid: "",
@@ -265,7 +251,7 @@
                         console.log(error);
                     });
             },
-            refresh:function(){
+            loadDept:function(){
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/depts', {
@@ -274,9 +260,30 @@
                     deptname: "",
                     deptcat: "",
                 })
+                .then(function (response) {
+                    console.log(response.data);
+                    that.depts = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            refresh:function(){
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/management/users', {
+                    userid: "",
+                    username: "",
+                    pwd: "",
+                    realname: "",
+                    usercat: "",
+                    position: "",
+                    shiftOrNot: "",
+                    depts: []
+                })
                     .then(function (response) {
                         console.log(response.data);
-                        that.depts = response.data;
+                        that.users = response.data;
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -285,6 +292,7 @@
 
             /*---------------Update Or Add-----------------*/
             showDialogForm: function (method,index,row) {
+                this.loadDept();
                 if (method == "Add") {
                     this.form = {
                         deptcode: "",
@@ -295,10 +303,13 @@
                 }
                 if (method == "Update"){
                     this.form = {
-                        deptcode: row.deptcode,
-                        deptclass: row.deptclass,
-                        deptname: row.deptname,
-                        deptcat: row.deptcat,
+                        userid: row.userid,
+                        username: row.username,
+                        pwd: row.pwd,
+                        realname: row.realname,
+                        usercat: row.usercat,
+                        position: row.position,
+                        shiftOrNot: row.shiftOrNot
                     }
                 }
                 // this.form = row;
@@ -359,8 +370,8 @@
 
             onSubmitDelete: function(){
                 var params = new URLSearchParams();
-                params.append('deptcode', this.deletingObject.deptcode);
-                axios.post('/management/delDept', params)
+                params.append('userid', this.deletingObject.userid);
+                axios.post('/management/deleteUser', params)
                     .then(function (response) {
                         // console.log(index.data);
                         /*console.log(that.deptcode);

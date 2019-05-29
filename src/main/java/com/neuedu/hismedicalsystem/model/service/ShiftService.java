@@ -14,8 +14,8 @@ public class ShiftService {
     @Resource
     private ShiftMapper shiftMapper;
 
-    public List<Shift> getShift(Date dates, Date datee){
-        return shiftMapper.getShift(dates,datee);
+    public List<Shift> getShift(Date dates, Date datee) {
+        return shiftMapper.getShift(dates, datee);
     }
 
     @Transactional

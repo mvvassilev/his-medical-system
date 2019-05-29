@@ -63,6 +63,13 @@
          ,usercat = #{usercat},position = #{position},shiftOrNot = #{shiftOrNot}  where userid = #{userid}
     </update>
 
+    <delete id="deleteUser">
+        delete from user where userid=#{userid}
+    </delete>
+
+    <delete id="deleteUserFromUserRDept">
+        delete from userrdept where userid=#{userid}
+    </delete>
 </mapper>
 
 
