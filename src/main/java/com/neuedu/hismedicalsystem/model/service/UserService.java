@@ -18,8 +18,8 @@ public class UserService {
         System.out.println(userMapper);
     }
 
-    public List<User> getUsers(User condition){
-        return userMapper.getUsers(condition);
+    public List<User> getUsers(){
+        return userMapper.getUsers();
     }
 
     @Transactional

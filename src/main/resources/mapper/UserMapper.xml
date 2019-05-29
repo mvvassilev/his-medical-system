@@ -4,35 +4,59 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.UserMapper">
 
-    <select id="getUsers" resultType="User">
-        select * from user
-        <where>
-            <if test="userid != null and userid!='' ">
-                and userid = #{userid}
-            </if>
-            <if test="username != null and username!='' ">
-                and username = #{username}
-            </if>
-            <if test="pwd != null and pwd!='' ">
-                and pwd = #{pwd}
-            </if>
-            <if test="realname != null and realname!='' ">
-                and realname = #{username}
-            </if>
-            <if test="deptcode != null and deptcode!='' ">
-                and deptcode = #{deptcode}
-            </if>
-            <if test="usercat != null and usercat!='' ">
-                and usercat = #{usercat}
-            </if>
-            <if test="position != null and position!='' ">
-                and position = #{position}
-            </if>
-            <if test="shiftOrNot != null and shiftOrNot!='' ">
-                and shiftOrNot = #{shiftOrNot}
-            </if>
-        </where>
+    <!--    <select id="getUsers" resultType="User">-->
+    <!--        select * from user-->
+    <!--        <where>-->
+    <!--            <if test="userid != null and userid!='' ">-->
+    <!--                and userid = #{userid}-->
+    <!--            </if>-->
+    <!--            <if test="username != null and username!='' ">-->
+    <!--                and username = #{username}-->
+    <!--            </if>-->
+    <!--            <if test="pwd != null and pwd!='' ">-->
+    <!--                and pwd = #{pwd}-->
+    <!--            </if>-->
+    <!--            <if test="realname != null and realname!='' ">-->
+    <!--                and realname = #{username}-->
+    <!--            </if>-->
+    <!--            <if test="deptcode != null and deptcode!='' ">-->
+    <!--                and deptcode = #{deptcode}-->
+    <!--            </if>-->
+    <!--            <if test="usercat != null and usercat!='' ">-->
+    <!--                and usercat = #{usercat}-->
+    <!--            </if>-->
+    <!--            <if test="position != null and position!='' ">-->
+    <!--                and position = #{position}-->
+    <!--            </if>-->
+    <!--            <if test="shiftOrNot != null and shiftOrNot!='' ">-->
+    <!--                and shiftOrNot = #{shiftOrNot}-->
+    <!--            </if>-->
+    <!--        </where>-->
+    <!--    </select>-->
+
+    <select id="getUsers" resultMap="_user">
+        select * from ((userrdept ud join user u on u.userid = ud.userid)join dept d on d.deptcode = ud.deptcode)
     </select>
+
+    <resultMap type="User" id="_user">
+        <id property="userid" column="userid" />
+        <result property="username" column="username"/>
+        <result property="pwd" column="pwd"/>
+        <result property="realname" column="realname"/>
+        <result property="usercat" column="usercat"/>
+        <result property="position" column="position"/>
+        <result property="shiftOrNot" column="shiftOrNot"/>
+        <collection property="depts" ofType="Dept">
+            <id property="deptcode" column="deptcode" />
+            <result property="deptname" column="deptname"/>
+            <result property="deptcat" column="deptcat"/>
+            <result property="deptclass" column="deptclass"/>
+        </collection>
+    </resultMap>
+
+    <update id="updateUserRDept">
+        update userrdept set deptcode = #{deptcode},uRid = {uRid} where userid = #{userid}
+    </update>
 
     <update id="updateUser">
         update user set username = #{username},pwd = #{pwd},realname = #{username},deptcode = #{deptcode}
@@ -40,3 +64,12 @@
     </update>
 
 </mapper>
+
+
+
+
+
+
+
+
+

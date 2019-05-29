@@ -23,19 +23,19 @@
         <result property="timecode" column="r.timecode"/>
     </resultMap>-->
 
-<!--
-    <insert id="Rule">
-      insert into dept (deptcode,deptname,deptclass,deptcat)
-      values (#{deptcode},#{deptname},#{deptclass},#{deptcat})
-    </insert>
+    <!--
+        <insert id="Rule">
+          insert into dept (deptcode,deptname,deptclass,deptcat)
+          values (#{deptcode},#{deptname},#{deptclass},#{deptcat})
+        </insert>
 
-    <delete id="delDept">
-        delete from dept where deptcode=#{deptcode}
-    </delete>
+        <delete id="delDept">
+            delete from dept where deptcode=#{deptcode}
+        </delete>
 
-    <update id="updateDept">
-        update dept set deptname = #{deptname},deptclass = #{deptclass},deptcat = #{deptcat}
-        where deptcode = #{deptcode}
-    </update>-->
+        <update id="updateDept">
+            update dept set deptname = #{deptname},deptclass = #{deptclass},deptcat = #{deptcat}
+            where deptcode = #{deptcode}
+        </update>-->
 
 </mapper>

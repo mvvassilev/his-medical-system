@@ -16,14 +16,76 @@
 <body>
 <div id="shift">
     <el-row :gutter="20">
-        <el-col :span="16">
-
-            <button type="button" @click="">search</button>
+        <el-col :span="12">
+            <el-date-picker
+                    v-model="value"
+                    value-format="yyyy-MM-dd"
+                    type="daterange"
+                    align="right"
+                    unlink-panels
+                    range-separator="To"
+                    start-placeholder="Start Date"
+                    end-placeholder="End Date"
+                    :picker-options="pickerOptions">
+            </el-date-picker>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="4">
+            <el-button icon="el-icon-search" type="primary" @click="search">search</el-button>
+        </el-col>
+        <el-col :span="4">
+            <el-button type="primary">Add New Rules</el-button>
+        </el-col>
+        <el-col :span="4">
             <el-button type="primary" @click="showRuleDialogForm">Query Rules</el-button>
         </el-col>
     </el-row>
+
+        <el-table
+                :data="shift"
+                style="width: 100%">
+            <el-table-column
+                    prop="dutydate"
+                    label="Date"
+                    width="180"
+                    :formatter="dateFormatter">
+            </el-table-column>
+            <el-table-column
+                    prop="deptname"
+                    label="Department"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="username"
+                    label="Doctor"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="aorp"
+                    label="AM or PM"
+                    width="180"
+                    :formatter="aorpFormatter">
+            </el-table-column>
+            <el-table-column
+                    prop="nmedname"
+                    label="Register level"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="ration"
+                    label="Quota">
+            </el-table-column>
+        </el-table>
+        <!--<el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5, 10, 20, 40]"
+
+                :page-size="pagesize"
+                :hide-on-single-page="value"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="shift.length">
+        </el-pagination>-->
 
 </div>
 
@@ -79,12 +141,12 @@
         </div>
         <div class="block">
             <el-date-picker
-                v-model="ruledate"
-                type="daterange"
-                value-format="yyyy-MM-dd"
-                range-separator="至"
-                start-placeholder="开始日期"
-                end-placeholder="结束日期">
+                    v-model="ruledate"
+                    type="daterange"
+                    value-format="yyyy-MM-dd"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
             </el-date-picker>
             <el-button type="primary" @click="arrangeShift">Arrange Now!</el-button>
         </div>
@@ -99,8 +161,89 @@
 <script>
     var app = new Vue({
         el: '#shift',
-        data: {},
+        data: {
+            pickerOptions: {
+                shortcuts: [{
+                    text: 'Latest week',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: 'Latest month',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }, {
+                    text: 'Latest three months',
+                    onClick(picker) {
+                        const end = new Date();
+                        const start = new Date();
+                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                        picker.$emit('pick', [start, end]);
+                    }
+                }]
+            },
+            dutydate:"",
+            deptname:"",
+            username:"",
+            aorp:false,
+            nmedname:"",
+            ration:"",
+            datee:"",
+            dates:"",
+            shift:[],
+            value: [],
+
+            /*currentPage: 1, //初始页
+            pagesize: 10,    //    每页的数据*/
+
+            deleteDialogVisible: false,//控制弹出删除窗口
+            deletingIndex: -1,
+            deletingObject:{},
+
+            dialogFormVisible: false,
+            updatingIndex:-1,
+            updatingObject:{},
+
+
+        },
         methods: {
+            dateFormatter(row){
+                return row.dutydate.substr(0,10)
+            },
+            aorpFormatter(row){
+                if(row.aorp==true){
+                    return "A.M."
+                }
+                if(row.aorp==false){
+                    return "P.M."
+                }
+            },
+            search: function () {
+                var params = new URLSearchParams();
+                params.append("dates", this.value[0]);
+                params.append("datee", this.value[1]);
+                //this.currentPage = 1;
+                var that = this;
+                axios.post('/management/shift',params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        console.log(that.value[0]);
+                        console.log(that.dates);
+                        that.shift = response.data;
+                        console.log(that.shift);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
             showRuleDialogForm: function () {
                 dialog.dialogVisible = true;
             },
@@ -151,13 +294,11 @@
             },
 
             arrangeShift:function() {
-              console.log("ARRANGE!"+this.ruledate[0]);
+                console.log("ARRANGE!"+this.ruledate[0]);
             }
 
         }
     })
-
-
 </script>
 
 </html>

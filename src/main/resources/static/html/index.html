@@ -39,11 +39,11 @@
                 <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                     background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
                     style="height: 100vh">
-                    <el-menu-item index="1" v-on:click="navigateTo('management/dept.html')">
-                        <span>Departments</span>
+                    <el-menu-item index="1" v-on:click="navigateTo('management/constant.html')">
+                        <span>Constant</span>
                     </el-menu-item>
-                    <el-menu-item index="2" v-on:click="navigateTo('management/user.html')">
-                        <span>Users</span>
+                    <el-menu-item index="2" v-on:click="navigateTo('management/dept.html')">
+                        <span>Departments</span>
                     </el-menu-item>
                     <el-menu-item index="3" v-on:click="navigateTo('management/disease.html')">
                         <span>Diagnostic catalog</span>
@@ -51,10 +51,12 @@
                     <el-menu-item index="4" v-on:click="navigateTo('management/non-medical.html')">
                         <span>Non-medical Charge</span>
                     </el-menu-item>
-                    <el-menu-item index="8" v-on:click="navigateTo('management/shift.html')">
+                    <el-menu-item index="5" v-on:click="navigateTo('management/shift.html')">
                         <span>Shift</span>
                     </el-menu-item>
-
+                    <el-menu-item index="6" v-on:click="navigateTo('management/user.html')">
+                        <span>Users</span>
+                    </el-menu-item>
                 </el-menu>
             </el-col>
             <el-col :span="21">

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hismedicalsystem.model.mapper.ConstMapper">
+
+    <select id="getConsts" resultType="Constant">
+        select * from constant
+        <where>
+            <if test="constid != null and constid!='' ">
+                and constid = #{constid}
+            </if>
+            <if test="consttype != null and consttype!='' ">
+                and consttype = #{consttype}
+            </if>
+            <if test="constname != null and constname!='' ">
+                and constnam = #{constname}
+            </if>
+            <if test="constcode != null and constcode!='' ">
+                and constcode = #{constcode}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addConst">
+        insert into constant (constid,consttype,constname,constcode)
+        values (#{constid},#{consttype},#{constname},#{constcode})
+    </insert>
+
+    <delete id="delConst">
+        delete from constant where constid=#{constid}
+    </delete>
+
+    <update id="updateConst">
+        update constant set consttype = #{consttype},constname = #{constname},constcode = #{constcode}
+        where constid = #{constid}
+    </update>
+
+</mapper>
