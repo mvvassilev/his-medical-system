@@ -68,12 +68,13 @@
             <el-table-column
                     prop="shiftOrNot"
                     label="Shift or Not"
-                    width="150">
+                    width="150"
+                    :formatter="shiftFormatter">
             </el-table-column>
             <el-table-column
-                    prop="strDeptnames"
                     label="Departments"
-                    width="200">
+                    width="200"
+                    :formatter="deptFormatter">
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
@@ -158,6 +159,7 @@
             usercat: "",
             position: "",
             shiftOrNot: "",
+
             users: [],
 
             //Form Dialog
@@ -189,6 +191,22 @@
             pagesize: 10,    //    每页的数据
         },
         methods: {
+            shiftFormatter(row){
+                if(row.shiftOrNot)
+                    return "Yes"
+                else
+                    return "No"
+            },
+            deptFormatter(row){
+                deptStr = ""
+                for(i = 0; i < row.depts.length; i++){
+                    if(i==0)
+                        deptStr += row.depts[i].deptname
+                    else
+                        deptStr += " | "+ row.depts[i].deptname
+                }
+                return deptStr
+            },
             search: function () {
                 var that = this;
                 axios.post('/management/users', {
@@ -201,8 +219,18 @@
                     // shiftOrNot: that.shiftOrNot
                 })
                     .then(function (response) {
-                        console.log(response.data);
                         that.users = response.data;
+                        // for(var i=0; i<that.users.length;i++)
+                        // {
+                        //     if(that.users[i].shiftOrNot){
+                        //         that.users[i].shiftOrNot = "Yes"
+                        //     }
+                        //     else{
+                        //         that.users[i].shiftOrNot = "No"
+                        //     }
+                        // }
+                        console.log(that.users);
+
                     })
                     .catch(function (error) {
                         console.log(error);
