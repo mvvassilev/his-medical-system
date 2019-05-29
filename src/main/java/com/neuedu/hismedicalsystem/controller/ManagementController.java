@@ -27,6 +27,9 @@ public class ManagementController {
     @Autowired
     private NonMedicService nonMedicService;
 
+    @Autowired
+    private RuleService ruleService;
+
     @RequestMapping("/users")
     public List<User> getUsers(@RequestBody User condition){
         return userService.getUsers(condition);
@@ -114,5 +117,10 @@ public class ManagementController {
     @RequestMapping("/updateDis")
     public void updateDis(@RequestBody Disease condition){
         disService.updateDis(condition);
+    }
+
+    @RequestMapping("/getRules")
+    public List<Rule> getRules(String deptname){
+        return ruleService.getRules(deptname);
     }
 }
