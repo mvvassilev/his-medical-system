@@ -13,7 +13,7 @@ public class DisService {
     @Resource
     private DisMapper disMapper;
 
-    public List<Disease> getDis(Disease condition){
+    public List<Disease> getDis(Disease condition) {
         return disMapper.getDis(condition);
     }
 
@@ -23,8 +23,12 @@ public class DisService {
     }
 
     @Transactional
-    public void delDis(String icdcode) {disMapper.delDis(icdcode);}
+    public void delDis(String icdcode) {
+        disMapper.delDis(icdcode);
+    }
 
     @Transactional
-    public void updateDis(Disease disease) {disMapper.updateDis(disease);}
+    public void updateDis(Disease disease) {
+        disMapper.updateDis(disease);
+    }
 }

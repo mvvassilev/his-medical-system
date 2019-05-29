@@ -1,0 +1,225 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="constant">
+
+        <el-row :gutter="20">
+            <el-col :span="16">
+                <input type="text" v-model="constid" placeholder="ID" />
+                <input type="text" v-model="consttype" placeholder="Type" />
+                <input type="text" v-model="constname" placeholder="Name" />
+                <input type="text" v-model="constcode" placeholder="Code" />
+                <button type="button" @click="search">search</button>
+            </el-col>
+            <el-col :span="8">
+                <el-button type="text" @click="showDialogForm('Add')">add</el-button>
+            </el-col>
+        </el-row>
+
+
+        <template>
+            <el-table :data="consts.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+                <el-table-column prop="constid" label="ID" width="180">
+                </el-table-column>
+                <el-table-column prop="consttype" label="Type" width="180">
+                </el-table-column>
+                <el-table-column prop="constname" label="Name" width="180">
+                </el-table-column>
+                <el-table-column prop="constcode" label="Code">
+                </el-table-column>
+                <el-table-column fixed="right" label="Operations" width="120">
+                    <template slot-scope="scope">
+                        <el-button @click="delConst(scope.$index, scope.row)" type="text" size="small">delete
+                        </el-button>
+                        <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">
+                            update</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-switch v-model="value">
+            </el-switch>
+
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10, 20, 40]" :page-size="pagesize" :hide-on-single-page="value" layout="total, sizes, prev, pager, next, jumper" :total="consts.length">
+        </el-pagination>
+
+        </template>
+
+
+        <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
+            <el-form :model="form">
+                <el-form-item label="ID" :label-width="formLabelWidth">
+                    <el-input v-model="form.constid" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="Type" :label-width="formLabelWidth">
+                    <el-input v-model="form.consttype" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="Name" :label-width="formLabelWidth">
+                    <el-input v-model="form.constname" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="Code" :label-width="formLabelWidth">
+                    <el-input v-model="form.constcode" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="onSubmit">{{methodType}}</el-button>
+            </div>
+        </el-dialog>
+
+    </div>
+</body>
+
+
+
+<script>
+    var app = new Vue({
+        el: '#constant',
+        data: {
+            constid: "",
+            consttype: "",
+            constname: "",
+            constcode: "",
+            consts: [],
+
+            value: false,
+            currentPage: 1, //初始页
+            pagesize: 10, //    每页的数据
+
+
+            methodType: "", //调用方法，add or update
+            formTitle: "",
+            dialogFormVisible: false,
+            updatingIndex: -1,
+            updatingObject: {},
+            form: {
+                constid: "",
+                consttype: "",
+                constname: "",
+                constcode: "",
+            },
+            formLabelWidth: '120px'
+        },
+        methods: {
+            search: function () {
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/management/consts', {
+                    constid: that.constid,
+                    consttype: that.constype,
+                    constname: that.constname,
+                    constcode: that.constcode,
+                })
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.consts = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            onSubmit: function(){
+                if(this.methodType=="Add")
+                    console.log("iiiiii");
+                    this.onSubmitAdd();
+                if(this.methodType=="Update")
+                    this.onSubmitUpdate();
+            },
+
+            onSubmitAdd: function(){
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/addConst', {
+                    constid: that.form.constid,
+                    consttype: that.form.consttype,
+                    constname: that.form.constname,
+                    constcode: that.form.constcode
+                })
+                .then(function (response) {
+                    console.log(response.data);
+                    // that.consts=response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+            onSubmitUpdate: function () {
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/updateConst', {
+                    constid: that.form.constid,
+                    consttype: that.form.consttype,
+                    constname: that.form.constname,
+                    constcode: that.form.constcode
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            delDept: function (index, row) {
+                var that = this;
+                var params = new URLSearchParams();
+                params.append('constid', row.constid);
+                axios.post('/management/delConst', params)
+                    .then(function (response) {
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            },
+
+            showDialogForm: function (method,index,row) {
+                if (method == "Add") {
+                    this.form = {
+                        constid: "",
+                        consttype: "",
+                        constname: "",
+                        constcode: "",
+                    }
+                }
+                if (method == "Update")
+                    this.form = row;
+                console.log(this.form);
+
+                this.dialogFormVisible = true;
+                this.methodType = method;
+                this.formTitle = method + " Constant";
+                this.updatingIndex = index;
+                this.updatingObject = row;
+                console.log("Method using " + this.methodType);
+                console.log("index " + index)
+                console.log("row ");
+                console.log(row)
+            },
+
+
+
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
+            }
+        }
+    })
+</script>
+
+</html>

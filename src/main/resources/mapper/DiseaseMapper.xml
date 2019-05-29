@@ -22,8 +22,8 @@
     </select>
 
     <insert id="addDis">
-      insert into disease (icdcode,disname,discode,discat)
-      values (#{icdcode},#{disname},#{discode},#{discat})
+        insert into disease (icdcode,disname,discode,discat)
+        values (#{icdcode},#{disname},#{discode},#{discat})
     </insert>
 
     <delete id="delDis">

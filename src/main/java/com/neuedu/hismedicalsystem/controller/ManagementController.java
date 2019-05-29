@@ -22,16 +22,16 @@ public class ManagementController {
     private DeptService deptService;
 
     @Autowired
-    private RegService regService;
-
-    @Autowired
     private DisService disService;
 
     @Autowired
-    private SettlementService settlementService;
+    private NonMedicService nonMedicService;
 
     @Autowired
-    private NonMedicService nonMedicService;
+    private ConstService constService;
+
+    @Autowired
+    private BillCategoryService billCategoryService;
 
     @RequestMapping("/users")
     public List<User> getUsers(){
@@ -49,7 +49,9 @@ public class ManagementController {
     }
 
     @RequestMapping("/dis")
-    public List<Disease> getDis(@RequestBody Disease condition){ return disService.getDis(condition);}
+    public List<Disease> getDis(@RequestBody Disease condition) {
+        return disService.getDis(condition);
+    }
 
     @RequestMapping("/addDept")
     public String addDept(@RequestBody Dept dept) {
@@ -68,32 +70,20 @@ public class ManagementController {
         deptService.updateDept(condition);
     }
 
-
-    @RequestMapping("/registration")
-    public List<Reg> getRegs(@RequestBody Reg condition){
-        return regService.getRegs(condition);
-    }
-
     @RequestMapping("/delDept")
     public void delDept(String deptcode) {
         deptService.delDept(deptcode);
     }
 
-    @RequestMapping("/settlement")
-    public List<Settlement> getSettlements(@RequestBody Settlement condition){
-        return settlementService.getSettlements(condition);
-    }
-
-
     @RequestMapping("/nonmedics")
-    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition){
+    public List<NonMedic> getnonmedics(@RequestBody NonMedic condition) {
         return nonMedicService.getNonMedicItems(condition);
     }
 
     @RequestMapping("/addNonMedic")
     public String addDept(@RequestBody NonMedic condition) {
 
-        try{
+        try {
             nonMedicService.addNonMedicItem(condition);
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,7 +93,7 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateNonMedic")
-    public void updateNonMedic(@RequestBody NonMedic condition){
+    public void updateNonMedic(@RequestBody NonMedic condition) {
         nonMedicService.updateNonMedicItem(condition);
     }
 
@@ -115,7 +105,7 @@ public class ManagementController {
     @RequestMapping("/addDis")
     public String addDis(@RequestBody Disease disease) {
         System.out.println(disease.getIcdcode());
-        try{
+        try {
             disService.addDis(disease);
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,7 +120,36 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateDis")
-    public void updateDis(@RequestBody Disease condition){
+    public void updateDis(@RequestBody Disease condition) {
         disService.updateDis(condition);
+    }
+
+    @RequestMapping("/bill")
+    public List<BillCategory> getBillCategories(@RequestBody BillCategory condition){
+        return billCategoryService.getBillCategories(condition);
+    }
+
+    @RequestMapping("/consts")
+    public List<Constant> getConsts(@RequestBody Constant condition){
+        return constService.getConsts(condition);
+    }
+
+    @RequestMapping("/updateConst")
+    public void updateConst(@RequestBody Constant condition){
+        constService.updateConst(condition);
+    }
+
+    @RequestMapping("/addConst")
+    public void addConst(@RequestBody Constant condition){
+        try {
+            constService.addConst(condition);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping("/delConst")
+    public void delConst(@RequestBody int constid){
+        constService.delConst(constid);
     }
 }

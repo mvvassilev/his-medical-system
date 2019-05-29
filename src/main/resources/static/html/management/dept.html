@@ -54,13 +54,14 @@
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
-                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete</el-button>
+                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete
+                    </el-button>
                     <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update</el-button>
                 </template>
             </el-table-column>
         </el-table>
         <el-switch v-model="value">
-         </el-switch>
+        </el-switch>
 
         <el-pagination
                 @size-change="handleSizeChange"
@@ -97,7 +98,7 @@
         </div>
     </el-dialog>
 
-<!--    Delete Dialogue -->
+    <!--    Delete Dialogue -->
     <el-dialog
             title="Confirm Delete"
             :visible.sync="deleteDialogVisible"

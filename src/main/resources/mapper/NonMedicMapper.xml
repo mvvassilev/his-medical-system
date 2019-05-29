@@ -29,8 +29,8 @@
     </select>
 
     <insert id="addNonMedicItem">
-      insert into non_medic (itemcode,feecode,deptcode,nmedname,size,price)
-      values (#{itemcode},#{feecode},#{deptcode},#{nmedname},#{size},#{price})
+        insert into non_medic (itemcode,feecode,deptcode,nmedname,size,price)
+        values (#{itemcode},#{feecode},#{deptcode},#{nmedname},#{size},#{price})
     </insert>
 
     <delete id="delNonMedicItem">
@@ -38,7 +38,8 @@
     </delete>
 
     <update id="updateNonMedicItem">
-        update non_medic set nmedname = #{nmedname},feecode = #{feecode},deptcode = #{deptcode},size = #{size},price= #{price}
+        update non_medic set nmedname = #{nmedname},feecode = #{feecode},deptcode = #{deptcode},size = #{size},price=
+        #{price}
         where itemcode = #{itemcode}
     </update>
 

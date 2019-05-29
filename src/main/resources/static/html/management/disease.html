@@ -54,8 +54,11 @@
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
-                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete</el-button>
-                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update</el-button>
+                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete
+                    </el-button>
+                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">
+                        update
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -112,7 +115,6 @@
 
 </div>
 </body>
-
 
 
 <script>
@@ -286,5 +288,6 @@
             }
         }
     })
+
 </script>
 </html>

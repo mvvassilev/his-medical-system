@@ -13,7 +13,7 @@ public class NonMedicService {
     @Resource
     private NonMedicMapper nonMedicMapper;
 
-    public List<NonMedic> getNonMedicItems(NonMedic condition){
+    public List<NonMedic> getNonMedicItems(NonMedic condition) {
         return nonMedicMapper.getNonMedicItems(condition);
     }
 
@@ -23,8 +23,12 @@ public class NonMedicService {
     }
 
     @Transactional
-    public void delNonMedicItem(String itemcode) {nonMedicMapper.delNonMedicItem(itemcode);}
+    public void delNonMedicItem(String itemcode) {
+        nonMedicMapper.delNonMedicItem(itemcode);
+    }
 
     @Transactional
-    public void updateNonMedicItem(NonMedic condition) {nonMedicMapper.updateNonMedicItem(condition);}
+    public void updateNonMedicItem(NonMedic condition) {
+        nonMedicMapper.updateNonMedicItem(condition);
+    }
 }

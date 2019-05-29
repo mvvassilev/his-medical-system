@@ -2,7 +2,7 @@ package com.neuedu.hismedicalsystem.model.po;
 
 import java.util.Date;
 
-public class Settlement {
+public class BillCategory {
     private int billid;
     private String itemcode;
     private Date billdate;
