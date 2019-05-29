@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hismedicalsystem.model.mapper.ShiftMapper">
+
+    <select id="getShift" resultType="Shift">
+        select s.dutydate as dutydate, s.aorp as aorp, n.nmedname as nmedname, u.username as username,
+        d.deptname as deptname, s.ration as ration from
+
+        (((userrdept ud join user u on u.userid = ud.userid)
+        join dept d on d.deptcode = ud.deptcode)
+        join shift s on s.uRid = ud.uRid)
+        join non_medic n on n.itemcode = s.itemcode
+
+
+        where <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>
+    </select>
+</mapper>

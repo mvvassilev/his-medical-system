@@ -186,21 +186,21 @@
             updatingIndex:-1,
             updatingObject:{},
             depts: [{
-                    value: 'Option1',
-                    label: 'Option1'
-                    }, {
-                    value: 'Option2',
-                    label: 'Option2'
-                    }, {
-                    value: 'Option3',
-                    label: 'Option3'
-                    }, {
-                    value: 'Option4',
-                    label: 'Option4'
-                    }, {
-                    value: 'Option5',
-                    label: 'Option5'
-                    }],
+                value: 'Option1',
+                label: 'Option1'
+            }, {
+                value: 'Option2',
+                label: 'Option2'
+            }, {
+                value: 'Option3',
+                label: 'Option3'
+            }, {
+                value: 'Option4',
+                label: 'Option4'
+            }, {
+                value: 'Option5',
+                label: 'Option5'
+            }],
 
             form: {
                 userid: "",
@@ -268,15 +268,19 @@
             refresh:function(){
                 this.currentPage = 1;
                 var that = this;
-                axios.post('/management/depts', {
-                    deptcode: "",
-                    deptclass: "",
-                    deptname: "",
-                    deptcat: "",
+                axios.post('/management/users', {
+                    userid: "",
+                    username: "",
+                    pwd: "",
+                    realname: "",
+                    usercat: "",
+                    position: "",
+                    shiftOrNot: "",
+                    dept: []
                 })
                     .then(function (response) {
                         console.log(response.data);
-                        that.depts = response.data;
+                        that.users = response.data;
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -295,10 +299,13 @@
                 }
                 if (method == "Update"){
                     this.form = {
-                        deptcode: row.deptcode,
-                        deptclass: row.deptclass,
-                        deptname: row.deptname,
-                        deptcat: row.deptcat,
+                        userid: row.userid,
+                        username: row.username,
+                        pwd: row.pwd,
+                        realname: row.realname,
+                        usercat: row.usercat,
+                        position: row.position,
+                        shiftOrNot: row.shiftOrNot
                     }
                 }
                 // this.form = row;
@@ -315,6 +322,8 @@
                     this.onSubmitAdd();
                 if(this.methodType=="Update")
                     this.onSubmitUpdate();
+                if(this.methodType=="UpdateDept")
+                    this.onSubmitUpdateDept();
                 this.dialogFormVisible = false;
                 this.refresh();
             },
@@ -323,10 +332,14 @@
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/addDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat,
+                    userid: that.form.userid,
+                    username: that.form.username,
+                    pwd: that.form.pwd,
+                    realname: that.form.realname,
+                    usercat: that.form.usercat,
+                    position: that.form.position,
+                    shiftOrNot: that.form.shiftOrNot,
+                    depts: that.form.depts
                 })
                     .then(function (response) {
                         console.log(response.data);
