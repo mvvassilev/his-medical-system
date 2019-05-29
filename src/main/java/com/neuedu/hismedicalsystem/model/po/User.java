@@ -10,6 +10,7 @@ public class User {
     private String usercat;
     private String position;
     private boolean shiftOrNot;
+    private String strShiftOrNot;
     private List<Dept> depts;
     private String strDeptnames = "";
 
@@ -82,9 +83,13 @@ public class User {
     }
 
     public void setDepts(List<Dept> depts) {
+        System.out.println("SetDepts...");
         for(Dept d : depts){
             strDeptnames = strDeptnames + " " + d.getDeptname();
+            System.out.println(".."+strDeptnames);
         }
+        System.out.println("final"+strDeptnames);
+
         this.depts = depts;
     }
 }
