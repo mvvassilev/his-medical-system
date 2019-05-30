@@ -97,20 +97,21 @@
         </el-pagination>
     </template>
 
+    <!-- --------------------------------------- Form ------------------------- -->
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="Department" :label-width="formLabelWidth">
                 <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
                 <el-select
-                        v-model="selectdepts"
+                        v-model="form.selectdepts"
                         multiple
                         placeholder="Select"
                         style="width: 80%">
                     <el-option
-                            v-for="item in depts"
+                            v-for="item in deptList"
                             :key="item.deptcode"
                             :label="item.deptname"
-                            :value="item.deptname">
+                            :value="item.deptcode">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -127,16 +128,40 @@
                 <el-input v-model="form.realname" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Category" :label-width="formLabelWidth">
-                <el-input v-model="form.usercat" autocomplete="off"></el-input>
+                <el-select
+                        v-model="form.usercat"
+                        placeholder="Select User Category"
+                        style="width: 80%">
+                    <el-option
+                            v-for="item in usercatList"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
             </el-form-item>
+<!--            <el-form-item label="Position" :label-width="formLabelWidth">-->
+<!--                <el-input v-model="form.position" autocomplete="off"></el-input>-->
+<!--            </el-form-item>-->
             <el-form-item label="Position" :label-width="formLabelWidth">
-                <el-input v-model="form.position" autocomplete="off"></el-input>
+                <el-select
+                        v-model="form.position"
+                        placeholder="Select Doctor Position"
+                        style="width: 80%">
+                    <el-option
+                            v-for="item in positionList"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="Shift Or Not" :label-width="formLabelWidth">
-                <el-input v-model="form.shiftOrNot" autocomplete="off"></el-input>
+                <template>
+                    <el-radio v-model="form.shiftOrNot" label="true">Yes</el-radio>
+                    <el-radio v-model="form.shiftOrNot" label="false">No</el-radio>
+                </template>
             </el-form-item>
-
-
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -171,7 +196,8 @@
             realname: "",
             usercat: "",
             position: "",
-            shiftOrNot: "",
+            shiftOrNot: false,
+
 
             users: [],
 
@@ -186,7 +212,11 @@
             //Update
             updatingIndex:-1,
             updatingObject:{},
-            depts: [],
+
+            //All dept list
+            deptList: [],
+            usercatList:["挂号收费员","门诊医生","医技医生","药房操作员","财务管理员","医院管理员"],
+            positionList:["主任医师","副主任医师","主治医师","住院医师"],
 
             form: {
                 userid: "",
@@ -196,8 +226,9 @@
                 usercat: "",
                 position: "",
                 shiftOrNot: "",
+                selectdepts: [],
             },
-            selectdepts: [],
+
             formLabelWidth: '120px',
 
             //splitpages
@@ -206,6 +237,12 @@
             pagesize: 10,    //    每页的数据
         },
         methods: {
+            /*Show the selected depts from drop down*/
+            showSelectedDepartments: function(val){
+                console.log("showSelectedDepartments")
+                console.log(this.form.selectdepts)
+            },
+
             shiftFormatter(row){
                 if(row.shiftOrNot)
                     return "Yes"
@@ -262,7 +299,7 @@
                 })
                 .then(function (response) {
                     console.log(response.data);
-                    that.depts = response.data;
+                    that.deptList = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -272,14 +309,14 @@
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/users', {
-                    userid: "",
-                    username: "",
-                    pwd: "",
-                    realname: "",
-                    usercat: "",
-                    position: "",
-                    shiftOrNot: "",
-                    depts: []
+                    // userid: "",
+                    // username: "",
+                    // pwd: "",
+                    // realname: "",
+                    // usercat: "",
+                    // position: "",
+                    // shiftOrNot: "",
+                    // depts: []
                 })
                     .then(function (response) {
                         console.log(response.data);
@@ -295,21 +332,24 @@
                 this.loadDept();
                 if (method == "Add") {
                     this.form = {
-                        deptcode: "",
-                        deptclass: "",
-                        deptname: "",
-                        deptcat: "",
+                        // userid: "",
+                        // username: "",
+                        // pwd: "",
+                        // realname: "",
+                        // usercat: "",
+                        // position: "",
+                        // shiftOrNot: "",
                     }
                 }
                 if (method == "Update"){
                     this.form = {
-                        userid: row.userid,
-                        username: row.username,
-                        pwd: row.pwd,
-                        realname: row.realname,
-                        usercat: row.usercat,
-                        position: row.position,
-                        shiftOrNot: row.shiftOrNot
+                        // userid: row.userid,
+                        // username: row.username,
+                        // pwd: row.pwd,
+                        // realname: row.realname,
+                        // usercat: row.usercat,
+                        // position: row.position,
+                        // shiftOrNot: row.shiftOrNot
                     }
                 }
                 // this.form = row;
@@ -326,29 +366,20 @@
                     this.onSubmitAdd();
                 if(this.methodType=="Update")
                     this.onSubmitUpdate();
+                console.log("onSubmit->Form Content")
+                console.log(this.form)
                 this.dialogFormVisible = false;
                 this.refresh();
             },
 
             onSubmitAdd: function(){
                 console.log("onSubmitAdd")
-                // console.log(that.form);
-                // axios.post('/management/addUser', params)
-                //     .then(function (response) {
-                //         console.log(response.data);
-                //         // that.depts=response.data;
-                //     })
-                //     .catch(function (error) {
-                //         console.log(error);
-                //     });
                 console.log(this.users);
                 axios({
                     url: '/management/addUser',
                     method: 'post',
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
-                    data: {
-                       users: this.users
-                    }, // 以json字符串方式传递
+                    data:  this.form,
                     success: function(data) {
                         console.log("success...");
                     },
@@ -361,15 +392,18 @@
             onSubmitUpdate: function () {
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/updateDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                axios({
+                    url: '/management/updateUser',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:  this.form,
+                    success: function(data) {
+                        console.log("success...");
+                    },
+                    error: function(data) {
+                        console.log("error...");
+                    }
+                });
             },
             /*---------------Delete----------------------*/
             showDeleteDialogForm: function(index, row){
