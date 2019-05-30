@@ -54,12 +54,17 @@
         </collection>
     </resultMap>
 
+    <insert id="addUser">
+        insert into user (userid,username,pwd,realname,usercat,position,shiftOrNot)
+        values (#{userid},#{username},#{pwd},#{realname},#{usercat},#{position},#{shiftOrNot})
+    </insert>
+
     <update id="updateUserRDept">
-        update userrdept set deptcode = #{deptcode},uRid = {uRid} where userid = #{userid}
+        update userrdept set deptcode = #{deptcode} where userid = #{userid}
     </update>
 
     <update id="updateUser">
-        update user set username = #{username},pwd = #{pwd},realname = #{username},deptcode = #{deptcode}
+        update user set username = #{username},pwd = #{pwd},realname = #{realname},deptcode = #{deptcode}
          ,usercat = #{usercat},position = #{position},shiftOrNot = #{shiftOrNot}  where userid = #{userid}
     </update>
 

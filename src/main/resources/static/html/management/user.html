@@ -189,6 +189,7 @@
             depts: [],
 
             form: {
+                depts:
                 userid: "",
                 username: "",
                 pwd: "",
@@ -268,18 +269,23 @@
                     console.log(error);
                 });
             },
+            toJsonObject(array){
+                let temp = JSON.stringify(array);
+                return temp;
+            },
             refresh:function(){
                 this.currentPage = 1;
                 var that = this;
+                that.loadDept();
                 axios.post('/management/users', {
+                    depts: [],
                     userid: "",
                     username: "",
                     pwd: "",
                     realname: "",
                     usercat: "",
                     position: "",
-                    shiftOrNot: "",
-                    depts: []
+                    shiftOrNot: ""
                 })
                     .then(function (response) {
                         console.log(response.data);
@@ -295,30 +301,35 @@
                 this.loadDept();
                 if (method == "Add") {
                     this.form = {
-                        deptcode: "",
-                        deptclass: "",
-                        deptname: "",
-                        deptcat: "",
+                        depts: "",
+                        userid: "",
+                        username: "",
+                        pwd: "",
+                        realname: "",
+                        usercat: "",
+                        position: "",
+                        shiftOrNot: ""
                     }
                 }
                 if (method == "Update"){
+                    this.toJsonObject(this.depts);
                     this.form = {
+                        depts: row.depts,
                         userid: row.userid,
                         username: row.username,
                         pwd: row.pwd,
                         realname: row.realname,
                         usercat: row.usercat,
                         position: row.position,
-                        shiftOrNot: row.shiftOrNot
+                        shiftOrNot: row.shiftOrNot,
                     }
-                }
-                // this.form = row;
-
                 this.dialogFormVisible = true;
                 this.methodType = method;
-                this.formTitle = method + " Department";
+                this.formTitle = method + " users";
                 this.updatingIndex = index;
                 this.updatingObject = row;
+                }
+                this.form = row;
             },
 
             onSubmit: function(){
@@ -333,11 +344,14 @@
             onSubmitAdd: function(){
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/addDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat,
+                axios.post('/management/addUser', {
+                    userid: that.form.userid,
+                    username: that.form.username,
+                    pwd: that.form.pwd,
+                    realname: that.form.realname,
+                    usercat: that.form.usercat,
+                    position: that.form.position,
+                    shiftOrNot: that.form.shiftOrNot
                 })
                     .then(function (response) {
                         console.log(response.data);
@@ -351,15 +365,33 @@
             onSubmitUpdate: function () {
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/updateDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat
+                axios.post('/management/updateUser', {
+                    userid: that.form.userid,
+                    username: that.form.username,
+                    pwd: that.form.pwd,
+                    realname: that.form.realname,
+                    usercat: that.form.usercat,
+                    position: that.form.position,
+                    shiftOrNot: that.form.shiftOrNot,
+                    depts: that.form.depts
                 })
+                    .then(function (response) {
+                        that.users = response.data;
+                    })
                     .catch(function (error) {
                         console.log(error);
                     });
+                axios.post('/management/updateUserRDept',{
+                    deptcode: that.form.deptcode,
+                    userid: that.form.userid
+                })
+                    .then(function (response) {
+                        that.depts = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                this.refresh();
             },
             /*---------------Delete----------------------*/
             showDeleteDialogForm: function(index, row){
