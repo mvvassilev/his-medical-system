@@ -13,7 +13,6 @@
         join shift s on s.uRid = ud.uRid)
         join non_medic n on n.itemcode = s.itemcode
 
-
         where <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>
     </select>
 
