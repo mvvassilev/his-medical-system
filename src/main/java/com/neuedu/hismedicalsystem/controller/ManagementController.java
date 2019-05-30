@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/management")
@@ -171,6 +172,13 @@ public class ManagementController {
     @RequestMapping("/delShift")
     public void delShift(int shiftid) {
         shiftService.delShift(shiftid);
+    }
+
+    @RequestMapping("/delAllShift")
+    public void delAllShift(@RequestBody Map<String,Object> params){
+        String ids = params.get("ids").toString();
+        String[] id=ids.split(",");
+        shiftService.delAllShift(id);
     }
 
     /**

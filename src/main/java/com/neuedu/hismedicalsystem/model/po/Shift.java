@@ -4,6 +4,15 @@ import java.util.Date;
 
 public class Shift {
     private int shiftid;
+
+    public int getShiftid() {
+        return shiftid;
+    }
+
+    public void setShiftid(int shiftid) {
+        this.shiftid = shiftid;
+    }
+
     private Date dutydate;
     private String deptname;
     private String realname;

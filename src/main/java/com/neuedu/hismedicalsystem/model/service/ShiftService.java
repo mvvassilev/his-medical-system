@@ -22,4 +22,7 @@ public class ShiftService {
     public void delShift(int shiftid) {
         shiftMapper.delShift(shiftid);
     }
+
+    @Transactional
+    public void delAllShift(String[] id){shiftMapper.delAllShift(id);}
 }
