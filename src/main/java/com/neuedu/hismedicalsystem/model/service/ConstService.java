@@ -18,8 +18,8 @@ public class ConstService {
         System.out.println(constMapper);
     }
 
-    public List<Constant> getConsts(Constant condition){
-        return constMapper.getConsts(condition);
+    public List<Constant> getConst(Constant condition) {
+        return constMapper.getConst(condition);
     }
 
     @Transactional

@@ -43,9 +43,9 @@ public class ManagementController {
         constService.updateConst(condition);
     }
 
-    @RequestMapping("/consts")
-    public List<Constant> getConsts(@RequestBody Constant condition) {
-        return constService.getConsts(condition);
+    @RequestMapping("/const")
+    public List<Constant> getConst(@RequestBody Constant condition) {
+        return constService.getConst(condition);
     }
 
     /**
