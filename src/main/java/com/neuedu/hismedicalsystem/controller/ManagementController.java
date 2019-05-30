@@ -34,8 +34,10 @@ public class ManagementController {
     }
 
     @RequestMapping("/delConst")
-    public void delConst(@RequestBody int constid) {
-        constService.delConst(constid);
+    public void delConst(@RequestBody Constant c) {
+
+        System.out.println(c.getConstid());
+        constService.delConst(c.getConstid());
     }
 
     @RequestMapping("/updateConst")
@@ -43,9 +45,9 @@ public class ManagementController {
         constService.updateConst(condition);
     }
 
-    @RequestMapping("/const")
-    public List<Constant> getConst(@RequestBody Constant condition) {
-        return constService.getConst(condition);
+    @RequestMapping("/consts")
+    public List<Constant> getConsts(@RequestBody Constant condition) {
+        return constService.getConsts(condition);
     }
 
     /**
