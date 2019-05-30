@@ -40,42 +40,42 @@
         </el-col>
     </el-row>
 
-        <el-table
-                :data="shift"
-                style="width: 100%">
-            <el-table-column
-                    prop="dutydate"
-                    label="Date"
-                    width="180"
-                    :formatter="dateFormatter">
-            </el-table-column>
-            <el-table-column
-                    prop="deptname"
-                    label="Department"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="username"
-                    label="Doctor"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="aorp"
-                    label="AM or PM"
-                    width="180"
-                    :formatter="aorpFormatter">
-            </el-table-column>
-            <el-table-column
-                    prop="nmedname"
-                    label="Register level"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="ration"
-                    label="Quota">
-            </el-table-column>
-        </el-table>
-        <!--<el-pagination
+    <el-table
+            :data="shift"
+            style="width: 100%">
+        <el-table-column
+                prop="dutydate"
+                label="Date"
+                width="180"
+                :formatter="dateFormatter">
+        </el-table-column>
+        <el-table-column
+                prop="deptname"
+                label="Department"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="username"
+                label="Doctor"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="aorp"
+                label="AM or PM"
+                width="180"
+                :formatter="aorpFormatter">
+        </el-table-column>
+        <el-table-column
+                prop="nmedname"
+                label="Register level"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="ration"
+                label="Quota">
+        </el-table-column>
+    </el-table>
+    <!--<el-pagination
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
                 :current-page="currentPage"
@@ -93,7 +93,7 @@
     <el-dialog
             title="Shift Arrangement"
             :visible.sync="dialogVisible"
-            width="70%">
+            width="100%">
         <el-row :gutter="20">
             <el-col :span="18">
 
@@ -133,21 +133,56 @@
             </el-table-column>
             <el-table-column
                     prop="timecode"
-                    label="TimeArrange">
+                    label="TimeArrange"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="reglevel"
+                    label="RegisterLV"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="ration"
+                    label="Ration"
+                    width="180">
             </el-table-column>
         </el-table>
         <div style="margin-top: 20px">
             <el-button @click="toggleSelection()">Cancel Selection</el-button>
         </div>
         <div class="block">
-            <el-date-picker
-                    v-model="ruledate"
-                    type="daterange"
-                    value-format="yyyy-MM-dd"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期">
-            </el-date-picker>
+            <el-row :gutter="20">
+                <el-col :span="10">
+                    <el-date-picker style="width:300px"
+                                    v-model="ruledate"
+                                    type="daterange"
+
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-col>
+                <el-col :span="4">
+                    <el-input v-model="opid" style="width:100px" placeholder="OperatorID"></el-input>
+                </el-col>
+                <el-col :span="4">
+                    <el-input v-model="ration" style="width:100px" placeholder="Ration"></el-input>
+                </el-col>
+                <el-col :span="6">
+                    <el-select v-model="reglevel" placeholder="Choose RegisterLV">
+                        <el-option
+                                v-for="item in items"
+                                :key="item.itemcode"
+                                :label="item.nmedname"
+                                :value="item.itemcode">
+                            <span style="float: left">{{ item.nmedname}}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.itemcode }}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+
+
             <el-button type="primary" @click="arrangeShift">Arrange Now!</el-button>
         </div>
 
@@ -189,15 +224,15 @@
                     }
                 }]
             },
-            dutydate:"",
-            deptname:"",
-            username:"",
-            aorp:false,
-            nmedname:"",
-            ration:"",
-            datee:"",
-            dates:"",
-            shift:[],
+            dutydate: "",
+            deptname: "",
+            username: "",
+            aorp: false,
+            nmedname: "",
+            ration: "",
+            datee: "",
+            dates: "",
+            shift: [],
             value: [],
 
             /*currentPage: 1, //初始页
@@ -205,23 +240,23 @@
 
             deleteDialogVisible: false,//控制弹出删除窗口
             deletingIndex: -1,
-            deletingObject:{},
+            deletingObject: {},
 
             dialogFormVisible: false,
-            updatingIndex:-1,
-            updatingObject:{},
+            updatingIndex: -1,
+            updatingObject: {},
 
 
         },
         methods: {
-            dateFormatter(row){
-                return row.dutydate.substr(0,10)
+            dateFormatter(row) {
+                return row.dutydate.substr(0, 10)
             },
-            aorpFormatter(row){
-                if(row.aorp==true){
+            aorpFormatter(row) {
+                if (row.aorp == true) {
                     return "A.M."
                 }
-                if(row.aorp==false){
+                if (row.aorp == false) {
                     return "P.M."
                 }
             },
@@ -231,7 +266,7 @@
                 params.append("datee", this.value[1]);
                 //this.currentPage = 1;
                 var that = this;
-                axios.post('/management/shift',params)
+                axios.post('/management/shift', params)
                     .then(function (response) {
                         console.log(response.data);
                         console.log(that.value[0]);
@@ -246,7 +281,9 @@
 
             showRuleDialogForm: function () {
                 dialog.dialogVisible = true;
+                dialog.fillDeptSelect();
             },
+
         }
     });
 
@@ -260,7 +297,12 @@
             rules: [],
             multipleSelection: [],
 
-            ruledate:[]
+            ruledate: [],
+            ration: '',
+            opid: '',
+            reglevel: '',
+            items: [],
+
         },
         methods: {
 
@@ -293,9 +335,90 @@
                 this.multipleSelection = val;
             },
 
-            arrangeShift:function() {
-                console.log("ARRANGE!"+this.ruledate[0]);
+            arrangeShift: function () {
+
+                console.log("ARRANGE!" + this.ruledate[0]);
+                console.log(this.multipleSelection[0].timecode);
+                var startwd = this.ruledate[0].getDay();
+                var daycount = (this.ruledate[1] - this.ruledate[0]) / (1000 * 60 * 60 * 24);
+
+                var params = [];
+                for (var j = 0; j < this.multipleSelection.length; j++) {
+                    for (var i = 0; i <= daycount; i++) {
+
+                        var param = {
+                            ruleid: "",
+                            nmedname: "",
+                            ration: "",
+                            dutydate: new Date(),
+                            userid: "",
+                            aorp: true,
+                        };
+                        var param2 = {
+                            ruleid: "",
+                            nmedname: "",
+                            ration: "",
+                            dutydate: new Date(),
+                            userid: "",
+                            aorp: false,
+                        };
+                        param.ruleid = this.multipleSelection[j].ruleid;
+                        param.nmedname = this.multipleSelection[j].reglevel;
+                        param.ration = this.multipleSelection[j].ration;
+                        param.dutydate.setDate(this.ruledate[0].getDate() + i);
+                        param.userid = this.opid;
+                        param2.ruleid = this.multipleSelection[j].ruleid;
+                        param2.nmedname = this.multipleSelection[j].reglevel;
+                        param2.ration = this.multipleSelection[j].ration;
+                        param2.dutydate.setDate(this.ruledate[0].getDate() + i);
+                        param2.userid = this.opid;
+
+                        var morning = parseInt(this.multipleSelection[j].timecode[(2 * (i + startwd)) % 14]);
+
+                        if(morning){
+                            params.push(param);
+                        }
+
+                        var afternoon = parseInt(this.multipleSelection[j].timecode[(2 * (i + startwd)) % 14 + 1]);
+
+                        if(afternoon){
+                            params.push(param2);
+                        }
+
+                    }
+                }
+
+
+                axios({
+                    url: '/management/updateShift',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {
+                        startdate: this.ruledate[0],
+                        enddate: this.ruledate[1],
+                        shifts: params
+                    }
+                    , // 以json字符串方式传递
+                    success: function (data) {
+                        console.log("success...");
+                    },
+                    error: function (data) {
+                        console.log("error...");
+                    }
+                });
+            },
+            fillDeptSelect: function () {
+                var that = this;
+                axios.get('/management/getRegLevel')
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.items = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
+
 
         }
     })

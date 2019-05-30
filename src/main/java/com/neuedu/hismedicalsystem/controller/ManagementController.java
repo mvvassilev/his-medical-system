@@ -1,5 +1,8 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.*;
 import com.neuedu.hismedicalsystem.model.service.*;
 import org.apache.ibatis.annotations.Param;
@@ -9,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -143,6 +148,11 @@ public class ManagementController {
         return nonMedicService.getNonMedicItems(condition);
     }
 
+    @RequestMapping("/getRegLevel")
+    public List<NonMedic> getRegLevel(){
+        return nonMedicService.getRegLevel();
+    }
+
     /**
      * rule
      */
@@ -160,12 +170,52 @@ public class ManagementController {
     @Autowired
     private ShiftService shiftService;
 
-
     @RequestMapping("/shift")
     public List<Shift> getShift(Date dates, Date datee) {
         return shiftService.getShift(dates, datee);
     }
 
+    @RequestMapping("/updateShift")
+    public void getShift(@RequestBody JSONObject obj){
+        try {
+            System.out.println(obj);
+            Date startdate = obj.getDate("startdate");
+            Date enddate = obj.getDate("enddate");
+
+            shiftService.deleteConflictShifts(startdate,enddate);
+
+            JSONArray params = obj.getJSONArray("shifts");
+
+            List<Shift> insertShifts = new ArrayList<>();
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+            for(int i = 0; i < params.size(); i++){
+                int ruleid = params.getJSONObject(i).getInteger("ruleid");
+                int uRid = ruleService.getURid(ruleid);
+
+                String nmedname = params.getJSONObject(i).getString("nmedname");
+                String itemcode = nonMedicService.getRegItemCode(nmedname);
+
+                System.out.println(uRid);
+                System.out.println(itemcode);
+
+                Shift tempShift = new Shift();
+                tempShift.setAorp(params.getJSONObject(i).getBoolean("aorp"));
+                tempShift.setDutydate(params.getJSONObject(i).getDate("dutydate"));
+                tempShift.setItemcode(itemcode);
+                tempShift.setRation(params.getJSONObject(i).getInteger("ration"));
+                tempShift.setUserid(params.getJSONObject(i).getInteger("userid"));
+                tempShift.setuRid(uRid);
+
+                insertShifts.add(tempShift);
+            }
+
+            shiftService.insertShift(insertShifts);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * user
      */

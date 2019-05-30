@@ -5,7 +5,9 @@ public class Rule {
     private String rulename;
     private String deptname;
     private String username;
-    private long timecode;
+    private String timecode;
+    private String reglevel;
+    private int ration;
 
     public int getRuleid() {
         return ruleid;
@@ -37,7 +39,27 @@ public class Rule {
         this.username = username;
     }
 
-    public long getTimecode() { return timecode; }
+    public String getTimecode() {
+        return timecode;
+    }
 
-    public void setTimecode(long timecode) { this.timecode = timecode; }
+    public void setTimecode(String timecode) {
+        this.timecode = timecode;
+    }
+
+    public String getReglevel() {
+        return reglevel;
+    }
+
+    public void setReglevel(String reglevel) {
+        this.reglevel = reglevel;
+    }
+
+    public int getRation() {
+        return ration;
+    }
+
+    public void setRation(int ration) {
+        this.ration = ration;
+    }
 }

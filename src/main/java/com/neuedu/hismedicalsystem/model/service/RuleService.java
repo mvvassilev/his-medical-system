@@ -15,6 +15,10 @@ public class RuleService {
     public List<Rule> getRules(String deptname){
         return ruleMapper.getRules(deptname);
     }
+
+    public int getURid(int ruleid) {
+        return ruleMapper.getURid(ruleid);
+    }
 /*
     @Transactional
     public void addDept(Dept dept) throws Exception {

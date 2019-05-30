@@ -12,4 +12,8 @@ public interface NonMedicMapper {
     void addNonMedicItem(NonMedic condition);
 
     void updateNonMedicItem(NonMedic condition);
+
+    List<NonMedic> getRegLevel();
+
+    String getRegItemCode(String nmedname);
 }

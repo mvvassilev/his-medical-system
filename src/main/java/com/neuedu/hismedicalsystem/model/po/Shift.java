@@ -18,6 +18,7 @@ public class Shift {
     private boolean aorp;
     private String nmedname;
     private int ration;
+    private int userid;
 
     public String getDeptname() {
         return deptname;
@@ -57,5 +58,33 @@ public class Shift {
 
     public void setRation(int ration) {
         this.ration = ration;
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    /* ADD FOR SHIFT ARRANGE*/
+    private int uRid;
+    private String itemcode;
+
+    public int getuRid() {
+        return uRid;
+    }
+
+    public void setuRid(int uRid) {
+        this.uRid = uRid;
+    }
+
+    public String getItemcode() {
+        return itemcode;
+    }
+
+    public void setItemcode(String itemcode) {
+        this.itemcode = itemcode;
     }
 }

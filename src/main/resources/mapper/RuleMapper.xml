@@ -5,7 +5,7 @@
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.RuleMapper">
 
     <select id="getRules" resultType="Rule">
-        select r.ruleid as ruleid, r.rulename as rulename, u.username as username,
+        select r.ruleid as ruleid, r.rulename as rulename, u.username as username, r.reglevel as reglevel, r.ration as ration,
          d.deptname as deptname, r.timecode as timecode from
 
         ((userrdept ud join user u on u.userid = ud.userid)
@@ -13,6 +13,12 @@
         join rule r on r.uRid = ud.uRid
 
         where deptname = #{deptname}
+    </select>
+
+    <select id="getURid" resultType="Integer">
+        select uRid from rule
+
+        where ruleid = #{ruleid}
     </select>
 
     <!--<resultMap type="Rule" id="_rule">
