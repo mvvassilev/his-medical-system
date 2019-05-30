@@ -39,10 +39,15 @@
             <el-button type="primary" @click="showRuleDialogForm">Query Rules</el-button>
         </el-col>
     </el-row>
-
     <el-table
+            ref="multipleTable"
             :data="shift"
-            style="width: 100%">
+            style="width: 100%"
+            @selection-change="handleSelectionChange">
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
         <el-table-column
                 prop="dutydate"
                 label="Date"
@@ -55,7 +60,7 @@
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="username"
+                prop="realname"
                 label="Doctor"
                 width="180">
         </el-table-column>
@@ -75,18 +80,10 @@
                 label="Quota">
         </el-table-column>
     </el-table>
-    <!--<el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[5, 10, 20, 40]"
-
-            :page-size="pagesize"
-            :hide-on-single-page="value"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="shift.length">
-    </el-pagination>-->
-
+    <div style="margin-top: 20px">
+        <el-button @click="toggleSelection()">Cancel Selection</el-button>
+        <el-button type="warning">Delete All</el-button>
+    </div>
 </div>
 
 <div id="rule">
@@ -244,6 +241,18 @@
                     });
             },
 
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
             showRuleDialogForm: function () {
                 dialog.dialogVisible = true;
             },
@@ -299,9 +308,6 @@
 
         }
     })
-
-
-
 </script>
 
 </html>

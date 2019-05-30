@@ -1,13 +1,15 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.*;
 import com.neuedu.hismedicalsystem.model.service.*;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.util.List;
@@ -168,6 +170,11 @@ public class ManagementController {
         return shiftService.getShift(dates, datee);
     }
 
+    @RequestMapping("/delShift")
+    public void delShift(int shiftid) {
+        shiftService.delShift(shiftid);
+    }
+
     /**
      * user
      */
@@ -190,5 +197,23 @@ public class ManagementController {
         userService.deleteUser(userid);
     }
 
+    @PostMapping(value = "/addUser")
+    public void addUser(@RequestBody JSONObject obj) {
 
+        try {
+            JSONArray users = obj.getJSONArray("users");
+            for (int i = 0; i < users.size(); i++) {
+                JSONObject user = users.getJSONObject(i);
+                System.out.println("User ID" + user.getInteger("userid"));
+                JSONArray depts = user.getJSONArray("depts");
+                for (int j = 0; j < depts.size(); j++) {
+                    String s = (String) depts.getJSONObject(j).getString("deptcode");
+                    System.out.println(s);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

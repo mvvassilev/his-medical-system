@@ -110,7 +110,7 @@
                             v-for="item in depts"
                             :key="item.deptcode"
                             :label="item.deptname"
-                            :value="item.deptname">
+                            :value="item.deptcode">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -189,7 +189,6 @@
             depts: [],
 
             form: {
-                depts:
                 userid: "",
                 username: "",
                 pwd: "",
@@ -269,23 +268,18 @@
                     console.log(error);
                 });
             },
-            toJsonObject(array){
-                let temp = JSON.stringify(array);
-                return temp;
-            },
             refresh:function(){
                 this.currentPage = 1;
                 var that = this;
-                that.loadDept();
                 axios.post('/management/users', {
-                    depts: [],
                     userid: "",
                     username: "",
                     pwd: "",
                     realname: "",
                     usercat: "",
                     position: "",
-                    shiftOrNot: ""
+                    shiftOrNot: "",
+                    depts: []
                 })
                     .then(function (response) {
                         console.log(response.data);
@@ -301,35 +295,31 @@
                 this.loadDept();
                 if (method == "Add") {
                     this.form = {
-                        depts: "",
-                        userid: "",
-                        username: "",
-                        pwd: "",
-                        realname: "",
-                        usercat: "",
-                        position: "",
-                        shiftOrNot: ""
+                        deptcode: "",
+                        deptclass: "",
+                        deptname: "",
+                        deptcat: "",
                     }
                 }
                 if (method == "Update"){
-                    this.toJsonObject(this.depts);
+
                     this.form = {
-                        depts: row.depts,
-                        userid: row.userid,
-                        username: row.username,
-                        pwd: row.pwd,
-                        realname: row.realname,
-                        usercat: row.usercat,
-                        position: row.position,
-                        shiftOrNot: row.shiftOrNot,
+                        <!--userid: row.userid,-->
+                        <!--username: row.username,-->
+                        <!--pwd: row.pwd,-->
+                        <!--realname: row.realname,-->
+                        <!--usercat: row.usercat,-->
+                        <!--position: row.position,-->
+                        <!--shiftOrNot: row.shiftOrNot-->
                     }
+                }
+                // this.form = row;
+
                 this.dialogFormVisible = true;
                 this.methodType = method;
-                this.formTitle = method + " users";
+                this.formTitle = method + " Department";
                 this.updatingIndex = index;
                 this.updatingObject = row;
-                }
-                this.form = row;
             },
 
             onSubmit: function(){
@@ -342,57 +332,53 @@
             },
 
             onSubmitAdd: function(){
-                var that = this;
-                console.log(that.form);
-                axios.post('/management/addUser', {
-                    userid: that.form.userid,
-                    username: that.form.username,
-                    pwd: that.form.pwd,
-                    realname: that.form.realname,
-                    usercat: that.form.usercat,
-                    position: that.form.position,
-                    shiftOrNot: that.form.shiftOrNot
-                })
-                    .then(function (response) {
-                        console.log(response.data);
-                        // that.depts=response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                console.log("onSubmitAdd")
+                // console.log(that.form);
+                // axios.post('/management/addUser', params)
+                //     .then(function (response) {
+                //         console.log(response.data);
+                //         // that.depts=response.data;
+                //     })
+                //     .catch(function (error) {
+                //         console.log(error);
+                //     });
+                console.log(this.users);
+                axios({
+                    url: '/management/addUser',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {
+                       users: this.users
+                    }, // 以json字符串方式传递
+                    success: function(data) {
+                        console.log("success...");
+                    },
+                    error: function(data) {
+                        console.log("error...");
+                    }
+                });
             },
 
             onSubmitUpdate: function () {
-                var that = this;
-                console.log(that.form);
-                axios.post('/management/updateUser', {
-                    userid: that.form.userid,
-                    username: that.form.username,
-                    pwd: that.form.pwd,
-                    realname: that.form.realname,
-                    usercat: that.form.usercat,
-                    position: that.form.position,
-                    shiftOrNot: that.form.shiftOrNot,
-                    depts: that.form.depts
-                })
-                    .then(function (response) {
-                        that.users = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                axios.post('/management/updateUserRDept',{
-                    deptcode: that.form.deptcode,
-                    userid: that.form.userid
-                })
-                    .then(function (response) {
-                        that.depts = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                this.refresh();
+                console.log("onSubmitUpdate called");
+                let that = this;
+                console.log(this.users);
+                axios({
+                    url: '/management/addUser',
+                    method: 'post',
+                    contentType: 'application/json',
+                    data: {
+                       users: this.users
+                    },
+                    success: function(data) {
+                        console.log("success...");
+                    },
+                    error: function(data) {
+                        console.log("error...");
+                    }
+                });
             },
+
             /*---------------Delete----------------------*/
             showDeleteDialogForm: function(index, row){
                 this.deleteDialogVisible = true;
