@@ -25,7 +25,7 @@ public class ManagementController {
     private ConstService constService;
 
     @RequestMapping("/addConst")
-    public void addConst(@RequestBody Constant condition){
+    public void addConst(@RequestBody Constant condition) {
         try {
             constService.addConst(condition);
         } catch (Exception e) {
@@ -34,17 +34,17 @@ public class ManagementController {
     }
 
     @RequestMapping("/delConst")
-    public void delConst(@RequestBody int constid){
+    public void delConst(@RequestBody int constid) {
         constService.delConst(constid);
     }
 
     @RequestMapping("/updateConst")
-    public void updateConst(@RequestBody Constant condition){
+    public void updateConst(@RequestBody Constant condition) {
         constService.updateConst(condition);
     }
 
     @RequestMapping("/consts")
-    public List<Constant> getConsts(@RequestBody Constant condition){
+    public List<Constant> getConsts(@RequestBody Constant condition) {
         return constService.getConsts(condition);
     }
 
@@ -72,12 +72,12 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateDept")
-    public void updateDept(@RequestBody Dept condition){
+    public void updateDept(@RequestBody Dept condition) {
         deptService.updateDept(condition);
     }
 
     @RequestMapping("/depts")
-    public List<Dept> getDepts(@RequestBody Dept condition){
+    public List<Dept> getDepts(@RequestBody Dept condition) {
         return deptService.getDepts(condition);
     }
 
@@ -90,7 +90,7 @@ public class ManagementController {
     @RequestMapping("/addDis")
     public String addDis(@RequestBody Disease disease) {
         System.out.println(disease.getIcdcode());
-        try{
+        try {
             disService.addDis(disease);
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,12 +105,14 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateDis")
-    public void updateDis(@RequestBody Disease condition){
+    public void updateDis(@RequestBody Disease condition) {
         disService.updateDis(condition);
     }
 
     @RequestMapping("/dis")
-    public List<Disease> getDis(@RequestBody Disease condition){ return disService.getDis(condition);}
+    public List<Disease> getDis(@RequestBody Disease condition) {
+        return disService.getDis(condition);
+    }
 
     /**
      * non-medical
@@ -152,7 +154,7 @@ public class ManagementController {
     private RuleService ruleService;
 
     @RequestMapping("/getRules")
-    public List<Rule> getRules(String deptname){
+    public List<Rule> getRules(String deptname) {
         return ruleService.getRules(deptname);
     }
 
@@ -168,6 +170,11 @@ public class ManagementController {
         return shiftService.getShift(dates, datee);
     }
 
+    @RequestMapping("/delShift")
+    public void delShift(int shiftid) {
+        shiftService.delShift(shiftid);
+    }
+
     /**
      * user
      */
@@ -176,17 +183,17 @@ public class ManagementController {
 
 
     @RequestMapping("/users")
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userService.getUsers();
     }
 
     @RequestMapping("/updateUser")
-    public void updateUser(@RequestBody User condition){
+    public void updateUser(@RequestBody User condition) {
         userService.updateUser(condition);
     }
 
     @RequestMapping("/deleteUser")
-    public void deleteUser(String userid){
+    public void deleteUser(String userid) {
         userService.deleteUser(userid);
     }
 

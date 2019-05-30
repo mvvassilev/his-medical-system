@@ -3,6 +3,7 @@ package com.neuedu.hismedicalsystem.model.service;
 import com.neuedu.hismedicalsystem.model.mapper.ShiftMapper;
 import com.neuedu.hismedicalsystem.model.po.Shift;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -13,7 +14,12 @@ public class ShiftService {
     @Resource
     private ShiftMapper shiftMapper;
 
-    public List<Shift> getShift(Date dates, Date datee){
-        return shiftMapper.getShift(dates,datee);
+    public List<Shift> getShift(Date dates, Date datee) {
+        return shiftMapper.getShift(dates, datee);
+    }
+
+    @Transactional
+    public void delShift(int shiftid) {
+        shiftMapper.delShift(shiftid);
     }
 }

@@ -5,13 +5,15 @@ public class Rule {
     private String rulename;
     private String deptname;
     private String username;
-    private long timecode;
+    private String timecode;
 
     public int getRuleid() {
         return ruleid;
     }
 
-    public void setRuleid(int ruleid) { this.ruleid = ruleid; }
+    public void setRuleid(int ruleid) {
+        this.ruleid = ruleid;
+    }
 
     public String getRulename() {
         return rulename;
@@ -37,7 +39,7 @@ public class Rule {
         this.username = username;
     }
 
-    public long getTimecode() { return timecode; }
+    public String getTimecode() { return timecode; }
 
-    public void setTimecode(long timecode) { this.timecode = timecode; }
+    public void setTimecode(String timecode) { this.timecode = timecode; }
 }

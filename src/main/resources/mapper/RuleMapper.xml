@@ -6,7 +6,7 @@
 
     <select id="getRules" resultType="Rule">
         select r.ruleid as ruleid, r.rulename as rulename, u.username as username,
-         d.deptname as deptname, r.timecode as timecode from
+        d.deptname as deptname, r.timecode as timecode from
 
         ((userrdept ud join user u on u.userid = ud.userid)
         join dept d on d.deptcode = ud.deptcode)

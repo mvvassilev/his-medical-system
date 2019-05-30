@@ -3,7 +3,13 @@ package com.neuedu.hismedicalsystem.model.po;
 import java.util.Date;
 
 public class Shift {
+    private int shiftid;
     private Date dutydate;
+    private String deptname;
+    private String realname;
+    private boolean aorp;
+    private String nmedname;
+    private int ration;
 
     public Date getDutydate() {
         return dutydate;
@@ -13,12 +19,6 @@ public class Shift {
         this.dutydate = dutydate;
     }
 
-    private String deptname;
-    private String username;
-    private boolean aorp;
-    private String nmedname;
-    private int ration;
-
     public String getDeptname() {
         return deptname;
     }
@@ -27,12 +27,12 @@ public class Shift {
         this.deptname = deptname;
     }
 
-    public String getUsername() {
-        return username;
+    public String getRealname() {
+        return realname;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 
     public boolean isAorp() {
