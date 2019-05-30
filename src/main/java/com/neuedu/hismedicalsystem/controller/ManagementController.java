@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -183,13 +184,19 @@ public class ManagementController {
 
 
     @RequestMapping("/users")
-    public List<User> getUsers() {
-        return userService.getUsers();
+    public List<User> getUsers(@RequestBody User condition) {
+        return userService.getUsers(condition);
     }
 
     @RequestMapping("/updateUser")
-    public void updateUser(@RequestBody User condition) {
-        userService.updateUser(condition);
+    public void updateUser(@RequestBody JSONObject obj) {
+        try {
+            User user = getUserFromJasonObj(obj);
+            List<String> deptList = getDeptList(obj);
+            userService.updateUser(user,deptList);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @RequestMapping("/deleteUser")
@@ -199,39 +206,34 @@ public class ManagementController {
 
     @PostMapping(value = "/addUser")
     public void addUser(@RequestBody JSONObject obj) {
-//        JSONObject jsonObject = new JSONObject();
-//        jsonObject.put("id",123);
-//        System.out.println("AddUser");
-//        System.out.println("----------------------------------------------------");
-//        System.out.println(obj);
-//        return jsonObject;
-
         try {
-
-//            System.out.println("User ID"+ obj.getInteger("userid"));
-//            JSONArray depts = obj.getJSONArray("depts");
-//            System.out.println("Depts：");
-//            for (int i = 0; i < depts.size(); i++) {
-//                String s = (String) depts.get(i);
-//                System.out.println(s);
-//            }
-//            return dets;
-            JSONArray users = obj.getJSONArray("users");
-            for (int i = 0; i < users.size(); i++) {
-                JSONObject user = users.getJSONObject(i);
-                System.out.println("User ID" + user.getInteger("userid"));
-                JSONArray depts = user.getJSONArray("depts");
-                for (int j = 0; j < depts.size(); j++) {
-                    String s = (String) depts.getJSONObject(j).getString("deptcode");
-                    System.out.println(s);
-                }
-            }
-
+            User user = getUserFromJasonObj(obj);
+            List<String> deptList = getDeptList(obj);
+            userService.addUser(user,deptList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
-//        userService.addUser(user);
-//        return null;
+    /*Helpers*/
+    public List<String> getDeptList(JSONObject obj){
+        JSONArray selectdepts = obj.getJSONArray("selectdepts");
+        List<String> deptList = new ArrayList<String>();
+        for (int i = 0; i < selectdepts.size(); i++) {
+            deptList.add(selectdepts.get(i).toString());
+        }
+        return deptList;
+    }
+
+    public User getUserFromJasonObj(JSONObject obj){
+        User user = new User();
+        user.setUserid(obj.getInteger("userid"));
+        user.setUsername(obj.getString("username"));
+        user.setPwd(obj.getString("pwd"));
+        user.setRealname(obj.getString("realname"));
+        user.setUsercat(obj.getString("usercat"));
+        user.setPosition(obj.getString("position"));
+        user.setShiftOrNot(obj.getBoolean("shiftOrNot"));
+        return user;
     }
 }

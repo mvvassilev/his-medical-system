@@ -39,7 +39,11 @@ public class Rule {
         this.username = username;
     }
 
-    public String getTimecode() { return timecode; }
+    public String getTimecode() {
+        return timecode;
+    }
 
-    public void setTimecode(String timecode) { this.timecode = timecode; }
+    public void setTimecode(String timecode) {
+        this.timecode = timecode;
+    }
 }

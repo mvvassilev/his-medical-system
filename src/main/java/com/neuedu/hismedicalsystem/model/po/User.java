@@ -12,6 +12,27 @@ public class User {
     private boolean shiftOrNot;
     private List<Dept> depts;
 
+//    public User(int userid, String username, String pwd, String realname, String usercat, String position, boolean shiftOrNot, List<Dept> depts) {
+//        this.userid = userid;
+//        this.username = username;
+//        this.pwd = pwd;
+//        this.realname = realname;
+//        this.usercat = usercat;
+//        this.position = position;
+//        this.shiftOrNot = shiftOrNot;
+//        this.depts = depts;
+//    }
+//
+//    public User(int userid, String username, String pwd, String realname, String usercat, String position, boolean shiftOrNot) {
+//        this.userid = userid;
+//        this.username = username;
+//        this.pwd = pwd;
+//        this.realname = realname;
+//        this.usercat = usercat;
+//        this.position = position;
+//        this.shiftOrNot = shiftOrNot;
+//    }
+
     public int getUserid() {
         return userid;
     }
