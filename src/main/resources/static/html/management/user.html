@@ -99,6 +99,21 @@
 
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
+            <el-form-item label="Department" :label-width="formLabelWidth">
+                <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
+                <el-select
+                        v-model="selectdepts"
+                        multiple
+                        collapse-tags
+                        placeholder="Select">
+                    <el-option
+                            v-for="item in depts"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item v-if="methodType=='Add'" label="userid" :label-width="formLabelWidth">
                 <el-input v-model="form.userid" autocomplete="off"></el-input>
             </el-form-item>
@@ -120,22 +135,6 @@
             <el-form-item label="Shift Or Not" :label-width="formLabelWidth">
                 <el-input v-model="form.shiftOrNot" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Department" :label-width="formLabelWidth">
-                <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
-                <el-select
-                        v-model="selectdepts"
-                        multiple
-                        collapse-tags
-                        placeholder="Select">
-                    <el-option
-                            v-for="item in depts"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -185,22 +184,8 @@
             //Update
             updatingIndex:-1,
             updatingObject:{},
-            depts: [{
-                value: 'Option1',
-                label: 'Option1'
-            }, {
-                value: 'Option2',
-                label: 'Option2'
-            }, {
-                value: 'Option3',
-                label: 'Option3'
-            }, {
-                value: 'Option4',
-                label: 'Option4'
-            }, {
-                value: 'Option5',
-                label: 'Option5'
-            }],
+
+            depts: [],
 
             form: {
                 userid: "",
@@ -320,21 +305,31 @@
             },
 
             onSubmitAdd: function(){
-                var that = this;
-                console.log(that.form);
-                axios.post('/management/addDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat,
-                })
-                    .then(function (response) {
-                        console.log(response.data);
-                        // that.depts=response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                console.log("onSubmitAdd")
+                // console.log(that.form);
+                // axios.post('/management/addUser', params)
+                //     .then(function (response) {
+                //         console.log(response.data);
+                //         // that.depts=response.data;
+                //     })
+                //     .catch(function (error) {
+                //         console.log(error);
+                //     });
+                console.log(this.users);
+                axios({
+                    url: '/management/addUser',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {
+                       users: this.users
+                    }, // 以json字符串方式传递
+                    success: function(data) {
+                        console.log("success...");
+                    },
+                    error: function(data) {
+                        console.log("error...");
+                    }
+                });
             },
 
             onSubmitUpdate: function () {

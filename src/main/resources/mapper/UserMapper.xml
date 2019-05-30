@@ -70,6 +70,19 @@
     <delete id="deleteUserFromUserRDept">
         delete from userrdept where userid=#{userid}
     </delete>
+
+    <insert id="addUser">
+      insert into user (userid,username,pwd,realname,usercat,position,shiftOrNot)
+      values (#{userid},#{username},#{pwd},#{realname},#{usercat},#{position},#{shiftOrNot})
+    </insert>
+
+    <insert id="addUserToUserRDept" useGeneratedKeys="true" keyProperty="uRid">
+        insert into userrdept (userid, deptcode) values
+        <foreach item="item" collection="list" separator=",">
+            (#{userid}, #{item.deptcode})
+        </foreach>
+    </insert>
+
 </mapper>
 
 
