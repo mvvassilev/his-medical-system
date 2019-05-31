@@ -14,22 +14,26 @@
 
 <body>
 <div id="user">
-    <el-row :gutter="20">
-        <el-col :span="16">
-            <input type="text" v-model="userid" placeholder="ID"/>
-            <input type="text" v-model="username" placeholder="User"/>
-            <input type="text" v-model="pwd" placeholder="Password"/>
-            <input type="text" v-model="realname" placeholder="Name"/>
-            <input type="text" v-model="usercat" placeholder="Category"/>
-            <input type="text" v-model="position" placeholder="Position"/>
-            <input type="text" v-model="shiftOrNot" placeholder="Shift or not"/>
-            <!--            <input type="text" v-model="department" placeholder="Department"/>-->
-            <button type="button" @click="search">search</button>
-        </el-col>
-        <el-col :span="8">
-            <el-button type="text" @click="showDialogForm('Add')">Add New Entry</el-button>
-        </el-col>
-    </el-row>
+        <el-row :gutter="20">
+            <el-col :span="4">
+                <el-input type="text" v-model="userid" placeholder="ID"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="username" placeholder="User"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="realname" placeholder="Name"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="usercat" placeholder="Category"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+            </el-col>
+            <el-col :span="4">
+                <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry</el-button>
+            </el-col>
+        </el-row>
 
     <template>
         <el-table
@@ -241,7 +245,6 @@
             console.log("refresh!!!")
             this.currentPage = 1;
             var that = this;
-            that.users = []
             axios.post('/management/users', {})
             .then(function (response) {
                 console.log(response.data);

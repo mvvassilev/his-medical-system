@@ -15,20 +15,27 @@
 <body>
 <div id="nonmedic">
 
-    <el-row :gutter="20">
-        <el-col :span="16">
-            <input type="text" v-model="itemcode" placeholder="Code"/>
-            <input type="text" v-model="feecode" placeholder="Feecode"/>
-            <input type="text" v-model="nmedname" placeholder="Name"/>
-            <input type="text" v-model="deptcode" placeholder="Department"/>
-            <input type="text" v-model="size" placeholder="Size"/>
-            <input type="text" v-model="price" placeholder="Price"/>
-            <button type="button" @click="search">search</button>
-        </el-col>
-        <el-col :span="8">
-            <el-button type="text" @click="showDialogForm('Add')">Add New Entry</el-button>
-        </el-col>
-    </el-row>
+        <el-row :gutter="20">
+            <el-col :span="4">
+                <el-input type="text" v-model="itemcode" placeholder="Code"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="feecode" placeholder="Feecode"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="nmedname" placeholder="Name"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="deptcode" placeholder="Department"></el-input>
+            </el-col>
+
+            <el-col :span="4">
+                <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+            </el-col>
+            <el-col :span="4">
+                <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry</el-button>
+            </el-col>
+        </el-row>
 
 
     <template>
@@ -143,6 +150,21 @@
             },
             formLabelWidth: '120px'
         },
+
+        mounted: function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            axios.post('/management/nonmedics', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.nonmedics = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
         methods: {
             search: function() {
                 this.currentPage = 1;

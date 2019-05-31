@@ -193,6 +193,21 @@
             },
             formLabelWidth: '120px'
         },
+
+        mounted: function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            axios.post('/management/med', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.medicine = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
         methods: {
             search: function () {
                 this.currentPage = 1;
