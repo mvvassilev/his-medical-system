@@ -237,11 +237,7 @@
                 params.append('icdcode', this.deletingObject.icdcode);
                 axios.post('/management/delDis', params)
                     .then(function (response) {
-                        // console.log(index.data);
-                        /*console.log(that.deptcode);
-                        console.log(response.deptcode);
-                        that.deptcode = row.deptcode;
-                        that.deptcode = response.deptcode;*/
+
                     })
                     .catch(function (error) {
                         console.log(error);

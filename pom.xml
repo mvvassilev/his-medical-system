@@ -13,9 +13,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>his-medical-system</name>
 	<description>Demo project for Spring Boot</description>
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
 	<!-- scope: compile(by default), test, runtime, provided, system  -->
 	<!-- spring-boot-starter-web include a embeded tomcat(9.x) -->
@@ -23,8 +20,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-			<version>1.4.2.RELEASE</version>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.54</version>
 		</dependency>
 
 		<dependency>
@@ -53,7 +56,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.16</version>
+			<version>5.1.40</version>
 		</dependency>
 
 		<dependency>

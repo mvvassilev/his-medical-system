@@ -5,8 +5,8 @@
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.RuleMapper">
 
     <select id="getRules" resultType="Rule">
-        select r.ruleid as ruleid, r.rulename as rulename, u.username as username,
-        d.deptname as deptname, r.timecode as timecode from
+        select r.ruleid as ruleid, r.rulename as rulename, u.username as username, r.reglevel as reglevel, r.ration as ration,
+         d.deptname as deptname, r.timecode as timecode from
 
         ((userrdept ud join user u on u.userid = ud.userid)
         join dept d on d.deptcode = ud.deptcode)
@@ -14,6 +14,17 @@
 
         where deptname = #{deptname}
     </select>
+
+    <select id="getURid" resultType="Integer">
+        select uRid from rule
+
+        where ruleid = #{ruleid}
+    </select>
+
+    <insert id="addRule" useGeneratedKeys="true" keyProperty="ruleid">
+        insert into rule(rulename, uRid, timecode, reglevel, ration) values
+        (#{rulename}, (select uRid from user u join userRdept ud on u.userid = ud.userid where u.username=#{username} and ud.deptcode=#{deptname}), #{timecode}, #{reglevel}, #{ration})
+    </insert>
 
     <!--<resultMap type="Rule" id="_rule">
         <id property="ruleid" column="r.ruleid" />

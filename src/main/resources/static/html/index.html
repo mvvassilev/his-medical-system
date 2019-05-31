@@ -16,52 +16,16 @@
 <body>
     <div id="app">
         <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
-            background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-            <el-menu-item index="1">Management</el-menu-item>
-            <el-submenu index="2">
-                <template slot="title">Workspace</template>
-                <el-menu-item index="2-1">item one</el-menu-item>
-                <el-menu-item index="2-2">item two</el-menu-item>
-                <el-menu-item index="2-3">item three</el-menu-item>
-                <el-submenu index="2-4">
-                    <template slot="title">item four</template>
-                    <el-menu-item index="2-4-1">item one</el-menu-item>
-                    <el-menu-item index="2-4-2">item two</el-menu-item>
-                    <el-menu-item index="2-4-3">item three</el-menu-item>
-                </el-submenu>
-            </el-submenu>
-            <el-menu-item index="3" disabled>Info</el-menu-item>
-            <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">Orders</a></el-menu-item>
+                 background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" style="text-align: right">
+            <el-menu-item index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management</el-menu-item>
+            <el-menu-item index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register & Payment
+            </el-menu-item>
+            <el-menu-item index="3" v-on:click="navigateSidebarTo('treatment/sidebar.html')">Treatment</el-menu-item>
+            <el-menu-item index="4" v-on:click="navigateSidebarTo('others/sidebar.html')">Others</el-menu-item>
         </el-menu>
         <div class="line"></div>
         <el-row :span="24">
-            <el-col :span="3">
-                <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                    background-color="#545c64" text-color="#fff" active-text-color="#ffd04b"
-                    style="height: 100vh">
-                    <el-menu-item index="1" v-on:click="navigateTo('management/constant.html')">
-                        <span>Constant</span>
-                    </el-menu-item>
-                    <el-menu-item index="2" v-on:click="navigateTo('management/dept.html')">
-                        <span>Departments</span>
-                    </el-menu-item>
-                    <el-menu-item index="3" v-on:click="navigateTo('management/disease.html')">
-                        <span>Diagnostic catalog</span>
-                    </el-menu-item>
-                    <el-menu-item index="4" v-on:click="navigateTo('management/non-medical.html')">
-                        <span>Non-medical Charge</span>
-                    </el-menu-item>
-                    <el-menu-item index="5" v-on:click="navigateTo('management/shift.html')">
-                        <span>Shift</span>
-                    </el-menu-item>
-                    <el-menu-item index="6" v-on:click="navigateTo('management/user.html')">
-                        <span>Users</span>
-                    </el-menu-item>
-                </el-menu>
-            </el-col>
-            <el-col :span="21">
-                <iframe frameborder="10" width="100%" height="100%" v-bind:src="url"></iframe>
-            </el-col>
+            <iframe width="100%" height="100%" v-bind:src="url_sidebar"></iframe>
         </el-row>
     </div>
 </body>
@@ -69,9 +33,10 @@
 <script>
     var app = new Vue({
         el: '#app',
-        data: function () {
-            return{
-                url:"",
+        data: function() {
+            return {
+                url_sidebar: "management/sidebar.html",
+                url: "",
                 activeIndex: '1',
                 activeIndex2: '1'
             };
@@ -86,8 +51,11 @@
             handleClose(key, keyPath) {
                 console.log(key, keyPath);
             },
-            navigateTo(url){
-                console.log("navigateTo "+url);
+            navigateSidebarTo(url_sidebar) {
+                this.url_sidebar = url_sidebar;
+            },
+            navigateTo(url) {
+                console.log("navigateTo " + url);
                 this.url = url;
             }
         }
