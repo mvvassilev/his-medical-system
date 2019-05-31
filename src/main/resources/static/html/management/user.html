@@ -32,73 +32,50 @@
     </el-row>
 
     <template>
-        <el-table
-                :data="users.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-                style="width: 100%">
-            <el-table-column
-                    prop="userid"
-                    label="ID"
-                    width="150">
+        <el-table :data="users.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+            <el-table-column prop="userid" label="ID" width="150">
             </el-table-column>
-            <el-table-column
-                    prop="username"
-                    label="User Name"
-                    width="150">
+            <el-table-column prop="username" label="User Name" width="150">
             </el-table-column>
-            <el-table-column
-                    prop="pwd"
-                    label="Password"
-                    width="150">
+            <el-table-column prop="pwd" label="Password" width="150">
             </el-table-column>
-            <el-table-column
-                    prop="realname"
-                    label="Real Name"
-                    width="150">
+            <el-table-column prop="realname" label="Real Name" width="150">
             </el-table-column>
-            <el-table-column
-                    prop="usercat"
-                    label="Category"
-                    width="150">
+            <el-table-column prop="usercat" label="Category" width="150">
             </el-table-column>
-            <el-table-column
-                    prop="position"
-                    label="Position"
-                    width="150">
+            <el-table-column prop="position" label="Position" width="150">
             </el-table-column>
-            <el-table-column
-                    prop="shiftOrNot"
-                    label="Shift or Not"
-                    width="150"
-                    :formatter="shiftFormatter">
+            <el-table-column prop="shiftOrNot" label="Shift or Not" width="150" :formatter="shiftFormatter">
             </el-table-column>
-            <el-table-column
-                    label="Departments"
-                    width="200"
-                    :formatter="deptFormatter">
+            <el-table-column label="Departments" width="200" :formatter="deptFormatter">
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
-                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete</el-button>
-                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update</el-button>
+                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">
+                        delete
+                    </el-button>
+                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">
+                        update
+                    </el-button>
                 </template>
             </el-table-column>
         </el-table>
 
-        <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[5, 10, 20, 40]"
-
-                :page-size="pagesize"
-                :hide-on-single-page="value"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="users.length">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+                       :page-sizes="[5, 10, 20, 40]" :page-size="pagesize" :hide-on-single-page="value"
+                       layout="total, sizes, prev, pager, next, jumper" :total="users.length">
         </el-pagination>
     </template>
 
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
+            <el-form-item label="Department" :label-width="formLabelWidth">
+                <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
+                <el-select v-model="selectdepts" multiple placeholder="Select" style="width: 80%">
+                    <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item v-if="methodType=='Add'" label="userid" :label-width="formLabelWidth">
                 <el-input v-model="form.userid" autocomplete="off"></el-input>
             </el-form-item>
@@ -120,21 +97,7 @@
             <el-form-item label="Shift Or Not" :label-width="formLabelWidth">
                 <el-input v-model="form.shiftOrNot" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Department" :label-width="formLabelWidth">
-                <!--<el-input v-model="form.strDeptnames" autocomplete="off"></el-input>-->
-                <el-select
-                        v-model="selectdepts"
-                        multiple
-                        collapse-tags
-                        placeholder="Select">
-                    <el-option
-                            v-for="item in depts"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+
 
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -144,16 +107,12 @@
     </el-dialog>
 
     <!--    Delete Dialogue -->
-    <el-dialog
-            title="Confirm Delete"
-            :visible.sync="deleteDialogVisible"
-            width="30%"
-    >
+    <el-dialog title="Confirm Delete" :visible.sync="deleteDialogVisible" width="30%">
         <span>Are you sure you want to delete this?</span>
         <span slot="footer" class="dialog-footer">
-            <el-button @click="deleteDialogVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="onSubmitDelete">Confirm</el-button>
-        </span>
+                <el-button @click="deleteDialogVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="onSubmitDelete">Confirm</el-button>
+            </span>
     </el-dialog>
 </div>
 </body>
@@ -175,32 +134,17 @@
             users: [],
 
             //Form Dialog
-            methodType: "",//调用方法，Add or Update
+            methodType: "", //调用方法，Add or Update
             formTitle: "",
             dialogFormVisible: false,
             //Delete
-            deleteDialogVisible: false,//控制弹出删除窗口
+            deleteDialogVisible: false, //控制弹出删除窗口
             deletingIndex: -1,
-            deletingObject:{},
+            deletingObject: {},
             //Update
-            updatingIndex:-1,
-            updatingObject:{},
-            depts: [{
-                value: 'Option1',
-                label: 'Option1'
-            }, {
-                value: 'Option2',
-                label: 'Option2'
-            }, {
-                value: 'Option3',
-                label: 'Option3'
-            }, {
-                value: 'Option4',
-                label: 'Option4'
-            }, {
-                value: 'Option5',
-                label: 'Option5'
-            }],
+            updatingIndex: -1,
+            updatingObject: {},
+            depts: [],
 
             form: {
                 userid: "",
@@ -217,37 +161,37 @@
             //splitpages
             value: false,
             currentPage: 1, //初始页
-            pagesize: 10,    //    每页的数据
+            pagesize: 10, //    每页的数据
         },
         methods: {
-            shiftFormatter(row){
-                if(row.shiftOrNot)
+            shiftFormatter(row) {
+                if (row.shiftOrNot)
                     return "Yes"
                 else
                     return "No"
             },
-            deptFormatter(row){
+            deptFormatter(row) {
                 deptStr = ""
-                for(i = 0; i < row.depts.length; i++){
-                    if(i==0)
+                for (i = 0; i < row.depts.length; i++) {
+                    if (i == 0)
                         deptStr += row.depts[i].deptname
                     else
-                        deptStr += " | "+ row.depts[i].deptname
+                        deptStr += " | " + row.depts[i].deptname
                 }
                 return deptStr
             },
-            search: function () {
+            search: function() {
                 var that = this;
                 axios.post('/management/users', {
-                    // userid: that.userid,
-                    // username: that.username,
-                    // pwd: that.pwd,
-                    // realname: that.realname,
-                    // usercat: that.usercat,
-                    // position: that.position,
-                    // shiftOrNot: that.shiftOrNot
-                })
-                    .then(function (response) {
+                        // userid: that.userid,
+                        // username: that.username,
+                        // pwd: that.pwd,
+                        // realname: that.realname,
+                        // usercat: that.usercat,
+                        // position: that.position,
+                        // shiftOrNot: that.shiftOrNot
+                    })
+                    .then(function(response) {
                         that.users = response.data;
                         // for(var i=0; i<that.users.length;i++)
                         // {
@@ -261,30 +205,52 @@
                         console.log(that.users);
 
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
-            refresh:function(){
+            loadDept: function() {
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/depts', {
-                    deptcode: "",
-                    deptclass: "",
-                    deptname: "",
-                    deptcat: "",
-                })
-                    .then(function (response) {
+                        deptcode: "",
+                        deptclass: "",
+                        deptname: "",
+                        deptcat: "",
+                    })
+                    .then(function(response) {
                         console.log(response.data);
                         that.depts = response.data;
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+            refresh: function() {
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/management/users', {
+                        userid: "",
+                        username: "",
+                        pwd: "",
+                        realname: "",
+                        usercat: "",
+                        position: "",
+                        shiftOrNot: "",
+                        depts: []
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.users = response.data;
+                    })
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
 
             /*---------------Update Or Add-----------------*/
-            showDialogForm: function (method,index,row) {
+            showDialogForm: function(method, index, row) {
+                this.loadDept();
                 if (method == "Add") {
                     this.form = {
                         deptcode: "",
@@ -293,12 +259,10 @@
                         deptcat: "",
                     }
                 }
-                if (method == "Update"){
+                if (method == "Update") {
+
                     this.form = {
-                        deptcode: row.deptcode,
-                        deptclass: row.deptclass,
-                        deptname: row.deptname,
-                        deptcat: row.deptcat,
+
                     }
                 }
                 // this.form = row;
@@ -310,65 +274,82 @@
                 this.updatingObject = row;
             },
 
-            onSubmit: function(){
-                if(this.methodType=="Add")
+            onSubmit: function() {
+                if (this.methodType == "Add")
                     this.onSubmitAdd();
-                if(this.methodType=="Update")
+                if (this.methodType == "Update")
                     this.onSubmitUpdate();
                 this.dialogFormVisible = false;
                 this.refresh();
             },
 
-            onSubmitAdd: function(){
-                var that = this;
-                console.log(that.form);
-                axios.post('/management/addDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat,
-                })
-                    .then(function (response) {
-                        console.log(response.data);
-                        // that.depts=response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+            onSubmitAdd: function() {
+                console.log("onSubmitAdd")
+                    // console.log(that.form);
+                    // axios.post('/management/addUser', params)
+                    //     .then(function (response) {
+                    //         console.log(response.data);
+                    //         // that.depts=response.data;
+                    //     })
+                    //     .catch(function (error) {
+                    //         console.log(error);
+                    //     });
+                console.log(this.users);
+                axios({
+                    url: '/management/addUser',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {
+                        users: this.users
+                    }, // 以json字符串方式传递
+                    success: function(data) {
+                        console.log("success...");
+                    },
+                    error: function(data) {
+                        console.log("error...");
+                    }
+                });
             },
 
-            onSubmitUpdate: function () {
-                var that = this;
-                console.log(that.form);
-                axios.post('/management/updateDept', {
-                    deptcode: that.form.deptcode,
-                    deptclass: that.form.deptclass,
-                    deptname: that.form.deptname,
-                    deptcat: that.form.deptcat
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+            onSubmitUpdate: function() {
+                console.log("onSubmitUpdate called");
+                let that = this;
+                console.log(this.users);
+                axios({
+                    url: '/management/addUser',
+                    method: 'post',
+                    contentType: 'application/json',
+                    data: {
+                        users: this.users
+                    },
+                    success: function(data) {
+                        console.log("success...");
+                    },
+                    error: function(data) {
+                        console.log("error...");
+                    }
+                });
             },
+
             /*---------------Delete----------------------*/
-            showDeleteDialogForm: function(index, row){
+            showDeleteDialogForm: function(index, row) {
                 this.deleteDialogVisible = true;
                 this.deletingIndex = index;
                 this.deletingObject = row;
             },
 
-            onSubmitDelete: function(){
+            onSubmitDelete: function() {
                 var params = new URLSearchParams();
-                params.append('deptcode', this.deletingObject.deptcode);
-                axios.post('/management/delDept', params)
-                    .then(function (response) {
+                params.append('userid', this.deletingObject.userid);
+                axios.post('/management/deleteUser', params)
+                    .then(function(response) {
                         // console.log(index.data);
                         /*console.log(that.deptcode);
                         console.log(response.deptcode);
                         that.deptcode = row.deptcode;
                         that.deptcode = response.deptcode;*/
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
                 this.deleteDialogVisible = false;
@@ -387,4 +368,5 @@
         }
     })
 </script>
+
 </html>

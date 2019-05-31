@@ -1,41 +1,51 @@
-<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <title>HIS System</title>
     <meta charset="UTF-8">
     <!-- import CSS -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-
-
     <!-- import Vue before Element -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
-    <div id="app">
-        <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
-                 background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" style="text-align: right">
-            <el-menu-item index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management</el-menu-item>
-            <el-menu-item index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register & Payment
+<div id="app">
+    <el-col :span="5">
+        <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                 background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" style="height: 100vh">
+            <el-menu-item index="1" v-on:click="navigateTo('constant.html')">
+                <span>Patient</span>
             </el-menu-item>
-            <el-menu-item index="3" v-on:click="navigateSidebarTo('treatment/sidebar.html')">Treatment</el-menu-item>
-            <el-menu-item index="4" v-on:click="navigateSidebarTo('others/sidebar.html')">Others</el-menu-item>
+            <el-menu-item index="2" v-on:click="navigateTo('dept.html')">
+                <span>Receipt</span>
+            </el-menu-item>
+            <el-menu-item index="3" v-on:click="navigateTo('disease.html')">
+                <span>Register</span>
+            </el-menu-item>
+            <el-menu-item index="4" v-on:click="navigateTo('non-medical.html')">
+                <span>Bill</span>
+            </el-menu-item>
+            <el-menu-item index="5" v-on:click="navigateTo('shift.html')">
+                <span>Daily Record</span>
+            </el-menu-item>
         </el-menu>
-        <div class="line"></div>
-        <el-row :span="24">
-            <iframe width="100%" height="100%" v-bind:src="url_sidebar"></iframe>
-        </el-row>
-    </div>
+    </el-col>
+    <el-col :span="19">
+        <iframe frameborder="2" width="100%" height="700px" v-bind:src="url"></iframe>
+    </el-col>
+</div>
 </body>
-
 <script>
     var app = new Vue({
         el: '#app',
         data: function() {
             return {
-                url_sidebar: "management/sidebar.html",
+                url_sidebar: "",
                 url: "",
                 activeIndex: '1',
                 activeIndex2: '1'
@@ -60,7 +70,11 @@
             }
         }
     })
-</script>
 
+
+
+
+
+</script>
 
 </html>

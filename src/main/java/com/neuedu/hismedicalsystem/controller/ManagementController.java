@@ -5,12 +5,11 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.*;
 import com.neuedu.hismedicalsystem.model.service.*;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -37,17 +36,19 @@ public class ManagementController {
     }
 
     @RequestMapping("/delConst")
-    public void delConst(@RequestBody int constid){
-        constService.delConst(constid);
+    public void delConst(@RequestBody Constant c) {
+
+        System.out.println(c.getConstid());
+        constService.delConst(c.getConstid());
     }
 
     @RequestMapping("/updateConst")
-    public void updateConst(@RequestBody Constant condition){
+    public void updateConst(@RequestBody Constant condition) {
         constService.updateConst(condition);
     }
 
     @RequestMapping("/consts")
-    public List<Constant> getConsts(@RequestBody Constant condition){
+    public List<Constant> getConsts(@RequestBody Constant condition) {
         return constService.getConsts(condition);
     }
 
@@ -75,12 +76,12 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateDept")
-    public void updateDept(@RequestBody Dept condition){
+    public void updateDept(@RequestBody Dept condition) {
         deptService.updateDept(condition);
     }
 
     @RequestMapping("/depts")
-    public List<Dept> getDepts(@RequestBody Dept condition){
+    public List<Dept> getDepts(@RequestBody Dept condition) {
         return deptService.getDepts(condition);
     }
 
@@ -96,7 +97,7 @@ public class ManagementController {
     @RequestMapping("/addDis")
     public String addDis(@RequestBody Disease disease) {
         System.out.println(disease.getIcdcode());
-        try{
+        try {
             disService.addDis(disease);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,12 +112,14 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateDis")
-    public void updateDis(@RequestBody Disease condition){
+    public void updateDis(@RequestBody Disease condition) {
         disService.updateDis(condition);
     }
 
     @RequestMapping("/dis")
-    public List<Disease> getDis(@RequestBody Disease condition){ return disService.getDis(condition);}
+    public List<Disease> getDis(@RequestBody Disease condition) {
+        return disService.getDis(condition);
+    }
 
     /**
      * non-medical
@@ -163,7 +166,7 @@ public class ManagementController {
     private RuleService ruleService;
 
     @RequestMapping("/getRules")
-    public List<Rule> getRules(String deptname){
+    public List<Rule> getRules(String deptname) {
         return ruleService.getRules(deptname);
     }
 
@@ -257,9 +260,15 @@ public class ManagementController {
     @Autowired
     private ShiftService shiftService;
 
+
     @RequestMapping("/shift")
     public List<Shift> getShift(Date dates, Date datee) {
         return shiftService.getShift(dates, datee);
+    }
+
+    @RequestMapping("/delShift")
+    public void delShift(int shiftid) {
+        shiftService.delShift(shiftid);
     }
 
     @RequestMapping("/updateShift")
@@ -310,13 +319,37 @@ public class ManagementController {
 
 
     @RequestMapping("/users")
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         return userService.getUsers();
     }
 
     @RequestMapping("/updateUser")
-    public void updateUser(@RequestBody User condition){
+    public void updateUser(@RequestBody User condition) {
         userService.updateUser(condition);
     }
 
+    @RequestMapping("/deleteUser")
+    public void deleteUser(String userid) {
+        userService.deleteUser(userid);
+    }
+
+    @PostMapping(value = "/addUser")
+    public void addUser(@RequestBody JSONObject obj) {
+
+        try {
+            JSONArray users = obj.getJSONArray("users");
+            for (int i = 0; i < users.size(); i++) {
+                JSONObject user = users.getJSONObject(i);
+                System.out.println("User ID" + user.getInteger("userid"));
+                JSONArray depts = user.getJSONArray("depts");
+                for (int j = 0; j < depts.size(); j++) {
+                    String s = (String) depts.getJSONObject(j).getString("deptcode");
+                    System.out.println(s);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

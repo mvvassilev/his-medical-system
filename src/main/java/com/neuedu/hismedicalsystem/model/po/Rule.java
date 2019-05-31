@@ -14,7 +14,9 @@ public class Rule {
         return ruleid;
     }
 
-    public void setRuleid(int ruleid) { this.ruleid = ruleid; }
+    public void setRuleid(int ruleid) {
+        this.ruleid = ruleid;
+    }
 
     public String getRulename() {
         return rulename;

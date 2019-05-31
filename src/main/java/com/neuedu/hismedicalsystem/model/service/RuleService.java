@@ -12,7 +12,7 @@ public class RuleService {
     @Resource
     private RuleMapper ruleMapper;
 
-    public List<Rule> getRules(String deptname){
+    public List<Rule> getRules(String deptname) {
         return ruleMapper.getRules(deptname);
     }
 

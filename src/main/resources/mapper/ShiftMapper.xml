@@ -32,4 +32,8 @@
     </delete>
 
 
+
+    <delete id="delShift">
+        delete from shift where shiftid=#{shiftid}
+    </delete>
 </mapper>

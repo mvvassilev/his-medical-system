@@ -14,8 +14,13 @@ public class ShiftService {
     @Resource
     private ShiftMapper shiftMapper;
 
-    public List<Shift> getShift(Date dates, Date datee){
-        return shiftMapper.getShift(dates,datee);
+    public List<Shift> getShift(Date dates, Date datee) {
+        return shiftMapper.getShift(dates, datee);
+    }
+
+    @Transactional
+    public void delShift(int shiftid) {
+        shiftMapper.delShift(shiftid);
     }
 
     public void updateShift(List<Shift> updateshifts) { shiftMapper.updateShift(updateshifts);

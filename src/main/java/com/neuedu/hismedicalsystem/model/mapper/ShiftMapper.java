@@ -14,4 +14,6 @@ public interface ShiftMapper {
     void insertShift(List<Shift> insertShifts);
 
     void deleteConflictShifts(@Param("startdate") Date startdate, @Param("enddate") Date enddate);
+
+    public void delShift(int shiftid);
 }
