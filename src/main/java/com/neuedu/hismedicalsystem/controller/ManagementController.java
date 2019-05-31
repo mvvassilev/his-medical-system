@@ -84,6 +84,9 @@ public class ManagementController {
         return deptService.getDepts(condition);
     }
 
+    @RequestMapping("/getDeptSelect")
+    public List<Dept> getDeptSelect(){return deptService.getDeptSelect();}
+
     /**
      * disease
      */
@@ -164,6 +167,90 @@ public class ManagementController {
         return ruleService.getRules(deptname);
     }
 
+    @RequestMapping("/addRule")
+    public void addRule(@RequestBody JSONObject obj){
+        try{
+            Rule newRule = new Rule();
+            newRule.setRulename(obj.getString("rulename"));
+            newRule.setRation(obj.getInteger("ration"));
+            newRule.setReglevel(obj.getString("reglevel"));
+
+            newRule.setDeptname(obj.getString("deptname"));
+            newRule.setUsername(obj.getString("username"));
+
+            JSONArray amShifts = obj.getJSONArray("checkboxGroup1");
+            JSONArray pmShifts = obj.getJSONArray("checkboxGroup2");
+
+            System.out.println(amShifts);
+            System.out.println(pmShifts);
+
+            StringBuilder timecodeBuilder = new StringBuilder("00000000000000");
+            timecodeBuilder = TimeCodeGenerate(amShifts, timecodeBuilder);
+            timecodeBuilder = TimeCodeGenerate(pmShifts,timecodeBuilder);
+
+            newRule.setTimecode(timecodeBuilder.toString());
+
+            ruleService.addRule(newRule);
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private StringBuilder TimeCodeGenerate(JSONArray shifts, StringBuilder timecode) {
+
+        for (int i = 0; i < shifts.size();i++){
+            switch(shifts.get(i).toString()){
+                case "SUN A.M.":
+                    timecode.replace(0,1,"1");
+                    break;
+                case "SUN P.M.":
+                    timecode.replace(1,2,"1");
+                    break;
+                case "MON A.M.":
+                    timecode.replace(2,3,"1");
+                    break;
+                case "MON P.M.":
+                    timecode.replace(3,4,"1");
+                    break;
+                case "TUE A.M.":
+                    timecode.replace(4,5,"1");
+                    break;
+                case "TUE P.M.":
+                    timecode.replace(5,6,"1");
+                    break;
+                case "WED A.M.":
+                    timecode.replace(6,7,"1");
+                    break;
+                case "WED P.M.":
+                    timecode.replace(7,8,"1");
+                    break;
+                case "THU A.M.":
+                    timecode.replace(8,9,"1");
+                    break;
+                case "THU P.M.":
+                    timecode.replace(9,10,"1");
+                    break;
+                case "FRI A.M.":
+                    timecode.replace(10,11,"1");
+                    break;
+                case "FRI P.M.":
+                    timecode.replace(11,12,"1");
+                    break;
+                case "SAT A.M.":
+                    timecode.replace(12,13,"1");
+                    break;
+                case "SAT P.M.":
+                    timecode.replace(13,14,"1");
+                    break;
+
+            }
+
+        }
+        return timecode;
+
+    }
+
     /**
      * shift
      */
@@ -181,10 +268,9 @@ public class ManagementController {
             System.out.println(obj);
             Date startdate = obj.getDate("startdate");
             Date enddate = obj.getDate("enddate");
+            JSONArray params = obj.getJSONArray("shifts");
 
             shiftService.deleteConflictShifts(startdate,enddate);
-
-            JSONArray params = obj.getJSONArray("shifts");
 
             List<Shift> insertShifts = new ArrayList<>();
 

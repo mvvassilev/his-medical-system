@@ -19,6 +19,10 @@ public class RuleService {
     public int getURid(int ruleid) {
         return ruleMapper.getURid(ruleid);
     }
+
+    public void addRule(Rule newRule) {
+        ruleMapper.addRule(newRule);
+    }
 /*
     @Transactional
     public void addDept(Dept dept) throws Exception {

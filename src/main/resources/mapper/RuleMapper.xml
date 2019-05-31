@@ -21,6 +21,11 @@
         where ruleid = #{ruleid}
     </select>
 
+    <insert id="addRule" useGeneratedKeys="true" keyProperty="ruleid">
+        insert into rule(rulename, uRid, timecode, reglevel, ration) values
+        (#{rulename}, (select uRid from user u join userRdept ud on u.userid = ud.userid where u.username=#{username} and ud.deptcode=#{deptname}), #{timecode}, #{reglevel}, #{ration})
+    </insert>
+
     <!--<resultMap type="Rule" id="_rule">
         <id property="ruleid" column="r.ruleid" />
         <result property="rulename" column="r.rulename"/>

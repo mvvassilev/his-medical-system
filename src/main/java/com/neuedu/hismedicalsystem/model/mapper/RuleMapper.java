@@ -9,6 +9,8 @@ public interface RuleMapper {
 
     int getURid(int ruleid);
 
+    void addRule(Rule newRule);
+
     /*public void delDept(String deptcode);
 
     void addDept(Dept dept);

@@ -36,4 +36,9 @@
         where deptcode = #{deptcode}
     </update>
 
+    <select id="getDeptSelect" resultType="Dept">
+        select deptname, deptcode from dept
+        where deptclass = '临床科室'
+    </select>
+
 </mapper>
