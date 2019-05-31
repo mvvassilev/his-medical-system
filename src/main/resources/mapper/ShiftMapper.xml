@@ -16,6 +16,22 @@
         where <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>
     </select>
 
+
+    <insert id="insertShift" useGeneratedKeys="true" keyProperty="shiftid">
+        insert into shift (uRid, userid, balance, ration, itemcode, dutydate, aorp) values
+        <foreach item="item" collection="list" separator=",">
+            (#{item.uRid}, #{item.userid}, #{item.ration}, #{item.ration}, #{item.itemcode}, #{item.dutydate}, #{item.aorp})
+        </foreach>
+    </insert>
+
+    <delete id="deleteConflictShifts">
+        delete from shift
+        where <![CDATA[ dutydate >= #{startdate} and dutydate <= #{enddate}]]>
+
+    </delete>
+
+
+
     <delete id="delShift">
         delete from shift where shiftid=#{shiftid}
     </delete>

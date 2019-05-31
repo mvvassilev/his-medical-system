@@ -9,6 +9,12 @@ import java.util.List;
 public interface ShiftMapper {
     public List<Shift> getShift(@Param("dates") Date dates, @Param("datee") Date datee);
 
+    void updateShift(List<Shift> updateshifts);
+
+    void insertShift(List<Shift> insertShifts);
+
+    void deleteConflictShifts(@Param("startdate") Date startdate, @Param("enddate") Date enddate);
+
     public void delShift(int shiftid);
 
     public void delAllShift(String[] id);

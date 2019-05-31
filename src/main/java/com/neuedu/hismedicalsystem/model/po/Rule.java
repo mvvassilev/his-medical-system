@@ -6,6 +6,9 @@ public class Rule {
     private String deptname;
     private String username;
     private String timecode;
+    private String reglevel;
+    private int ration;
+    private int uRid;
 
     public int getRuleid() {
         return ruleid;
@@ -39,7 +42,35 @@ public class Rule {
         this.username = username;
     }
 
-    public String getTimecode() { return timecode; }
+    public String getTimecode() {
+        return timecode;
+    }
 
-    public void setTimecode(String timecode) { this.timecode = timecode; }
+    public void setTimecode(String timecode) {
+        this.timecode = timecode;
+    }
+
+    public String getReglevel() {
+        return reglevel;
+    }
+
+    public void setReglevel(String reglevel) {
+        this.reglevel = reglevel;
+    }
+
+    public int getRation() {
+        return ration;
+    }
+
+    public void setRation(int ration) {
+        this.ration = ration;
+    }
+
+    public int getuRid() {
+        return uRid;
+    }
+
+    public void setuRid(int uRid) {
+        this.uRid = uRid;
+    }
 }

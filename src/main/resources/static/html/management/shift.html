@@ -31,7 +31,7 @@
             <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
         <el-col :span="12" :gutter="10">
-            <el-button type="primary" @click="">Add New Rules</el-button>
+            <el-button type="primary" @click="addRuleDialogForm">Add New Rules</el-button>
             <el-button type="primary" @click="showRuleDialogForm">Query Rules</el-button>
         </el-col>
     </el-row>
@@ -108,7 +108,7 @@
     <el-dialog
             title="Shift Arrangement"
             :visible.sync="dialogVisible"
-            width="70%">
+            width="100%">
         <el-row :gutter="20">
             <el-col :span="18">
                 <el-input v-model="deptname" style="width:300px" placeholder="Enter DeptName"></el-input>
@@ -147,21 +147,56 @@
             </el-table-column>
             <el-table-column
                     prop="timecode"
-                    label="TimeArrange">
+                    label="TimeArrange"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="reglevel"
+                    label="RegisterLV"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="ration"
+                    label="Ration"
+                    width="180">
             </el-table-column>
         </el-table>
         <div style="margin-top: 20px">
             <el-button @click="toggleSelection()">Cancel Selection</el-button>
         </div>
         <div class="block">
-            <el-date-picker
-                    v-model="ruledate"
-                    type="daterange"
-                    value-format="yyyy-MM-dd"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期">
-            </el-date-picker>
+            <el-row :gutter="20">
+                <el-col :span="10">
+                    <el-date-picker style="width:300px"
+                                    v-model="ruledate"
+                                    type="daterange"
+
+                                    range-separator="至"
+                                    start-placeholder="开始日期"
+                                    end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-col>
+                <el-col :span="4">
+                    <el-input v-model="opid" style="width:100px" placeholder="OperatorID"></el-input>
+                </el-col>
+                <el-col :span="4">
+                    <el-input v-model="ration" style="width:100px" placeholder="Ration"></el-input>
+                </el-col>
+                <el-col :span="6">
+                    <el-select v-model="reglevel" placeholder="Choose RegisterLV">
+                        <el-option
+                                v-for="item in items"
+                                :key="item.itemcode"
+                                :label="item.nmedname"
+                                :value="item.itemcode">
+                            <span style="float: left">{{ item.nmedname}}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.itemcode }}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+
+
             <el-button type="primary" @click="arrangeShift">Arrange Now!</el-button>
         </div>
 
@@ -170,6 +205,87 @@
       </span>
     </el-dialog>
 </div>
+
+<div id="addRule">
+    <el-dialog
+            title="Add A New Rule"
+            :visible.sync="dialogVisible"
+            width="60%">
+        <el-form ref="form" :model="form" label-width="80px">
+            <el-row :gutter="20">
+                <el-col :span="12">
+                    <el-form-item>
+                        <el-input v-model="form.username" style="width:200px" placeholder="User Name"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-select v-model="form.deptname" placeholder="Choose Department">
+                        <el-option
+                                v-for="item in form.depts"
+                                :key="item.deptcode"
+                                :label="item.deptname"
+                                :value="item.deptcode">
+                            <span style="float: left">{{ item.deptname}}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.deptcode }}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+                <el-col :span="12">
+                    <el-form-item>
+
+                            <el-input v-model="form.ration" style="width:200px" placeholder="Ration"></el-input>
+
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-select v-model="form.reglevel" placeholder="Choose RegisterLV">
+                        <el-option
+                                v-for="item in form.items"
+                                :key="item.itemcode"
+                                :label="item.nmedname"
+                                :value="item.nmedname">
+                            <span style="float: left">{{ item.nmedname}}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.itemcode }}</span>
+                        </el-option>
+                    </el-select>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20"style="margin-left: 70px">
+                <el-col :span="24">
+                <el-checkbox-group v-model="form.checkboxGroup1" size="small">
+                  <el-checkbox-button v-for="weekday in form.weekdays1" :label="weekday" :key="weekday" style="font-family:'Courier New'">{{weekday}}</el-checkbox-button>
+                </el-checkbox-group>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20" style="margin-top: 10px; margin-left: 70px">
+                <el-col :span="24">
+                <el-checkbox-group v-model="form.checkboxGroup2" size="small">
+                  <el-checkbox-button v-for="weekday in form.weekdays2" :label="weekday" :key="weekday" style="font-family:'Courier New'">{{weekday}}</el-checkbox-button>
+                </el-checkbox-group>
+                </el-col>
+            </el-row>
+             <el-row :gutter="20" style="margin-top: 20px">
+                            <el-col :span="12">
+                                <el-form-item>
+
+                                        <el-input v-model="form.rulename" style="width:200px" placeholder="Rule Name"></el-input>
+
+                                </el-form-item>
+                            </el-col>
+                        </el-row>
+            <el-row :gutter="20" >
+
+                    <el-col :span="12"><el-form-item><el-button type="primary" @click="ruleSubmit">Create</el-button></el-form-item></el-col>
+                    <el-col :span="12"><el-form-item><el-button @click="dialogVisible = false">Cancel</el-button></el-form-item></el-col>
+
+            </el-row>
+        </el-form>
+    </el-dialog>
+</div>
+
 </body>
 
 <script>
@@ -245,6 +361,7 @@
                         // console.log(that.value[0]);
                         // console.log(that.dates);
                         that.shift = response.data;
+                        console.log(that.shift);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -271,9 +388,9 @@
             },
 
             showDeleteDialogForm: function(index, row){
-                this.deleteAllDialogVisible = true;
-                this.deletingAllIndex = index;
-                this.deletingAllObject = row;
+                this.deleteDialogVisible = true;
+                this.deletingIndex = index;
+                this.deletingObject = row;
             },
 
             delShift:function() {
@@ -323,7 +440,96 @@
 
             showRuleDialogForm: function () {
                 dialog.dialogVisible = true;
+                dialog.fillRegSelect();
             },
+            addRuleDialogForm: function () {
+                addDialog.dialogVisible = true;
+                addDialog.fillRegSelect();
+                addDialog.fillDeptSelect();
+            }
+
+        }
+    });
+
+    const weekOptionsAM = ['SUN A.M.',
+                         'MON A.M.',
+                         'TUE A.M.',
+                         'WED A.M.',
+                         'THU A.M.',
+                         'FRI A.M.',
+                         'SAT A.M.',];
+    const weekOptionsPM = ['SUN P.M.',
+                           'MON P.M.',
+                           'TUE P.M.',
+                           'WED P.M.',
+                           'THU P.M.',
+                           'FRI P.M.',
+                           'SAT P.M.',];
+    var addDialog = new Vue({
+        el: '#addRule',
+        data: {
+            dialogVisible: false,
+
+            form: {
+                username: '',
+                deptname: '',
+                reglevel: '',
+                ration: '',
+                items: [],
+                depts:[],
+                rulename:'',
+
+                checkboxGroup1: [],
+                checkboxGroup2: [],
+                weekdays1: weekOptionsAM,
+                weekdays2: weekOptionsPM,
+            },
+
+
+        },
+
+        methods: {
+            onSubmit() {
+                console.log('submit!');
+            },
+            fillRegSelect: function () {
+                var that = this;
+                axios.get('/management/getRegLevel')
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.form.items= response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            fillDeptSelect: function () {
+                var that = this;
+                axios.get('/management/getDeptSelect')
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.form.depts = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            ruleSubmit:function() {
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/addRule', {
+                    rulename: that.form.rulename,
+                    username: that.form.username,
+                    deptname: that.form.deptname,
+                    reglevel: that.form.reglevel,
+                    ration: that.form.ration,
+                    checkboxGroup1: that.form.checkboxGroup1,
+                    checkboxGroup2: that.form.checkboxGroup2,
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         }
     });
 
@@ -337,7 +543,12 @@
             rules: [],
             multipleSelection: [],
 
-            ruledate:[]
+            ruledate: [],
+            ration: '',
+            opid: '',
+            reglevel: '',
+            items: [],
+
         },
         methods: {
 
@@ -348,7 +559,7 @@
                 var that = this;
                 axios.post('/management/getRules', params)
                     .then(function (response) {
-                        console.log(response.data   );
+                        console.log(response.data);
                         that.rules = response.data;
                     })
                     .catch(function (error) {
@@ -370,11 +581,92 @@
                 this.multipleSelection = val;
             },
 
-            arrangeShift:function() {
-                console.log("ARRANGE!"+this.ruledate[0]);
+            arrangeShift: function () {
+
+                console.log("ARRANGE!" + this.ruledate[0]);
+                console.log(this.multipleSelection[0].timecode);
+                var startwd = this.ruledate[0].getDay();
+                var daycount = (this.ruledate[1] - this.ruledate[0]) / (1000 * 60 * 60 * 24);
+
+                var params = [];
+                for (var j = 0; j < this.multipleSelection.length; j++) {
+                    for (var i = 0; i <= daycount; i++) {
+
+                        var param = {
+                            ruleid: "",
+                            nmedname: "",
+                            ration: "",
+                            dutydate: new Date(),
+                            userid: "",
+                            aorp: true,
+                        };
+                        var param2 = {
+                            ruleid: "",
+                            nmedname: "",
+                            ration: "",
+                            dutydate: new Date(),
+                            userid: "",
+                            aorp: false,
+                        };
+                        param.ruleid = this.multipleSelection[j].ruleid;
+                        param.nmedname = this.multipleSelection[j].reglevel;
+                        param.ration = this.multipleSelection[j].ration;
+                        param.dutydate.setDate(this.ruledate[0].getDate() + i);
+                        param.userid = this.opid;
+                        param2.ruleid = this.multipleSelection[j].ruleid;
+                        param2.nmedname = this.multipleSelection[j].reglevel;
+                        param2.ration = this.multipleSelection[j].ration;
+                        param2.dutydate.setDate(this.ruledate[0].getDate() + i);
+                        param2.userid = this.opid;
+
+                        var morning = parseInt(this.multipleSelection[j].timecode[(2 * (i + startwd)) % 14]);
+
+                        if (morning) {
+                            params.push(param);
+                        }
+
+                        var afternoon = parseInt(this.multipleSelection[j].timecode[(2 * (i + startwd)) % 14 + 1]);
+
+                        if (afternoon) {
+                            params.push(param2);
+                        }
+
+                    }
+                }
+
+
+                axios({
+                    url: '/management/updateShift',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {
+                        startdate: this.ruledate[0],
+                        enddate: this.ruledate[1],
+                        shifts: params
+                    }
+                    , // 以json字符串方式传递
+                    success: function (data) {
+                        console.log("success...");
+                    },
+                    error: function (data) {
+                        console.log("error...");
+                    }
+                });
+            },
+            fillRegSelect: function () {
+                var that = this;
+                axios.get('/management/getRegLevel')
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.items = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
 
         }
     })
 </script>
+
 </html>

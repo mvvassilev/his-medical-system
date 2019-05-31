@@ -32,4 +32,6 @@ public class DeptService {
 
     @Transactional
     public void updateDept(Dept dept) {deptMapper.updateDept(dept);}
+
+    public List<Dept> getDeptSelect() {return deptMapper.getDeptSelect(); }
 }
