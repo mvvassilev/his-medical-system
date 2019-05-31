@@ -1,0 +1,242 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="register">
+        <h3>Register information</h3>
+        <el-row :gutter="20">
+            <el-col :span="6">
+                <el-input placeholder="Patient ID" v-model="pid" size="small"></el-input>
+                <el-input placeholder="Name" v-model="pname" size="small"></el-input>
+                <el-input placeholder="Age" v-model="page" size="small"></el-input>
+                <el-input placeholder="Birth date (YYYY/MM/DD)" v-model="pbirth" size="small"></el-input>
+                <el-input placeholder="Address" v-model="paddress" size="small"></el-input>
+                <el-select v-model="pgender" placeholder="Gender" style="width: 100%" size="small">
+                    <el-option v-for="item in patient" :key="item.pid" :label="item.pgender" :value="item.pid">
+                    </el-option>
+                </el-select>
+            </el-col>
+            <el-col :span="6">
+                <el-select v-model="billingcat" placeholder="Billing category" style="width: 100%" size="small">
+                    <el-option v-for="item in bills" :key="item.billid" :label="item.billcat" :value="item.billid">
+                    </el-option>
+                </el-select>
+                <el-input placeholder="Register date (YYYY/MM/DD)" v-model="date" size="small"></el-input>
+                <el-input placeholder="Username" v-model="username" size="small"></el-input>
+                <el-select v-model="dept" multiple placeholder="Department" style="width: 100%" size="small">
+                    <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
+                    </el-option>
+                </el-select>
+                <el-row>
+                    <el-col :span="16">
+                        <el-radio v-model="newrecord" label="newRecord">New record</el-radio>
+                        <el-radio v-model="aorp" label="morning">Morning</el-radio>
+                        <el-radio v-model="aorp" label="afternoon">Afternoon</el-radio>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-button type="primary" plain size="small">submit</el-button>
+                    </el-col>
+                </el-row>
+            </el-col>
+            <el-col>
+                <h3>{{ fee }}</h3>
+            </el-col>
+        </el-row>
+    </div>
+</body>
+
+
+
+<script>
+    var app = new Vue({
+        el: '#register',
+        data: {
+            pid: "",
+            pname: "",
+            page: "",
+            pbirth: "",
+            paddress: "",
+            pgender: "",
+            billingcat: "",
+            date: "",
+            username: "",
+            dept: "",
+            newrecord: "",
+            aorp: "",
+
+            patients: [],
+            consts: [],
+
+            value: false,
+            currentPage: 1, //初始页
+            pagesize: 10, //    每页的数据
+
+
+            methodType: "", //调用方法，add or update
+            formTitle: "",
+            dialogFormVisible: false,
+            updatingIndex: -1,
+            updatingObject: {},
+
+            //delete
+            deleteDialogVisible: false, //控制弹出删除窗口
+            deletingIndex: -1,
+            deletingObject: {},
+
+            form: {
+                constid: "",
+                consttype: "",
+                constname: "",
+                constcode: "",
+            },
+            formLabelWidth: '120px'
+        },
+        methods: {
+            search: function() {
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/management/consts', {
+                        constid: that.constid,
+                        consttype: that.constype,
+                        constname: that.constname,
+                        constcode: that.constcode,
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.consts = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            onSubmit: function() {
+                if (this.methodType == "Add")
+                    this.onSubmitAdd();
+                if (this.methodType == "Update")
+                    this.onSubmitUpdate();
+            },
+
+            onSubmitAdd: function() {
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/addConst', {
+                        constid: that.form.constid,
+                        consttype: that.form.consttype,
+                        constname: that.form.constname,
+                        constcode: that.form.constcode
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                        // that.consts=response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            onSubmitUpdate: function() {
+                var that = this;
+                console.log(that.form);
+                axios.post('/management/updateConst', {
+                        constid: that.form.constid,
+                        consttype: that.form.consttype,
+                        constname: that.form.constname,
+                        constcode: that.form.constcode
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            //---------DELETE---------/
+            showDeleteDialogForm: function(index, row) {
+                this.deleteDialogVisible = true;
+                this.deletingIndex = index;
+                this.deletingObject = row;
+            },
+
+            onSubmitDelete: function() {
+                console.log(this.users);
+                console.log(this.deletingObject);
+
+                var that = this;
+
+                axios.post('/management/delConst', {
+                    constid: that.deletingObject.constid + ""
+                }).then(function(response) {
+                    console.log(response.data);
+                    // that.consts=response.data;
+                }).catch(function(error) {
+                    console.log(error);
+                });
+                this.deleteDialogVisible = false;
+                this.refresh();
+            },
+
+            showDialogForm: function(method, index, row) {
+                if (method == "Add") {
+                    this.form = {
+                        constid: "",
+                        consttype: "",
+                        constname: "",
+                        constcode: ""
+                    }
+                }
+                if (method == "Update")
+                    this.form = row;
+                console.log(this.form);
+
+                this.dialogFormVisible = true;
+                this.methodType = method;
+                this.formTitle = method + " Constant";
+                this.updatingIndex = index;
+                this.updatingObject = row;
+                console.log("Method using " + this.methodType);
+                console.log("index " + index)
+                console.log("row ");
+                console.log(row)
+            },
+
+            refresh: function() {
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/management/consts', {
+                        constid: "",
+                        consttype: "",
+                        constname: "",
+                        constcode: "",
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.consts = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
+            }
+        }
+    })
+</script>
+
+</html>
