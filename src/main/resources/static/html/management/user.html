@@ -97,7 +97,7 @@
         </el-pagination>
     </template>
 
-    <!-- --------------------------------------- Form ------------------------- -->
+<!------------------------------- Form ----------------------------------->
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="Department" :label-width="formLabelWidth">
@@ -140,9 +140,6 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-<!--            <el-form-item label="Position" :label-width="formLabelWidth">-->
-<!--                <el-input v-model="form.position" autocomplete="off"></el-input>-->
-<!--            </el-form-item>-->
             <el-form-item label="Position" :label-width="formLabelWidth">
                 <el-select
                         v-model="form.position"
@@ -158,8 +155,8 @@
             </el-form-item>
             <el-form-item label="Shift Or Not" :label-width="formLabelWidth">
                 <template>
-                    <el-radio v-model="form.shiftOrNot" label="true">Yes</el-radio>
-                    <el-radio v-model="form.shiftOrNot" label="false">No</el-radio>
+                    <el-radio v-model="form.shiftOrNot" :label="true">Yes</el-radio>
+                    <el-radio v-model="form.shiftOrNot" :label="false">No</el-radio>
                 </template>
             </el-form-item>
         </el-form>
@@ -236,30 +233,23 @@
             currentPage: 1, //初始页
             pagesize: 10,    //    每页的数据
         },
+
+        mounted: function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            that.users = []
+            axios.post('/management/users', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.users = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
         methods: {
-            /*Show the selected depts from drop down*/
-            showSelectedDepartments: function(val){
-                console.log("showSelectedDepartments")
-                console.log(this.form.selectdepts)
-            },
-
-            shiftFormatter(row){
-                if(row.shiftOrNot)
-                    return "Yes"
-                else
-                    return "No"
-            },
-
-            deptFormatter(row){
-                deptStr = ""
-                for(i = 0; i < row.depts.length; i++){
-                    if(i==0)
-                        deptStr += row.depts[i].deptname
-                    else
-                        deptStr += " | "+ row.depts[i].deptname
-                }
-                return deptStr
-            },
 
             search: function () {
                 var that = this;
@@ -283,61 +273,26 @@
                     });
             },
 
-            loadDept:function(){
-                this.currentPage = 1;
-                var that = this;
-                axios.post('/management/depts', {
-                    deptcode: "",
-                    deptclass: "",
-                    deptname: "",
-                    deptcat: "",
-                })
-                .then(function (response) {
-                    console.log(response.data);
-                    that.deptList = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-            },
 
             refresh:function(){
                 console.log("refresh!!!")
                 this.currentPage = 1;
                 var that = this;
                 that.users = []
-                axios.post('/management/users', {
-                    // userid: "",
-                    // username: "",
-                    // pwd: "",
-                    // realname: "",
-                    // usercat: "",
-                    // position: "",
-                    // shiftOrNot: "",
-                    // depts: []
+                axios.post('/management/users', {})
+                .then(function (response) {
+                    console.log(response.data);
+                    that.users = response.data;
                 })
-                    .then(function (response) {
-                        console.log(response.data);
-                        that.users = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
-
-            /*---------------Update Or Add-----------------*/
+/*************************-Update Or Add***********************/
             showDialogForm: function (method,index,row) {
                 this.loadDept();
                 if (method == "Add") {
-                    this.form = {
-                        // userid: "",
-                        // username: "",
-                        // pwd: "",
-                        // realname: "",
-                        // usercat: "",
-                        // position: "",
-                        // shiftOrNot: "",
-                    }
+                    this.form = {}
                 }
                 if (method == "Update"){
                     this.form = {
@@ -349,12 +304,13 @@
                         position: row.position,
                         shiftOrNot: row.shiftOrNot
                     }
+                    this.form.selectdepts = [];
+                    for(i=0; i<row.depts.length;i++)
+                        this.form.selectdepts.push(row.depts[i].deptcode);
                 }
-                // this.form = row;
-
                 this.dialogFormVisible = true;
                 this.methodType = method;
-                this.formTitle = method + " Department";
+                this.formTitle = method + " Users";
                 this.updatingIndex = index;
                 this.updatingObject = row;
             },
@@ -367,7 +323,6 @@
                 console.log("onSubmit->Form Content")
                 console.log(this.form)
                 this.dialogFormVisible = false;
-                this.refresh();
             },
 
             onSubmitAdd: function(){
@@ -379,6 +334,7 @@
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
                     data:  this.form,
                     success: function(data) {
+                        this.refresh();
                         console.log("success...");
                     },
                     error: function(data) {
@@ -403,7 +359,7 @@
                     }
                 });
             },
-            /*---------------Delete----------------------*/
+/**************************Delete******************************/
             showDeleteDialogForm: function(index, row){
                 this.deleteDialogVisible = true;
                 this.deletingIndex = index;
@@ -436,7 +392,51 @@
             handleCurrentChange: function(currentPage) {
                 this.currentPage = currentPage;
                 console.log(currentPage);
-            }
+            },
+
+/**************************Helper*************************************************/
+
+            /*Show the selected depts from drop down*/
+            showSelectedDepartments: function(val){
+                console.log("showSelectedDepartments")
+                console.log(this.form.selectdepts)
+            },
+
+            shiftFormatter(row){
+                if(row.shiftOrNot)
+                    return "Yes"
+                else
+                    return "No"
+            },
+
+            deptFormatter(row){
+                deptStr = ""
+                for(i = 0; i < row.depts.length; i++){
+                    if(i==0)
+                        deptStr += row.depts[i].deptname
+                    else
+                        deptStr += " | "+ row.depts[i].deptname
+                }
+                return deptStr
+            },
+
+            loadDept:function(){
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/management/depts', {
+                    deptcode: "",
+                    deptclass: "",
+                    deptname: "",
+                    deptcat: "",
+                })
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.deptList = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
         }
     })
 </script>

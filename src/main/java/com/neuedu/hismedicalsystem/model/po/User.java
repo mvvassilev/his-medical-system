@@ -96,4 +96,17 @@ public class User {
     public void setDepts(List<Dept> depts) {
         this.depts = depts;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userid=" + userid +
+                ", username='" + username + '\'' +
+                ", pwd='" + pwd + '\'' +
+                ", realname='" + realname + '\'' +
+                ", usercat='" + usercat + '\'' +
+                ", position='" + position + '\'' +
+                ", shiftOrNot=" + shiftOrNot +
+                '}';
+    }
 }

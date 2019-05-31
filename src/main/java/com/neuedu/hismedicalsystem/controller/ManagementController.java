@@ -207,8 +207,12 @@ public class ManagementController {
     @PostMapping(value = "/addUser")
     public void addUser(@RequestBody JSONObject obj) {
         try {
-            User user = getUserFromJasonObj(obj);
+//            User user = getUserFromJasonObj(obj);
             List<String> deptList = getDeptList(obj);
+            User user=(User)JSONObject.toJavaObject(obj, User.class);
+
+            System.out.println(user.toString());
+
             userService.addUser(user,deptList);
         } catch (JSONException e) {
             e.printStackTrace();
