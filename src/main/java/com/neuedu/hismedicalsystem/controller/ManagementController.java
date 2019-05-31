@@ -368,7 +368,7 @@ public class ManagementController {
     @RequestMapping("/updateUser")
     public void updateUser(@RequestBody JSONObject obj) {
         try {
-            User user = getUserFromJasonObj(obj);
+            User user = (User)JSONObject.toJavaObject(obj, User.class);
             List<String> deptList = getDeptList(obj);
             userService.updateUser(user,deptList);
         } catch (JSONException e) {

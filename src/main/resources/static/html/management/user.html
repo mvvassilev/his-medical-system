@@ -106,7 +106,8 @@
                         v-model="form.selectdepts"
                         multiple
                         placeholder="Select"
-                        style="width: 80%">
+                        style="width: 80%"
+                        :change="showSelectedDepartments()">
                     <el-option
                             v-for="item in deptList"
                             :key="item.deptcode"
@@ -140,25 +141,27 @@
                     </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="Position" :label-width="formLabelWidth">
-                <el-select
-                        v-model="form.position"
-                        placeholder="Select Doctor Position"
-                        style="width: 80%">
-                    <el-option
-                            v-for="item in positionList"
-                            :key="item"
-                            :label="item"
-                            :value="item">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="Shift Or Not" :label-width="formLabelWidth">
-                <template>
-                    <el-radio v-model="form.shiftOrNot" :label="true">Yes</el-radio>
-                    <el-radio v-model="form.shiftOrNot" :label="false">No</el-radio>
-                </template>
-            </el-form-item>
+            <div v-if="form.usercat==='门诊医生'">
+                <el-form-item label="Position" :label-width="formLabelWidth">
+                    <el-select
+                            v-model="form.position"
+                            placeholder="Select Doctor Position"
+                            style="width: 80%">
+                        <el-option
+                                v-for="item in positionList"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="Shift Or Not" :label-width="formLabelWidth">
+                    <template>
+                        <el-radio v-model="form.shiftOrNot" :label="true">Yes</el-radio>
+                        <el-radio v-model="form.shiftOrNot" :label="false">No</el-radio>
+                    </template>
+                </el-form-item>
+            </div>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -279,7 +282,15 @@
                 this.currentPage = 1;
                 var that = this;
                 that.users = []
-                axios.post('/management/users', {})
+                axios.post('/management/users', {
+                    userid: "",
+                    username: "",
+                    pwd: "",
+                    realname: "",
+                    usercat: "",
+                    position: "",
+                    shiftOrNot: ""
+                })
                 .then(function (response) {
                     console.log(response.data);
                     that.users = response.data;
@@ -302,9 +313,9 @@
                         realname: row.realname,
                         usercat: row.usercat,
                         position: row.position,
-                        shiftOrNot: row.shiftOrNot
+                        shiftOrNot: row.shiftOrNot,
+                        selectdepts: []
                     }
-                    this.form.selectdepts = [];
                     for(i=0; i<row.depts.length;i++)
                         this.form.selectdepts.push(row.depts[i].deptcode);
                 }
@@ -323,6 +334,7 @@
                 console.log("onSubmit->Form Content")
                 console.log(this.form)
                 this.dialogFormVisible = false;
+                this.refresh();
             },
 
             onSubmitAdd: function(){
@@ -334,7 +346,6 @@
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
                     data:  this.form,
                     success: function(data) {
-                        this.refresh();
                         console.log("success...");
                     },
                     error: function(data) {
@@ -397,9 +408,10 @@
 /**************************Helper*************************************************/
 
             /*Show the selected depts from drop down*/
-            showSelectedDepartments: function(val){
-                console.log("showSelectedDepartments")
-                console.log(this.form.selectdepts)
+            showSelectedDepartments: function(){
+                // this.$forceUpdate()
+                // console.log("showSelectedDepartments")
+                // console.log(this.form.selectdepts)
             },
 
             shiftFormatter(row){
