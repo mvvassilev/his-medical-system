@@ -7,9 +7,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UserMapper {
-    public List<User> getUsers();
+    public List<User> getUsers(User condition);
 
     public void updateUser(User condition);
+
+    public void updateUserInUserRDept(@Param("userid") int userid, @Param("list") List<String> deptList);
 
     public void deleteUser(String userid);
 
@@ -17,5 +19,5 @@ public interface UserMapper {
 
     public void addUser(User user);
 
-    public void addUserToUserRDept(@Param("userid") int userid, @Param("list") List<Dept> list);
+    public void addUserToUserRDept(@Param("userid") int userid, @Param("list") List<String> deptList);
 }

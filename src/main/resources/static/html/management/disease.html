@@ -14,19 +14,26 @@
 
 <body>
 <div id="disease">
-
-    <el-row :gutter="20">
-        <el-col :span="16">
-            <input type="text" v-model="icdcode" placeholder="ICDCode"/>
-            <input type="text" v-model="discode" placeholder="Disease Code"/>
-            <input type="text" v-model="disname" placeholder="Name"/>
-            <input type="text" v-model="discat" placeholder="Category"/>
-            <el-button icon="el-icon-search" @click="search"></el-button>
-        </el-col>
-        <el-col :span="8">
-            <el-button type="text" @click="showDialogForm('Add')">Add New Entry</el-button>
-        </el-col>
-    </el-row>
+        <el-row :gutter="20">
+            <el-col :span="4">
+                <el-input type="text" v-model="icdcode" placeholder="ICDCode"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="discode" placeholder="Disease Code"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="disname" placeholder="Name"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-input type="text" v-model="discat" placeholder="Category"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+            </el-col>
+            <el-col :span="4">
+                <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry</el-button>
+            </el-col>
+        </el-row>
 
 
     <template>
@@ -148,6 +155,21 @@
             },
             formLabelWidth: '120px'
         },
+
+        mounted: function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            axios.post('/management/dis', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.disease = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
         methods: {
             search: function () {
                 this.currentPage = 1;

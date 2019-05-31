@@ -19,12 +19,20 @@ public class UserService {
         System.out.println(userMapper);
     }
 
-    public List<User> getUsers(){
-        return userMapper.getUsers();
+    public List<User> getUsers(User condition){
+        return userMapper.getUsers(condition);
     }
 
     @Transactional
-    public void updateUser(User condition){ userMapper.updateUser(condition);}
+    public void updateUser(User condition, List<String> deptList){
+        //update user
+        userMapper.updateUser(condition);
+        //delete relevant depts
+        String userid = String.valueOf(condition.getUserid());
+        userMapper.deleteUserFromUserRDept(userid);
+        //append new depts
+        userMapper.addUserToUserRDept(condition.getUserid(), deptList);
+    }
 
     @Transactional
     public void deleteUser(String userid) {
@@ -33,9 +41,8 @@ public class UserService {
     }
 
     @Transactional
-    public void addUser(User user) {
+    public void addUser(User user, List<String> deptList) {
         userMapper.addUser(user);
-        List<Dept> list = user.getDepts();
-        userMapper.addUserToUserRDept(user.getUserid(), list);
+        userMapper.addUserToUserRDept(user.getUserid(), deptList);
     }
 }

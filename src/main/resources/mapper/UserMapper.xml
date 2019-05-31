@@ -4,11 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.UserMapper">
 
-    <select id="getUser" resultType="User">
+    <select id="getUsers" resultMap="_user">
         select * from ((userrdept ud join user u on u.userid = ud.userid)join dept d on d.deptcode = ud.deptcode)
         <where>
             <if test="userid != null and userid!='' ">
-                and userid = #{userid}
+                and u.userid = #{userid}
             </if>
             <if test="username != null and username!='' ">
                 and username = #{username}
@@ -19,9 +19,6 @@
             <if test="realname != null and realname!='' ">
                 and realname = #{username}
             </if>
-            <if test="deptcode != null and deptcode!='' ">
-                and deptcode = #{deptcode}
-            </if>
             <if test="usercat != null and usercat!='' ">
                 and usercat = #{usercat}
             </if>
@@ -31,18 +28,18 @@
             <if test="shiftOrNot != null and shiftOrNot!='' ">
                 and shiftOrNot = #{shiftOrNot}
             </if>
-            <foreach item="item" collection="list" separator=",">
-                (userid = #{userid}, item.deptcode = #{item.deptcode})
-                <foreach item="item" collection="list" separator=",">
-                    and (userid = #{userid}, item.deptcode = #{item.deptcode})
-                </foreach>
-            </foreach>
+<!--            <foreach item="item" collection="list" separator=",">-->
+<!--                (userid = #{userid}, item.deptcode = #{item.deptcode})-->
+<!--                <foreach item="item" collection="list" separator=",">-->
+<!--                    and (userid = #{userid}, item.deptcode = #{item.deptcode})-->
+<!--                </foreach>-->
+<!--            </foreach>-->
         </where>
     </select>
 
-    <!--<select id="getUsers" resultMap="_user">-->
-    <!--select * from ((userrdept ud join user u on u.userid = ud.userid)join dept d on d.deptcode = ud.deptcode)-->
-    <!--</select>-->
+<!--    <select id="getUsers" resultMap="_user">-->
+<!--        select * from ((userrdept ud join user u on u.userid = ud.userid)join dept d on d.deptcode = ud.deptcode)-->
+<!--    </select>-->
 
     <resultMap type="User" id="_user">
         <id property="userid" column="userid" />
@@ -60,22 +57,21 @@
         </collection>
     </resultMap>
 
-    <insert id="addUser">
-        insert into user (userid,username,pwd,realname,usercat,position,shiftOrNot)
-        values (#{userid},#{username},#{pwd},#{realname},#{usercat},#{position},#{shiftOrNot})
-    </insert>
 
-    <update id="updateUserInUserRDept" useGeneratedKeys="true" keyProperty="uRid">>
-        update userrdept set
+    <!--UPDATE-->
+    <update id="updateUserInUserRDept">
         <foreach item="item" collection="list" separator=",">
-            (userid = #{userid}, item.deptcode = #{item.deptcode})
+            update userrdept set deptcode = #{item} where userid = #{userid}
         </foreach>
     </update>
 
     <update id="updateUser">
-        update user set username = #{username},pwd = #{pwd},realname = #{realname},deptcode = #{deptcode}
-         ,usercat = #{usercat},position = #{position},shiftOrNot = #{shiftOrNot}  where userid = #{userid}
+        update user set username = #{username},pwd = #{pwd},realname = #{realname},usercat = #{usercat},position = #{position},shiftOrNot = #{shiftOrNot}
+        where userid = #{userid}
     </update>
+
+
+
 
     <delete id="deleteUser">
         delete from user where userid=#{userid}
@@ -85,13 +81,17 @@
         delete from userrdept where userid=#{userid}
     </delete>
 
+    <insert id="addUser">
+        insert into user (userid,username,pwd,realname,usercat,position,shiftOrNot)
+        values (#{userid},#{username},#{pwd},#{realname},#{usercat},#{position},#{shiftOrNot})
+    </insert>
+
     <insert id="addUserToUserRDept" useGeneratedKeys="true" keyProperty="uRid">
         insert into userrdept (userid, deptcode) values
         <foreach item="item" collection="list" separator=",">
-            (#{userid}, #{item.deptcode})
+            (#{userid}, #{item})
         </foreach>
     </insert>
-
 </mapper>
 
 

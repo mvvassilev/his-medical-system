@@ -31,8 +31,8 @@
             <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
         <el-col :span="12" :gutter="10">
-            <el-button type="primary" @click="addRuleDialogForm">Add New Rules</el-button>
-            <el-button type="primary" @click="showRuleDialogForm">Query Rules</el-button>
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="addRuleDialogForm">Add New Rules</el-button>
+            <el-button icon="el-icon-view" type="primary" @click="showRuleDialogForm">Query Rules</el-button>
         </el-col>
     </el-row>
 
@@ -259,7 +259,7 @@
                         </el-row>
             <el-row :gutter="20" >
 
-                    <el-col :span="12"><el-form-item><el-button type="primary" @click="ruleSubmit">Create</el-button></el-form-item></el-col>
+                    <el-col :span="12"><el-form-item><el-button type="primary" @click="openConfirmDialog">Create</el-button></el-form-item></el-col>
                     <el-col :span="12"><el-form-item><el-button @click="dialogVisible = false">Cancel</el-button></el-form-item></el-col>
 
             </el-row>
@@ -316,6 +316,21 @@
             deletingIndex: -1,
             deletingObject:{},
         },
+
+        mounted: function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            axios.post('/management/shift', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.shift = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
         methods: {
             dateFormatter(row){
                 return row.dutydate.substr(0,10)
@@ -509,6 +524,24 @@
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+            openConfirmDialog:function() {
+                this.$confirm('Sure to create?', 'Notice', {
+                          confirmButtonText: 'Confirm',
+                          cancelButtonText: 'Cancel',
+                          type: 'warning'
+                        }).then(() => {
+                            this.ruleSubmit();
+                          this.$message({
+                            type: 'success',
+                            message: 'Create Succeed!'
+                          });
+                        }).catch(() => {
+                          this.$message({
+                            type: 'info',
+                            message: 'Cancel Create.'
+                          });
+                        });
             }
         }
     });
