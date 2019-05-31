@@ -3,11 +3,35 @@ package com.neuedu.hismedicalsystem.model.po;
 public class Medicine {
     private String itemcode;
     private String medname;
-    private String size;
+    private String medsize;
     private String unit;
     private double price;
-    private String type;
-    private String feename;
+    private String medtype;
+    private String medcat;
+
+    public String getMedsize() {
+        return medsize;
+    }
+
+    public void setMedsize(String medsize) {
+        this.medsize = medsize;
+    }
+
+    public String getMedtype() {
+        return medtype;
+    }
+
+    public void setMedtype(String medtype) {
+        this.medtype = medtype;
+    }
+
+    public String getMedcat() {
+        return medcat;
+    }
+
+    public void setMedcat(String medcat) {
+        this.medcat = medcat;
+    }
 
     public String getItemcode() {
         return itemcode;
@@ -23,14 +47,6 @@ public class Medicine {
 
     public void setMedname(String medname) {
         this.medname = medname;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     public String getUnit() {
@@ -49,19 +65,4 @@ public class Medicine {
         this.price = price;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getFeename() {
-        return feename;
-    }
-
-    public void setFeename(String feename) {
-        this.feename = feename;
-    }
 }

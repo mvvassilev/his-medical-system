@@ -4,35 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.MedMapper">
     <select id="getMed" resultType="Medicine">
-        select * from medicine m join fee f on m.feecode=f.feecode
+        select * from medicine
         <where>
             <if test="itemcode != null and itemcode!='' ">
                 and itemcode = #{itemcode}
-            </if>
-            <if test="medname != null and medname!='' ">
-                and medname = #{medname}
-            </if>
-            <if test="size != null and size!='' ">
-                and size = #{size}
-            </if>
-            <if test="unit != null and unit!='' ">
-                and unit = #{unit}
-            </if>
-            <if test="price != null and price!='' ">
-                and price = #{price}
-            </if>
-            <if test="type != null and type!='' ">
-                and type = #{type}
-            </if>
-            <if test="feename != null and feename!='' ">
-                and feename = #{feename}
             </if>
         </where>
     </select>
 
     <insert id="addMed">
-        insert into medicine (itemcode,medname,unit,type,price,size,feecode)
-        values (#{itemcode},#{medname},#{unit},#{type},#{price},#{size},#{feecode})
+        insert into medicine (itemcode,medname,unit,medtype,price,medsize,medcat)
+        values (#{itemcode},#{medname},#{unit},#{medtype},#{price},#{medsize},#{medcat})
     </insert>
 
     <delete id="delMed">
@@ -40,7 +22,7 @@
     </delete>
 
     <update id="updateMed">
-        update medicine set medname = #{medname},unit = #{unit},type = #{type},price = #{price}, size=#{size},feecode=#{feecode}
+        update medicine set medname = #{medname},unit = #{unit},medtype = #{medtype},price = #{price}, medsize=#{medsize},medcat=#{medcat}
         where itemcode = #{itemcode}
     </update>
 </mapper>

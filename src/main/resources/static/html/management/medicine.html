@@ -15,11 +15,10 @@
 <body>
 <div id="medicine">
     <el-row :gutter="20">
-        <el-col :span="16">
-            <input type="text" v-model="icdcode" placeholder="ICDCode"/>
-            <input type="text" v-model="discode" placeholder="Disease Code"/>
-            <input type="text" v-model="disname" placeholder="Name"/>
-            <input type="text" v-model="discat" placeholder="Category"/>
+        <el-col :span="8">
+            <el-input type="text" v-model="itemcode" placeholder="Medicine Code" clearable></el-input>
+        </el-col>
+        <el-col :span="8">
             <el-button icon="el-icon-search" @click="search"></el-button>
         </el-col>
         <el-col :span="8">
@@ -28,41 +27,65 @@
     </el-row>
 
 
-    <template>
         <el-table
-                :data="disease.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-                style="width: 100%">
+                :data="medicine.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                style="width: 100%"
+                @selection-change="handleSelectionChange"
+                ref="multipleTable"
+                tooltip-effect="dark">
             <el-table-column
-                    prop="icdcode"
-                    label="ICDCode"
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="itemcode"
+                    label="Medicine Code"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="discode"
-                    label="Disease Code"
+                    prop="medname"
+                    label="Medicine Name"
+                    width="250">
+            </el-table-column>
+            <el-table-column
+                    prop="medsize"
+                    label="Medicine Size"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="disname"
-                    label="Name"
+                    prop="unit"
+                    label="Unit"
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="discat"
-                    label="Category">
+                    prop="price"
+                    label="Price"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="medtype"
+                    label="Medicine Type"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="medcat"
+                    label="Medicine Category">
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
                     <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete
                     </el-button>
-                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">
-                        update
+                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update
                     </el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <el-switch v-model="value">
-        </el-switch>
+
+        <div style="margin-top: 20px">
+            <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection</el-button>
+            <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
+                       @click="">delete all</el-button><!--delAllMed(multipleSelection)-->
+        </div>
 
         <el-pagination
                 @size-change="handleSizeChange"
@@ -73,25 +96,42 @@
                 :page-size="pagesize"
                 :hide-on-single-page="value"
                 layout="total, sizes, prev, pager, next, jumper"
-                :total="disease.length">
+                :total="medicine.length">
         </el-pagination>
-
-    </template>
 
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
-            <el-form-item v-if="methodType=='Add'" label="ICDCode" :label-width="formLabelWidth">
-                <el-input v-model="form.icdcode" autocomplete="off"></el-input>
+            <el-form-item v-if="methodType=='Add'" label="Medicine Code" :label-width="formLabelWidth">
+                <el-input v-model="form.itemcode" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Disease Code" :label-width="formLabelWidth">
-                <el-input v-model="form.discode" autocomplete="off"></el-input>
+            <el-form-item label="Medicine Name" :label-width="formLabelWidth">
+                <el-input v-model="form.medname" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Name" :label-width="formLabelWidth">
-                <el-input v-model="form.disname" autocomplete="off"></el-input>
+            <el-form-item label="Medicine Size" :label-width="formLabelWidth">
+                <el-input v-model="form.medsize" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Category" :label-width="formLabelWidth">
-                <el-input v-model="form.discat" autocomplete="off"></el-input>
+            <el-form-item label="Unit" :label-width="formLabelWidth">
+                <el-input v-model="form.unit" autocomplete="off"></el-input>
             </el-form-item>
+            <el-form-item label="Price" :label-width="formLabelWidth">
+                <el-input v-model="form.price" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Medicine Type" :label-width="formLabelWidth">
+                <el-input v-model="form.medtype" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Medicine Category" :label-width="formLabelWidth">
+                <el-input v-model="form.medcat" autocomplete="off"></el-input>
+            </el-form-item>
+            <!--<el-select label="Medicine Category" v-model="form.feename" placeholder="Choose Medicine Category">
+                <el-option
+                        v-for="item in form.medicine"
+                        :key="item.feecode"
+                        :label="item.feename"
+                        :value="item.feecode">
+                    <span style="float: left">{{ item.feename}}</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.feecode }}</span>
+                </el-option>
+            </el-select>-->
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -107,31 +147,35 @@
         <span>Are you sure you want to delete this?</span>
         <span slot="footer" class="dialog-footer">
             <el-button @click="deleteDialogVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="delDis">Confirm</el-button>
+            <el-button type="primary" @click="delMed">Confirm</el-button>
         </span>
     </el-dialog>
 
 </div>
 </body>
 
-
 <script>
     var app = new Vue({
-        el: '#disease',
+        el: '#medicine',
         data: {
-            icdcode: "",
-            discode: "",
-            disname: "",
-            discat: "",
-            disease: [],
+            itemcode: "",
+            medname: "",
+            medsize: "",
+            unit: "",
+            price:"",
+            medtype:"",
+            medcat:"",
+            medicine: [],
 
             value: false,
             currentPage: 1, //初始页
-            pagesize: 10,    //    每页的数据
+            pagesize: 20,    //    每页的数据
 
             deleteDialogVisible: false,//控制弹出删除窗口
             deletingIndex: -1,
             deletingObject:{},
+
+            multipleSelection: [],
 
             methodType: "",//调用方法，add or update
             formTitle:"",
@@ -139,10 +183,13 @@
             updatingIndex:-1,
             updatingObject:{},
             form: {
-                icdcode: "",
-                discode: "",
-                disname: "",
-                discat:"",
+                itemcode: "",
+                medname: "",
+                medsize: "",
+                unit: "",
+                price:"",
+                medtype:"",
+                medcat:"",
             },
             formLabelWidth: '120px'
         },
@@ -150,15 +197,18 @@
             search: function () {
                 this.currentPage = 1;
                 var that = this;
-                axios.post('/management/dis', {
-                    icdcode: that.icdcode,
-                    discode: that.discode,
-                    disname: that.disname,
-                    discat: that.discat,
+                axios.post('/management/med', {
+                    itemcode: that.itemcode,
+                    medname: that.medname,
+                    medsize: that.medsize,
+                    unit: that.unit,
+                    price:that.price,
+                    medtype:that.medtype,
+                    medcat:that.medcat,
                 })
                     .then(function (response) {
                         console.log(response.data);
-                        that.disease = response.data;
+                        that.medicine = response.data;
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -168,15 +218,18 @@
             refresh: function () {
                 this.currentPage = 1;
                 var that = this;
-                axios.post('/management/dis', {
-                    icdcode: "",
-                    discode: "",
-                    disname: "",
-                    discat: "",
+                axios.post('/management/med', {
+                    itemcode: "",
+                    medname: "",
+                    medsize: "",
+                    unit: "",
+                    price:"",
+                    medtype:"",
+                    medcat:"",
                 })
                     .then(function (response) {
                         console.log(response.data);
-                        that.disease = response.data;
+                        that.medicine = response.data;
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -195,11 +248,14 @@
             onSubmitAdd: function(){
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/addDis', {
-                    icdcode: that.form.icdcode,
-                    discode: that.form.discode,
-                    disname: that.form.disname,
-                    discat: that.form.discat,
+                axios.post('/management/addMed', {
+                    itemcode: that.form.itemcode,
+                    medname: that.form.medname,
+                    medsize: that.form.medsize,
+                    unit: that.form.unit,
+                    price:that.form.price,
+                    medtype:that.form.medtype,
+                    medcat:that.form.medcat,
                 })
                     .then(function (response) {
                         console.log(response.data);
@@ -213,11 +269,14 @@
             onSubmitUpdate: function () {
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/updateDis', {
-                    icdcode: that.form.icdcode,
-                    discode: that.form.discode,
-                    disname: that.form.disname,
-                    discat: that.form.discat,
+                axios.post('/management/updateMed', {
+                    itemcode: that.form.itemcode,
+                    medname: that.form.medname,
+                    medsize: that.form.medsize,
+                    unit: that.form.unit,
+                    price:that.form.price,
+                    medtype:that.form.medtype,
+                    medcat:that.form.medcat,
                 })
                     .catch(function (error) {
                         console.log(error);
@@ -230,10 +289,10 @@
                 this.deletingObject = row;
             },
 
-            delDis: function () {
+            delMed: function () {
                 var params = new URLSearchParams();
-                params.append('icdcode', this.deletingObject.icdcode);
-                axios.post('/management/delDis', params)
+                params.append('itemcode', this.deletingObject.itemcode);
+                axios.post('/management/delMed', params)
                     .then(function (response) {
 
                     })
@@ -247,31 +306,48 @@
             showDialogForm: function (method,index,row) {
                 if (method == "Add") {
                     this.form = {
-                        icdcode: "",
-                        discode: "",
-                        disname: "",
-                        discat: "",
-                    }
+                        itemcode: "",
+                        medname: "",
+                        medsize: "",
+                        unit: "",
+                        price:"",
+                        medtype:"",
+                        medcat:"",
+                    };
+                    // this.fillFeeSelect();
                 }
                 if (method == "Update"){
                     this.form = {
-                        icdcode: row.icdcode,
-                        discode: row.discode,
-                        disname: row.disname,
-                        discat: row.discat,
+                        itemcode: row.itemcode,
+                        medname: row.medname,
+                        medsize: row.medsize,
+                        unit: row.unit,
+                        price:row.price,
+                        medtype:row.medtype,
+                        medcat:row.medcat,
                     }
                 }
                 // console.log(this.form);
 
                 this.dialogFormVisible = true;
                 this.methodType = method;
-                this.formTitle = method + " Disease";
+                this.formTitle = method + " Medicine";
                 this.updatingIndex = index;
                 this.updatingObject = row;
             },
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
 
-
-
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
             handleSizeChange: function(pagesize) {
                 this.pagesize = pagesize;
                 console.log(pagesize);
@@ -279,7 +355,19 @@
             handleCurrentChange: function(currentPage) {
                 this.currentPage = currentPage;
                 console.log(currentPage);
-            }
+            },
+            /*fillFeeSelect: function () {
+                var that = this;
+                axios.get('/management/getFeeSelect')
+                    .then(function (response) {
+                        // console.log(response.data);
+                        that.form.medicine = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },*/
+
         }
     })
 

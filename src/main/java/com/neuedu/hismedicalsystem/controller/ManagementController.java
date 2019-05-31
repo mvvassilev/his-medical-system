@@ -146,6 +146,7 @@ public class ManagementController {
         return medService.getMed(condition);
     }
 
+
     /**
      * non-medical
      */
