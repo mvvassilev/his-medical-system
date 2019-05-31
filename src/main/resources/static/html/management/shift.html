@@ -164,45 +164,26 @@
         <div style="margin-top: 20px">
             <el-button @click="toggleSelection()">Cancel Selection</el-button>
         </div>
-        <div class="block">
-            <el-row :gutter="20">
+
+            <el-row :gutter="20" style="margin-top: 20px">
                 <el-col :span="10">
-                    <el-date-picker style="width:300px"
+                    <el-date-picker style="width:400px"
                                     v-model="ruledate"
                                     type="daterange"
 
-                                    range-separator="至"
-                                    start-placeholder="开始日期"
-                                    end-placeholder="结束日期">
+                                    range-separator="to"
+                                    start-placeholder="start date"
+                                    end-placeholder="end date">
                     </el-date-picker>
                 </el-col>
-                <el-col :span="4">
-                    <el-input v-model="opid" style="width:100px" placeholder="OperatorID"></el-input>
+                <el-col :span="7">
+                    <el-input v-model="opid" style="width:200px" placeholder="OperatorID"></el-input>
                 </el-col>
-                <el-col :span="4">
-                    <el-input v-model="ration" style="width:100px" placeholder="Ration"></el-input>
-                </el-col>
-                <el-col :span="6">
-                    <el-select v-model="reglevel" placeholder="Choose RegisterLV">
-                        <el-option
-                                v-for="item in items"
-                                :key="item.itemcode"
-                                :label="item.nmedname"
-                                :value="item.itemcode">
-                            <span style="float: left">{{ item.nmedname}}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.itemcode }}</span>
-                        </el-option>
-                    </el-select>
+                <el-col :span="7">
+                    <el-button type="primary" @click="openConfirmDialog">Arrange Now!</el-button>
                 </el-col>
             </el-row>
 
-
-            <el-button type="primary" @click="arrangeShift">Arrange Now!</el-button>
-        </div>
-
-        <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Close</el-button>
-      </span>
     </el-dialog>
 </div>
 
@@ -440,7 +421,6 @@
 
             showRuleDialogForm: function () {
                 dialog.dialogVisible = true;
-                dialog.fillRegSelect();
             },
             addRuleDialogForm: function () {
                 addDialog.dialogVisible = true;
@@ -547,7 +527,7 @@
             ration: '',
             opid: '',
             reglevel: '',
-            items: [],
+
 
         },
         methods: {
@@ -653,16 +633,23 @@
                     }
                 });
             },
-            fillRegSelect: function () {
-                var that = this;
-                axios.get('/management/getRegLevel')
-                    .then(function (response) {
-                        console.log(response.data);
-                        that.items = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+            openConfirmDialog:function() {
+                this.$confirm('Sure to arrange?', 'Notice', {
+                          confirmButtonText: 'Confirm',
+                          cancelButtonText: 'Cancel',
+                          type: 'warning'
+                        }).then(() => {
+                            this.arrangeShift()
+                          this.$message({
+                            type: 'success',
+                            message: 'Arrange Succeed!'
+                          });
+                        }).catch(() => {
+                          this.$message({
+                            type: 'info',
+                            message: 'Cancel Arrangement.'
+                          });
+                        });
             }
 
         }
