@@ -17,16 +17,9 @@
 <div id="shift">
     <el-row :gutter="20">
         <el-col :span="12">
-            <el-date-picker
-                    v-model="value"
-                    value-format="yyyy-MM-dd"
-                    type="daterange"
-                    align="right"
-                    unlink-panels
-                    range-separator="To"
-                    start-placeholder="Start Date"
-                    end-placeholder="End Date"
-                    :picker-options="pickerOptions">
+            <el-date-picker v-model="value" value-format="yyyy-MM-dd" type="daterange" align="right" unlink-panels
+                            range-separator="To" start-placeholder="Start Date" end-placeholder="End Date"
+                            :picker-options="pickerOptions">
             </el-date-picker>
         </el-col>
         <el-col :span="4">
@@ -39,45 +32,20 @@
             <el-button type="primary" @click="showRuleDialogForm">Query Rules</el-button>
         </el-col>
     </el-row>
-    <el-table
-            ref="multipleTable"
-            :data="shift"
-            style="width: 100%"
-            @selection-change="handleSelectionChange">
-        <el-table-column
-                type="selection"
-                width="55">
+    <el-table ref="multipleTable" :data="shift" style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55">
         </el-table-column>
-        <el-table-column
-                prop="dutydate"
-                label="Date"
-                width="180"
-                :formatter="dateFormatter">
+        <el-table-column prop="dutydate" label="Date" width="180" :formatter="dateFormatter">
         </el-table-column>
-        <el-table-column
-                prop="deptname"
-                label="Department"
-                width="180">
+        <el-table-column prop="deptname" label="Department" width="180">
         </el-table-column>
-        <el-table-column
-                prop="realname"
-                label="Doctor"
-                width="180">
+        <el-table-column prop="realname" label="Doctor" width="180">
         </el-table-column>
-        <el-table-column
-                prop="aorp"
-                label="AM or PM"
-                width="180"
-                :formatter="aorpFormatter">
+        <el-table-column prop="aorp" label="AM or PM" width="180" :formatter="aorpFormatter">
         </el-table-column>
-        <el-table-column
-                prop="nmedname"
-                label="Register level"
-                width="180">
+        <el-table-column prop="nmedname" label="Register level" width="180">
         </el-table-column>
-        <el-table-column
-                prop="ration"
-                label="Quota">
+        <el-table-column prop="ration" label="Quota">
         </el-table-column>
     </el-table>
     <div style="margin-top: 20px">
@@ -87,10 +55,7 @@
 </div>
 
 <div id="rule">
-    <el-dialog
-            title="Shift Arrangement"
-            :visible.sync="dialogVisible"
-            width="70%">
+    <el-dialog title="Shift Arrangement" :visible.sync="dialogVisible" width="70%">
         <el-row :gutter="20">
             <el-col :span="18">
 
@@ -98,59 +63,34 @@
                 <el-button type="primary" @click="searchRules">search</el-button>
             </el-col>
         </el-row>
-        <el-table
-                ref="multipleTable"
-                :data="rules"
-                style="width: 100%"
-                tooltip-effect="dark"
-                @selection-change="handleSelectionChange">
-            <el-table-column
-                    type="selection"
-                    width="55">
+        <el-table ref="multipleTable" :data="rules" style="width: 100%" tooltip-effect="dark"
+                  @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column
-                    prop="ruleid"
-                    label="ID"
-                    width="180">
+            <el-table-column prop="ruleid" label="ID" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="rulename"
-                    label="RuleName"
-                    width="180">
+            <el-table-column prop="rulename" label="RuleName" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="username"
-                    label="UserName"
-                    width="180">
+            <el-table-column prop="username" label="UserName" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="deptname"
-                    label="DeptName"
-                    width="180">
+            <el-table-column prop="deptname" label="DeptName" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="timecode"
-                    label="TimeArrange">
+            <el-table-column prop="timecode" label="TimeArrange">
             </el-table-column>
         </el-table>
         <div style="margin-top: 20px">
             <el-button @click="toggleSelection()">Cancel Selection</el-button>
         </div>
         <div class="block">
-            <el-date-picker
-                    v-model="ruledate"
-                    type="daterange"
-                    value-format="yyyy-MM-dd"
-                    range-separator="至"
-                    start-placeholder="开始日期"
-                    end-placeholder="结束日期">
+            <el-date-picker v-model="ruledate" type="daterange" value-format="yyyy-MM-dd" range-separator="至"
+                            start-placeholder="开始日期" end-placeholder="结束日期">
             </el-date-picker>
             <el-button type="primary" @click="arrangeShift">Arrange Now!</el-button>
         </div>
 
         <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Close</el-button>
-      </span>
+                <el-button @click="dialogVisible = false">Close</el-button>
+            </span>
     </el-dialog>
 </div>
 </body>
@@ -186,57 +126,57 @@
                     }
                 }]
             },
-            dutydate:"",
-            deptname:"",
-            username:"",
-            aorp:false,
-            nmedname:"",
-            ration:"",
-            datee:"",
-            dates:"",
-            shift:[],
+            dutydate: "",
+            deptname: "",
+            username: "",
+            aorp: false,
+            nmedname: "",
+            ration: "",
+            datee: "",
+            dates: "",
+            shift: [],
             value: [],
 
             /*currentPage: 1, //初始页
             pagesize: 10,    //    每页的数据*/
 
-            deleteDialogVisible: false,//控制弹出删除窗口
+            deleteDialogVisible: false, //控制弹出删除窗口
             deletingIndex: -1,
-            deletingObject:{},
+            deletingObject: {},
 
             dialogFormVisible: false,
-            updatingIndex:-1,
-            updatingObject:{},
+            updatingIndex: -1,
+            updatingObject: {},
 
 
         },
         methods: {
-            dateFormatter(row){
-                return row.dutydate.substr(0,10)
+            dateFormatter(row) {
+                return row.dutydate.substr(0, 10)
             },
-            aorpFormatter(row){
-                if(row.aorp==true){
+            aorpFormatter(row) {
+                if (row.aorp == true) {
                     return "A.M."
                 }
-                if(row.aorp==false){
+                if (row.aorp == false) {
                     return "P.M."
                 }
             },
-            search: function () {
+            search: function() {
                 var params = new URLSearchParams();
                 params.append("dates", this.value[0]);
                 params.append("datee", this.value[1]);
                 //this.currentPage = 1;
                 var that = this;
-                axios.post('/management/shift',params)
-                    .then(function (response) {
+                axios.post('/management/shift', params)
+                    .then(function(response) {
                         console.log(response.data);
                         console.log(that.value[0]);
                         console.log(that.dates);
                         that.shift = response.data;
                         console.log(that.shift);
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
@@ -253,7 +193,7 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            showRuleDialogForm: function () {
+            showRuleDialogForm: function() {
                 dialog.dialogVisible = true;
             },
         }
@@ -269,21 +209,21 @@
             rules: [],
             multipleSelection: [],
 
-            ruledate:[]
+            ruledate: []
         },
         methods: {
 
-            searchRules: function () {
+            searchRules: function() {
                 var params = new URLSearchParams();
                 params.append('deptname', this.deptname);
                 //this.currentPage = 1;
                 var that = this;
                 axios.post('/management/getRules', params)
-                    .then(function (response) {
+                    .then(function(response) {
                         console.log(response.data);
                         that.rules = response.data;
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
@@ -302,8 +242,8 @@
                 this.multipleSelection = val;
             },
 
-            arrangeShift:function() {
-                console.log("ARRANGE!"+this.ruledate[0]);
+            arrangeShift: function() {
+                console.log("ARRANGE!" + this.ruledate[0]);
             }
 
         }

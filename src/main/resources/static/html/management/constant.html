@@ -79,11 +79,7 @@
             </div>
         </el-dialog>
 
-        <el-dialog
-                title="Confirm Delete"
-                :visible.sync="deleteDialogVisible"
-                width="30%"
-        >
+        <el-dialog title="Confirm Delete" :visible.sync="deleteDialogVisible" width="30%">
             <span>Are you sure you want to delete this?</span>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="deleteDialogVisible = false">Cancel</el-button>
@@ -117,7 +113,7 @@
             updatingObject: {},
 
             //delete
-            deleteDialogVisible: false,//控制弹出删除窗口
+            deleteDialogVisible: false, //控制弹出删除窗口
             deletingIndex: -1,
             deletingObject: {},
 
@@ -130,89 +126,89 @@
             formLabelWidth: '120px'
         },
         methods: {
-            search: function () {
+            search: function() {
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/consts', {
-                    constid: that.constid,
-                    consttype: that.constype,
-                    constname: that.constname,
-                    constcode: that.constcode,
-                })
-                    .then(function (response) {
+                        constid: that.constid,
+                        consttype: that.constype,
+                        constname: that.constname,
+                        constcode: that.constcode,
+                    })
+                    .then(function(response) {
                         console.log(response.data);
                         that.consts = response.data;
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
 
-            onSubmit: function(){
-                if(this.methodType=="Add")
+            onSubmit: function() {
+                if (this.methodType == "Add")
                     this.onSubmitAdd();
-                if(this.methodType=="Update")
+                if (this.methodType == "Update")
                     this.onSubmitUpdate();
             },
 
-            onSubmitAdd: function(){
+            onSubmitAdd: function() {
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/addConst', {
-                    constid: that.form.constid,
-                    consttype: that.form.consttype,
-                    constname: that.form.constname,
-                    constcode: that.form.constcode
-                })
-                .then(function (response) {
-                    console.log(response.data);
-                    // that.consts=response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                        constid: that.form.constid,
+                        consttype: that.form.consttype,
+                        constname: that.form.constname,
+                        constcode: that.form.constcode
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                        // that.consts=response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
             },
 
-            onSubmitUpdate: function () {
+            onSubmitUpdate: function() {
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/updateConst', {
-                    constid: that.form.constid,
-                    consttype: that.form.consttype,
-                    constname: that.form.constname,
-                    constcode: that.form.constcode
-                })
-                    .catch(function (error) {
+                        constid: that.form.constid,
+                        consttype: that.form.consttype,
+                        constname: that.form.constname,
+                        constcode: that.form.constcode
+                    })
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
 
             //---------DELETE---------/
-            showDeleteDialogForm: function(index, row){
+            showDeleteDialogForm: function(index, row) {
                 this.deleteDialogVisible = true;
                 this.deletingIndex = index;
                 this.deletingObject = row;
             },
 
-            onSubmitDelete: function(){
+            onSubmitDelete: function() {
                 console.log(this.users);
                 console.log(this.deletingObject);
 
                 var that = this;
 
-                 axios.post('/management/delConst', {
-                    constid: that.deletingObject.constid+""
-                }).then(function (response) {
+                axios.post('/management/delConst', {
+                    constid: that.deletingObject.constid + ""
+                }).then(function(response) {
                     console.log(response.data);
                     // that.consts=response.data;
-                }).catch(function (error) {
-                        console.log(error);
+                }).catch(function(error) {
+                    console.log(error);
                 });
                 this.deleteDialogVisible = false;
                 this.refresh();
             },
 
-            showDialogForm: function (method,index,row) {
+            showDialogForm: function(method, index, row) {
                 if (method == "Add") {
                     this.form = {
                         constid: "",
@@ -223,7 +219,7 @@
                 }
                 if (method == "Update")
                     this.form = row;
-                    console.log(this.form);
+                console.log(this.form);
 
                 this.dialogFormVisible = true;
                 this.methodType = method;
@@ -236,22 +232,22 @@
                 console.log(row)
             },
 
-            refresh:function(){
+            refresh: function() {
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/consts', {
-                    constid: "",
-                    consttype: "",
-                    constname: "",
-                    constcode: "",
-                })
-                .then(function (response) {
-                    console.log(response.data);
-                    that.consts = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                        constid: "",
+                        consttype: "",
+                        constname: "",
+                        constcode: "",
+                    })
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.consts = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
             },
 
             handleSizeChange: function(pagesize) {

@@ -32,40 +32,24 @@
 
 
     <template>
-        <el-table
-                :data="nonmedics.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-                style="width: 100%">
-            <el-table-column
-                    prop="itemcode"
-                    label="Code"
-                    width="180">
+        <el-table :data="nonmedics.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+            <el-table-column prop="itemcode" label="Code" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="feecode"
-                    label="Feecode"
-                    width="180">
+            <el-table-column prop="feecode" label="Feecode" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="deptcode"
-                    label="Department Code"
-                    width="180">
+            <el-table-column prop="deptcode" label="Department Code" width="180">
             </el-table-column>
-            <el-table-column
-                    prop="nmedname"
-                    label="Name">
+            <el-table-column prop="nmedname" label="Name">
             </el-table-column>
-            <el-table-column
-                    prop="size"
-                    label="Size">
+            <el-table-column prop="size" label="Size">
             </el-table-column>
-            <el-table-column
-                    prop="price"
-                    label="Price">
+            <el-table-column prop="price" label="Price">
             </el-table-column>
 
             <el-table-column fixed="right" label="Operations" width="120">
                 <template slot-scope="scope">
-                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete
+                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">
+                        delete
                     </el-button>
                     <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">
                         update
@@ -76,16 +60,9 @@
         <el-switch v-model="value">
         </el-switch>
 
-        <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[5, 10, 20, 40]"
-
-                :page-size="pagesize"
-                :hide-on-single-page="value"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="nonmedics.length">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+                       :page-sizes="[5, 10, 20, 40]" :page-size="pagesize" :hide-on-single-page="value"
+                       layout="total, sizes, prev, pager, next, jumper" :total="nonmedics.length">
         </el-pagination>
 
     </template>
@@ -119,16 +96,12 @@
     </el-dialog>
 
     <!--    Delete Dialogue -->
-    <el-dialog
-            title="Confirm Delete"
-            :visible.sync="deleteDialogVisible"
-            width="30%"
-    >
+    <el-dialog title="Confirm Delete" :visible.sync="deleteDialogVisible" width="30%">
         <span>Are you sure you want to delete this?</span>
         <span slot="footer" class="dialog-footer">
-            <el-button @click="deleteDialogVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="delNonMedicItem">Confirm</el-button>
-        </span>
+                <el-button @click="deleteDialogVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="delNonMedicItem">Confirm</el-button>
+            </span>
     </el-dialog>
 
 </div>
@@ -149,13 +122,13 @@
 
             value: false,
             currentPage: 1, //初始页
-            pagesize: 10,    //    每页的数据
+            pagesize: 10, //    每页的数据
 
-            deleteDialogVisible: false,//控制弹出删除窗口
+            deleteDialogVisible: false, //控制弹出删除窗口
             deletingIndex: -1,
-            deletingObject:{},
+            deletingObject: {},
 
-            methodType: "",//add or update
+            methodType: "", //add or update
             formTitle: "",
             dialogFormVisible: false,
             updatingIndex: -1,
@@ -171,49 +144,49 @@
             formLabelWidth: '120px'
         },
         methods: {
-            search: function () {
+            search: function() {
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/nonmedics', {
-                    itemcode: that.itemcode,
-                    feecode: that.feecode,
-                    deptcode: that.deptcode,
-                    nmedname: that.nmedname,
-                    size: that.size,
-                    price: that.price,
-                })
-                    .then(function (response) {
+                        itemcode: that.itemcode,
+                        feecode: that.feecode,
+                        deptcode: that.deptcode,
+                        nmedname: that.nmedname,
+                        size: that.size,
+                        price: that.price,
+                    })
+                    .then(function(response) {
                         console.log(that.form.itemcode);
                         console.log(response.data);
                         that.nonmedics = response.data;
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
 
-            refresh: function () {
+            refresh: function() {
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/nonmedics', {
-                    itemcode: "",
-                    feecode: "",
-                    deptcode: "",
-                    nmedname: "",
-                    size: "",
-                    price: "",
-                })
-                    .then(function (response) {
+                        itemcode: "",
+                        feecode: "",
+                        deptcode: "",
+                        nmedname: "",
+                        size: "",
+                        price: "",
+                    })
+                    .then(function(response) {
                         console.log(that.form.itemcode);
                         console.log(response.data);
                         that.nonmedics = response.data;
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
 
-            onSubmit: function () {
+            onSubmit: function() {
                 if (this.methodType == "Add")
                     this.onSubmitAdd();
                 if (this.methodType == "Update")
@@ -222,60 +195,60 @@
                 this.refresh();
             },
 
-            onSubmitAdd: function () {
+            onSubmitAdd: function() {
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/addNonMedic', {
-                    itemcode: that.form.itemcode,
-                    feecode: that.form.feecode,
-                    deptcode: that.form.deptcode,
-                    nmedname: that.form.nmedname,
-                    size: that.form.size,
-                    price: that.form.price,
-                })
-                    .then(function (response) {
+                        itemcode: that.form.itemcode,
+                        feecode: that.form.feecode,
+                        deptcode: that.form.deptcode,
+                        nmedname: that.form.nmedname,
+                        size: that.form.size,
+                        price: that.form.price,
+                    })
+                    .then(function(response) {
                         console.log(response.data);
                         // that.depts=response.data;
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
 
-            onSubmitUpdate: function () {
+            onSubmitUpdate: function() {
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/updateNonMedic', {
-                    itemcode: that.form.itemcode,
-                    feecode: that.form.feecode,
-                    deptcode: that.form.deptcode,
-                    nmedname: that.form.nmedname,
-                    size: that.form.size,
-                    price: that.form.price,
-                })
-                    .catch(function (error) {
+                        itemcode: that.form.itemcode,
+                        feecode: that.form.feecode,
+                        deptcode: that.form.deptcode,
+                        nmedname: that.form.nmedname,
+                        size: that.form.size,
+                        price: that.form.price,
+                    })
+                    .catch(function(error) {
                         console.log(error);
                     });
             },
 
-            showDeleteDialogForm: function(index, row){
+            showDeleteDialogForm: function(index, row) {
                 this.deleteDialogVisible = true;
                 this.deletingIndex = index;
                 this.deletingObject = row;
             },
 
-            delNonMedicItem: function () {
+            delNonMedicItem: function() {
                 var params = new URLSearchParams();
                 params.append('itemcode', this.deletingObject.itemcode);
                 axios.post('/management/delNonMedic', params)
-                    .then(function (response) {
+                    .then(function(response) {
                         // console.log(index.data);
                         /*console.log(that.deptcode);
                         console.log(response.deptcode);
                         that.deptcode = row.deptcode;
                         that.deptcode = response.deptcode;*/
                     })
-                    .catch(function (error) {
+                    .catch(function(error) {
                         console.log(error);
                     });
                 this.deleteDialogVisible = false;
@@ -283,7 +256,7 @@
 
             },
 
-            showDialogForm: function (method, index, row) {
+            showDialogForm: function(method, index, row) {
                 if (method == "Add") {
                     this.form = {
                         itemcode: "",
@@ -313,15 +286,16 @@
             },
 
 
-            handleSizeChange: function (pagesize) {
+            handleSizeChange: function(pagesize) {
                 this.pagesize = pagesize;
                 console.log(pagesize);
             },
-            handleCurrentChange: function (currentPage) {
+            handleCurrentChange: function(currentPage) {
                 this.currentPage = currentPage;
                 console.log(currentPage);
             }
         }
     })
 </script>
+
 </html>
