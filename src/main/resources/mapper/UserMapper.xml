@@ -28,18 +28,9 @@
             <if test="shiftOrNot != null and shiftOrNot!='' ">
                 and shiftOrNot = #{shiftOrNot}
             </if>
-<!--            <foreach item="item" collection="list" separator=",">-->
-<!--                (userid = #{userid}, item.deptcode = #{item.deptcode})-->
-<!--                <foreach item="item" collection="list" separator=",">-->
-<!--                    and (userid = #{userid}, item.deptcode = #{item.deptcode})-->
-<!--                </foreach>-->
-<!--            </foreach>-->
         </where>
     </select>
 
-<!--    <select id="getUsers" resultMap="_user">-->
-<!--        select * from ((userrdept ud join user u on u.userid = ud.userid)join dept d on d.deptcode = ud.deptcode)-->
-<!--    </select>-->
 
     <resultMap type="User" id="_user">
         <id property="userid" column="userid" />
@@ -65,10 +56,19 @@
         </foreach>
     </update>
 
+    <delete id="deleteUserRDept">
+        delete from userrdept where userid = #{userid} and deptcode = #{deptcode}
+    </delete>
+
+    <insert id="insertUserRDept">
+        insert into userrdept (userid, deptcode) values (#{userid}, #{deptcode})
+    </insert>
+
     <update id="updateUser">
         update user set username = #{username},pwd = #{pwd},realname = #{realname},usercat = #{usercat},position = #{position},shiftOrNot = #{shiftOrNot}
         where userid = #{userid}
     </update>
+
 
 
 

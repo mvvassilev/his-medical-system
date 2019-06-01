@@ -40,9 +40,9 @@ public class TestApi1 {
     @Test
     public void testGetSequence() {
         try {
-            String jsonStr = "{\"msg\":\"Godmade Codelover\"}";
+            String jsonStr = "{\"usercat\":\"门诊医生\",\"selectdepts\":[\"CK\",\"CRK\"],\"position\":\"主任医师\",\"pwd\":\"123\",\"shiftOrNot\":true,\"userid\":1,\"username\":\"max\",\"realname\":\"孙宁远\"}";
             JSONObject jsonObject = JSONObject.parseObject(jsonStr);
-            String responseString = mockMvc.perform( post("/registration/getDoctorsAvailable").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
+            String responseString = mockMvc.perform( post("/management/updateUser").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
                     .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
             System.out.println("接口返回结果：" + responseString);
             JSONObject resultObj = JSON.parseObject(responseString);

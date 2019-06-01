@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,14 +25,58 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(User condition, List<String> deptList){
+    public void updateUser(User condition, List<String> newDeptCodeList){
+        //Get original User with all its information (all depts included)
+        User temp = new User();
+        temp.setUserid(condition.getUserid());
+        User user = getUsers(temp).get(0);
+        //Get its original dept list
+        List<Dept> oldDL = user.getDepts();
+        List<String> oldDeptCodeList = new ArrayList<>();
+        for(int i = 0; i < oldDL.size(); i++){
+            oldDeptCodeList.add(oldDL.get(i).getDeptcode());
+        }
+
+        List<String> unchangedDeptCodeList = new ArrayList<>();
+        unchangedDeptCodeList.addAll(newDeptCodeList);
+        unchangedDeptCodeList.retainAll(oldDeptCodeList);//交集
+
+
+        List<String> toBeDeletedList = new ArrayList<>();
+        toBeDeletedList.addAll(oldDeptCodeList);
+        toBeDeletedList.removeAll(unchangedDeptCodeList);
+
+        List<String> toBeAddedList = new ArrayList<>();
+        toBeAddedList.addAll(newDeptCodeList);
+        toBeAddedList.removeAll(unchangedDeptCodeList);
+
+        for(int i = 0; i < toBeAddedList.size(); i++){
+            userMapper.insertUserRDept(condition.getUserid(), toBeAddedList.get(i));
+        }
+
+        for(int i = 0; i < toBeDeletedList.size(); i++) {
+            userMapper.deleteUserRDept(condition.getUserid(), toBeDeletedList.get(i));
+        }
+
+//
+//        System.out.println("toBeAddedList");
+//        printList(toBeAddedList);
+//
+//        System.out.println("toBeDeletedList");
+//        printList(toBeDeletedList);
+//
+//        System.out.println("unchangedDeptCodeList");
+//        printList(unchangedDeptCodeList);
+
+
         //update user
         userMapper.updateUser(condition);
+
         //delete relevant depts
-        String userid = String.valueOf(condition.getUserid());
-        userMapper.deleteUserFromUserRDept(userid);
+//        String userid = String.valueOf(condition.getUserid());
+//        userMapper.deleteUserFromUserRDept(userid);
         //append new depts
-        userMapper.addUserToUserRDept(condition.getUserid(), deptList);
+//        userMapper.addUserToUserRDept(condition.getUserid(), deptList);
     }
 
     @Transactional
@@ -44,5 +89,24 @@ public class UserService {
     public void addUser(User user, List<String> deptList) {
         userMapper.addUser(user);
         userMapper.addUserToUserRDept(user.getUserid(), deptList);
+    }
+
+    /*
+    * Helpers
+    * */
+    private boolean deptExistsInUser(List<Dept> originalDL,String newDept){
+        for(int j = 0; j < originalDL.size(); j++){
+            String oldDeptCode = originalDL.get(j).getDeptcode();
+            if(originalDL.get(j).getDeptcode().equals(newDept))
+                return true;
+        }
+        return false;
+    }
+
+    private void printList(List<String> list){
+        for(int i = 0; i<list.size(); i++){
+            System.out.print(list.get(i)+" ");
+            System.out.println();
+        }
     }
 }
