@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    <div id="app">
+<div id="sidebar">
         <el-col :span="5">
             <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" style="height: 100vh">
                 <el-menu-item index="1" v-on:click="navigateTo('constant.html')">
@@ -41,7 +41,7 @@
 </body>
 <script>
     var app = new Vue({
-        el: '#app',
+        el: '#sidebar',
         data: function() {
             return {
                 url_sidebar: "",

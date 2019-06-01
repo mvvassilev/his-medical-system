@@ -23,7 +23,7 @@
                 <el-input placeholder="Birth date (YYYY/MM/DD)" v-model="pbirth" size="small"></el-input>
                 <el-input placeholder="Address" v-model="paddress" size="small"></el-input>
                 <el-select v-model="pgender" placeholder="Gender" style="width: 100%" size="small">
-                    <el-option v-for="item in patient" :key="item.pid" :label="item.pgender" :value="item.pid">
+                    <el-option v-for="item in genders" :key="item" :label="item" :value="item">
                     </el-option>
                 </el-select>
             </el-col>
@@ -49,8 +49,8 @@
                     </el-col>
                 </el-row>
             </el-col>
-            <el-col>
-                <h3>{{ fee }}</h3>
+            <el-col :span="6">
+                <h3>Required payment: {{ fee }}</h3>
             </el-col>
         </el-row>
     </div>
@@ -74,6 +74,14 @@
             dept: "",
             newrecord: "",
             aorp: "",
+            fee: "$100",
+
+            //temp values
+            genders: ["Male", "Female"],
+            billingcat: {
+
+            },
+
 
             patients: [],
             consts: [],
@@ -93,14 +101,6 @@
             deleteDialogVisible: false, //控制弹出删除窗口
             deletingIndex: -1,
             deletingObject: {},
-
-            form: {
-                constid: "",
-                consttype: "",
-                constname: "",
-                constcode: "",
-            },
-            formLabelWidth: '120px'
         },
         methods: {
             search: function() {
