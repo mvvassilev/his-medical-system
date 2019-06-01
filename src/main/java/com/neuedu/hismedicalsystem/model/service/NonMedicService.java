@@ -13,6 +13,10 @@ public class NonMedicService {
     @Resource
     private NonMedicMapper nonMedicMapper;
 
+    public String getRegItemCode(String nmedname) {
+        return nonMedicMapper.getRegItemCode(nmedname);
+    }
+
     public List<NonMedic> getNonMedicItems(NonMedic condition) {
         return nonMedicMapper.getNonMedicItems(condition);
     }
@@ -30,5 +34,10 @@ public class NonMedicService {
     @Transactional
     public void updateNonMedicItem(NonMedic condition) {
         nonMedicMapper.updateNonMedicItem(condition);
+    }
+
+    @Transactional
+    public List<NonMedic> getRegLevel() {
+        return nonMedicMapper.getRegLevel();
     }
 }

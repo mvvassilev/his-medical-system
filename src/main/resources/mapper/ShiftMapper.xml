@@ -5,7 +5,8 @@
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.ShiftMapper">
 
     <select id="getShift" resultType="Shift">
-        select s.dutydate as dutydate, s.aorp as aorp, n.nmedname as nmedname, u.realname as realname,
+        select s.shiftid as shiftid, s.dutydate as dutydate, s.aorp as aorp, n.nmedname as nmedname, u.realname as
+        realname,
         d.deptname as deptname, s.ration as ration from
 
         (((userrdept ud join user u on u.userid = ud.userid)
@@ -13,11 +14,37 @@
         join shift s on s.uRid = ud.uRid)
         join non_medic n on n.itemcode = s.itemcode
 
-
-        where <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>
+        <where>
+            <if test="dates != null and dates!='' and datee != null and datee!='' ">
+                <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>
+            </if>
+        </where>
     </select>
+
+
+    <insert id="insertShift" useGeneratedKeys="true" keyProperty="shiftid">
+        insert into shift (uRid, userid, balance, ration, itemcode, dutydate, aorp) values
+        <foreach item="item" collection="list" separator=",">
+            (#{item.uRid}, #{item.userid}, #{item.ration}, #{item.ration}, #{item.itemcode}, #{item.dutydate},
+            #{item.aorp})
+        </foreach>
+    </insert>
+
+    <delete id="deleteConflictShifts">
+        delete from shift
+        where <![CDATA[ dutydate >= #{startdate} and dutydate <= #{enddate}]]>
+
+    </delete>
+
 
     <delete id="delShift">
         delete from shift where shiftid=#{shiftid}
+    </delete>
+
+    <delete id="delAllShift" parameterType="String">
+        delete from shift where shiftid in
+        <foreach item="ids" collection="array" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
     </delete>
 </mapper>

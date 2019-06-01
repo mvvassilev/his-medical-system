@@ -43,4 +43,14 @@
         where itemcode = #{itemcode}
     </update>
 
+    <select id="getRegLevel" resultType="NonMedic">
+        select * from non_medic
+        where feecode = 'GHF'
+    </select>
+
+    <select id="getRegItemCode" resultType="String">
+        select itemcode from non_medic
+        where nmedname = #{nmedname}
+    </select>
+
 </mapper>

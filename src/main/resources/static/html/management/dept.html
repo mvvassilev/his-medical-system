@@ -16,15 +16,24 @@
 <div id="department">
 
     <el-row :gutter="20">
-        <el-col :span="16">
-            <input type="text" v-model="deptcode" placeholder="Code"/>
-            <input type="text" v-model="deptclass" placeholder="Class"/>
-            <input type="text" v-model="deptname" placeholder="Name"/>
-            <input type="text" v-model="deptcat" placeholder="Category"/>
-            <button type="button" @click="search">search</button>
+        <el-col :span="4">
+            <el-input type="text" v-model="deptcode" placeholder="Code"></el-input>
         </el-col>
-        <el-col :span="8">
-            <el-button type="text" @click="showDialogForm('Add')">Add New Entry</el-button>
+        <el-col :span="4">
+            <el-input type="text" v-model="deptclass" placeholder="Class"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-input type="text" v-model="deptname" placeholder="Name"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-input type="text" v-model="deptcat" placeholder="Category"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+        </el-col>
+        <el-col :span="4">
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry
+            </el-button>
         </el-col>
     </el-row>
 
@@ -126,6 +135,21 @@
             },
             formLabelWidth: '120px'
         },
+
+        mounted: function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            axios.post('/management/depts', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.depts = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
         methods: {
             search: function() {
                 this.currentPage = 1;
