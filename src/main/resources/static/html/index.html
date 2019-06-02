@@ -18,10 +18,11 @@
         <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
                  background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" style="text-align: right">
             <el-menu-item index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management</el-menu-item>
-            <el-menu-item index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register & Payment
-            </el-menu-item>
-            <el-menu-item index="3" v-on:click="navigateSidebarTo('treatment/sidebar.html')">Treatment</el-menu-item>
-            <el-menu-item index="4" v-on:click="navigateSidebarTo('others/sidebar.html')">Others</el-menu-item>
+            <el-menu-item index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register & Payment</el-menu-item>
+            <el-menu-item index="3" v-on:click="navigateSidebarTo('outpatient/sidebar.html')">Outpatient Doctor</el-menu-item>
+            <el-menu-item index="4" v-on:click="navigateSidebarTo('medtech/sidebar.html')">Medical Treatment</el-menu-item>
+            <el-menu-item index="5" v-on:click="navigateSidebarTo('pharmacy/sidebar.html')">Pharmacy Management</el-menu-item>
+            <el-menu-item index="6" v-on:click="navigateSidebarTo('financial/sidebar.html')">Financial Management</el-menu-item>
         </el-menu>
         <div class="line"></div>
         <el-row :span="24">
