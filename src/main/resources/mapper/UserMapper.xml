@@ -91,6 +91,14 @@
             (#{userid}, #{item})
         </foreach>
     </insert>
+
+    <select id="checkUserName" resultType="Integer">
+        select count(*) from user where username = #{username};
+    </select>
+
+    <select id="checkLogin" resultType="Integer">
+        select count(*) from user where username = #{username} and pwd = #{password};
+    </select>
 </mapper>
 
 

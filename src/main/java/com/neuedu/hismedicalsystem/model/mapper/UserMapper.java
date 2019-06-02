@@ -20,4 +20,8 @@ public interface UserMapper {
     public void addUser(User user);
 
     public void addUserToUserRDept(@Param("userid") int userid, @Param("list") List<String> deptList);
+
+    int checkUserName(String username);
+
+    int checkLogin(@Param("username") String username, @Param("password") String password);
 }

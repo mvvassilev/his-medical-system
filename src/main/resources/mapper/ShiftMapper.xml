@@ -15,7 +15,7 @@
         join non_medic n on n.itemcode = s.itemcode
 
         <where>
-            <if test="dates != null and dates!='' and datee != null and datee!='' ">
+            <if test="dates != null and datee != null ">
                 <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>
             </if>
         </where>
