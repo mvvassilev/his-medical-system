@@ -13,6 +13,9 @@ public interface UserMapper {
 
     public void updateUserInUserRDept(@Param("userid") int userid, @Param("list") List<String> deptList);
 
+    public void deleteUserRDept(@Param("userid") int userid, @Param("deptcode") String deptcode);
+    public void insertUserRDept(@Param("userid") int userid, @Param("deptcode") String deptcode);
+
     public void deleteUser(String userid);
 
     public void deleteUserFromUserRDept(String userid);

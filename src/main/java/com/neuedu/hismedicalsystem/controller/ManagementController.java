@@ -366,14 +366,18 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateUser")
-    public void updateUser(@RequestBody JSONObject obj) {
+    public String updateUser(@RequestBody JSONObject obj) {
         try {
+            System.out.println("/update User Json obj");
+            System.out.println(obj.toJSONString());
             User user = (User)JSONObject.toJavaObject(obj, User.class);
             List<String> deptList = getDeptList(obj);
             userService.updateUser(user,deptList);
         } catch (JSONException e) {
             e.printStackTrace();
+            return "{\"result\":false}";
         }
+        return "{\"result\":true}";
     }
 
     @RequestMapping("/deleteUser")
