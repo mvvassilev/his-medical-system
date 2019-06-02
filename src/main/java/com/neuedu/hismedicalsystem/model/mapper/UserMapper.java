@@ -24,4 +24,5 @@ public interface UserMapper {
 
     public void addUserToUserRDept(@Param("userid") int userid, @Param("list") List<String> deptList);
 
+
 }

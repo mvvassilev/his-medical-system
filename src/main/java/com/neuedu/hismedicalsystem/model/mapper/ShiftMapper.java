@@ -9,6 +9,9 @@ import java.util.List;
 public interface ShiftMapper {
     public List<Shift> getShift(@Param("dates") Date dates, @Param("datee") Date datee);
 
+    //For Registration Getting Available Doctors
+    public List<Shift> getShiftsAvailable();
+
     void updateShift(List<Shift> updateshifts);
 
     void insertShift(List<Shift> insertShifts);

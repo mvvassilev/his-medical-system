@@ -41,7 +41,6 @@ public class UserService {
         unchangedDeptCodeList.addAll(newDeptCodeList);
         unchangedDeptCodeList.retainAll(oldDeptCodeList);//交集
 
-
         List<String> toBeDeletedList = new ArrayList<>();
         toBeDeletedList.addAll(oldDeptCodeList);
         toBeDeletedList.removeAll(unchangedDeptCodeList);
@@ -58,25 +57,8 @@ public class UserService {
             userMapper.deleteUserRDept(condition.getUserid(), toBeDeletedList.get(i));
         }
 
-//
-//        System.out.println("toBeAddedList");
-//        printList(toBeAddedList);
-//
-//        System.out.println("toBeDeletedList");
-//        printList(toBeDeletedList);
-//
-//        System.out.println("unchangedDeptCodeList");
-//        printList(unchangedDeptCodeList);
-
-
         //update user
         userMapper.updateUser(condition);
-
-        //delete relevant depts
-//        String userid = String.valueOf(condition.getUserid());
-//        userMapper.deleteUserFromUserRDept(userid);
-        //append new depts
-//        userMapper.addUserToUserRDept(condition.getUserid(), deptList);
     }
 
     @Transactional
