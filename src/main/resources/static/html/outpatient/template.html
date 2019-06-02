@@ -15,316 +15,134 @@
 
 <body>
 <div id="template">
-    <el-row :gutter="30">
-        <el-col :span="12" :gutter="10">
-            <el-date-picker
-                    v-model="value"
-                    value-format="yyyy-MM-dd"
-                    type="daterange"
-                    align="right"
-                    unlink-panels
-                    range-separator="To"
-                    start-placeholder="Start Date"
-                    end-placeholder="End Date"
-                    :picker-options="pickerOptions">
-            </el-date-picker>
-            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+    <el-row :gutter="20">
+        <el-col :span="8">
+            <el-input type="text" v-model="tempname" placeholder="Name"></el-input>
         </el-col>
-        <el-col :span="12" :gutter="10">
-            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="addRuleDialogForm">Add New Rules</el-button>
-            <el-button icon="el-icon-view" type="primary" @click="showRuleDialogForm">Query Rules</el-button>
+        <el-col :span="5">
+            <el-dropdown>
+                <el-button type="primary">
+                    Scope<i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>All</el-dropdown-item>
+                    <el-dropdown-item>Individual</el-dropdown-item>
+                    <el-dropdown-item>Department</el-dropdown-item>
+                    <el-dropdown-item>Hospital</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-col>
+        <el-col :span="5">
+            <el-dropdown>
+                <el-button type="primary">
+                    Type<i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>All</el-dropdown-item>
+                    <el-dropdown-item>Examination</el-dropdown-item>
+                    <el-dropdown-item>Test</el-dropdown-item>
+                    <el-dropdown-item>Disposal</el-dropdown-item>
+                    <el-dropdown-item>Western Medicine</el-dropdown-item>
+                    <el-dropdown-item>Traditional Chinese Medicine</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-col>
+        <el-col :span="3">
+            <el-button icon="el-icon-search" type="primary" @click="">Search</el-button><!--search-->
+        </el-col>
+        <el-col :span="3">
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="">Add New Entry</el-button><!--showDialogForm('Add')-->
         </el-col>
     </el-row>
 
     <el-table
-            :data="shift"
-            style="width: 100%"
-            @selection-change="handleSelectionChange"
-            ref="multipleTable">
+            :data="template.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+            style="width: 100%">
         <el-table-column
-                type="selection"
-                width="55">
-        </el-table-column>
-        <el-table-column
-                prop="shiftid"
-                label="ID"
+                prop="tempname"
+                label="Name"
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="dutydate"
-                label="Date"
-                width="180"
-                :formatter="dateFormatter">
-        </el-table-column>
-        <el-table-column
-                prop="deptname"
-                label="Department"
+                prop="createdate"
+                label="Create Date"
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="realname"
-                label="Doctor"
+                prop="tempscope"
+                label="Scope"
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="aorp"
-                label="AM or PM"
-                width="180"
-                :formatter="aorpFormatter">
-        </el-table-column>
-        <el-table-column
-                prop="nmedname"
-                label="Register level"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="ration"
-                label="Quota">
+                prop="temptype"
+                label="Type">
         </el-table-column>
         <el-table-column fixed="right" label="Operations" width="250">
-            <span slot-scope="scope">
-                <el-button type="warning" size="mini" @click="showDeleteDialogForm(scope.$index, scope.row)">delete</el-button>
+            <span>
+                <el-button size="mini" @click="">details</el-button><!--showDetailsDialogForm-->
             </span>
         </el-table-column>
     </el-table>
-    <div style="margin-top: 20px">
-        <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection</el-button>
-        <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
-                   @click="delAllShift(multipleSelection)">delete all</el-button>
-    </div>
-    <el-dialog
-            title="Confirm Delete"
-            :visible.sync="deleteDialogVisible"
-            width="30%">
-        <span>Are you sure you want to delete this?</span>
-        <span slot="footer" class="dialog-footer">
-            <el-button @click="deleteDialogVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="delShift">Confirm</el-button>
-        </span>
-    </el-dialog>
-</div>
 
-<div id="rule">
-    <el-dialog
-            title="Shift Arrangement"
-            :visible.sync="dialogVisible"
-            width="100%">
-        <el-row :gutter="20">
-            <el-col :span="18">
-                <el-input v-model="deptname" style="width:300px" placeholder="Enter DeptName"></el-input>
-                <el-button type="primary" @click="searchRules">search</el-button>
-            </el-col>
-        </el-row>
-        <el-table
-                ref="multipleTable"
-                :data="rules"
-                style="width: 100%"
-                tooltip-effect="dark"
-                @selection-change="handleSelectionChange">
-            <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    prop="ruleid"
-                    label="ID"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="rulename"
-                    label="RuleName"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="username"
-                    label="UserName"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="deptname"
-                    label="DeptName"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="timecode"
-                    label="TimeArrange"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="reglevel"
-                    label="RegisterLV"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="ration"
-                    label="Ration"
-                    width="180">
-            </el-table-column>
-        </el-table>
-        <div style="margin-top: 20px">
-            <el-button @click="toggleSelection()">Cancel Selection</el-button>
-        </div>
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 20, 40]"
 
-        <el-row :gutter="20" style="margin-top: 20px">
-            <el-col :span="10">
-                <el-date-picker style="width:400px"
-                                v-model="ruledate"
-                                type="daterange"
+            :page-size="pagesize"
+            :hide-on-single-page="value"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="template.length">
+    </el-pagination>
 
-                                range-separator="to"
-                                start-placeholder="start date"
-                                end-placeholder="end date">
-                </el-date-picker>
-            </el-col>
-            <el-col :span="7">
-                <el-input v-model="opid" style="width:200px" placeholder="OperatorID"></el-input>
-            </el-col>
-            <el-col :span="7">
-                <el-button type="primary" @click="openConfirmDialog">Arrange Now!</el-button>
-            </el-col>
-        </el-row>
-
-    </el-dialog>
-</div>
-
-<div id="addRule">
-    <el-dialog
-            title="Add A New Rule"
-            :visible.sync="dialogVisible"
-            width="60%">
-        <el-form ref="form" :model="form" label-width="80px">
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item>
-                        <el-input v-model="form.username" style="width:200px" placeholder="User Name"></el-input>
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-select v-model="form.deptname" placeholder="Choose Department">
-                        <el-option
-                                v-for="item in form.depts"
-                                :key="item.deptcode"
-                                :label="item.deptname"
-                                :value="item.deptcode">
-                            <span style="float: left">{{ item.deptname}}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.deptcode }}</span>
-                        </el-option>
-                    </el-select>
-                </el-col>
-            </el-row>
-
-            <el-row :gutter="20">
-                <el-col :span="12">
-                    <el-form-item>
-
-                        <el-input v-model="form.ration" style="width:200px" placeholder="Ration"></el-input>
-
-                    </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                    <el-select v-model="form.reglevel" placeholder="Choose RegisterLV">
-                        <el-option
-                                v-for="item in form.items"
-                                :key="item.itemcode"
-                                :label="item.nmedname"
-                                :value="item.nmedname">
-                            <span style="float: left">{{ item.nmedname}}</span>
-                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.itemcode }}</span>
-                        </el-option>
-                    </el-select>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20"style="margin-left: 70px">
-                <el-col :span="24">
-                    <el-checkbox-group v-model="form.checkboxGroup1" size="small">
-                        <el-checkbox-button v-for="weekday in form.weekdays1" :label="weekday" :key="weekday" style="font-family:'Courier New'">{{weekday}}</el-checkbox-button>
-                    </el-checkbox-group>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20" style="margin-top: 10px; margin-left: 70px">
-                <el-col :span="24">
-                    <el-checkbox-group v-model="form.checkboxGroup2" size="small">
-                        <el-checkbox-button v-for="weekday in form.weekdays2" :label="weekday" :key="weekday" style="font-family:'Courier New'">{{weekday}}</el-checkbox-button>
-                    </el-checkbox-group>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20" style="margin-top: 20px">
-                <el-col :span="12">
-                    <el-form-item>
-
-                        <el-input v-model="form.rulename" style="width:200px" placeholder="Rule Name"></el-input>
-
-                    </el-form-item>
-                </el-col>
-            </el-row>
-            <el-row :gutter="20" >
-
-                <el-col :span="12"><el-form-item><el-button type="primary" @click="openConfirmDialog">Create</el-button></el-form-item></el-col>
-                <el-col :span="12"><el-form-item><el-button @click="dialogVisible = false">Cancel</el-button></el-form-item></el-col>
-
-            </el-row>
+    <!--<el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="Name" :label-width="formLabelWidth">
+                <el-input v-model="form.tempname" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Create Date" :label-width="formLabelWidth">
+                <el-input v-model="form.createdate" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Scope" :label-width="formLabelWidth">
+                <el-input v-model="form.tempscope" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Type" :label-width="formLabelWidth">
+                <el-input v-model="form.temptype" autocomplete="off"></el-input>
+            </el-form-item>
         </el-form>
-    </el-dialog>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="onSubmit">Add</el-button>
+        </div>
+    </el-dialog>-->
 </div>
-
 </body>
-
+<!--
 <script>
     var app = new Vue({
-        el: '#shift',
+        el: '#template',
         data: {
-            pickerOptions: {
-                shortcuts: [{
-                    text: 'Latest week',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: 'Latest month',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }, {
-                    text: 'Latest three months',
-                    onClick(picker) {
-                        const end = new Date();
-                        const start = new Date();
-                        start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
-                        picker.$emit('pick', [start, end]);
-                    }
-                }]
-            },
-            dutydate:"",
-            shiftid:"",
-            deptname:"",
-            username:"",
-            aorp:false,
-            nmedname:"",
-            ration:"",
-            datee:"",
-            dates:"",
-            shift:[],
-            value: [],
-            multipleSelection: [],
-            deleteDialogVisible: false,//控制弹出删除窗口
-            deletingIndex: -1,
-            deletingObject:{},
+            tempname:"",
+            createdate:"",
+            tempscope:"",
+            temptype:"",
+            template:[],
+
+            currentPage: 1,//初始页
+            pagesize: 10,//每页的数据
+            formTitle:"",
+            dialogFormVisible: false,
         },
 
         mounted: function(){
             console.log("refresh!!!")
             this.currentPage = 1;
             var that = this;
-            axios.post('/management/shift', {})
+            axios.post('//', {})
                 .then(function (response) {
                     console.log(response.data);
-                    that.shift = response.data;
+                    that.template = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -332,361 +150,19 @@
         },
 
         methods: {
-            dateFormatter(row){
-                return row.dutydate.substr(0,10)
-            },
-
-            aorpFormatter(row){
-                if(row.aorp==true){
-                    return "A.M."
-                }
-                if(row.aorp==false){
-                    return "P.M."
-                }
-            },
-
             search: function () {
-                var params = new URLSearchParams();
-                params.append("dates", this.value[0]);
-                params.append("datee", this.value[1]);
-                //this.currentPage = 1;
-                var that = this;
-                axios.post('/management/shift',params)
-                    .then(function (response) {
-                        console.log(response.data);
-                        // console.log(that.value[0]);
-                        // console.log(that.dates);
-                        that.shift = response.data;
-                        console.log(that.shift);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+
             },
 
             refresh:function(){
-                this.shift=[];
-                var params = new URLSearchParams();
-                params.append("dates", this.value[0]);
-                params.append("datee", this.value[1]);
-                //this.currentPage = 1;
-                var that = this;
-                axios.post('/management/shift',params)
-                    .then(function (response) {
-                        console.log(response.data);
-                        // console.log(that.value[0]);
-                        // console.log(that.dates);
-                        that.shift = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+
             },
 
-            showDeleteDialogForm: function(index, row){
-                this.deleteDialogVisible = true;
-                this.deletingIndex = index;
-                this.deletingObject = row;
-            },
-
-            delShift:function() {
-                var params = new URLSearchParams();
-                params.append('shiftid', this.deletingObject.shiftid);
-                axios.post('/management/delShift',params)
-                    .then(function (response) {
-
-                    }).catch(function(error){
-                    console.log(error);
-                });
-                this.deleteDialogVisible = false;
-                this.refresh();
-            },
-
-            delAllShift:function(){
-                var ids= this.multipleSelection.map(item => item.shiftid).join();//获取所有选中行的id组成的字符串，以逗号分隔
-                console.log(ids);
-                var that= this;
-                this.$confirm('Are you sure you want to delete all this?', 'Note', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
-                    type: 'warning'
-                }).then(() => {
-                    axios.post("/management/delAllShift", {ids: ids})
-                        .then(function (response) {
-                            that.refresh();
-                        }).catch(function (error) {
-                        console.log(error);
-                    })
-                })
-            },
-
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
-
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-
-            showRuleDialogForm: function () {
+            showDetailsDialogForm: function () {
                 dialog.dialogVisible = true;
             },
-            addRuleDialogForm: function () {
-                addDialog.dialogVisible = true;
-                addDialog.fillRegSelect();
-                addDialog.fillDeptSelect();
-            }
-
         }
     });
-
-    const weekOptionsAM = ['SUN A.M.',
-        'MON A.M.',
-        'TUE A.M.',
-        'WED A.M.',
-        'THU A.M.',
-        'FRI A.M.',
-        'SAT A.M.',];
-    const weekOptionsPM = ['SUN P.M.',
-        'MON P.M.',
-        'TUE P.M.',
-        'WED P.M.',
-        'THU P.M.',
-        'FRI P.M.',
-        'SAT P.M.',];
-    var addDialog = new Vue({
-        el: '#addRule',
-        data: {
-            dialogVisible: false,
-
-            form: {
-                username: '',
-                deptname: '',
-                reglevel: '',
-                ration: '',
-                items: [],
-                depts:[],
-                rulename:'',
-
-                checkboxGroup1: [],
-                checkboxGroup2: [],
-                weekdays1: weekOptionsAM,
-                weekdays2: weekOptionsPM,
-            },
-
-
-        },
-
-        methods: {
-            onSubmit() {
-                console.log('submit!');
-            },
-            fillRegSelect: function () {
-                var that = this;
-                axios.get('/management/getRegLevel')
-                    .then(function (response) {
-                        console.log(response.data);
-                        that.form.items= response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
-            fillDeptSelect: function () {
-                var that = this;
-                axios.get('/management/getDeptSelect')
-                    .then(function (response) {
-                        console.log(response.data);
-                        that.form.depts = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
-            ruleSubmit:function() {
-                var that = this;
-                console.log(that.form);
-                axios.post('/management/addRule', {
-                    rulename: that.form.rulename,
-                    username: that.form.username,
-                    deptname: that.form.deptname,
-                    reglevel: that.form.reglevel,
-                    ration: that.form.ration,
-                    checkboxGroup1: that.form.checkboxGroup1,
-                    checkboxGroup2: that.form.checkboxGroup2,
-                })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
-            openConfirmDialog:function() {
-                this.$confirm('Sure to create?', 'Notice', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
-                    type: 'warning'
-                }).then(() => {
-                    this.ruleSubmit();
-                    this.$message({
-                        type: 'success',
-                        message: 'Create Succeed!'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: 'Cancel Create.'
-                    });
-                });
-            }
-        }
-    });
-
-    var dialog = new Vue({
-        el: '#rule',
-        data: {
-
-            dialogVisible: false,
-
-            deptname: "",
-            rules: [],
-            multipleSelection: [],
-
-            ruledate: [],
-            ration: '',
-            opid: '',
-            reglevel: '',
-
-
-        },
-        methods: {
-
-            searchRules: function () {
-                var params = new URLSearchParams();
-                params.append('deptname', this.deptname);
-                //this.currentPage = 1;
-                var that = this;
-                axios.post('/management/getRules', params)
-                    .then(function (response) {
-                        console.log(response.data);
-                        that.rules = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
-
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
-            },
-
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-
-            arrangeShift: function () {
-
-                console.log("ARRANGE!" + this.ruledate[0]);
-                console.log(this.multipleSelection[0].timecode);
-                var startwd = this.ruledate[0].getDay();
-                var daycount = (this.ruledate[1] - this.ruledate[0]) / (1000 * 60 * 60 * 24);
-
-                var params = [];
-                for (var j = 0; j < this.multipleSelection.length; j++) {
-                    for (var i = 0; i <= daycount; i++) {
-
-                        var param = {
-                            ruleid: "",
-                            nmedname: "",
-                            ration: "",
-                            dutydate: new Date(),
-                            userid: "",
-                            aorp: true,
-                        };
-                        var param2 = {
-                            ruleid: "",
-                            nmedname: "",
-                            ration: "",
-                            dutydate: new Date(),
-                            userid: "",
-                            aorp: false,
-                        };
-                        param.ruleid = this.multipleSelection[j].ruleid;
-                        param.nmedname = this.multipleSelection[j].reglevel;
-                        param.ration = this.multipleSelection[j].ration;
-                        param.dutydate.setDate(this.ruledate[0].getDate() + i);
-                        param.userid = this.opid;
-                        param2.ruleid = this.multipleSelection[j].ruleid;
-                        param2.nmedname = this.multipleSelection[j].reglevel;
-                        param2.ration = this.multipleSelection[j].ration;
-                        param2.dutydate.setDate(this.ruledate[0].getDate() + i);
-                        param2.userid = this.opid;
-
-                        var morning = parseInt(this.multipleSelection[j].timecode[(2 * (i + startwd)) % 14]);
-
-                        if (morning) {
-                            params.push(param);
-                        }
-
-                        var afternoon = parseInt(this.multipleSelection[j].timecode[(2 * (i + startwd)) % 14 + 1]);
-
-                        if (afternoon) {
-                            params.push(param2);
-                        }
-
-                    }
-                }
-
-
-                axios({
-                    url: '/management/updateShift',
-                    method: 'post',
-                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
-                    data: {
-                        startdate: this.ruledate[0],
-                        enddate: this.ruledate[1],
-                        shifts: params
-                    }
-                    , // 以json字符串方式传递
-                    success: function (data) {
-                        console.log("success...");
-                    },
-                    error: function (data) {
-                        console.log("error...");
-                    }
-                });
-            },
-            openConfirmDialog:function() {
-                this.$confirm('Sure to arrange?', 'Notice', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
-                    type: 'warning'
-                }).then(() => {
-                    this.arrangeShift()
-                    this.$message({
-                        type: 'success',
-                        message: 'Arrange Succeed!'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: 'Cancel Arrangement.'
-                    });
-                });
-            }
-
-        }
-    })
-</script>
+</script>-->
 
 </html>
