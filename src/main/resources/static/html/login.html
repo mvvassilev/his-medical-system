@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<style>
+    .el-carousel__item h3 {
+        color: #475669;
+        font-size: 14px;
+        opacity: 0.75;
+        line-height: 200px;
+        margin: 0;
+    }
+</style>
+<body>
+<div id="login">
+
+    <el-carousel :interval="4000" type="card" height="200px">
+        <el-carousel-item v-for="(img,index) in imgList" :key="index">
+            <img v-bind:src="img.url">
+        </el-carousel-item>
+    </el-carousel>
+    <el-container
+            style="margin-left: auto; margin-right:auto; height: 300px; width: 30%;
+            border: 1px solid #eee; border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="demo-ruleForm"
+                 style="margin-left: auto;margin-right: auto;margin-top: 50px">
+            <el-form-item prop="username">
+                <el-input v-model="ruleForm.username" style="width:100%" autocomplete="off"
+                          placeholder="User Name"></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+                <el-input type="password" v-model="ruleForm.password" autocomplete="off"
+                          placeholder="Password"></el-input>
+
+            </el-form-item>
+            <el-form-item>
+                <el-button icon="el-icon-user" type="primary" @click="submitForm('ruleForm')">Login</el-button>
+                <el-button @click="resetForm('ruleForm')">Reset</el-button>
+            </el-form-item>
+        </el-form>
+    </el-container>
+    </template>
+</div>
+
+</body>
+<script>
+    var login = new Vue({
+        el: "#login",
+        data() {
+            var validateUserName = (rule, value, callback) => {
+                function checkUserName(value) {
+                    var params = new URLSearchParams();
+                    params.append("username", value);
+                    axios.post('/management/checkUserName', params)
+                        .then(function (response) {
+                            console.log(response.data);
+                            check = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+
+                check = checkUserName(value);
+
+                if (value === '') {
+                    return callback(new Error('Please Enter User Name'));
+                }
+                setTimeout(() => {
+                    if (check === false) {
+                        console.log("i am in'1");
+                        callback();
+                    } else {
+                        callback(new Error('No Such User!'));
+                    }
+                }, 500);
+            };
+            /*var validatePassword = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('Please Password'));
+                } else {
+                    callback();
+                }
+            };*/
+            return {
+                ruleForm: {
+                    username: '',
+                    password: '',
+                },
+                rules: {
+                    username: [
+                        {validator: validateUserName, trigger: 'blur'}
+                    ],
+                    password: [
+                        /* {validator: validatePassword, trigger: 'blur'}*/
+                    ]
+                },
+                imgList: [
+                    {url: "../html/imgList/1.jpg"},
+                    {url: "../html/imgList/2.jpg"},
+                    {url: "../html/imgList/3.png"},
+                ],
+                existUserName: [],
+            };
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        var params = new URLSearchParams();
+                        params.append("username", this.ruleForm.username);
+                        params.append("password", this.ruleForm.password);
+                        axios.post('/management/checkLogin', params)
+                            .then(function (response) {
+                                if (response.data) {
+                                    console.log("Login Success.");
+                                    alert('Login Success! Welcome: ' + params.get("username"));
+                                    //navigate to index.html with parameter params.get("username")
+                                    //then according to the username to decide what navi-bar will show
+
+                                } else {
+                                    console.log("Wrong Password.");
+                                    alert('Wrong Password.');
+                                }
+
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+                    } else {
+                        console.log('Error Submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+        }
+    })
+</script>
+</html>
