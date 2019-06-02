@@ -421,4 +421,24 @@ public class ManagementController {
         user.setShiftOrNot(obj.getBoolean("shiftOrNot"));
         return user;
     }
+
+    @RequestMapping("checkUserName")
+    public boolean checkUserName(String username){
+        int conflicts =  userService.checkUserName(username);
+        if(conflicts >= 1){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    @RequestMapping("checkLogin")
+    public boolean checkLogin(String username, String password){
+        int exist = userService.checkLogin(username, password);
+        if(exist == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

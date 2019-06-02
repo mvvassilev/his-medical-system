@@ -73,6 +73,13 @@ public class UserService {
         userMapper.addUserToUserRDept(user.getUserid(), deptList);
     }
 
+    public int checkUserName(String username) {
+        return userMapper.checkUserName(username);
+    }
+
+    public int checkLogin(String username, String password) { return userMapper.checkLogin(username, password);
+    }
+
     /*
     * Helpers
     * */
