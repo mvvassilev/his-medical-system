@@ -1,5 +1,7 @@
 package com.neuedu.hismedicalsystem;
 
+import com.alibaba.fastjson.JSONObject;
+import com.neuedu.hismedicalsystem.controller.RegistrationController;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
