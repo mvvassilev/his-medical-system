@@ -35,7 +35,7 @@
                 </el-row>
                 <el-select style="padding: 3%" v-model="billcat" placeholder="Billing category" style="width: 100%"
                            size="small">
-                    <el-option v-for="item in bills" :key="item.billid" :label="item.billcat" :value="item.billid">
+                    <el-option v-for="item in bills" :key="item.billid" :label="item.billcat" :value="item.billcat">
                     </el-option>
                 </el-select>
                 <el-input style="padding: 3%" placeholder="Register date (YYYY/MM/DD)" v-model="date" size="small">

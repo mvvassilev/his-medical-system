@@ -22,6 +22,7 @@
         margin: 0;
     }
 </style>
+
 <body>
 <div id="login">
 
@@ -30,8 +31,7 @@
             <img v-bind:src="img.url">
         </el-carousel-item>
     </el-carousel>
-    <el-container
-            style="margin-left: auto; margin-right:auto; height: 300px; width: 30%;
+    <el-container style="margin-left: auto; margin-right:auto; height: 300px; width: 30%;
             border: 1px solid #eee; border-radius: 2px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="demo-ruleForm"
@@ -64,11 +64,11 @@
                     var params = new URLSearchParams();
                     params.append("username", value);
                     axios.post('/management/checkUserName', params)
-                        .then(function (response) {
+                        .then(function(response) {
                             console.log(response.data);
                             check = response.data;
                         })
-                        .catch(function (error) {
+                        .catch(function(error) {
                             console.log(error);
                         });
                 }
@@ -80,7 +80,7 @@
                 }
                 setTimeout(() => {
                     if (check === false) {
-                        console.log("i am in'1");
+                        console.log("Login successful");
                         callback();
                     } else {
                         callback(new Error('No Such User!'));
@@ -100,18 +100,21 @@
                     password: '',
                 },
                 rules: {
-                    username: [
-                        {validator: validateUserName, trigger: 'blur'}
-                    ],
+                    username: [{
+                        validator: validateUserName,
+                        trigger: 'blur'
+                    }],
                     password: [
                         /* {validator: validatePassword, trigger: 'blur'}*/
                     ]
                 },
-                imgList: [
-                    {url: "../html/imgList/1.jpg"},
-                    {url: "../html/imgList/2.jpg"},
-                    {url: "../html/imgList/3.png"},
-                ],
+                imgList: [{
+                    url: "../html/imgList/1.jpg"
+                }, {
+                    url: "../html/imgList/2.jpg"
+                }, {
+                    url: "../html/imgList/3.png"
+                }, ],
                 existUserName: [],
             };
         },
@@ -123,20 +126,19 @@
                         params.append("username", this.ruleForm.username);
                         params.append("password", this.ruleForm.password);
                         axios.post('/management/checkLogin', params)
-                            .then(function (response) {
+                            .then(function(response) {
                                 if (response.data) {
                                     console.log("Login Success.");
                                     alert('Login Success! Welcome: ' + params.get("username"));
                                     //navigate to index.html with parameter params.get("username")
                                     //then according to the username to decide what navi-bar will show
-
                                 } else {
                                     console.log("Wrong Password.");
                                     alert('Wrong Password.');
                                 }
 
                             })
-                            .catch(function (error) {
+                            .catch(function(error) {
                                 console.log(error);
                             });
 
@@ -152,4 +154,5 @@
         }
     })
 </script>
+
 </html>
