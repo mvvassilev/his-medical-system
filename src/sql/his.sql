@@ -379,7 +379,7 @@ INSERT INTO `fee` VALUES ('ZCYF', '中草药费');
 INSERT INTO `fee` VALUES ('ZLF', '诊疗费');
 
 -- ----------------------------
--- Table structure for `homepage`
+-- Table structure for `homepageframe`
 -- ----------------------------
 DROP TABLE IF EXISTS `homepage`;
 CREATE TABLE `homepage` (
@@ -398,7 +398,7 @@ CREATE TABLE `homepage` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of homepage
+-- Records of homepageframe
 -- ----------------------------
 
 -- ----------------------------

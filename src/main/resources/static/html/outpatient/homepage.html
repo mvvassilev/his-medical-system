@@ -61,7 +61,8 @@
 
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
-                    <el-tab-pane label="HomePage" name="first">Home Page</el-tab-pane>
+                    <!-- Patient Home Page -->
+                    <el-tab-pane label="FrontPage" name="homepageframe/frontpage.html"></el-tab-pane>
                     <el-tab-pane label="Examination" name="second">Examination Apply</el-tab-pane>
                     <el-tab-pane label="Inspection" name="third">Inspection Apply</el-tab-pane>
                     <el-tab-pane label="DiagConfirm" name="fourth">Confirm Diagnosis</el-tab-pane>
@@ -71,6 +72,9 @@
                     <el-tab-pane label="BillQuery" name="eighth">Bills Query</el-tab-pane>
 
                 </el-tabs>
+                <el-row :span="24">
+                    <iframe width="100%" height="100%" frameborder="no" scrolling="no" v-bind:src="url"></iframe>
+                </el-row>
             </template>
 
 
@@ -91,8 +95,9 @@
 
         data() {
             return {
+                url: '',
                 isCollapse: true,
-                activeName: 'first'
+                activeName: 'homepageframe/frontpage.html'
             };
         },
         methods: {
@@ -104,16 +109,13 @@
             },
             handleClick(tab, event) {
                 console.log(tab, event);
+                this.url = tab.name;
+                console.log("navigateTo" + this.url)
             },
-            /*sidebarOpen(){
-                console.log("change!");
-                this.getElementById("sidebar").setAttribute(":span","6");
-                this.getElementById("mainFrame").setAttribute(":span","18");
-            },
-            sidebarClose(){
-                this.getElementById("sidebar").setAttribute(":span","2");
-                this.getElementById("mainFrame").setAttribute(":span","22");
-            },*/
+            /*navigateTo(url) {
+                console.log("navigateTo " + url);
+                this.url = url;
+            }*/
 
         }
     });

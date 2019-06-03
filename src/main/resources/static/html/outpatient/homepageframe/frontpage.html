@@ -1,0 +1,93 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="frontpage">
+    <el-form ref="form" :model="form" label-width="20px" class="demo-ruleForm">
+        <el-tooltip class="item" effect="dark" content="Chief Complaint" placement="right">
+            <el-form-item prop="cheifCP">
+                <el-input type="textarea" v-model="form.cheifCP" placeholder="Chief Complaint"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Present History" placement="right">
+            <el-form-item prop="curHis">
+                <el-input type="textarea" v-model="form.curHis" placeholder="Present History"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Treatment Situation" placement="right">
+            <el-form-item prop="situation">
+                <el-input type="textarea" v-model="form.situation" placeholder="Treatment Situation"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Past History" placement="right">
+            <el-form-item prop="pastHis">
+                <el-input type="textarea" v-model="form.pastHis" placeholder="Past History"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Allergic History" placement="right">
+            <el-form-item prop="allergicHis">
+                <el-input type="textarea" v-model="form.allergicHis" placeholder="Allergic History"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Physical Examination" placement="right">
+            <el-form-item prop="phyExam">
+                <el-input type="textarea" v-model="form.phyExam" placeholder="Physical Examination"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Examination Advice" placement="right">
+            <el-form-item prop="examAdvice">
+                <el-input type="textarea" v-model="form.examAdvice" placeholder="Examination Advice"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Caution" placement="right">
+            <el-form-item prop="caution">
+                <el-input type="textarea" v-model="form.caution" placeholder="Caution"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-form-item>
+            <el-button icon="el-icon-circle-check" type="primary" @click="onSubmit">Submit</el-button>
+            <el-button icon="el-icon-document" type="primary" @click="tempSave">Save</el-button>
+            <el-button icon="el-icon-refresh" @click="resetForm('form')">Reset</el-button>
+        </el-form-item>
+
+    </el-form>
+</div>
+</body>
+<script>
+    var frontpage = new Vue({
+        el: '#frontpage',
+        data() {
+            return {
+                form: {
+                    cheifCP: '',
+                    curHis: '',
+                    pastHis: '',
+                    allergicHis: '',
+                    situation: '',
+                    caution: '',
+                    phyExam: '',
+                    examAdvice: ''
+                }
+            }
+        },
+        methods: {
+            onSubmit() {
+                console.log('submit!');
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+            },
+        }
+    })
+</script>
+</html>
