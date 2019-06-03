@@ -48,17 +48,34 @@ public class TestApi1 {
     @Test
     public void testGetSequence() {
         try {
-            String jsonStr = "{\"dept\":\"CK\"}";
+            String jsonStr = "{\"dept\":\"CK\",\"date\":\"2019-06-02\",\"aorp\":\"true\",\"registrationLevel\":\"专家号\"}";
             JSONObject jsonObject = JSONObject.parseObject(jsonStr);
             String responseString = mockMvc.perform(post("/registration/getDoctorsAvailable").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
                     .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
-            System.out.println("接口返回结果：" + responseString);
-            JSONObject resultObj = JSON.parseObject(responseString);
-            // 判断接口返回json中success字段是否为true
-            Assert.assertTrue(resultObj.getBooleanValue("success"));
+            after(responseString);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void submitRegistration() {
+        try {
+            String jsonStr = "{\"dept\":\"CK\",\"date\":\"2019-06-02\",\"aorp\":\"true\",\"registrationLevel\":\"专家号\"}";
+            JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+            String responseString = mockMvc.perform(post("/registration/submitRegistration").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
+                    .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+            after(responseString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void after(String responseString){
+        System.out.println("接口返回结果：" + responseString);
+        JSONObject resultObj = JSON.parseObject(responseString);
+        // 判断接口返回json中success字段是否为true
+        Assert.assertTrue(resultObj.getBooleanValue("success"));
     }
 
 }
