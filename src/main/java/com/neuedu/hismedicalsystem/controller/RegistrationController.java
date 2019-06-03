@@ -1,6 +1,7 @@
 package com.neuedu.hismedicalsystem.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.neuedu.hismedicalsystem.model.service.RegistrationService;
 import com.neuedu.hismedicalsystem.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,14 +14,18 @@ public class RegistrationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RegistrationService registrationService;
+
     @RequestMapping("/getDoctorsAvailable")
     public String getDoctorsAvailable(@RequestBody JSONObject obj) {
         //Date
         //AM or PM
         //Department it belongs
 
-        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n" + "Hello Son of The One True King");
-        System.out.println(obj.getString("msg"));
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n"+"Hello Son of The One True King");
+        String dept = obj.getString("dept");
+        registrationService.getAvailableDoctorList(dept);
         return "{\"success\":\"true\"}";
     }
 }

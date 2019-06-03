@@ -21,6 +21,22 @@
         </where>
     </select>
 
+    <select id="getShiftsAvailable" resultType="Shift">
+        select s.shiftid as shiftid, s.dutydate as dutydate, s.aorp as aorp, n.nmedname as nmedname, u.realname as realname,
+        u.userid as userid, d.deptname as deptname, s.ration as ration, s.balance as balance from
+
+        (((userrdept ud join user u on u.userid = ud.userid)
+        join dept d on d.deptcode = ud.deptcode)
+        join shift s on s.uRid = ud.uRid)
+        join non_medic n on n.itemcode = s.itemcode
+
+<!--        <where>-->
+<!--            <if test="dates != null and datee != null ">-->
+<!--                <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>-->
+<!--            </if>-->
+<!--        </where>-->
+    </select>
+
 
     <insert id="insertShift" useGeneratedKeys="true" keyProperty="shiftid">
         insert into shift (uRid, userid, balance, ration, itemcode, dutydate, aorp) values

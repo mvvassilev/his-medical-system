@@ -4,6 +4,27 @@ import java.util.Date;
 
 public class Shift {
     private int shiftid;
+    private String deptname;
+    private String username;
+    private String realname;
+    private boolean aorp;
+    private String nmedname;
+    private int ration;
+    private int userid;
+
+    /* ADD FOR SHIFT ARRANGE*/
+    private int uRid;
+    private String itemcode;
+    private Date dutydate;
+    private int balance;
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
+    }
 
     public int getShiftid() {
         return shiftid;
@@ -13,8 +34,6 @@ public class Shift {
         this.shiftid = shiftid;
     }
 
-    private Date dutydate;
-
     public Date getDutydate() {
         return dutydate;
     }
@@ -22,14 +41,6 @@ public class Shift {
     public void setDutydate(Date dutydate) {
         this.dutydate = dutydate;
     }
-
-    private String deptname;
-    private String username;
-    private String realname;
-    private boolean aorp;
-    private String nmedname;
-    private int ration;
-    private int userid;
 
     public String getDeptname() {
         return deptname;
@@ -87,10 +98,6 @@ public class Shift {
         this.userid = userid;
     }
 
-    /* ADD FOR SHIFT ARRANGE*/
-    private int uRid;
-    private String itemcode;
-
     public int getuRid() {
         return uRid;
     }
@@ -107,5 +114,19 @@ public class Shift {
         this.itemcode = itemcode;
     }
 
-
+    @Override
+    public String toString() {
+        return "Shift{" +
+                "shiftid=" + shiftid +
+                ", deptname='" + deptname + '\'' +
+                ", username='" + username + '\'' +
+                ", realname='" + realname + '\'' +
+                ", aorp=" + aorp +
+                ", nmedname='" + nmedname + '\'' +
+                ", ration=" + ration +
+                ", userid=" + userid +
+                ", dutydate=" + dutydate +
+                ", balance=" + balance +
+                '}';
+    }
 }

@@ -28,7 +28,7 @@ public class ManagementController {
     private ConstService constService;
 
     @RequestMapping("/addConst")
-    public void addConst(@RequestBody Constant condition) {
+    public void addConst(@RequestBody Constant condition){
         try {
             constService.addConst(condition);
         } catch (Exception e) {
@@ -87,9 +87,7 @@ public class ManagementController {
     }
 
     @RequestMapping("/getDeptSelect")
-    public List<Dept> getDeptSelect() {
-        return deptService.getDeptSelect();
-    }
+    public List<Dept> getDeptSelect(){return deptService.getDeptSelect();}
 
     /**
      * disease
@@ -192,7 +190,7 @@ public class ManagementController {
     }
 
     @RequestMapping("/getRegLevel")
-    public List<NonMedic> getRegLevel() {
+    public List<NonMedic> getRegLevel(){
         return nonMedicService.getRegLevel();
     }
 
@@ -208,8 +206,8 @@ public class ManagementController {
     }
 
     @RequestMapping("/addRule")
-    public void addRule(@RequestBody JSONObject obj) {
-        try {
+    public void addRule(@RequestBody JSONObject obj){
+        try{
             Rule newRule = new Rule();
             newRule.setRulename(obj.getString("rulename"));
             newRule.setRation(obj.getInteger("ration"));
@@ -226,62 +224,62 @@ public class ManagementController {
 
             StringBuilder timecodeBuilder = new StringBuilder("00000000000000");
             timecodeBuilder = TimeCodeGenerate(amShifts, timecodeBuilder);
-            timecodeBuilder = TimeCodeGenerate(pmShifts, timecodeBuilder);
+            timecodeBuilder = TimeCodeGenerate(pmShifts,timecodeBuilder);
 
             newRule.setTimecode(timecodeBuilder.toString());
 
             ruleService.addRule(newRule);
 
-        } catch (JSONException e) {
+        }catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     private StringBuilder TimeCodeGenerate(JSONArray shifts, StringBuilder timecode) {
 
-        for (int i = 0; i < shifts.size(); i++) {
-            switch (shifts.get(i).toString()) {
+        for (int i = 0; i < shifts.size();i++){
+            switch(shifts.get(i).toString()){
                 case "SUN A.M.":
-                    timecode.replace(0, 1, "1");
+                    timecode.replace(0,1,"1");
                     break;
                 case "SUN P.M.":
-                    timecode.replace(1, 2, "1");
+                    timecode.replace(1,2,"1");
                     break;
                 case "MON A.M.":
-                    timecode.replace(2, 3, "1");
+                    timecode.replace(2,3,"1");
                     break;
                 case "MON P.M.":
-                    timecode.replace(3, 4, "1");
+                    timecode.replace(3,4,"1");
                     break;
                 case "TUE A.M.":
-                    timecode.replace(4, 5, "1");
+                    timecode.replace(4,5,"1");
                     break;
                 case "TUE P.M.":
-                    timecode.replace(5, 6, "1");
+                    timecode.replace(5,6,"1");
                     break;
                 case "WED A.M.":
-                    timecode.replace(6, 7, "1");
+                    timecode.replace(6,7,"1");
                     break;
                 case "WED P.M.":
-                    timecode.replace(7, 8, "1");
+                    timecode.replace(7,8,"1");
                     break;
                 case "THU A.M.":
-                    timecode.replace(8, 9, "1");
+                    timecode.replace(8,9,"1");
                     break;
                 case "THU P.M.":
-                    timecode.replace(9, 10, "1");
+                    timecode.replace(9,10,"1");
                     break;
                 case "FRI A.M.":
-                    timecode.replace(10, 11, "1");
+                    timecode.replace(10,11,"1");
                     break;
                 case "FRI P.M.":
-                    timecode.replace(11, 12, "1");
+                    timecode.replace(11,12,"1");
                     break;
                 case "SAT A.M.":
-                    timecode.replace(12, 13, "1");
+                    timecode.replace(12,13,"1");
                     break;
                 case "SAT P.M.":
-                    timecode.replace(13, 14, "1");
+                    timecode.replace(13,14,"1");
                     break;
 
             }
@@ -309,27 +307,27 @@ public class ManagementController {
     }
 
     @RequestMapping("/delAllShift")
-    public void delAllShift(@RequestBody Map<String, Object> params) {
+    public void delAllShift(@RequestBody Map<String,Object> params){
         String ids = params.get("ids").toString();
-        String[] id = ids.split(",");
+        String[] id=ids.split(",");
         shiftService.delAllShift(id);
     }
 
     @RequestMapping("/updateShift")
-    public void getShift(@RequestBody JSONObject obj) {
+    public void getShift(@RequestBody JSONObject obj){
         try {
             System.out.println(obj);
             Date startdate = obj.getDate("startdate");
             Date enddate = obj.getDate("enddate");
             JSONArray params = obj.getJSONArray("shifts");
 
-            shiftService.deleteConflictShifts(startdate, enddate);
+            shiftService.deleteConflictShifts(startdate,enddate);
 
             List<Shift> insertShifts = new ArrayList<>();
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-            for (int i = 0; i < params.size(); i++) {
+            for(int i = 0; i < params.size(); i++){
                 int ruleid = params.getJSONObject(i).getInteger("ruleid");
                 int uRid = ruleService.getURid(ruleid);
 
@@ -368,14 +366,18 @@ public class ManagementController {
     }
 
     @RequestMapping("/updateUser")
-    public void updateUser(@RequestBody JSONObject obj) {
+    public String updateUser(@RequestBody JSONObject obj) {
         try {
-            User user = (User) JSONObject.toJavaObject(obj, User.class);
+            System.out.println("/update User Json obj");
+            System.out.println(obj.toJSONString());
+            User user = (User)JSONObject.toJavaObject(obj, User.class);
             List<String> deptList = getDeptList(obj);
-            userService.updateUser(user, deptList);
+            userService.updateUser(user,deptList);
         } catch (JSONException e) {
             e.printStackTrace();
+            return "{\"result\":false}";
         }
+        return "{\"result\":true}";
     }
 
     @RequestMapping("/deleteUser")
@@ -388,18 +390,18 @@ public class ManagementController {
         try {
 //            User user = getUserFromJasonObj(obj);
             List<String> deptList = getDeptList(obj);
-            User user = (User) JSONObject.toJavaObject(obj, User.class);
+            User user=(User)JSONObject.toJavaObject(obj, User.class);
 
             System.out.println(user.toString());
 
-            userService.addUser(user, deptList);
+            userService.addUser(user,deptList);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     /*Helpers*/
-    public List<String> getDeptList(JSONObject obj) {
+    public List<String> getDeptList(JSONObject obj){
         JSONArray selectdepts = obj.getJSONArray("selectdepts");
         List<String> deptList = new ArrayList<String>();
         for (int i = 0; i < selectdepts.size(); i++) {
@@ -408,7 +410,7 @@ public class ManagementController {
         return deptList;
     }
 
-    public User getUserFromJasonObj(JSONObject obj) {
+    public User getUserFromJasonObj(JSONObject obj){
         User user = new User();
         user.setUserid(obj.getInteger("userid"));
         user.setUsername(obj.getString("username"));
