@@ -57,7 +57,7 @@
             </el-menu>
 
         </el-col>
-        <el-col id="mainFrame" style="width: auto; margin-left: 20px">
+        <el-col id="mainFrame" style="width: auto; margin-left: 20px;">
 
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -73,7 +73,7 @@
 
                 </el-tabs>
                 <el-row :span="24">
-                    <iframe width="100%" height="100%" frameborder="no" scrolling="no" v-bind:src="url"></iframe>
+                    <iframe width="100%" height="100%" frameborder="no"  v-bind:src="url"></iframe>
                 </el-row>
             </template>
 
