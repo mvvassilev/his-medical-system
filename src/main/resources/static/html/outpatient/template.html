@@ -49,10 +49,10 @@
             </el-select>
         </el-col>
         <el-col :span="3">
-            <el-button icon="el-icon-search" type="primary" @click="handleClick">Search</el-button><!--search-->
+            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
         <el-col :span="3">
-            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="handleClick">Add New Entry</el-button><!--showDialogForm('Add')-->
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm">Add New Entry</el-button>
         </el-col>
     </el-row>
 
@@ -67,7 +67,8 @@
         <el-table-column
                 prop="createdate"
                 label="Create Date"
-                width="180">
+                width="180"
+                :formatter="dateFormatter">
         </el-table-column>
         <el-table-column
                 prop="tempscope"
@@ -75,6 +76,7 @@
                 width="180">
         </el-table-column>
         <el-table-column
+
                 prop="temptype"
                 label="Type">
         </el-table-column>
@@ -85,7 +87,7 @@
         </el-table-column>
     </el-table>
 
-    <!--<el-pagination
+    <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -95,28 +97,49 @@
             :hide-on-single-page="value"
             layout="total, sizes, prev, pager, next, jumper"
             :total="template_all.length">
-    </el-pagination>-->
+    </el-pagination>
 
-    <!--<el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="Name" :label-width="formLabelWidth">
                 <el-input v-model="form.tempname" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Create Date" :label-width="formLabelWidth">
-                <el-input v-model="form.createdate" autocomplete="off"></el-input>
-            </el-form-item>
             <el-form-item label="Scope" :label-width="formLabelWidth">
-                <el-input v-model="form.tempscope" autocomplete="off"></el-input>
+                <el-select v-model="form.tempscope" placeholder="Scope">
+                    <el-option-group
+                            v-for="group in option1"
+                            :key="group.label"
+                            :label="group.label">
+                        <el-option
+                                v-for="item in group.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-option-group>
+                </el-select>
             </el-form-item>
             <el-form-item label="Type" :label-width="formLabelWidth">
-                <el-input v-model="form.temptype" autocomplete="off"></el-input>
+                <el-select v-model="form.temptype" placeholder="Type">
+                    <el-option-group
+                            v-for="group in option2"
+                            :key="group.label"
+                            :label="group.label">
+                        <el-option
+                                v-for="item in group.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-option-group>
+                </el-select>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="handleClick">Confirm</el-button>
+            <el-button type="primary" @click="onSubmit">Confirm</el-button>
         </div>
-    </el-dialog>-->
+    </el-dialog>
 </div>
 </body>
 <script>
@@ -124,12 +147,6 @@
         el: '#template_all',
         data(){
             return {option1:[{
-                    options:[{
-                        value:'all',
-                        label:'All'
-                    }]
-                },{
-                    label:'Scope',
                     options: [{
                         value: 'individual',
                         label: 'Individual'
@@ -142,20 +159,15 @@
                     }]
                 }],
                 option2: [{
-                    options:[{
-                        value:'all',
-                        label:'All'
-                    }]
-                },{
                     label: 'Medical Technology',
                     options: [{
-                        value: 'JCF',
+                        value: 'examination',
                         label: 'Examination'
                     }, {
-                        value: 'JYF',
+                        value: 'test',
                         label: 'Test'
                     },{
-                        value:'CZF',
+                        value:'disposal',
                         label:'Disposal'
                     }]
                 }, {
@@ -180,18 +192,25 @@
                 temptype:"",
                 template_all:[],
 
-                /*currentPage: 1,//初始页
+                value: false,
+                currentPage: 1,//初始页
                 pagesize: 10,//每页的数据
                 formTitle:"",
-                dialogFormVisible: false,*/
+                dialogFormVisible: false,
+                form:{
+                    tempname:"",
+                    tempscope:"",
+                    temptype:"",
+                },
+                formLabelWidth: '120px'
             }
         },
 
-        /*mounted: function(){
+        mounted: function(){
             console.log("refresh!!!")
             this.currentPage = 1;
             var that = this;
-            axios.post('//', {})
+            axios.post('/outpatient/temps', {})
                 .then(function (response) {
                     console.log(response.data);
                     that.template_all = response.data;
@@ -199,16 +218,112 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-        },*/
+        },
 
         methods: {
+            dateFormatter:function(row){
+                var time1 = row.createdate;
+                var time2 = myTime(time1);
+                function myTime(date) {
+                    var arr=date.split("T");
+                    var d=arr[0];
+                    var darr = d.split('-');
+
+                    var t=arr[1];
+                    var tarr = t.split('.000');
+                    var marr = tarr[0].split(':');
+
+                    var dd = parseInt(darr[0])+"-"+parseInt(darr[1])+"-"+parseInt(darr[2])+" "+parseInt(marr[0])+":"+parseInt(marr[1])+":"+parseInt(marr[2]);
+                    return dd;
+                }
+                return time2;
+            },
+
+            showDialogForm:function(){
+                this.form = {
+                    tempname:"",
+                    tempscope:"",
+                    temptype:"",
+                };
+                this.dialogFormVisible = true;
+            },
+
+            onSubmit: function() {
+                this.onSubmitAdd();
+                this.dialogFormVisible = false;
+                this.refresh();
+            },
+
+            onSubmitAdd: function() {
+                var that = this;
+                var now=new Date();
+                console.log(that.form);
+                axios.post('/outpatient/addTemp', {
+                    tempname: that.form.tempname,
+                    tempscope: that.form.tempscope,
+                    temptype: that.form.temptype,
+                    createdate: now.getTime(),
+                })
+                    .then(function(response) {
+                        console.log(response.data);
+                        // that.depts=response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            search: function() {
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/outpatient/temps', {
+                    tempname: that.tempname,
+                    temptype: that.value2,
+                    tempscope: that.value1,
+                    createdate: that.createdate,
+                })
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.template_all = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            refresh: function() {
+                template_all=[];
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/outpatient/temps', {
+                    tempname: "",
+                    temptype: "",
+                    tempscope: "",
+                    createdate: "",
+                })
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.template_all = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
             handleClick() {
                 console.log("test");
             },
 
-            /*showDetailsDialogForm: function () {
+            showDetailsDialogForm: function () {
                 dialog.dialogVisible = true;
-            },*/
+            },
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
+            }
         }
     });
 </script>

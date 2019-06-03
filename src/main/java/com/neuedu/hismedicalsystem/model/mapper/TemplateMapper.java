@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TemplateMapper {
     public List<Template_all> getTemp(Template_all condition);
+
+    public void addTemp(Template_all template_all);
 }
