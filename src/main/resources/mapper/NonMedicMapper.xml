@@ -53,4 +53,8 @@
         where nmedname = #{nmedname}
     </select>
 
+    <select id="getPrice" resultType="Double">
+        select price from non_medic where nmedname = #{nmedname}
+    </select>
+
 </mapper>

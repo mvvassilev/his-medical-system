@@ -16,4 +16,6 @@ public interface NonMedicMapper {
     List<NonMedic> getRegLevel();
 
     String getRegItemCode(String nmedname);
+
+    double getPrice(String nmedname);
 }
