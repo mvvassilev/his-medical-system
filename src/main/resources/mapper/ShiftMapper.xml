@@ -5,8 +5,9 @@
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.ShiftMapper">
 
     <select id="getShift" resultType="Shift">
-        select s.shiftid as shiftid, s.dutydate as dutydate, s.aorp as aorp, n.nmedname as nmedname, u.realname as realname,
-         d.deptname as deptname, s.ration as ration from
+        select s.shiftid as shiftid, s.dutydate as dutydate, s.aorp as aorp, n.nmedname as nmedname, u.realname as
+        realname,
+        d.deptname as deptname, s.ration as ration from
 
         (((userrdept ud join user u on u.userid = ud.userid)
         join dept d on d.deptcode = ud.deptcode)
@@ -28,28 +29,26 @@
         join dept d on d.deptcode = ud.deptcode)
         join shift s on s.uRid = ud.uRid)
         join non_medic n on n.itemcode = s.itemcode
-
-<!--        <where>-->
-<!--            <if test="dates != null and datee != null ">-->
-<!--                <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>-->
-<!--            </if>-->
-<!--        </where>-->
+        where s.aorp = #{aorp}
+        and s.balance > 0
+        and d.deptcode = #{deptcode}
+        and n.nmedname = #{nmedname}
+        and to_days(s.dutydate) = to_days(now());
     </select>
 
 
     <insert id="insertShift" useGeneratedKeys="true" keyProperty="shiftid">
         insert into shift (uRid, userid, balance, ration, itemcode, dutydate, aorp) values
         <foreach item="item" collection="list" separator=",">
-            (#{item.uRid}, #{item.userid}, #{item.ration}, #{item.ration}, #{item.itemcode}, #{item.dutydate}, #{item.aorp})
+            (#{item.uRid}, #{item.userid}, #{item.ration}, #{item.ration}, #{item.itemcode}, #{item.dutydate},
+            #{item.aorp})
         </foreach>
     </insert>
 
     <delete id="deleteConflictShifts">
         delete from shift
         where <![CDATA[ dutydate >= #{startdate} and dutydate <= #{enddate}]]>
-
     </delete>
-
 
 
     <delete id="delShift">
@@ -62,4 +61,10 @@
             #{ids}
         </foreach>
     </delete>
+
+    <!--  Deduct one in balance field  (When registering a new patient)-->
+    <update id="deductOneBalance">
+        update shift set balance = balance - 1
+        where shiftid = #{shiftid}
+    </update>
 </mapper>

@@ -24,14 +24,19 @@ public class ShiftService {
     }
 
     @Transactional
-    public void delAllShift(String[] id){shiftMapper.delAllShift(id);}
-
-    public void updateShift(List<Shift> updateshifts) { shiftMapper.updateShift(updateshifts);
+    public void delAllShift(String[] id) {
+        shiftMapper.delAllShift(id);
     }
 
-    public void insertShift(List<Shift> insertShifts) { shiftMapper.insertShift(insertShifts);
+    public void updateShift(List<Shift> updateshifts) {
+        shiftMapper.updateShift(updateshifts);
     }
 
-    public void deleteConflictShifts(Date startdate, Date enddate) { shiftMapper.deleteConflictShifts(startdate,enddate);
+    public void insertShift(List<Shift> insertShifts) {
+        shiftMapper.insertShift(insertShifts);
+    }
+
+    public void deleteConflictShifts(Date startdate, Date enddate) {
+        shiftMapper.deleteConflictShifts(startdate, enddate);
     }
 }

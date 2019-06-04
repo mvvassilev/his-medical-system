@@ -1,0 +1,227 @@
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="register">
+        <h3 style="padding: 2%">Register information</h3>
+
+        <!------------------TODO: CLEAR DOESNT WORK YET------------------->
+        <el-button style="position: absolute; left: 85vw; top: 5vh;" type="primary" plain size="medium"
+                   @click="paymentFormVisible = true; ">Clear
+        </el-button>
+
+        <el-row :gutter="20" style="padding: 2%">
+            <el-col :span="6">
+                <el-input style="padding: 3%" placeholder="Patient ID" v-model="pid" size="medium"></el-input>
+                <el-input style="padding: 3%" placeholder="Name" v-model="pname" size="medium"></el-input>
+                <el-input style="padding: 3%" placeholder="Age" v-model="page" size="medium"></el-input>
+                <el-date-picker style="padding: 3%; width: 100%" v-model="pbirth" type="date" placeholder="Birth date"
+                                size="medium">
+                </el-date-picker>
+                </el-input>
+                <el-input style="padding: 3%" placeholder="Address" v-model="paddress" size="medium"></el-input>
+                <el-select style="padding: 3%; width: 100%" v-model="pgender" placeholder="Gender" style="width: 100%"
+                           size="medium">
+                    <el-option v-for="item in genders" :key="item" :label="item" :value="item">
+                    </el-option>
+                </el-select>
+            </el-col>
+            <el-col :span="6">
+                <el-row style="padding: 5%; padding-top: 8%">
+                    <el-radio v-model="aorp" label="morning">Morning</el-radio>
+                    <el-radio v-model="aorp" label="afternoon">Afternoon</el-radio>
+                </el-row>
+                <el-select style="padding: 3%" v-model="billcat" placeholder="Billing category" style="width: 100%"
+                           size="medium">
+                    <el-option v-for="item in bills" :key="item.billid" :label="item.billcat" :value="item.billcat">
+                    </el-option>
+                </el-select>
+                <el-select style="padding: 3%" v-model="dept" multiple placeholder="Department" style="width: 100%"
+                           size="medium">
+                    <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
+                    </el-option>
+                </el-select>
+                <el-select style="padding: 3%" v-model="registrationLevel" multiple placeholder="Register level"
+                           style="width: 100%" size="medium">
+                    <!-----------------TODO: config the variables------------------->
+                    <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
+                    </el-option>
+                </el-select>
+                <el-radio style="padding: 8.3%" v-model="newrecord" label="newRecord" style="padding: 6px">New record
+                </el-radio>
+            </el-col>
+            <el-col :span="12">
+                <el-table :data="shift" style="width: 100%" @selection-change="handleSelectionChange"
+                          ref="multipleTable">
+                    <el-table-column style="text-align: center" prop="username" label="Doctor" width="180">
+                    </el-table-column>
+                    <el-table-column style="text-align: center" prop="ration" label="Quota" width="180">
+                    </el-table-column>
+                    <el-table-column style="text-align: center" label="" width="40">
+                        <span slot-scope="scope">
+                            <i size="medium" class="el-icon-circle-plus-outline"
+                               v-on:click="showPaymentDialogForm(scope.$index, scope.row)"></i>
+                        </span>
+                    </el-table-column>
+                </el-table>
+            </el-col>
+        </el-row>
+
+        <!-------------    PAYMENT FORM     ------------>
+        <el-dialog :title="formTitle" :visible.sync="paymentFormVisible">
+            <el-form :model="paymentform" style="text-align: center">
+                <el-form-item label="Payment information">
+                    <h3 style="padding: 10%">Total expanses ${{fee}}</h3>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" plain @click="paymentFormVisible = false; calculatePayment()">Cancel
+                </el-button>
+                <el-button type="primary" size="medium" @click="onConfirm">Confirm</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</body>
+
+
+
+<script>
+    var app = new Vue({
+        el: '#register',
+        data: {
+            pid: "",
+            pname: "",
+            page: "",
+            pbirth: "",
+            paddress: "",
+            pgender: "",
+            billcat: "",
+            username: "",
+            dept: "",
+            newrecord: "",
+            aorp: "",
+            fee: "",
+            registrationLevel: "",
+            paymentFormVisible: false,
+            methodType: "",
+            genders: [],
+            bills: [],
+            depts: [],
+            users: [],
+
+
+
+            patients: [],
+            consts: [],
+
+            value: false,
+            currentPage: 1, //初始页
+            pagesize: 10, //    每页的数据
+
+
+            methodType: "", //调用方法，add or update
+            formLabelWidth: 30,
+            dialogFormVisible: false,
+            updatingIndex: -1,
+            updatingObject: {},
+
+            //delete
+            deleteDialogVisible: false, //控制弹出删除窗口
+            deletingIndex: -1,
+            deletingObject: {},
+        },
+
+        mounted: function(){
+            console.log("refreshed")
+            var that = this;
+            axios.post('/registration/getDoctorsAvailable', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.users = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+            axios.post('/management/consts', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.bills = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+            axios.post('/management/depts', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.depts = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+             axios.post('/management/nonmedics', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.registrationLevel = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
+        methods: {
+            refresh:function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            that.users = []
+            axios.post('/management/users', {
+                userid: "",
+                username: "",
+                pwd: "",
+                realname: "",
+                usercat: "",
+                position: "",
+                shiftOrNot: ""
+            })
+            .then(function (response) {
+                console.log(response.data);
+                that.users = response.data;
+            })
+            .catch(function (error) {
+               console.log(error);
+            });
+        },
+
+            // -----------PAYMENT STUFF --------------/
+            calculatePayment: function() {
+                // TODO: Payement calculation logic
+            },
+
+            showPaymentDialogForm: function(index, row){
+                this.paymentFormVisible = true;
+                this.paymentIndex = index;
+                this.username = row;
+            },
+
+            onConfirm: function() {
+                // TODO: Confirmation logic
+            }
+        }
+    })
+</script>
+
+</html>

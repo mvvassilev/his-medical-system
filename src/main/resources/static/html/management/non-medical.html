@@ -15,27 +15,28 @@
 <body>
 <div id="nonmedic">
 
-        <el-row :gutter="20">
-            <el-col :span="4">
-                <el-input type="text" v-model="itemcode" placeholder="Code"></el-input>
-            </el-col>
-            <el-col :span="4">
-                <el-input type="text" v-model="feecode" placeholder="Feecode"></el-input>
-            </el-col>
-            <el-col :span="4">
-                <el-input type="text" v-model="nmedname" placeholder="Name"></el-input>
-            </el-col>
-            <el-col :span="4">
-                <el-input type="text" v-model="deptcode" placeholder="Department"></el-input>
-            </el-col>
+    <el-row :gutter="20">
+        <el-col :span="4">
+            <el-input type="text" v-model="itemcode" placeholder="Code"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-input type="text" v-model="feecode" placeholder="Feecode"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-input type="text" v-model="nmedname" placeholder="Name"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-input type="text" v-model="deptcode" placeholder="Department"></el-input>
+        </el-col>
 
-            <el-col :span="4">
-                <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
-            </el-col>
-            <el-col :span="4">
-                <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry</el-button>
-            </el-col>
-        </el-row>
+        <el-col :span="4">
+            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+        </el-col>
+        <el-col :span="4">
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry
+            </el-button>
+        </el-col>
+    </el-row>
 
 
     <template>

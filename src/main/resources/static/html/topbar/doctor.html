@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+<div id="topbar">
+    <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
+             background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" style="text-align: right">
+        <el-menu-item disabled index="1" v-on:click="navigateSidebarTo('../management/sidebar.html')">Management
+        </el-menu-item>
+        <el-menu-item disabled index="2" v-on:click="navigateSidebarTo('../register/sidebar.html')">Register & Payment
+        </el-menu-item>
+        <el-menu-item index="3" v-on:click="navigateSidebarTo('../treatment/sidebar.html')">Treatment</el-menu-item>
+        <el-menu-item disabled index="4" v-on:click="navigateSidebarTo('../others/sidebar.html')">Others</el-menu-item>
+    </el-menu>
+</div>
+</body>
+
+<script>
+    var app = new Vue({
+        el: '#topbar',
+        data: {
+            //searching attributes
+            userid: "",
+            username: "",
+            pwd: "",
+            realname: "",
+            usercat: "",
+            position: "",
+            shiftOrNot: false,
+            url_sidebar: "",
+
+
+            users: [],
+
+            //Form Dialog
+            methodType: "", //调用方法，Add or Update
+            formTitle: "",
+            dialogFormVisible: false,
+            //Delete
+            deleteDialogVisible: false, //控制弹出删除窗口
+            deletingIndex: -1,
+            deletingObject: {},
+            //Update
+            updatingIndex: -1,
+            updatingObject: {},
+
+            //All dept list
+            deptList: [],
+            usercatList: ["挂号收费员", "门诊医生", "医技医生", "药房操作员", "财务管理员", "医院管理员"],
+            positionList: ["主任医师", "副主任医师", "主治医师", "住院医师"],
+
+            form: {
+                userid: "",
+                username: "",
+                pwd: "",
+                realname: "",
+                usercat: "",
+                position: "",
+                shiftOrNot: false,
+                selectdepts: [],
+            },
+
+            formLabelWidth: '120px',
+
+            //splitpages
+            value: false,
+            currentPage: 1, //初始页
+            pagesize: 10, //    每页的数据
+        },
+
+        mounted: function() {
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            axios.post('/management/users', {})
+                .then(function(response) {
+                    console.log(response.data);
+                    that.users = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+
+        methods: {
+            navigateSidebarTo(url_sidebar) {
+                this.url_sidebar = url_sidebar;
+            }
+        }
+    })
+
+</script>
+
+</html>

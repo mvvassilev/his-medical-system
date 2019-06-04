@@ -22,7 +22,8 @@
     </delete>
 
     <update id="updateMed">
-        update medicine set medname = #{medname},unit = #{unit},medtype = #{medtype},price = #{price}, medsize=#{medsize},medcat=#{medcat}
+        update medicine set medname = #{medname},unit = #{unit},medtype = #{medtype},price = #{price},
+        medsize=#{medsize},medcat=#{medcat}
         where itemcode = #{itemcode}
     </update>
 </mapper>
