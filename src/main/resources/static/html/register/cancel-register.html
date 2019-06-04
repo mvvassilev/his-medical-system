@@ -1,14 +1,203 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div id="cancel-register">
-    <el-row>
+<html>
 
-    </el-row>
-</div>
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="cancel">
+
+        <el-col :span="24">
+            <el-row>
+                <el-input style="padding: 3%; width: 30%" placeholder=" Enter Patient ID" v-model="pid" size="large"></el-input>
+                <el-button icon="el-icon-search" type="primary" @click="searchPatient">Search</el-button>
+            </el-row>
+            <el-row>
+                <el-form :inline="true" :model="att" class="demo-form-inline">
+                    <el-input id="name" style="width: 24vw; pointer-events: none; padding: 1%" placeholder="Name: "></el-input>
+                    <el-input id="age" style="width: 15vw; pointer-events: none; padding: 1%" placeholder="Age: "></el-input>
+                    <el-input id="bdate" style="width: 22vw; pointer-events: none; padding: 1%" placeholder="Birth date:"></el-input>
+                    <el-input id="gender" style="width: 22vw; pointer-events: none; padding: 1%" placeholder="Gender:"></el-input>
+                    <el-input id="address" style="width: 42vw; pointer-events: none; padding: 1%" placeholder="Address:"></el-input>
+                    <el-input id="billcat" style="width: 45vw; pointer-events: none; padding: 1%" placeholder="Billing category: "></el-input>
+                </el-form>
+            </el-row>
+        </el-col>
+
+        <el-table :data="registrations" style="width: 90%">
+            <el-table-column prop="regid" label="Registration ID" width="180"></el-table-column>
+            <el-table-column prop="username" label="Doctor" width="120"></el-table-column>
+            <el-table-column prop="deptname" label="Department" width="140"></el-table-column>
+            <el-table-column prop="registrationLevel" label="Registration level" width="200"></el-table-column>
+            <el-table-column prop="date" label="Date" width="120"></el-table-column>
+            <el-table-column fixed="right" label="Operations" width="120">
+                <el-button type="primary" icon="el-icon-delete" @click="showConfirmDeleteDialogForm" circle></el-button>
+            </el-table-column>
+        </el-table>
+
+        <!-------------    CONFIRM CANCEL POP-UP    ------------>
+        <el-dialog title="Cancel registration" :visible.sync="confirmDeleteFormVisible" width="300">
+            <span style="padding: 5%">Patient: {{dialogpatientname}}</span>
+            <span style="padding: 5%">ID: {{dialogpatientid}}</span>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="onConfirmDelete">Confirm</el-button>
+            </div>
+        </el-dialog>
+    </div>
 </body>
+
+
+
+<script>
+    var app = new Vue({
+        el: '#cancel',
+        data: {
+            confirmDeleteFormVisible: false,
+            dialogpatientname: "Richard",
+            dialogpatientid: "6261223",
+            pid: "",
+            pname: "hello",
+            date: "",
+            aorp: "",
+            deptname: "",
+            registrationLevel: "",
+            state: "",
+            deleteFormIndex: "",
+            deleteObject: "",
+
+            registrations: [],
+            att: {},
+
+            //--------------  FRONT-END TEST DATA   --------------//
+            // -----------    DELETE BEFORE RUNNING --------------//
+            patients: [
+                patient_1 = {
+                    pid: "1912",
+                    pname: "George",
+                    date: "2019/05/26",
+                    aorp: "Morning",
+                    deptname: "ER",
+                    state: "Beijing"
+                },
+                patient_2 = {
+                    pid: "6886",
+                    pname: "Cody",
+                    date: "2019/06/01",
+                    aorp: "Afternoon",
+                    deptname: "Toxicology",
+                    state: "Shenyang"
+                },
+                patient_3 = {
+                    pid: "6819",
+                    pname: "Garett",
+                    date: "2019/06/02",
+                    aorp: "Morning",
+                    deptname: "Phisiology",
+                    state: "Shanghai"
+                }
+            ]
+
+            //----------------------------------------------------------//
+        },
+
+        mounted: function() {
+            console.log("refreshed")
+            var that = this;
+
+            axios.post('/registration/getRegistrations', {})
+                .then(function(response) {
+                    console.log(response.data);
+                    that.patients = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+
+        methods: {
+            refresh: function() {
+                console.log("refresh!!!")
+                this.currentPage = 1;
+                var that = this;
+                that.patients = [];
+                axios.post('/registration/patients', {})
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.patients = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            showConfirmDeleteDialogForm: function(index, row) {
+                this.confirmDeleteFormVisible = true;
+                this.deleteFormIndex = index;
+                this.deleteObject = row;
+
+
+                this.dialogpatientname = row.pname;
+                this.dialogpatientid = row.pid;
+            },
+
+            onConfirmDelete: function() {
+                var params = new URLSearchParams();
+                params.append('pid', this.deleteObject.pid);
+                axios.post('/registration/deletePatient', params)
+                    .then(function(response) {
+                        //patient deleted
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                this.confirmDeleteFormVisible = false;
+                this.refresh();
+            },
+
+
+            // ----------------          IMPORTANT!!!!             --------------------//
+            //---    IF THERE IS A PROBLEM WITH THE SEARCH METHOD, ASK MOMCHIL  -------//
+            //-------------------------------------------------------------------------//
+            searchPatient: function() {
+                //get data from database
+                let that = this;
+                console.log("Search")
+                axios.post('/registration/tryCompletePatientInfo', {
+                        pid: that.pid
+                    })
+                    .then(function(response) {
+                        that.patient = response.data;
+                        console.log(that.users);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+
+                //config Strings
+                let nameString = `Name: ${that.pname}`;
+                let ageString = `Age: ${that.page}`;
+                let bdateString = `Birth date: ${that.pbirth}`;
+                let genderString = `Gender: ${that.pgender}`;
+                let addressString = `Address: ${that.paddress}`;
+                let billcatString = `Billing category: ${that.billcat}`;
+
+                document.getElementById("name").setAttribute("placeholder", nameString);
+                document.getElementById("age").setAttribute("placeholder", ageString);
+                document.getElementById("bdate").setAttribute("placeholder", bdateString);
+                document.getElementById("gender").setAttribute("placeholder", genderString);
+                document.getElementById("address").setAttribute("placeholder", addressString);
+                document.getElementById("billcat").setAttribute("placeholder", billcatString);
+            },
+        }
+    })
+</script>
+
 </html>
