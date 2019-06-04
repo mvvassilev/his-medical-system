@@ -52,12 +52,12 @@
             <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
         <el-col :span="3">
-            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm">Add New Entry</el-button>
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm">Add New Template</el-button>
         </el-col>
     </el-row>
 
     <el-table
-            :data="template_all"
+            :data="template_all.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             style="width: 100%">
         <el-table-column
                 prop="tempname"
@@ -81,8 +81,8 @@
                 label="Type">
         </el-table-column>
         <el-table-column fixed="right" label="Operations" width="250">
-            <span>
-                <el-button size="mini" @click="showDetailsDialogForm">details</el-button>
+            <span slot-scope="scope">
+                <el-button size="mini" @click="showDetailsDialogForm(scope.row)">details</el-button>
             </span>
         </el-table-column>
     </el-table>
@@ -145,13 +145,13 @@
     <el-dialog
             title="Template Details"
             :visible.sync="dialogVisible"
-            width="100%">
-        <el-col :gutter="5">
-            <el-row>
-                <el-input type="text" v-model="tempname" placeholder="Name"></el-input>
-            </el-row>
-            <el-row>
-                <el-select v-model="value1" placeholder="Scope">
+            width="80%">
+        <el-row :model="form" :gutter="8">
+            <el-col :span="8">
+                <el-input type="text" v-model="form.tempname" autocomplete="off" placeholder="Name"></el-input>
+            </el-col>
+            <el-col :span="8">
+                <el-select v-model="form.tempscope" placeholder="Scope">
                     <el-option-group
                             v-for="group in option1"
                             :key="group.label"
@@ -164,9 +164,9 @@
                         </el-option>
                     </el-option-group>
                 </el-select>
-            </el-row>
-            <el-row>
-                <el-select v-model="value2" placeholder="Type">
+            </el-col>
+            <el-col :span="8">
+                <el-select v-model="form.temptype" placeholder="Type">
                     <el-option-group
                             v-for="group in option2"
                             :key="group.label"
@@ -179,15 +179,16 @@
                         </el-option>
                     </el-option-group>
                 </el-select>
-            </el-row>
-        </el-col>
-        <el-row>
-            <el-button icon="el-icon-search" type="primary" @click="">Add New Item</el-button>
+            </el-col>
         </el-row>
+
+        <div style="margin-top: 5px">
+            <el-button icon="el-icon-search" type="primary" @click="">Add New Item</el-button>
+        </div>
 
         <el-table
                 ref="multipleTable"
-                :data="rules"
+                :data="details"
                 style="width: 100%"
                 tooltip-effect="dark"
                 @selection-change="handleSelectionChange">
@@ -212,8 +213,7 @@
             </el-table-column>
             <el-table-column
                     prop="part"
-                    label="Part"
-                    width="180">
+                    label="Part">
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="250">
             <span>
@@ -222,7 +222,7 @@
             </el-table-column>
         </el-table>
         <div style="margin-top: 20px">
-            <el-button @click="toggleSelection()">Cancel Selection</el-button>
+            <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection</el-button>
             <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
                        @click="delAllShift(multipleSelection)">delete all</el-button>
         </div>
@@ -281,7 +281,7 @@
 
                 value: false,
                 currentPage: 1,//初始页
-                pagesize: 10,//每页的数据
+                pagesize:5,//每页的数据
                 formTitle:"",
                 dialogFormVisible: false,
                 form:{
@@ -294,7 +294,7 @@
         },
 
         mounted: function(){
-            console.log("refresh!!!")
+            console.log("refresh!!!");
             this.currentPage = 1;
             var that = this;
             axios.post('/outpatient/temps', {})
@@ -320,7 +320,8 @@
                     var tarr = t.split('.000');
                     var marr = tarr[0].split(':');
 
-                    var dd = parseInt(darr[0])+"-"+parseInt(darr[1])+"-"+parseInt(darr[2])+" "+parseInt(marr[0])+":"+parseInt(marr[1])+":"+parseInt(marr[2]);
+                    var dd = parseInt(darr[0])+"-"+parseInt(darr[1])+"-"+parseInt(darr[2])+" "+(parseInt(marr[0])+8)+":"+parseInt(marr[1])+":"+parseInt(marr[2]);
+
                     return dd;
                 }
                 return time2;
@@ -343,13 +344,14 @@
 
             onSubmitAdd: function() {
                 var that = this;
-                var now=new Date();
+                var d=new Date();
+
                 console.log(that.form);
                 axios.post('/outpatient/addTemp', {
                     tempname: that.form.tempname,
                     tempscope: that.form.tempscope,
                     temptype: that.form.temptype,
-                    createdate: now.getTime(),
+                    createdate: d.getTime(),
                 })
                     .then(function(response) {
                         console.log(response.data);
@@ -397,7 +399,12 @@
                     });
             },
 
-            showDetailsDialogForm: function () {
+            showDetailsDialogForm: function (row) {
+                dialog.form = {
+                    tempname:row.tempname,
+                    tempscope:row.tempscope,
+                    temptype:row.temptype,
+                };
                 dialog.dialogVisible = true;
             },
             handleSizeChange: function(pagesize) {
@@ -414,8 +421,7 @@
     var dialog = new Vue({
         el: '#details',
         data(){
-            return{
-                option1:[{
+            return{option1:[{
                     options: [{
                         value: 'individual',
                         label: 'Individual'
@@ -452,8 +458,14 @@
                         label: 'Herbal Medicine'
                     }]
                 }],
-                value1: '',
-                value2: '',
+                /*value1: '',
+                value2: '',*/
+
+                tempname:"",
+                tempscope:"",
+                temptype:"",
+
+                details:[],
 
                 dialogVisible: false,
                 multipleSelection:[],
@@ -461,6 +473,11 @@
                 deleteDialogVisible: false,//控制弹出删除窗口
                 deletingIndex: -1,
                 deletingObject:{},
+                form:{
+                    tempname:"",
+                    tempscope:"",
+                    temptype:"",
+                },
             }
         },
         methods: {
