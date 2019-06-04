@@ -18,24 +18,12 @@
     <el-col :span="5">
         <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                  background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" style="height: 100vh">
-            <el-menu-item index="1" v-on:click="navigateTo('constant.html')">
-                <span>Constant</span>
+            <el-menu-item index="1" v-on:click="navigateTo('homepage.html')">
+                <span>Homepage</span>
             </el-menu-item>
-            <!-- <el-menu-item index="2" v-on:click="navigateTo('dept.html')">
-                <span>Departments</span>
+            <el-menu-item index="2" v-on:click="navigateTo('template.html')">
+                <span>Template Management</span>
             </el-menu-item>
-            <el-menu-item index="3" v-on:click="navigateTo('disease.html')">
-                <span>Diagnostic catalog</span>
-            </el-menu-item>
-            <el-menu-item index="4" v-on:click="navigateTo('non-medical.html')">
-                <span>Non-medical Charge</span>
-            </el-menu-item>
-            <el-menu-item index="5" v-on:click="navigateTo('shift.html')">
-                <span>Shift</span>
-            </el-menu-item>
-            <el-menu-item index="6" v-on:click="navigateTo('user.html')">
-                <span>Users</span>
-            </el-menu-item> -->
         </el-menu>
     </el-col>
     <el-col :span="19">

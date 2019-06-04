@@ -20,8 +20,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/registration")
 public class RegistrationController {
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private NonMedicService nonMedicService;
@@ -47,9 +45,12 @@ public class RegistrationController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sdf.parse("1998-08-08");
             java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+            //Patient
             Patient patient = new Patient
-                    (1,"Max",true,21, sqlDate,"北京");
-            boolean newrecord = true;
+                    (2,"Wilson",true,21, sqlDate,"北京");
+
+            boolean newrecord = false;
             String registrationLevel = "普通号";
             String billcat="自费";
 
@@ -58,21 +59,40 @@ public class RegistrationController {
 
             Shift shift = new Shift();
             shift.setNmedname("普通号");
-
+            shift.setShiftid(1);
+            shift.setuRid(26);
 
             //Insert patient
-//            registrationService.insertPatient(patient);
+            registrationService.insertPatient(patient);
 
             //Get all the information of registration as non-medic
-            NonMedic registration = nonMedicService.getNonMedicItems(nonMedicItem).get(0);
+            NonMedic registrationType = nonMedicService.getNonMedicItems(nonMedicItem).get(0);
 
             //Add bill for new registration
-            registrationService.addRegistrationBill(patient,registration,newrecord,billcat);
+            registrationService.addRegistrationBill(patient,registrationType,newrecord,billcat);
 
+            //Add registration info into a shift
+            registrationService.registerToShift(patient,registrationType,newrecord,shift);
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return "{\"success\":\"true\"}";
+    }
+
+    @RequestMapping("/getRegistrationPrice")
+    public double getRegistrationPrice(){
+        Shift shift = new Shift();
+        shift.setNmedname("普通号");
+        double price = nonMedicService.getPrice(shift.getNmedname());
+        System.out.println("Price "+price);
+        return price;
+    }
+
+    @RequestMapping("/tryCompletePatientInfo")
+    public Patient tryCompletingPatientInfo() {
+        int id = 3;
+        System.out.println("Patient "+ registrationService.getPatientInfo(id).toString());
+        return registrationService.getPatientInfo(id);
     }
 }

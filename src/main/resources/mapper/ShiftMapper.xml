@@ -60,4 +60,10 @@
             #{ids}
         </foreach>
     </delete>
+
+    <!--  Deduct one in balance field  (When registering a new patient)-->
+    <update id="deductOneBalance">
+        update shift set balance = balance - 1
+        where shiftid = #{shiftid}
+    </update>
 </mapper>

@@ -30,6 +30,9 @@ public class Patient {
         this.state = state;
     }
 
+    public Patient() {
+    }
+
     public int getPid() {
         return pid;
     }

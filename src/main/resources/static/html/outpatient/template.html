@@ -1,0 +1,216 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+<div id="template_all">
+    <el-row :gutter="5">
+        <el-col :span="8">
+            <el-input type="text" v-model="tempname" placeholder="Name"></el-input>
+        </el-col>
+        <el-col :span="5">
+            <el-select v-model="value1" placeholder="Scope">
+                <el-option-group
+                        v-for="group in option1"
+                        :key="group.label"
+                        :label="group.label">
+                    <el-option
+                            v-for="item in group.options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-option-group>
+            </el-select>
+        </el-col>
+        <el-col :span="5">
+            <el-select v-model="value2" placeholder="Type">
+                <el-option-group
+                        v-for="group in option2"
+                        :key="group.label"
+                        :label="group.label">
+                    <el-option
+                            v-for="item in group.options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-option-group>
+            </el-select>
+        </el-col>
+        <el-col :span="3">
+            <el-button icon="el-icon-search" type="primary" @click="handleClick">Search</el-button><!--search-->
+        </el-col>
+        <el-col :span="3">
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="handleClick">Add New Entry</el-button><!--showDialogForm('Add')-->
+        </el-col>
+    </el-row>
+
+    <el-table
+            :data="template_all"
+            style="width: 100%">
+        <el-table-column
+                prop="tempname"
+                label="Name"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="createdate"
+                label="Create Date"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="tempscope"
+                label="Scope"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="temptype"
+                label="Type">
+        </el-table-column>
+        <el-table-column fixed="right" label="Operations" width="250">
+            <span>
+                <el-button size="mini" @click="handleClick">details</el-button><!--showDetailsDialogForm-->
+            </span>
+        </el-table-column>
+    </el-table>
+
+    <!--<el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 20, 40]"
+
+            :page-size="pagesize"
+            :hide-on-single-page="value"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="template_all.length">
+    </el-pagination>-->
+
+    <!--<el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+            <el-form-item label="Name" :label-width="formLabelWidth">
+                <el-input v-model="form.tempname" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Create Date" :label-width="formLabelWidth">
+                <el-input v-model="form.createdate" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Scope" :label-width="formLabelWidth">
+                <el-input v-model="form.tempscope" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Type" :label-width="formLabelWidth">
+                <el-input v-model="form.temptype" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="handleClick">Confirm</el-button>
+        </div>
+    </el-dialog>-->
+</div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#template_all',
+        data(){
+            return {option1:[{
+                    options:[{
+                        value:'all',
+                        label:'All'
+                    }]
+                },{
+                    label:'Scope',
+                    options: [{
+                        value: 'individual',
+                        label: 'Individual'
+                    }, {
+                        value: 'department',
+                        label: 'Department'
+                    },{
+                        value:'hospital',
+                        label:'Hospital'
+                    }]
+                }],
+                option2: [{
+                    options:[{
+                        value:'all',
+                        label:'All'
+                    }]
+                },{
+                    label: 'Medical Technology',
+                    options: [{
+                        value: 'JCF',
+                        label: 'Examination'
+                    }, {
+                        value: 'JYF',
+                        label: 'Test'
+                    },{
+                        value:'CZF',
+                        label:'Disposal'
+                    }]
+                }, {
+                    label: 'Medicine',
+                    options: [{
+                        value: 'XYF',
+                        label: 'Western Medicine'
+                    }, {
+                        value: 'ZCHYF',
+                        label: 'Patent Medicine'
+                    }, {
+                        value: 'ZCYF',
+                        label: 'Herbal Medicine'
+                    }]
+                }],
+                value1: '',
+                value2: '',
+
+                tempname:"",
+                createdate:"",
+                tempscope:"",
+                temptype:"",
+                template_all:[],
+
+                /*currentPage: 1,//初始页
+                pagesize: 10,//每页的数据
+                formTitle:"",
+                dialogFormVisible: false,*/
+            }
+        },
+
+        /*mounted: function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            axios.post('//', {})
+                .then(function (response) {
+                    console.log(response.data);
+                    that.template_all = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },*/
+
+        methods: {
+            handleClick() {
+                console.log("test");
+            },
+
+            /*showDetailsDialogForm: function () {
+                dialog.dialogVisible = true;
+            },*/
+        }
+    });
+</script>
+
+</html>

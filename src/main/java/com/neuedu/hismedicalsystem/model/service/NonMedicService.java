@@ -39,4 +39,8 @@ public class NonMedicService {
     @Transactional
     public List<NonMedic> getRegLevel() { return nonMedicMapper.getRegLevel();
     }
+
+    public double getPrice(String nmedname) {
+        return nonMedicMapper.getPrice(nmedname);
+    }
 }

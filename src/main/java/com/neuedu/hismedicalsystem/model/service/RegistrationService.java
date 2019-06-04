@@ -1,17 +1,10 @@
 package com.neuedu.hismedicalsystem.model.service;
 
-import com.neuedu.hismedicalsystem.model.mapper.BillMapper;
-import com.neuedu.hismedicalsystem.model.mapper.PatientMapper;
-import com.neuedu.hismedicalsystem.model.mapper.ShiftMapper;
-import com.neuedu.hismedicalsystem.model.mapper.UserMapper;
-import com.neuedu.hismedicalsystem.model.po.Bill;
-import com.neuedu.hismedicalsystem.model.po.NonMedic;
-import com.neuedu.hismedicalsystem.model.po.Patient;
-import com.neuedu.hismedicalsystem.model.po.Shift;
+import com.neuedu.hismedicalsystem.model.mapper.*;
+import com.neuedu.hismedicalsystem.model.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,6 +20,11 @@ public class RegistrationService {
 
     @Resource
     private BillMapper billMapper;
+
+    @Resource
+    private RegistrationMapper registrationMapper;
+
+
 
 
 
@@ -52,7 +50,7 @@ public class RegistrationService {
             bill.setTotalprice(price);
         bill.setPid(patient.getPid());
         bill.setCount(1);
-        bill.setPaid(false);
+        bill.setPaid(true);
         bill.setItemcode(registration.getItemcode());
         bill.setPaid(false);
         bill.setFeecode(registration.getFeecode());
@@ -60,4 +58,34 @@ public class RegistrationService {
         bill.setBillcat(billcat);
         billMapper.insertBill(bill);
     }
+
+    public void registerToShift(Patient patient, NonMedic registrationType, boolean newrecord, Shift shift) {
+        Registration register = new Registration();
+        register.setNewRecord(newrecord);
+
+        //Get the current order for the patient ( maximum in shift +1 )
+        int shiftid = shift.getShiftid();
+        int currentOrder = 1;
+        int countRegsInShift = registrationMapper.countRegsInShift(shiftid);
+        if(countRegsInShift > 0)
+            currentOrder = registrationMapper.getCurrentOrder(shift.getShiftid()) + 1;
+        register.setOrder(currentOrder);
+
+        register.setPid(patient.getPid());
+        register.setuRid(shift.getuRid());
+        register.setItemcode(registrationType.getItemcode());
+        register.setShiftid(shiftid);
+        registrationMapper.addRegister(register);
+
+        //Deduct one in balance field for the shift
+        shiftMapper.deductOneBalance(shiftid);
+    }
+
+    public Patient getPatientInfo(int id) {
+        if(patientMapper.countPatientOfId(id)==1)
+            return patientMapper.getPatientById(id);
+        else
+            return new Patient();
+    }
+
 }

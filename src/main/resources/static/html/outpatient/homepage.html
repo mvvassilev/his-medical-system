@@ -1,0 +1,123 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="patient">
+    <el-row>
+        <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
+            <el-radio-button :label="false">Show Patients</el-radio-button>
+            <el-radio-button :label="true">Hide Patients</el-radio-button>
+        </el-radio-group>
+    </el-row>
+    <el-row glutter="20">
+        <el-col id="sidebar" style="width: auto">
+            <el-menu default-active="1-1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
+                     :collapse="isCollapse">
+                <el-submenu index="1">
+                    <template slot="title">
+                        <i class="el-icon-s-custom"></i>
+                        <span slot="title">My Patients</span>
+                    </template>
+                    <el-submenu index="1-1">
+                        <span slot="title">Waiting</span>
+                        <el-menu-item index="1-1-1">Patient1</el-menu-item>
+                    </el-submenu>
+
+                    <el-submenu index="1-2">
+                        <span slot="title">Diagnosed</span>
+                        <el-menu-item index="1-2-1">Patient2</el-menu-item>
+                    </el-submenu>
+                </el-submenu>
+
+                <el-submenu index="2">
+                    <template slot="title">
+                        <i class="el-icon-s-home"></i>
+                        <span slot="title">Department Patients</span>
+                    </template>
+                    <el-submenu index="2-1">
+                        <span slot="title">Waiting</span>
+                        <el-menu-item index="2-1-1">Patient3</el-menu-item>
+                    </el-submenu>
+
+                    <el-submenu index="2-2">
+                        <span slot="title">Diagnosed</span>
+                        <el-menu-item index="2-2-1">Patient4</el-menu-item>
+                    </el-submenu>
+                </el-submenu>
+            </el-menu>
+
+        </el-col>
+        <el-col id="mainFrame" style="width: auto; margin-left: 20px">
+
+            <template>
+                <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tab-pane label="HomePage" name="first">Home Page</el-tab-pane>
+                    <el-tab-pane label="Examination" name="second">Examination Apply</el-tab-pane>
+                    <el-tab-pane label="Inspection" name="third">Inspection Apply</el-tab-pane>
+                    <el-tab-pane label="DiagConfirm" name="fourth">Confirm Diagnosis</el-tab-pane>
+                    <el-tab-pane label="Treatment" name="fifth">Treatment Apply</el-tab-pane>
+                    <el-tab-pane label="Patent-med" name="sixth">Patent Medicine Prescription</el-tab-pane>
+                    <el-tab-pane label="Herbal" name="seventh">Herbal Prescription</el-tab-pane>
+                    <el-tab-pane label="BillQuery" name="eighth">Bills Query</el-tab-pane>
+
+                </el-tabs>
+            </template>
+
+
+        </el-col>
+    </el-row>
+</div>
+
+<style>
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
+        width: 200px;
+        min-height: 400px;
+    }
+</style>
+
+<script>
+    var patient = new Vue({
+        el: '#patient',
+
+        data() {
+            return {
+                isCollapse: true,
+                activeName: 'first'
+            };
+        },
+        methods: {
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClick(tab, event) {
+                console.log(tab, event);
+            },
+            /*sidebarOpen(){
+                console.log("change!");
+                this.getElementById("sidebar").setAttribute(":span","6");
+                this.getElementById("mainFrame").setAttribute(":span","18");
+            },
+            sidebarClose(){
+                this.getElementById("sidebar").setAttribute(":span","2");
+                this.getElementById("mainFrame").setAttribute(":span","22");
+            },*/
+
+        }
+    });
+
+</script>
+</body>
+</html>

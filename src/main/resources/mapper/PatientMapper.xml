@@ -9,4 +9,13 @@
         values (#{pid}, #{pname}, #{pgender}, #{page}, #{pbirth}, #{paddress}, #{state})
     </insert>
 
+    <select id="getPatientById" resultType="Patient">
+        select * from patient where pid = #{id}
+    </select>
+
+    <select id="countPatientOfId" resultType="Integer">
+        select count(*) from patient where pid = #{id}
+    </select>
+
+
 </mapper>

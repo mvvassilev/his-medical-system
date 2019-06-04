@@ -22,4 +22,6 @@ public interface ShiftMapper {
     public void delShift(int shiftid);
 
     public void delAllShift(String[] id);
+
+    public void deductOneBalance(int shiftid);
 }
