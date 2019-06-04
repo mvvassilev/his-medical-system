@@ -1,4 +1,4 @@
-<html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>HIS System</title>
@@ -23,68 +23,94 @@
 
         <el-row :gutter="20" style="padding: 2%">
             <el-col :span="6">
-                <el-input style="padding: 3%" placeholder="Patient ID" v-model="pid" size="medium"></el-input>
-                <el-input style="padding: 3%" placeholder="Name" v-model="pname" size="medium"></el-input>
-                <el-input style="padding: 3%" placeholder="Age" v-model="page" size="medium"></el-input>
-                <el-date-picker style="padding: 3%; width: 100%" v-model="pbirth" type="date" placeholder="Birth date"
+                <el-input style="padding: 3%" placeholder="Patient ID" v-model="patientInfo.pid" size="medium"></el-input>
+                <el-input style="padding: 3%" placeholder="Name" v-model="patientInfo.pname" size="medium"></el-input>
+                <el-input style="padding: 3%" placeholder="Age" v-model="patientInfo.page" size="medium"></el-input>
+                <el-date-picker style="padding: 3%; width: 100%" v-model="patientInfo.pbirth" type="date" placeholder="Birth Date"
                                 size="medium">
                 </el-date-picker>
-                </el-input>
-                <el-input style="padding: 3%" placeholder="Address" v-model="paddress" size="medium"></el-input>
-                <el-select style="padding: 3%; width: 100%" v-model="pgender" placeholder="Gender" style="width: 100%"
-                           size="medium">
-                    <el-option v-for="item in genders" :key="item" :label="item" :value="item">
-                    </el-option>
-                </el-select>
-            </el-col>
-            <el-col :span="6">
-                <el-row style="padding: 5%; padding-top: 8%">
-                    <el-radio v-model="aorp" label="morning">Morning</el-radio>
-                    <el-radio v-model="aorp" label="afternoon">Afternoon</el-radio>
+                <el-input style="padding: 3%" placeholder="Address" v-model="patientInfo.paddress" size="medium"></el-input>
+                <el-row style="padding: 3%;">
+                    <el-radio-group v-model="patientInfo.pgender">
+                        <el-radio :label="true">Male</el-radio>
+                        <el-radio :label="false">Female</el-radio>
+                    </el-radio-group>
                 </el-row>
-                <el-select style="padding: 3%" v-model="billcat" placeholder="Billing category" style="width: 100%"
+
+                <!-- Billing Category -->
+                <el-select style="padding: 3%; width: 100%;" v-model="billcat" placeholder="Billing category"
                            size="medium">
-                    <el-option v-for="item in bills" :key="item.billid" :label="item.billcat" :value="item.billcat">
+                    <el-option v-for="item in bills" :key="item.constid" :label="item.constname" :value="item.constname">
                     </el-option>
                 </el-select>
-                <el-select style="padding: 3%" v-model="dept" multiple placeholder="Department" style="width: 100%"
-                           size="medium">
+
+                <el-row style="padding: 3%;">
+                    <el-checkbox v-model="newrecord">New Medical Record</el-checkbox>
+                </el-row>
+            </el-col>
+
+            <el-col :span="6">
+
+                <!-- Am or PM -->
+                <el-row style="padding: 5%; padding-top: 8%">
+                    <el-radio-group @change="onChangeScreeningConditions()" v-model="screeningConditions.aorp">
+                        <el-radio :label="true">Morning</el-radio>
+                        <el-radio :label="false">Afternoon</el-radio>
+                    </el-radio-group>
+                </el-row>
+
+                <!-- Departments -->
+                <el-select style="padding: 3%; width: 100%;" v-model="screeningConditions.deptcode" placeholder="Department"
+                           @change="onChangeScreeningConditions()" size="medium" >
                     <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
                     </el-option>
                 </el-select>
-                <el-select style="padding: 3%" v-model="registrationLevel" multiple placeholder="Register level"
-                           style="width: 100%" size="medium">
-                    <!-----------------TODO: config the variables------------------->
-                    <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
+
+                <!-- registrationLevel -->
+                <el-select style="padding: 3%; width: 100%;" v-model="screeningConditions.registrationLevel" placeholder="Register level"
+                           @change="onChangeScreeningConditions()" size="medium">
+                    <el-option v-for="item in registrationLevels" :key="item.itemcode" :label="item.nmedname" :value="item.nmedname">
                     </el-option>
                 </el-select>
-                <el-radio style="padding: 8.3%" v-model="newrecord" label="newRecord" style="padding: 6px">New record
-                </el-radio>
             </el-col>
             <el-col :span="12">
-                <el-table :data="shift" style="width: 100%" @selection-change="handleSelectionChange"
-                          ref="multipleTable">
-                    <el-table-column style="text-align: center" prop="username" label="Doctor" width="180">
+                <el-table :data="shifts" style="width: 100%" ref="multipleTable">
+                    <el-table-column style="text-align: center" prop="realname" label="Doctor" width="180">
                     </el-table-column>
-                    <el-table-column style="text-align: center" prop="ration" label="Quota" width="180">
+                    <el-table-column style="text-align: center" prop="balance" label="Spots Left" width="180">
                     </el-table-column>
                     <el-table-column style="text-align: center" label="" width="40">
-                        <span slot-scope="scope">
+                        <template slot-scope="scope">
                             <i size="medium" class="el-icon-circle-plus-outline"
-                               v-on:click="showPaymentDialogForm(scope.$index, scope.row)"></i>
-                        </span>
+                               v-on:click="showPaymentDialogForm(scope.row)"></i>
+                        </template>
                     </el-table-column>
                 </el-table>
             </el-col>
         </el-row>
 
-        <!-------------    PAYMENT FORM     ------------>
-        <el-dialog :title="formTitle" :visible.sync="paymentFormVisible">
-            <el-form :model="paymentform" style="text-align: center">
-                <el-form-item label="Payment information">
-                    <h3 style="padding: 10%">Total expanses ${{fee}}</h3>
-                </el-form-item>
-            </el-form>
+        <!-----------    PAYMENT FORM     ---------->
+        <el-dialog style="width: 1000px" title="Confirm Registration" :visible.sync="paymentFormVisible">
+            <el-row>
+                <h3>Items</h3>
+            </el-row>
+            <el-divider></el-divider>
+            <el-row style="margin-left: 10px" type="flex" justify="space-around">
+                <el-col :span="8">
+                    Registration Type
+                </el-col>
+                <el-col :span="8">
+                    {{fee}}
+                </el-col>
+            </el-row>
+            <el-row v-if="newrecord" style="margin: 10px 0 0 10px;" type="flex" justify="space-around">
+                <el-col :span="8">
+                    New Record
+                </el-col>
+                <el-col :span="8">
+                    1
+                </el-col>
+            </el-row>
             <div slot="footer" class="dialog-footer">
                 <el-button type="primary" plain @click="paymentFormVisible = false; calculatePayment()">Cancel
                 </el-button>
@@ -100,64 +126,68 @@
     var app = new Vue({
         el: '#register',
         data: {
-            pid: "",
-            pname: "",
-            page: "",
-            pbirth: "",
-            paddress: "",
-            pgender: "",
+            patientInfo: {
+                pid: "",
+                pname: "",
+                page: "",
+                pbirth: "",
+                paddress: "",
+                pgender: false,
+            },
+
+            //To get all the shifts available we need:
+            screeningConditions:{
+                deptcode:"",
+                aorp: true,
+                registrationLevel:""
+            },
+
             billcat: "",
-            username: "",
-            dept: "",
-            newrecord: "",
-            aorp: "",
+            newrecord: false,
             fee: "",
-            registrationLevel: "",
+            selectedShift:{},
+
             paymentFormVisible: false,
-            methodType: "",
-            genders: [],
-            bills: [],
-            depts: [],
-            users: [],
 
-
-
-            patients: [],
-            consts: [],
-
-            value: false,
-            currentPage: 1, //初始页
-            pagesize: 10, //    每页的数据
-
-
-            methodType: "", //调用方法，add or update
-            formLabelWidth: 30,
-            dialogFormVisible: false,
-            updatingIndex: -1,
-            updatingObject: {},
-
-            //delete
-            deleteDialogVisible: false, //控制弹出删除窗口
-            deletingIndex: -1,
-            deletingObject: {},
+            bills: [], // Drop Down for billing Categories
+            depts: [], //Drop down for departments
+            registrationLevels:[], //Drop down for registrationLevels
+            //shifts in the table
+            shifts:[]
         },
 
         mounted: function(){
             console.log("refreshed")
             var that = this;
-            axios.post('/registration/getDoctorsAvailable', {})
+
+            axios({
+                url: '/registration/getDoctorsAvailable',
+                method: 'post',
+                contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                data:  this.screeningConditions,
+            })
             .then(function (response) {
-                console.log(response.data);
-                that.users = response.data;
+                console.log("success getting shifts...");
+                console.log(response.data)
+                that.shifts = response.data;
             })
             .catch(function (error) {
                 console.log(error);
             });
 
-            axios.post('/management/consts', {})
+
+            //Billing Category
+            axios.post('/management/consts', {
+                constid: "",
+                consttype: "billcat",
+                constname: "",
+                constcode: ""
+            })
             .then(function (response) {
-                console.log(response.data);
+                // console.log(response.data);
                 that.bills = response.data;
+                // console.log("billing category");
+                // console.log(that.bills);
             })
             .catch(function (error) {
                 console.log(error);
@@ -165,17 +195,24 @@
 
             axios.post('/management/depts', {})
             .then(function (response) {
-                console.log(response.data);
+                // console.log(response.data);
                 that.depts = response.data;
             })
             .catch(function (error) {
                 console.log(error);
             });
 
-             axios.post('/management/nonmedics', {})
+             axios.post('/management/nonmedics', {
+                 itemcode: "",
+                 feecode: "GHF",
+                 deptcode: "",
+                 nmedname: "",
+                 size: "",
+                 price: "",
+             })
             .then(function (response) {
-                console.log(response.data);
-                that.registrationLevel = response.data;
+                // console.log(response.data);
+                that.registrationLevels = response.data;
             })
             .catch(function (error) {
                 console.log(error);
@@ -184,44 +221,105 @@
 
         methods: {
             refresh:function(){
-            console.log("refresh!!!")
-            this.currentPage = 1;
-            var that = this;
-            that.users = []
-            axios.post('/management/users', {
-                userid: "",
-                username: "",
-                pwd: "",
-                realname: "",
-                usercat: "",
-                position: "",
-                shiftOrNot: ""
-            })
-            .then(function (response) {
-                console.log(response.data);
-                that.users = response.data;
-            })
-            .catch(function (error) {
-               console.log(error);
-            });
-        },
+                console.log("refresh!!!")
+                this.currentPage = 1;
+                var that = this;
+                that.users = []
+                axios.post('/management/users', {
+                    userid: "",
+                    username: "",
+                    pwd: "",
+                    realname: "",
+                    usercat: "",
+                    position: "",
+                    shiftOrNot: ""
+                })
+                .then(function (response) {
+                    console.log(response.data);
+                    that.users = response.data;
+                })
+                .catch(function (error) {
+                   console.log(error);
+                });
+            },
+
+            onChangeScreeningConditions(){
+                console.log("onChangescreeningConditions")
+                console.log(this.screeningConditions);
+                var that = this;
+                axios({
+                    url: '/registration/getDoctorsAvailable',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:  this.screeningConditions,
+                })
+                .then(function (response) {
+                    console.log("successful got shifts")
+                    that.shifts = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
 
             // -----------PAYMENT STUFF --------------/
             calculatePayment: function() {
-                // TODO: Payement calculation logic
+                var that = this;
+                axios({
+                    url: '/registration/getRegistrationPrice',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:{
+                        selectedShift: that.selectedShift,
+                    },
+                })
+                    .then(function (response) {
+                        console.log("success get price");
+                        that.fee = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
 
-            showPaymentDialogForm: function(index, row){
+            showPaymentDialogForm: function(row){
                 this.paymentFormVisible = true;
-                this.paymentIndex = index;
-                this.username = row;
+                this.selectedShift = row;
+                this.calculatePayment();
+                console.log("this.selectedShift = row;")
+                console.log(this.selectedShift)
             },
 
             onConfirm: function() {
-                // TODO: Confirmation logic
+                console.log("onConfirm")
+                console.log(this.patientInfo)
+                var that = this;
+                axios({
+                    url: '/registration/submitRegistration',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:{
+                        patient: that.patientInfo,
+                        selectedShift: that.selectedShift,
+                        billcat: that.billcat,
+                        newrecord: that.newrecord
+                    },
+                })
+                .then(function (response) {
+                    console.log("success register");
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+                this.paymentFormVisible = false;
             }
         }
     })
 </script>
 
+<style>
+    body{
+        font-family: Helvetica, sans-serif;
+    }
+</style>
 </html>

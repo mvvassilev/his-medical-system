@@ -29,11 +29,17 @@
         join dept d on d.deptcode = ud.deptcode)
         join shift s on s.uRid = ud.uRid)
         join non_medic n on n.itemcode = s.itemcode
-        where s.aorp = #{aorp}
-        and s.balance > 0
-        and d.deptcode = #{deptcode}
-        and n.nmedname = #{nmedname}
-        and to_days(s.dutydate) = to_days(now());
+        <where>
+            and s.aorp = #{aorp}
+            <if test="deptcode != null and deptcode!='' ">
+                and d.deptcode = #{deptcode}
+            </if>
+            <if test="nmedname != null and nmedname!='' ">
+                and n.nmedname = #{nmedname}
+            </if>
+            and s.balance > 0
+--             and to_days(s.dutydate) = to_days(now())
+        </where>
     </select>
 
 
