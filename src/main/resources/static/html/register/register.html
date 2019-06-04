@@ -15,52 +15,66 @@
 <body>
     <div id="register">
         <h3 style="padding: 2%">Register information</h3>
+
+        <!------------------TODO: CLEAR DOESNT WORK YET------------------->
+        <el-button style="position: absolute; left: 85vw; top: 5vh;" type="primary" plain size="medium"
+                   @click="paymentFormVisible = true; ">Clear
+        </el-button>
+
         <el-row :gutter="20" style="padding: 2%">
             <el-col :span="6">
-                <el-input style="padding: 3%" placeholder="Patient ID" v-model="pid" size="small"></el-input>
-                <el-input style="padding: 3%" placeholder="Name" v-model="pname" size="small"></el-input>
-                <el-input style="padding: 3%" placeholder="Age" v-model="page" size="small"></el-input>
-                <el-input style="padding: 3%" placeholder="Birth date (YYYY/MM/DD)" v-model="pbirth" size="small">
+                <el-input style="padding: 3%" placeholder="Patient ID" v-model="pid" size="medium"></el-input>
+                <el-input style="padding: 3%" placeholder="Name" v-model="pname" size="medium"></el-input>
+                <el-input style="padding: 3%" placeholder="Age" v-model="page" size="medium"></el-input>
+                <el-date-picker style="padding: 3%; width: 100%" v-model="pbirth" type="date" placeholder="Birth date"
+                                size="medium">
+                </el-date-picker>
                 </el-input>
-                <el-input style="padding: 3%" placeholder="Address" v-model="paddress" size="small"></el-input>
-                <el-select style="padding: 3%" v-model="pgender" placeholder="Gender" style="width: 100%" size="small">
+                <el-input style="padding: 3%" placeholder="Address" v-model="paddress" size="medium"></el-input>
+                <el-select style="padding: 3%; width: 100%" v-model="pgender" placeholder="Gender" style="width: 100%"
+                           size="medium">
                     <el-option v-for="item in genders" :key="item" :label="item" :value="item">
                     </el-option>
                 </el-select>
             </el-col>
             <el-col :span="6">
-                <el-row style="padding: 3%">
+                <el-row style="padding: 5%; padding-top: 8%">
                     <el-radio v-model="aorp" label="morning">Morning</el-radio>
                     <el-radio v-model="aorp" label="afternoon">Afternoon</el-radio>
                 </el-row>
                 <el-select style="padding: 3%" v-model="billcat" placeholder="Billing category" style="width: 100%"
-                           size="small">
+                           size="medium">
                     <el-option v-for="item in bills" :key="item.billid" :label="item.billcat" :value="item.billcat">
                     </el-option>
                 </el-select>
-                <el-input style="padding: 3%" placeholder="Register date (YYYY/MM/DD)" v-model="date" size="small">
-                </el-input>
-                <el-select style="padding: 3%" v-model="username" multiple placeholder="Username" style="width: 100%"
-                           size="small">
-                    <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.username">
-                    </el-option>
-                </el-select>
                 <el-select style="padding: 3%" v-model="dept" multiple placeholder="Department" style="width: 100%"
-                           size="small">
+                           size="medium">
                     <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
                     </el-option>
                 </el-select>
-                <el-row>
-                    <el-col :span="16">
-                        <el-radio style="padding: 3%" v-model="newrecord" label="newRecord" style="padding: 6px">New
-                            record
-                        </el-radio>
-                    </el-col>
-                    <el-col :span="8">
-                        <el-button type="primary" plain size="small" @click="paymentFormVisible = true; ">submit
-                        </el-button>
-                    </el-col>
-                </el-row>
+                <el-select style="padding: 3%" v-model="registrationLevel" multiple placeholder="Register level"
+                           style="width: 100%" size="medium">
+                    <!-----------------TODO: config the variables------------------->
+                    <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
+                    </el-option>
+                </el-select>
+                <el-radio style="padding: 8.3%" v-model="newrecord" label="newRecord" style="padding: 6px">New record
+                </el-radio>
+            </el-col>
+            <el-col :span="12">
+                <el-table :data="shift" style="width: 100%" @selection-change="handleSelectionChange"
+                          ref="multipleTable">
+                    <el-table-column style="text-align: center" prop="username" label="Doctor" width="180">
+                    </el-table-column>
+                    <el-table-column style="text-align: center" prop="ration" label="Quota" width="180">
+                    </el-table-column>
+                    <el-table-column style="text-align: center" label="" width="40">
+                        <span slot-scope="scope">
+                            <i size="medium" class="el-icon-circle-plus-outline"
+                               v-on:click="showPaymentDialogForm(scope.$index, scope.row)"></i>
+                        </span>
+                    </el-table-column>
+                </el-table>
             </el-col>
         </el-row>
 
@@ -93,12 +107,12 @@
             paddress: "",
             pgender: "",
             billcat: "",
-            date: "",
             username: "",
             dept: "",
             newrecord: "",
             aorp: "",
-            fee: 100,
+            fee: "",
+            registrationLevel: "",
             paymentFormVisible: false,
             methodType: "",
             genders: [],
@@ -106,98 +120,7 @@
             depts: [],
             users: [],
 
-            //<-------------------TEMP VALUES FOR FRONT-END TESTING---------------------->
-            genders: ["Male", "Female"],
-            bills: {
-                bill_1: {
-                    billid: 123,
-                    itemcode: "ASD",
-                    billdate: "HAGS",
-                    pid: 123,
-                    billcat: "Tatss",
-                    count: 1,
-                    totalprice: 100,
-                    feecode: "JGOS",
-                    isPaid: true,
-                    isPring: true
-                },
-                bill_2: {
-                    billid: 12312,
-                    itemcode: "ASD",
-                    billdate: "HAGS",
-                    pid: 123,
-                    billcat: "ajsJasdj",
-                    count: 1,
-                    totalprice: 100,
-                    feecode: "JGOS",
-                    isPaid: true,
-                    isPring: true
-                },
-                bill_3: {
-                    billid: 115112,
-                    itemcode: "ASD",
-                    billdate: "HAGS",
-                    pid: 123,
-                    billcat: "AjgaJsS",
-                    count: 1,
-                    totalprice: 100,
-                    feecode: "JGOS",
-                    isPaid: true,
-                    isPring: true
-                }
-            },
 
-            users: {
-                user_1: {
-                    userid: 152,
-                    username: "SHT_2",
-                    pwd: "asjjfjasi",
-                    realname: "John",
-                    usercat: "Doctor",
-                    position: "aosgsgas",
-                    shiftOrNot: false
-                },
-                user_2: {
-                    userid: 1295,
-                    username: "hsO2",
-                    pwd: "asgasd",
-                    realname: "Jake",
-                    usercat: "Doctor",
-                    position: "goasot",
-                    shiftOrNot: true
-                },
-                user_3: {
-                    userid: 9692,
-                    username: "w0ers",
-                    pwd: "moni4ko1",
-                    realname: "Simeon",
-                    usercat: "Doctor",
-                    position: "mid",
-                    shiftOrNot: true
-                }
-            },
-
-            depts: {
-                dept_1: {
-                    deptcode: 5122,
-                    deptclass: "noclue",
-                    deptname: "LAINO",
-                    deptcat: "doctorstuffidk"
-                },
-                dept_2: {
-                    deptcode: 9213,
-                    deptclass: "noclue",
-                    deptname: "KYP",
-                    deptcat: "doctorstuffidk"
-                },
-                dept_3: {
-                    deptcode: 3132,
-                    deptclass: "noclue",
-                    deptname: "PATKA",
-                    deptcat: "doctorstuffidk"
-                }
-            },
-            //-------------------------END OF TEMP VALUES------------------------------>
 
             patients: [],
             consts: [],
@@ -218,28 +141,80 @@
             deletingIndex: -1,
             deletingObject: {},
         },
+
+        mounted: function(){
+            console.log("refreshed")
+            var that = this;
+            axios.post('/registration/getDoctorsAvailable', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.users = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+            axios.post('/management/consts', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.bills = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+            axios.post('/management/depts', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.depts = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+             axios.post('/management/nonmedics', {})
+            .then(function (response) {
+                console.log(response.data);
+                that.registrationLevel = response.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+
         methods: {
-            search: function() {
-                this.currentPage = 1;
-                var that = this;
-                axios.post('/management/consts', {
-                        constid: that.constid,
-                        consttype: that.constype,
-                        constname: that.constname,
-                        constcode: that.constcode,
-                    })
-                    .then(function(response) {
-                        console.log(response.data);
-                        that.consts = response.data;
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-            },
+            refresh:function(){
+            console.log("refresh!!!")
+            this.currentPage = 1;
+            var that = this;
+            that.users = []
+            axios.post('/management/users', {
+                userid: "",
+                username: "",
+                pwd: "",
+                realname: "",
+                usercat: "",
+                position: "",
+                shiftOrNot: ""
+            })
+            .then(function (response) {
+                console.log(response.data);
+                that.users = response.data;
+            })
+            .catch(function (error) {
+               console.log(error);
+            });
+        },
 
             // -----------PAYMENT STUFF --------------/
             calculatePayment: function() {
                 // TODO: Payement calculation logic
+            },
+
+            showPaymentDialogForm: function(index, row){
+                this.paymentFormVisible = true;
+                this.paymentIndex = index;
+                this.username = row;
             },
 
             onConfirm: function() {
