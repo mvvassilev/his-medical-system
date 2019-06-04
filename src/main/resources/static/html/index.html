@@ -33,7 +33,7 @@
         </el-menu>
 </div>
 <div id="app" style="text-align: center">
-    <el-dialog :visible.sync="loginDialogVisible" style="text-align: center; width: 70%; left: 20%">
+    <!--<el-dialog :visible.sync="loginDialogVisible" style="text-align: center; width: 70%; left: 20%">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
                  style="margin-left: auto;margin-right: auto;margin-top: 50px">
             <el-form-item prop="username">
@@ -49,10 +49,10 @@
                 <el-button @click="resetForm('ruleForm')">Reset</el-button>
             </el-form-item>
         </el-form>
-    </el-dialog>
+    </el-dialog>-->
     <div class="line"></div>
     <el-row :span="24">
-        <iframe width="100%" height="100%" v-bind:src="url_sidebar"></iframe>
+        <iframe width="100%" height="100%" v-bind:src="url_sidebar" scrolling="no"></iframe>
     </el-row>
 </div>
 </body>
