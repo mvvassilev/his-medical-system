@@ -1,0 +1,164 @@
+<html>
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="examination">
+    <el-row type="flex" justify="space-between">
+        <el-col :span="18">
+            <el-button size="small" icon="el-icon-circle-plus-outline" type="primary" @click="" round>Add</el-button>
+            <el-button size="small" icon="el-icon-remove-outline" type="primary" @click="" round>Delete</el-button>
+            <el-button size="small" icon="el-icon-circle-check" type="primary" @click="" round>Open</el-button>
+            <el-button size="small" icon="el-icon-delete" type="primary" @click="" round>Revoke</el-button>
+            <el-button size="small" icon="el-icon-edit-outline" type="primary" @click="" round>Save</el-button>
+            <el-button size="small" icon="el-icon-refresh" type="primary" @click="" round>Refresh</el-button>
+        </el-col>
+        <el-col :span="6">
+            <el-dropdown trigger="click">
+                <el-button size="medium" icon="el-icon-arrow-down" type="primary" plain>
+                    <i class="el-icon-s-order"></i> Invoke Template
+                </el-button>
+                <el-dropdown-menu slot="dropdown" style="width: 250px">
+                    <el-dropdown-item v-popover:popover>
+                        <el-popover ref="popover" placement="left" width="400" trigger="hover">
+                            <el-table :data="template">
+                                <el-table-column width="150" property="nmedname" label="ExamName"></el-table-column>
+                                <el-table-column width="150" property="deptname" label="Department"></el-table-column>
+                                <el-table-column width="100" property="price" label="Price"></el-table-column>
+                            </el-table>
+                        </el-popover>
+                        <el-row type="flex" justify="space-between">
+                            <el-col :span="8"><i class="el-icon-arrow-left"></i> 狮子头</el-col>
+                            <el-col :span="6">
+                                <el-link :underline="false" icon="el-icon-circle-plus"></el-link>
+                                <el-link :underline="false" icon="el-icon-delete-solid"></el-link>
+                            </el-col>
+                        </el-row>
+                    </el-dropdown-item>
+
+                    <el-dropdown-item icon="el-icon-arrow-left">螺蛳粉</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-arrow-left">双皮奶</el-dropdown-item>
+                    <el-dropdown-item icon="el-icon-arrow-left">蚵仔煎</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
+        </el-col>
+    </el-row>
+    <el-table
+            ref="multipleTable"
+            :data="exams"
+            style="width: 100%"
+            tooltip-effect="dark"
+            @selection-change="handleSelectionChange"
+    >
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
+        <el-table-column
+                prop="nmedname"
+                label="ExamName"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="deptname"
+                label="Department"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="state"
+                label="ExecutionState"
+                width="160">
+        </el-table-column>
+        <el-table-column
+                prop="price"
+                label="Price"
+                width="150">
+        </el-table-column>
+        <el-table-column
+                prop="result"
+                label="Result"
+                width="110">
+        </el-table-column>
+    </el-table>
+    <el-row type="flex" justify="space-around" style="margin-top: 20px">
+        <el-col :spam="6">
+            <el-button @click="toggleSelection()">Cancel Selection</el-button>
+        </el-col>
+        <el-col :span="6">
+            <el-input prefix-icon="el-icon-coin" v-model="totalprice" :disabled="true"></el-input>
+        </el-col>
+    </el-row>
+
+</div>
+
+<script>
+    var exam = new Vue({
+        el: '#examination',
+        data: {
+            exams: [{
+                'nmedname': '大抢救',
+                'deptname': '急救科',
+                'state': '开立',
+                'price': 900,
+                'result': '查看'
+            }, {
+                'nmedname': '大抢救',
+                'deptname': '急救科',
+                'state': '开立',
+                'price': 900,
+                'result': '查看'
+            }, {
+                'nmedname': '大抢救',
+                'deptname': '急救科',
+                'state': '开立',
+                'price': 900,
+                'result': '查看'
+            }, {
+                'nmedname': '大抢救',
+                'deptname': '急救科',
+                'state': '开立',
+                'price': 900,
+                'result': '查看'
+            }, {
+                'nmedname': '大抢救',
+                'deptname': '急救科',
+                'state': '开立',
+                'price': 900,
+                'result': '查看'
+            },],
+            multipleSelection: [],
+            template: [],
+            totalprice: ''
+
+
+        },
+
+        methods: {
+
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            }
+            ,
+
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            }
+        }
+    })
+</script>
+</body>
+</html>

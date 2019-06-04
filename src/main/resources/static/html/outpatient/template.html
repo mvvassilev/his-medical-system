@@ -20,23 +20,15 @@
         </el-col>
         <el-col :span="5">
             <el-select v-model="value1" placeholder="Scope">
-                <el-option-group
-                        v-for="group in option1"
-                        :key="group.label"
-                        :label="group.label">
-                    <el-option
-                            v-for="item in group.options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-option-group>
+                <el-option label="Individual" value="individual"></el-option>
+                <el-option label="Department" value="department"></el-option>
+                <el-option label="Hospital" value="hospital"></el-option>
             </el-select>
         </el-col>
         <el-col :span="5">
             <el-select v-model="value2" placeholder="Type">
                 <el-option-group
-                        v-for="group in option2"
+                        v-for="group in option"
                         :key="group.label"
                         :label="group.label">
                     <el-option
@@ -106,23 +98,15 @@
             </el-form-item>
             <el-form-item label="Scope" :label-width="formLabelWidth">
                 <el-select v-model="form.tempscope" placeholder="Scope">
-                    <el-option-group
-                            v-for="group in option1"
-                            :key="group.label"
-                            :label="group.label">
-                        <el-option
-                                v-for="item in group.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-option-group>
+                    <el-option label="Individual" value="individual"></el-option>
+                    <el-option label="Department" value="department"></el-option>
+                    <el-option label="Hospital" value="hospital"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="Type" :label-width="formLabelWidth">
                 <el-select v-model="form.temptype" placeholder="Type">
                     <el-option-group
-                            v-for="group in option2"
+                            v-for="group in option"
                             :key="group.label"
                             :label="group.label">
                         <el-option
@@ -146,29 +130,21 @@
             title="Template Details"
             :visible.sync="dialogVisible"
             width="80%">
-        <el-row :model="form" :gutter="8">
+        <el-row :model="form" :gutter="5">
             <el-col :span="8">
                 <el-input type="text" v-model="form.tempname" autocomplete="off" placeholder="Name"></el-input>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="4">
                 <el-select v-model="form.tempscope" placeholder="Scope">
-                    <el-option-group
-                            v-for="group in option1"
-                            :key="group.label"
-                            :label="group.label">
-                        <el-option
-                                v-for="item in group.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-option-group>
+                    <el-option label="Individual" value="individual"></el-option>
+                    <el-option label="Department" value="department"></el-option>
+                    <el-option label="Hospital" value="hospital"></el-option>
                 </el-select>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="12">
                 <el-select v-model="form.temptype" placeholder="Type">
                     <el-option-group
-                            v-for="group in option2"
+                            v-for="group in option"
                             :key="group.label"
                             :label="group.label">
                         <el-option
@@ -182,9 +158,37 @@
             </el-col>
         </el-row>
 
-        <div style="margin-top: 5px">
-            <el-button icon="el-icon-search" type="primary" @click="">Add New Item</el-button>
-        </div>
+        <el-row style="margin-top: 20px">
+            <el-col :span="4">
+                <el-button icon="el-icon-search" type="primary" @click="">Add New Item</el-button>
+            </el-col>
+            <el-col :span="4">
+                <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="visible">
+                    <p>This gonna change the template, continue or not</p>
+                    <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text" @click="uvisible = false">Cancel</el-button>
+                        <el-button type="primary" size="mini" @click="uvisible = false">Confirm</el-button>
+                    </div>
+                    <el-button icon="el-icon-check" type="primary" @click="" slot="reference">Update Confirm</el-button>
+                </el-popover>
+            </el-col>
+            <el-col :span="16">
+                <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="visible">
+                    <p>Are you sure you want to delete this template?</p>
+                    <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text" @click="dvisible = false">Cancel</el-button>
+                        <el-button type="primary" size="mini" @click="dvisible = false">Confirm</el-button>
+                    </div>
+                    <el-button icon="el-icon-delete" type="primary" @click="" slot="reference">Delete Template</el-button>
+                </el-popover>
+            </el-col>
+        </el-row>
 
         <el-table
                 ref="multipleTable"
@@ -224,8 +228,25 @@
         <div style="margin-top: 20px">
             <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection</el-button>
             <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
-                       @click="delAllShift(multipleSelection)">delete all</el-button>
+                       @click="delAllItem(multipleSelection)">Delete All</el-button>
         </div>
+        <el-dialog title="Add new item" :visible.sync="dialogItemFormVisible">
+            <el-form :model="form">
+                <el-form-item label="活动名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="活动区域" :label-width="formLabelWidth">
+                    <el-select v-model="form.region" placeholder="请选择活动区域">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
     </el-dialog>
 </div>
 </body>
@@ -233,19 +254,8 @@
     var app = new Vue({
         el: '#template_all',
         data(){
-            return {option1:[{
-                    options: [{
-                        value: 'individual',
-                        label: 'Individual'
-                    }, {
-                        value: 'department',
-                        label: 'Department'
-                    },{
-                        value:'hospital',
-                        label:'Hospital'
-                    }]
-                }],
-                option2: [{
+            return {
+                option: [{
                     label: 'Medical Technology',
                     options: [{
                         value: 'examination',
@@ -421,19 +431,8 @@
     var dialog = new Vue({
         el: '#details',
         data(){
-            return{option1:[{
-                    options: [{
-                        value: 'individual',
-                        label: 'Individual'
-                    }, {
-                        value: 'department',
-                        label: 'Department'
-                    },{
-                        value:'hospital',
-                        label:'Hospital'
-                    }]
-                }],
-                option2: [{
+            return{
+                option: [{
                     label: 'Medical Technology',
                     options: [{
                         value: 'examination',
@@ -466,6 +465,8 @@
                 temptype:"",
 
                 details:[],
+                dvisible: false,
+                uvisible: false,
 
                 dialogVisible: false,
                 multipleSelection:[],

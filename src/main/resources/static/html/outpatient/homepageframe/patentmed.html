@@ -1,0 +1,106 @@
+<html>
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="patentmed">
+    <el-container>
+        <el-header>
+            <el-row type="flex" justify="space-between">
+                <el-col :span="6">
+                    <el-tag size="medium" effect="plain">Pre-Diagnosis</el-tag>
+                </el-col>
+                <el-col :span="18">
+                    <el-button size="small" icon="el-icon-circle-plus-outline" type="primary" @click="" round>Add
+                    </el-button>
+                    <el-button size="small" icon="el-icon-remove-outline" type="primary" @click="" round>Delete
+                    </el-button>
+                    <el-button size="small" icon="el-icon-circle-check" type="primary" @click="" round>Open</el-button>
+                    <el-button size="small" icon="el-icon-delete" type="primary" @click="" round>Revoke</el-button>
+                    <el-button size="small" icon="el-icon-edit-outline" type="primary" @click="" round>Save</el-button>
+                    <el-button size="small" icon="el-icon-refresh" type="primary" @click="" round>Refresh</el-button>
+                </el-col>
+            </el-row>
+        </el-header>
+        <el-container>
+            <el-aside width="250px">
+
+                    <el-row>
+                        <el-tag type="success" size="medium" effect="plain">Prescription</el-tag>
+                        <el-dropdown trigger="click">
+                            <el-button size="small" icon="el-icon-arrow-down" type="primary" style="margin-left: 30px"
+                                       plain>
+                                <i class="el-icon-s-order"></i>Template
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown" style="width: 250px">
+                                <el-dropdown-item v-popover:popover>
+                                    <el-popover ref="popover" placement="left" width="400" trigger="hover">
+                                        <el-table :data="template">
+                                            <el-table-column width="150" property="nmedname"
+                                                             label="TreatmentName"></el-table-column>
+                                            <el-table-column width="150" property="deptname"
+                                                             label="Department"></el-table-column>
+                                            <el-table-column width="100" property="price"
+                                                             label="Price"></el-table-column>
+                                        </el-table>
+                                    </el-popover>
+                                    <el-row type="flex" justify="space-between">
+                                        <el-col :span="8"><i class="el-icon-arrow-left"></i> 狮子头</el-col>
+                                        <el-col :span="6">
+                                            <el-link :underline="false" icon="el-icon-circle-plus"></el-link>
+                                            <el-link :underline="false" icon="el-icon-delete-solid"></el-link>
+                                        </el-col>
+                                    </el-row>
+                                </el-dropdown-item>
+
+                                <el-dropdown-item icon="el-icon-arrow-left">螺蛳粉</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-arrow-left">双皮奶</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-arrow-left">蚵仔煎</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </el-row>
+                    <el-table :data="prescription">
+                        <el-table-column width="100" property="prename" label="Name"></el-table-column>
+                        <el-table-column width="100" property="prestate" label="State"></el-table-column>
+                    </el-table>
+            </el-aside>
+            <el-main style="padding: 0px">
+                <el-card class="box-card">
+                    <el-row type="flex" justify="space-between">
+                        <el-col :span="6">
+                            <el-input size="small" prefix-icon="el-icon-coin" :disabled="true">{{totalprice}}</el-input>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-button size="small" icon="el-icon-circle-plus-outline" type="primary" @click="">
+                                Add Medicine
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                </el-card>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+
+<script>
+    var patentmed = new Vue({
+        el: '#patentmed',
+        data: {
+            precription: [],
+            totalprice: '',
+
+
+        }
+    })
+
+</script>
+</body>
+</html>
