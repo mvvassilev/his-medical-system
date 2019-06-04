@@ -1,0 +1,245 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="diagnosis">
+    <el-form ref="form" :model="form" :rules="rules" label-width="20px" class="demo-ruleForm">
+        <el-tooltip class="item" effect="dark" content="Patient ID" placement="right">
+            <el-form-item prop="pid">
+                <el-input type="textarea" v-model="form.pid" placeholder="Patient ID"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Patient Name" placement="right">
+            <el-form-item prop="pname">
+                <el-input type="textarea" v-model="form.pname" placeholder="Patient Name"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Patient Gender" placement="right">
+            <el-form-item prop="pgender">
+                <el-input type="textarea" v-model="form.pgender" placeholder="Patient Gender"></el-input>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Exam Result" placement="right">
+            <el-form-item prop="examresult">
+                <el-input type="textarea" v-model="form.examresult" placeholder="Exam Result"></el-input>
+            </el-form-item>
+        </el-tooltip>
+
+        <el-tooltip class="item" effect="dark" content="Final Diagnosis" placement="right">
+            <el-form-item prop="finalDiagnose">
+                <el-card class="box-card" style="width:100%; height:250px">
+                    <el-row type="flex" justify="space-between" glutter="20">
+                        <el-col :span="8">
+                            <el-form-item prop="disType">
+                                <el-select v-model="form.disType" placeholder="Select Diagnosis Type">
+                                    <el-option label="West" value="west"></el-option>
+                                    <el-option label="East" value="east"></el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-button icon="el-icon-circle-plus-outline" type="primary"
+                                       @click="addDiseaseDialog('form')">Add New Disease
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <template>
+                        <el-table
+                                :data="disease"
+                                style="width: 100%; margin-top: 20px"
+                                size="mini"
+                        >
+                            <el-table-column
+                                    prop="ICD"
+                                    label="ICD CODE"
+                                    width="300">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="name"
+                                    label="NAME"
+                                    width="250">
+                            </el-table-column>
+                            <el-table-column
+                                    fixed="right"
+                                    label="operation"
+                                    width="150">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            @click.native.prevent="deleteRow(scope.$index, disease)"
+                                            type="primary"
+                                            size="small">
+                                        delete
+                                    </el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </template>
+                </el-card>
+            </el-form-item>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="Treatment Advice" placement="right">
+            <el-form-item prop="treatAdvice">
+                <el-input type="textarea" v-model="form.treatAdvice" placeholder="Treatment Advice"></el-input>
+            </el-form-item>
+        </el-tooltip>
+
+        <el-form-item>
+            <el-button icon="el-icon-circle-check" type="primary" @click="onSubmit">Submit</el-button>
+            <el-button icon="el-icon-document" type="primary" @click="">Save</el-button>
+            <el-button icon="el-icon-refresh" @click="resetForm('form')">Reset</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+
+<div id="addDialog">
+    <el-dialog
+            title="Add Disease"
+            :visible.sync="dialogVisible"
+            width="65%">
+        <el-row :gutter="20">
+            <el-col :span="24">
+                <el-input v-model="discode" style="width:300px" placeholder="Enter PingYin Code"></el-input>
+                <el-button icon="el-icon-search" type="primary" @click="searchDiseases">search</el-button>
+            </el-col>
+        </el-row>
+        <el-table
+                ref="multipleTable"
+                :data="diseases"
+                style="width: 100%"
+                tooltip-effect="dark"
+                max-height="550">
+            <el-table-column
+                    fixed="left"
+                    prop="ICD"
+                    label="ICD Code"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="disname"
+                    label="Disease Name"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="discat"
+                    label="Disease Category"
+                    width="150">
+            </el-table-column>
+        </el-table>
+        <el-row :gutter="20" style="margin-top: 20px" type="flex" justify="space-around">
+            <el-col :span="8">
+                <el-button type="primary" @click="openConfirmDialog">Confirm</el-button>
+            </el-col>
+            <el-col :span="8">
+                <el-button @click="closeDialog">Cancel</el-button>
+            </el-col>
+        </el-row>
+
+    </el-dialog>
+</div>
+
+</body>
+<script>
+    var diagnosis = new Vue({
+        el: '#diagnosis',
+        data() {
+            var validateDisType = (form, value, callback) => {
+
+                if (value === '') {
+                    return callback(new Error('Please Select Type!'));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                form: {
+                    pid: '',
+                    pname: '',
+                    pgender: '',
+                    examresult: '',
+                    disType: '',
+                    treatAdvice: '',
+                },
+                disease: [],
+                rules: {
+                    disType: [
+                        {validator: validateDisType, trigger: 'blur'}
+                    ]
+                },
+            }
+        },
+        methods: {
+            onSubmit() {
+                console.log('submit!');
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
+                this.form.disType = '';
+            },
+            deleteRow(index, rows) {
+                rows.splice(index, 1);
+            },
+            addDiseaseDialog(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        console.log("wo tm add bao!");
+                        dialog.dialogVisible = true;
+                    } else {
+                        console.log('Error Submit!!');
+                        return false;
+                    }
+                });
+            }
+        }
+    })
+
+    var dialog = new Vue({
+        el: '#addDialog',
+        data() {
+            return {
+
+                dialogVisible: false,
+                discode: '',
+                diseases: [],
+                type: '',
+            }
+        },
+        methods: {
+            searchDiseases: function () {
+                console.log("search");
+            },
+            openConfirmDialog: function () {
+                this.$confirm('Sure to add?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    console.log("add!!!!!!");
+                    this.dialogVisible = false;
+                    this.$message({
+                        type: 'success',
+                        message: 'Add Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel Addition.'
+                    });
+                });
+            },
+            closeDialog() {
+                this.dialogVisible = false;
+            }
+        }
+    })
+</script>
+</html>

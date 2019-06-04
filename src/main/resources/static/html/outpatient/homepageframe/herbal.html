@@ -1,0 +1,305 @@
+<html>
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="patentmed">
+    <el-container>
+        <el-header>
+            <el-row type="flex" justify="space-between">
+                <el-col :span="6">
+                    <el-tag size="medium" effect="plain">Pre-Diagnosis</el-tag>
+                </el-col>
+                <el-col :span="18">
+                    <el-button size="small" icon="el-icon-circle-plus-outline" type="primary" @click="addPrescription"
+                               round>Add
+                    </el-button>
+                    <el-button size="small" icon="el-icon-remove-outline" type="primary" @click="" round>Delete
+                    </el-button>
+                    <el-button size="small" icon="el-icon-circle-check" type="primary" @click="" round>Open</el-button>
+                    <el-button size="small" icon="el-icon-delete" type="primary" @click="" round>Revoke</el-button>
+                    <el-button size="small" icon="el-icon-edit-outline" type="primary" @click="" round>Save</el-button>
+                    <el-button size="small" icon="el-icon-refresh" type="primary" @click="" round>Refresh</el-button>
+                </el-col>
+            </el-row>
+        </el-header>
+        <el-container>
+            <el-aside width="250px">
+
+                <el-row>
+                    <el-tag type="success" size="medium" effect="plain">Prescription</el-tag>
+                    <el-dropdown trigger="click">
+                        <el-button size="small" icon="el-icon-arrow-down" type="primary" style="margin-left: 30px"
+                                   plain>
+                            <i class="el-icon-s-order"></i>Template
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown" style="width: 250px">
+                            <el-dropdown-item v-popover:popover>
+                                <el-popover ref="popover" placement="left" width="400" trigger="hover">
+                                    <el-table :data="template">
+                                        <el-table-column width="150" property="nmedname"
+                                                         label="TreatmentName"></el-table-column>
+                                        <el-table-column width="150" property="deptname"
+                                                         label="Department"></el-table-column>
+                                        <el-table-column width="100" property="price"
+                                                         label="Price"></el-table-column>
+                                    </el-table>
+                                </el-popover>
+                                <el-row type="flex" justify="space-between">
+                                    <el-col :span="8"><i class="el-icon-arrow-left"></i> 狮子头</el-col>
+                                    <el-col :span="6">
+                                        <el-link :underline="false" icon="el-icon-circle-plus"></el-link>
+                                        <el-link :underline="false" icon="el-icon-delete-solid"></el-link>
+                                    </el-col>
+                                </el-row>
+                            </el-dropdown-item>
+
+                            <el-dropdown-item icon="el-icon-arrow-left">螺蛳粉</el-dropdown-item>
+                            <el-dropdown-item icon="el-icon-arrow-left">双皮奶</el-dropdown-item>
+                            <el-dropdown-item icon="el-icon-arrow-left">蚵仔煎</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </el-row>
+                <el-table :data="prescription">
+                    <el-table-column width="100" property="prename" label="Name"></el-table-column>
+                    <el-table-column width="100" property="prestate" label="State"></el-table-column>
+                </el-table>
+            </el-aside>
+            <el-main style="padding: 0">
+                <el-card class="box-card">
+                    <el-row type="flex" justify="space-between">
+                        <el-col :span="6">
+                            <el-input size="small" prefix-icon="el-icon-coin" v-model="totalprice"
+                                      :disabled="true"></el-input>
+                        </el-col>
+                        <el-col :span="6">
+                            <el-button size="small" icon="el-icon-circle-plus-outline" type="primary"
+                                       @click="addMedicineDialog">
+                                Add Medicine
+                            </el-button>
+                        </el-col>
+                    </el-row>
+                    <el-table :data="medicine">
+                        <el-table-column width="160" property="medname" label="Name"></el-table-column>
+                        <el-table-column width="100" property="size" label="Size"></el-table-column>
+                        <el-table-column width="100" property="price" label="Price"></el-table-column>
+                        <el-table-column width="100" property="count" label="Count"></el-table-column>
+                        <el-table-column
+                                fixed="right"
+                                label="Operation"
+                                width="100">
+                            <template slot-scope="scope">
+                                <el-button icon="el-icon-remove-outline" size="medium" type="text">Delete</el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+            </el-main>
+        </el-container>
+    </el-container>
+
+    <el-dialog
+            title="New Prescription"
+            :visible.sync="newPreVisible"
+            width="65%">
+        <el-row :gutter="20">
+            <el-col :span="24">
+                <el-input v-model="newPreName" style="width:300px" placeholder="Enter Name"></el-input>
+            </el-col>
+        </el-row>
+        <el-row type="flex" justify="space-between" style="margin-top: 20px">
+            <el-button type="primary" @click="createConfirmDialog">Create</el-button>
+            <el-button @click="closeDialog">Cancel</el-button>
+        </el-row>
+
+    </el-dialog>
+
+</div>
+
+<div id="addDialog">
+    <el-dialog
+            title="Add Medicine"
+            :visible.sync="dialogVisible"
+            width="65%">
+        <el-row :gutter="20">
+            <el-col :span="24">
+                <el-input v-model="itemcode" style="width:300px" placeholder="Enter PingYin Code"></el-input>
+                <el-button icon="el-icon-search" type="primary" @click="searchMedicine">search</el-button>
+            </el-col>
+        </el-row>
+        <el-table :data="medicine"
+                  style="width: 100%"
+                  tooltip-effect="dark">
+            <el-table-column
+                    fixed="left"
+                    prop="medname"
+                    label="Medicine Name"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="size"
+                    label="Size"
+                    width="130">
+            </el-table-column>
+            <el-table-column
+                    prop="type"
+                    label="Type"
+                    width="130">
+            </el-table-column>
+            <el-table-column
+                    prop="price"
+                    label="Price"
+                    width="130">
+            </el-table-column>
+        </el-table>
+        <el-row :gutter="20" style="margin-top: 20px" type="flex" justify="space-around">
+
+            <el-col :span="8">
+
+                <el-input-number style="width: 160px" @change="handleChange"
+                                 size="medium" v-model="count">
+                </el-input-number>
+
+            </el-col>
+            <el-col :span="10">
+                <el-button type="primary" @click="openConfirmDialog">Confirm</el-button>
+                <el-button @click="closeDialog">Cancel</el-button>
+            </el-col>
+        </el-row>
+
+    </el-dialog>
+</div>
+
+<script>
+    var patentmed = new Vue({
+        el: '#patentmed',
+        data: {
+            newPreVisible: false,
+            newPreName: '',
+
+            prescription: [],
+            template: [],
+            medicine: [{
+                'medname': '哥水药',
+                'size': '支',
+                'price': '23.0',
+                'count': 10
+            }, {
+                'medname': '哥水药',
+                'size': '支',
+                'price': '23.0',
+                'count': 10
+            }, {
+                'medname': '哥水药',
+                'size': '支',
+                'price': '23.0',
+                'count': 10
+            }, {
+                'medname': '哥水药',
+                'size': '支',
+                'price': '23.0',
+                'count': 10
+            }, {
+                'medname': '哥水药',
+                'size': '支',
+                'price': '23.0',
+                'count': 10
+            }
+            ],
+            totalprice: '233 元',
+            count: 1,
+        },
+        methods: {
+            addMedicineDialog() {
+                console.log("wo tm add bao!");
+                dialog.dialogVisible = true;
+            },
+            addPrescription() {
+                console.log("wo tm new bao!");
+                this.newPreVisible = true;
+            },
+            createConfirmDialog: function () {
+                this.$confirm('Sure to create?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    console.log("add!!!!!!");
+                    this.dialogVisible = false;
+                    this.$message({
+                        type: 'success',
+                        message: 'Add Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel Addition.'
+                    });
+                });
+            },
+            closeDialog() {
+                this.dialogVisible = false;
+            },
+        }
+    });
+
+    var dialog = new Vue({
+        el: '#addDialog',
+        data() {
+            return {
+
+                dialogVisible: false,
+                itemcode: '',
+                medicine: [
+                    {
+                        'medname': '哥水药',
+                        'size': '支',
+                        'type': '艺术',
+                        'price': 23.0
+                    }
+                ],
+                count: 1,
+            }
+        },
+        methods: {
+            searchMedicine: function () {
+                console.log("search");
+            },
+            openConfirmDialog: function () {
+                this.$confirm('Sure to add?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    console.log("add!!!!!!");
+                    this.dialogVisible = false;
+                    this.$message({
+                        type: 'success',
+                        message: 'Add Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel Addition.'
+                    });
+                });
+            },
+            closeDialog() {
+                this.dialogVisible = false;
+            },
+            handleChange(value) {
+                console.log(value);
+            }
+        }
+    })
+</script>
+</body>
+</html>
