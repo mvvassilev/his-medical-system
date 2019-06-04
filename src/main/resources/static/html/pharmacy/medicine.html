@@ -27,77 +27,79 @@
     </el-row>
 
 
-        <el-table
-                :data="medicine.slice((currentPage-1)*pagesize,currentPage*pagesize)"
-                style="width: 100%"
-                @selection-change="handleSelectionChange"
-                ref="multipleTable"
-                tooltip-effect="dark">
-            <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    prop="itemcode"
-                    label="Medicine Code"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="medname"
-                    label="Medicine Name"
-                    width="250">
-            </el-table-column>
-            <el-table-column
-                    prop="medsize"
-                    label="Medicine Size"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="unit"
-                    label="Unit"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="price"
-                    label="Price"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="medtype"
-                    label="Medicine Type"
-                    width="180">
-            </el-table-column>
-            <el-table-column
-                    prop="medcat"
-                    label="Medicine Category">
-            </el-table-column>
-            <el-table-column fixed="right" label="Operations" width="120">
-                <template slot-scope="scope">
-                    <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete
-                    </el-button>
-                    <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update
-                    </el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+    <el-table
+            :data="medicine.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+            style="width: 100%"
+            @selection-change="handleSelectionChange"
+            ref="multipleTable"
+            tooltip-effect="dark">
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
+        <el-table-column
+                prop="itemcode"
+                label="Medicine Code"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="medname"
+                label="Medicine Name"
+                width="250">
+        </el-table-column>
+        <el-table-column
+                prop="medsize"
+                label="Medicine Size"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="unit"
+                label="Unit"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="price"
+                label="Price"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="medtype"
+                label="Medicine Type"
+                width="180">
+        </el-table-column>
+        <el-table-column
+                prop="medcat"
+                label="Medicine Category">
+        </el-table-column>
+        <el-table-column fixed="right" label="Operations" width="120">
+            <template slot-scope="scope">
+                <el-button @click="showDeleteDialogForm(scope.$index, scope.row)" type="text" size="small">delete
+                </el-button>
+                <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">update
+                </el-button>
+            </template>
+        </el-table-column>
+    </el-table>
 
-        <div style="margin-top: 20px">
-            <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection</el-button>
-            <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
-                       @click="">delete all</el-button><!--delAllMed(multipleSelection)-->
-        </div>
+    <div style="margin-top: 20px">
+        <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection
+        </el-button>
+        <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
+                   @click="">delete all
+        </el-button><!--delAllMed(multipleSelection)-->
+    </div>
 
-        <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="currentPage"
-                :page-sizes="[5, 10, 20, 40]"
+    <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 20, 40]"
 
-                :page-size="pagesize"
-                :hide-on-single-page="value"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="medicine.length">
-        </el-pagination>
+            :page-size="pagesize"
+            :hide-on-single-page="value"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="medicine.length">
+    </el-pagination>
 
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
@@ -385,6 +387,7 @@
 
         }
     })
+
 
 </script>
 </html>

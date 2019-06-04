@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>HIS System</title>
     <meta charset="UTF-8">
@@ -57,19 +56,19 @@
             </el-menu>
 
         </el-col>
-        <el-col id="mainFrame" style="width: auto; margin-left: 20px;">
+        <el-col id="mainFrame" style="width:75%; margin-left: 20px;">
 
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <!-- Patient Home Page -->
                     <el-tab-pane label="FrontPage" name="homepageframe/frontpage.html"></el-tab-pane>
-                    <el-tab-pane label="Examination" name="second">Examination Apply</el-tab-pane>
-                    <el-tab-pane label="Inspection" name="third">Inspection Apply</el-tab-pane>
-                    <el-tab-pane label="DiagConfirm" name="fourth">Confirm Diagnosis</el-tab-pane>
-                    <el-tab-pane label="Treatment" name="fifth">Treatment Apply</el-tab-pane>
-                    <el-tab-pane label="Patent-med" name="sixth">Patent Medicine Prescription</el-tab-pane>
-                    <el-tab-pane label="Herbal" name="seventh">Herbal Prescription</el-tab-pane>
-                    <el-tab-pane label="BillQuery" name="eighth">Bills Query</el-tab-pane>
+                    <el-tab-pane label="Examination" name="homepageframe/examination.html"></el-tab-pane>
+                    <el-tab-pane label="Inspection" name="homepageframe/inspection.html"></el-tab-pane>
+                    <el-tab-pane label="DiagConfirm" name="homepageframe/diagconfirm.html"></el-tab-pane>
+                    <el-tab-pane label="Treatment" name="homepageframe/treatment.html"></el-tab-pane>
+                    <el-tab-pane label="Patent-med" name="homepageframe/patentmed.html"></el-tab-pane>
+                    <el-tab-pane label="Herbal" name="homepageframe/herbal.html"></el-tab-pane>
+                    <el-tab-pane label="BillQuery" name="homepageframe/billquery.html"></el-tab-pane>
 
                 </el-tabs>
                 <el-row :span="24">
