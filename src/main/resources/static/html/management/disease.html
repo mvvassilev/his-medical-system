@@ -14,26 +14,27 @@
 
 <body>
 <div id="disease">
-        <el-row :gutter="20">
-            <el-col :span="4">
-                <el-input type="text" v-model="icdcode" placeholder="ICDCode"></el-input>
-            </el-col>
-            <el-col :span="4">
-                <el-input type="text" v-model="discode" placeholder="Disease Code"></el-input>
-            </el-col>
-            <el-col :span="4">
-                <el-input type="text" v-model="disname" placeholder="Name"></el-input>
-            </el-col>
-            <el-col :span="4">
-                <el-input type="text" v-model="discat" placeholder="Category"></el-input>
-            </el-col>
-            <el-col :span="4">
-                <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
-            </el-col>
-            <el-col :span="4">
-                <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry</el-button>
-            </el-col>
-        </el-row>
+    <el-row :gutter="20">
+        <el-col :span="4">
+            <el-input type="text" v-model="icdcode" placeholder="ICDCode"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-input type="text" v-model="discode" placeholder="Disease Code"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-input type="text" v-model="disname" placeholder="Name"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-input type="text" v-model="discat" placeholder="Category"></el-input>
+        </el-col>
+        <el-col :span="4">
+            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+        </el-col>
+        <el-col :span="4">
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry
+            </el-button>
+        </el-col>
+    </el-row>
 
 
     <template>

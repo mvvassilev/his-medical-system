@@ -33,23 +33,27 @@
                     <el-radio v-model="aorp" label="morning">Morning</el-radio>
                     <el-radio v-model="aorp" label="afternoon">Afternoon</el-radio>
                 </el-row>
-                <el-select style="padding: 3%" v-model="billcat" placeholder="Billing category" style="width: 100%" size="small">
+                <el-select style="padding: 3%" v-model="billcat" placeholder="Billing category" style="width: 100%"
+                           size="small">
                     <el-option v-for="item in bills" :key="item.billid" :label="item.billcat" :value="item.billcat">
                     </el-option>
                 </el-select>
                 <el-input style="padding: 3%" placeholder="Register date (YYYY/MM/DD)" v-model="date" size="small">
                 </el-input>
-                <el-select style="padding: 3%" v-model="username" multiple placeholder="Username" style="width: 100%" size="small">
+                <el-select style="padding: 3%" v-model="username" multiple placeholder="Username" style="width: 100%"
+                           size="small">
                     <el-option v-for="item in users" :key="item.userid" :label="item.username" :value="item.username">
                     </el-option>
                 </el-select>
-                <el-select style="padding: 3%" v-model="dept" multiple placeholder="Department" style="width: 100%" size="small">
+                <el-select style="padding: 3%" v-model="dept" multiple placeholder="Department" style="width: 100%"
+                           size="small">
                     <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
                     </el-option>
                 </el-select>
                 <el-row>
                     <el-col :span="16">
-                        <el-radio style="padding: 3%" v-model="newrecord" label="newRecord" style="padding: 6px">New record
+                        <el-radio style="padding: 3%" v-model="newrecord" label="newRecord" style="padding: 6px">New
+                            record
                         </el-radio>
                     </el-col>
                     <el-col :span="8">
@@ -104,9 +108,6 @@
 
             //<-------------------TEMP VALUES FOR FRONT-END TESTING---------------------->
             genders: ["Male", "Female"],
-
-            billingCategories:[],
-
             bills: {
                 bill_1: {
                     billid: 123,
@@ -114,6 +115,30 @@
                     billdate: "HAGS",
                     pid: 123,
                     billcat: "Tatss",
+                    count: 1,
+                    totalprice: 100,
+                    feecode: "JGOS",
+                    isPaid: true,
+                    isPring: true
+                },
+                bill_2: {
+                    billid: 12312,
+                    itemcode: "ASD",
+                    billdate: "HAGS",
+                    pid: 123,
+                    billcat: "ajsJasdj",
+                    count: 1,
+                    totalprice: 100,
+                    feecode: "JGOS",
+                    isPaid: true,
+                    isPring: true
+                },
+                bill_3: {
+                    billid: 115112,
+                    itemcode: "ASD",
+                    billdate: "HAGS",
+                    pid: 123,
+                    billcat: "AjgaJsS",
                     count: 1,
                     totalprice: 100,
                     feecode: "JGOS",
@@ -193,11 +218,6 @@
             deletingIndex: -1,
             deletingObject: {},
         },
-
-        mounted:{
-
-        },
-
         methods: {
             search: function() {
                 this.currentPage = 1;
