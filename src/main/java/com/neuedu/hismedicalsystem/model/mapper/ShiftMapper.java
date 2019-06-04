@@ -10,7 +10,8 @@ public interface ShiftMapper {
     public List<Shift> getShift(@Param("dates") Date dates, @Param("datee") Date datee);
 
     //For Registration Getting Available Doctors
-    public List<Shift> getShiftsAvailable();
+    public List<Shift> getShiftsAvailable(@Param("aorp") boolean aorp,
+                                          @Param("deptcode") String deptcode, @Param("nmedname") String nmedname);
 
     void updateShift(List<Shift> updateshifts);
 
@@ -21,4 +22,6 @@ public interface ShiftMapper {
     public void delShift(int shiftid);
 
     public void delAllShift(String[] id);
+
+    public void deductOneBalance(int shiftid);
 }

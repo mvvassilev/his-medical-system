@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hismedicalsystem.model.mapper.RegistrationMapper">
+
+
+    <insert id="addRegister">
+        insert into register (newRecord, `order`, pid, uRid, itemcode, date, shiftid)
+        values
+        (#{newRecord}, #{order}, #{pid}, #{uRid}, #{itemcode}, now(), #{shiftid})
+    </insert>
+
+
+    <select id="getCurrentOrder" resultType="Integer">
+        SELECT MAX(r.order) FROM register r where shiftid = #{shiftid}
+    </select>
+
+    <select id="countRegsInShift" resultType="Integer">
+        SELECT count(*) FROM register where shiftid = #{shiftid}
+    </select>
+
+
+</mapper>

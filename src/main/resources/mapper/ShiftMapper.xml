@@ -29,12 +29,11 @@
         join dept d on d.deptcode = ud.deptcode)
         join shift s on s.uRid = ud.uRid)
         join non_medic n on n.itemcode = s.itemcode
-
-<!--        <where>-->
-<!--            <if test="dates != null and datee != null ">-->
-<!--                <![CDATA[ dutydate >= #{dates} and dutydate< #{datee}]]>-->
-<!--            </if>-->
-<!--        </where>-->
+        where s.aorp = #{aorp}
+        and s.balance > 0
+        and d.deptcode = #{deptcode}
+        and n.nmedname = #{nmedname}
+        and to_days(s.dutydate) = to_days(now());
     </select>
 
 
@@ -49,7 +48,6 @@
     <delete id="deleteConflictShifts">
         delete from shift
         where <![CDATA[ dutydate >= #{startdate} and dutydate <= #{enddate}]]>
-
     </delete>
 
 
@@ -63,4 +61,10 @@
             #{ids}
         </foreach>
     </delete>
+
+    <!--  Deduct one in balance field  (When registering a new patient)-->
+    <update id="deductOneBalance">
+        update shift set balance = balance - 1
+        where shiftid = #{shiftid}
+    </update>
 </mapper>

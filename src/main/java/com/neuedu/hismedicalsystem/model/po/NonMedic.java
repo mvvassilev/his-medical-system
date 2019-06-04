@@ -55,4 +55,16 @@ public class NonMedic {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "NonMedic{" +
+                "itemcode='" + itemcode + '\'' +
+                ", feecode='" + feecode + '\'' +
+                ", deptcode='" + deptcode + '\'' +
+                ", nmedname='" + nmedname + '\'' +
+                ", size='" + size + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
