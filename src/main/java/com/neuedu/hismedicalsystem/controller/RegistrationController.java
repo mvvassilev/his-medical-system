@@ -85,16 +85,19 @@ public class RegistrationController {
     @RequestMapping("/getRegistrationPrice")
     public double getRegistrationPrice(@RequestBody JSONObject obj){
         Shift shift = (Shift)JSONObject.toJavaObject(obj.getJSONObject("selectedShift"), Shift.class);
+        System.out.println("shift = " + shift);
         double price = nonMedicService.getPrice(shift.getNmedname());
         System.out.println("Price "+price);
         return price;
     }
+    
     @RequestMapping("/getRegistrations")
     public List<Registration> getRegistrations() {
         List<Registration> rList = registrationService.getRegistrationsByPid(2);
         System.out.println("rList = " + rList);
         return registrationService.getRegistrationsByPid(2);
     }
+    
     @RequestMapping("/tryCompletePatientInfo")
     public Patient tryCompletingPatientInfo() {
         int id = 3;
