@@ -8,6 +8,8 @@ public class Registration {
     private int order;
     private int pid;
     private int uRid;
+    private String username;
+    private String deptname;
     private String itemcode;
     private Date date;
     private int shiftid;
@@ -76,6 +78,22 @@ public class Registration {
         this.shiftid = shiftid;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getDeptname() {
+        return deptname;
+    }
+
+    public void setDeptname(String deptname) {
+        this.deptname = deptname;
+    }
+
     @Override
     public String toString() {
         return "Registration{" +
@@ -84,6 +102,8 @@ public class Registration {
                 ", order=" + order +
                 ", pid=" + pid +
                 ", uRid=" + uRid +
+                ", username='" + username + '\'' +
+                ", deptname='" + deptname + '\'' +
                 ", itemcode='" + itemcode + '\'' +
                 ", date=" + date +
                 ", shiftid=" + shiftid +

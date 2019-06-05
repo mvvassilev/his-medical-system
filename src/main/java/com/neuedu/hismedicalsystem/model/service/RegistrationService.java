@@ -24,10 +24,6 @@ public class RegistrationService {
     @Resource
     private RegistrationMapper registrationMapper;
 
-
-
-
-
     public List<Shift> getAvailableDoctorList(boolean aorp, String deptcode, String nmedname){
         List<Shift> availableShifts = shiftMapper.getShiftsAvailable(aorp,deptcode,nmedname);
         return availableShifts;
@@ -86,6 +82,10 @@ public class RegistrationService {
             return patientMapper.getPatientById(id);
         else
             return new Patient();
+    }
+
+    public List<Registration> getRegistrationsByPid(int id){
+        return registrationMapper.getRegistrationsByPid(id);
     }
 
 }

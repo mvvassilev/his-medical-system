@@ -129,7 +129,8 @@
     <el-dialog
             title="Template Details"
             :visible.sync="dialogVisible"
-            width="80%">
+            width="80%"
+            height="80&">
         <el-row :model="form" :gutter="5">
             <el-col :span="8">
                 <el-input type="text" v-model="form.tempname" autocomplete="off" placeholder="Name"></el-input>
@@ -160,13 +161,13 @@
 
         <el-row style="margin-top: 20px">
             <el-col :span="4">
-                <el-button icon="el-icon-search" type="primary" @click="">Add New Item</el-button>
+                <el-button icon="el-icon-search" type="primary" @click="dialogItemVisible = true">Add New Item</el-button>
             </el-col>
             <el-col :span="4">
                 <el-popover
                         placement="top"
                         width="160"
-                        v-model="visible">
+                        v-model="uvisible">
                     <p>This gonna change the template, continue or not</p>
                     <div style="text-align: right; margin: 0">
                         <el-button size="mini" type="text" @click="uvisible = false">Cancel</el-button>
@@ -179,7 +180,7 @@
                 <el-popover
                         placement="top"
                         width="160"
-                        v-model="visible">
+                        v-model="dvisible">
                     <p>Are you sure you want to delete this template?</p>
                     <div style="text-align: right; margin: 0">
                         <el-button size="mini" type="text" @click="dvisible = false">Cancel</el-button>
@@ -191,23 +192,16 @@
         </el-row>
 
         <el-table
-                ref="multipleTable"
                 :data="details"
-                style="width: 100%"
-                tooltip-effect="dark"
-                @selection-change="handleSelectionChange">
-            <el-table-column
-                    type="selection"
-                    width="55">
-            </el-table-column>
+                style="width: 100%">
             <el-table-column
                     prop="itemcode"
-                    label="Item Code"
+                    label="Code"
                     width="180">
             </el-table-column>
             <el-table-column
                     prop="itemname"
-                    label="Item Name"
+                    label="Name"
                     width="180">
             </el-table-column>
             <el-table-column
@@ -216,8 +210,8 @@
                     width="180">
             </el-table-column>
             <el-table-column
-                    prop="part"
-                    label="Part">
+                    prop="price"
+                    label="Price">
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="250">
             <span>
@@ -225,26 +219,39 @@
             </span>
             </el-table-column>
         </el-table>
-        <div style="margin-top: 20px">
-            <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection</el-button>
-            <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
-                       @click="delAllItem(multipleSelection)">Delete All</el-button>
-        </div>
-        <el-dialog title="Add new item" :visible.sync="dialogItemFormVisible">
-            <el-form :model="form">
-                <el-form-item label="活动名称" :label-width="formLabelWidth">
-                    <el-input v-model="form.name" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="活动区域" :label-width="formLabelWidth">
-                    <el-select v-model="form.region" placeholder="请选择活动区域">
-                        <el-option label="区域一" value="shanghai"></el-option>
-                        <el-option label="区域二" value="beijing"></el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
+
+        <el-dialog height="60%" title="Add new item" :visible.sync="dialogItemVisible" append-to-body>
+            <el-row :gutter="5">
+                <el-col :span="20">
+                    <el-input type="text" v-model="itemcode" placeholder="Code"></el-input>
+                </el-col>
+                <el-col :span="4">
+                    <el-button icon="el-icon-search" type="primary" @click="">Search</el-button>
+                </el-col>
+            </el-row>
+            <template>
+                <el-table :data="nonmedics.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+                    <el-table-column prop="itemcode" label="Code" width="180">
+                    </el-table-column>
+                    <el-table-column prop="nmedname" label="Name">
+                    </el-table-column>
+                    <el-table-column prop="size" label="Size">
+                    </el-table-column>
+                    <el-table-column prop="price" label="Price">
+                    </el-table-column>
+                    <el-table-column fixed="right" label="Operations" width="120">
+                        <template slot-scope="scope">
+                            <el-button @click="" type="primary" size="small">choose</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+                               :page-sizes="[5, 10, 20, 40]" :page-size="pagesize" :hide-on-single-page="value"
+                               layout="total, sizes, prev, pager, next, jumper" :total="nonmedics.length">
+                </el-pagination>
+            </template>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button size="small" type="primary" @click="dialogItemVisible = false">Close</el-button>
             </div>
         </el-dialog>
     </el-dialog>
@@ -457,8 +464,8 @@
                         label: 'Herbal Medicine'
                     }]
                 }],
-                /*value1: '',
-                value2: '',*/
+
+                value:false,
 
                 tempname:"",
                 tempscope:"",
@@ -469,33 +476,33 @@
                 uvisible: false,
 
                 dialogVisible: false,
-                multipleSelection:[],
+                dialogItemVisible: false,
 
-                deleteDialogVisible: false,//控制弹出删除窗口
-                deletingIndex: -1,
-                deletingObject:{},
                 form:{
                     tempname:"",
                     tempscope:"",
                     temptype:"",
                 },
+
+                itemcode: "",
+                nmedname: "",
+                size: "",
+                price: "",
+                nonmedics: [],
+
+                currentPage: 1, //初始页
+                pagesize: 10, //    每页的数据
             }
         },
         methods: {
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.multipleTable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.multipleTable.clearSelection();
-                }
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
             },
-
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
-            },
-
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
+            }
             /*openConfirmDialog:function() {
                 this.$confirm('Sure to arrange?', 'Notice', {
                     confirmButtonText: 'Confirm',
