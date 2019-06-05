@@ -47,12 +47,12 @@
                     <el-option v-for="item in bills" :key="item.billid" :label="item.billcat" :value="item.billcat">
                     </el-option>
                 </el-select>
-                <el-select style="padding: 3%" v-model="dept" multiple placeholder="Department" style="width: 100%"
+                <el-select style="padding: 3%" v-model="dept" placeholder="Department" style="width: 100%"
                            size="medium">
                     <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
                     </el-option>
                 </el-select>
-                <el-select style="padding: 3%" v-model="registrationLevel" multiple placeholder="Register level"
+                <el-select style="padding: 3%" v-model="registrationLevel" placeholder="Register level"
                            style="width: 100%" size="medium">
                     <!-----------------TODO: config the variables------------------->
                     <el-option v-for="item in depts" :key="item.deptcode" :label="item.deptname" :value="item.deptcode">
@@ -79,7 +79,7 @@
         </el-row>
 
         <!-------------    PAYMENT FORM     ------------>
-        <el-dialog :title="formTitle" :visible.sync="paymentFormVisible">
+        <el-dialog :title="" :visible.sync="paymentFormVisible">
             <el-form :model="paymentform" style="text-align: center">
                 <el-form-item label="Payment information">
                     <h3 style="padding: 10%">Total expanses ${{fee}}</h3>
@@ -109,7 +109,9 @@
             billcat: "",
             username: "",
             dept: "",
+            shift: "",
             newrecord: "",
+            selection: "",
             aorp: "",
             fee: "",
             registrationLevel: "",
@@ -119,8 +121,7 @@
             bills: [],
             depts: [],
             users: [],
-
-
+            paymentform: "",
 
             patients: [],
             consts: [],
@@ -205,6 +206,10 @@
                console.log(error);
             });
         },
+
+            handleSelectionChange(val) {
+                this.selection = val;
+            },
 
             // -----------PAYMENT STUFF --------------/
             calculatePayment: function() {
