@@ -90,27 +90,15 @@
                 </el-row>
             </template>
         </el-col>
-        <el-col :span="1" style="margin-top: 25px;height: 600px">
-            <el-steps direction="vertical" :active="1">
-                <el-step title=""></el-step>
-                <el-step title=""></el-step>
-                <el-step title=""></el-step>
-                <el-step title=""></el-step>
-                <el-step title=""></el-step>
-                <el-step title=""></el-step>
+        <el-col :span="4" style="margin-left: 10px;margin-top: 45px;height: 600px">
+            <el-steps direction="vertical" finish-status="success" process-status="finish" :active="1">
+                <el-step icon="el-icon-edit-outline" title="Register"></el-step>
+                <el-step icon="el-icon-document-remove" title="Pre-Diagnose"></el-step>
+                <el-step icon="el-icon-search" title="Examine"></el-step>
+                <el-step icon="el-icon-document" title="Final-Diagnose"></el-step>
+                <el-step icon="el-icon-add-location" title="Treatment"></el-step>
+                <el-step icon="el-icon-document-checked" title="Finished"></el-step>
             </el-steps>
-        </el-col>
-        <el-col :span="3" style="margin-top: 25px">
-            <el-collapse-transition>
-                    <div v-show="isCollapse">
-                      <div class="transition-box">Register</div>
-                      <div class="transition-box">Pre-Diagnose</div>
-                      <div class="transition-box">Examine</div>
-                      <div class="transition-box">Final-Diagnose</div>
-                      <div class="transition-box">Treatment</div>
-                      <div class="transition-box">Finished</div>
-                    </div>
-                  </el-collapse-transition>
         </el-col>
     </el-row>
 </div>
@@ -120,18 +108,6 @@
         width: 200px;
         min-height: 400px;
     }
-
-    .transition-box {
-        margin-bottom: 10px;
-        width: 100px;
-        height: 100px;
-        border-radius: 4px;
-        background-color: #409EFF;
-        text-align: center;
-        color: #fff;
-        padding: 20px 10px;
-        box-sizing: border-box;
-      }
 </style>
 
 <script>
@@ -146,12 +122,15 @@
 
                 show2: false,
 
+
+                shiftid: [],
+                myList: [],
+                deptList: [],
+
                 myWait: [],
                 myDiagnosed: [],
                 deptWait: [],
                 deptDiagnosed: [],
-                shiftid: [],
-                list: []
             };
         },
         methods: {
@@ -168,7 +147,7 @@
             },
             loadPatientList() {
                 var that = this;
-                axios.post('/outpatient/loadlist', {'shiftid': this.shiftid})
+                axios.post('/outpatient/getPatientsOfUserToday', {'shiftid': this.shiftid})
                     .then(function (response) {
                         console.log(response.data);
                         that.list = response.data;

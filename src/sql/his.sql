@@ -5227,7 +5227,7 @@ CREATE TABLE `register` (
   `regid` int(10) NOT NULL AUTO_INCREMENT,
   `newRecord` tinyint(1) NOT NULL,
   `order` int(10) NOT NULL,
-  `pid` int(10) NOT NULL,
+  `pid` int(40) NOT NULL,
   `uRid` int(10) NOT NULL,
   `itemcode` varchar(40) NOT NULL,
   `date` date NOT NULL,
