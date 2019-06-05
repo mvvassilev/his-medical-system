@@ -31,4 +31,9 @@ public class OutpatientController {
         }
         return "{\"result\":true}";
     }
+
+    @RequestMapping("/delTemp")
+    public void delTemp(int tempid){
+        templateService.delTemp(tempid);
+    }
 }

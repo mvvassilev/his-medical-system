@@ -21,4 +21,9 @@ public class TemplateService {
     public void addTemp(Template_all template_all) throws Exception {
         templateMapper.addTemp(template_all);
     }
+
+    @Transactional
+    public void delTemp(int tempid){
+        templateMapper.delTemp(tempid);
+    }
 }

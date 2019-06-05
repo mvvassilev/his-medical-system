@@ -290,6 +290,7 @@
                 value1: '',
                 value2: '',
 
+                tempid:"",
                 tempname:"",
                 createdate:"",
                 tempscope:"",
@@ -418,6 +419,7 @@
 
             showDetailsDialogForm: function (row) {
                 dialog.form = {
+                    tempid:row.tempid,
                     tempname:row.tempname,
                     tempscope:row.tempscope,
                     temptype:row.temptype,
@@ -467,6 +469,7 @@
 
                 value:false,
 
+                tempid:"",
                 tempname:"",
                 tempscope:"",
                 temptype:"",
@@ -479,6 +482,7 @@
                 dialogItemVisible: false,
 
                 form:{
+                    tempid:"",
                     tempname:"",
                     tempscope:"",
                     temptype:"",
