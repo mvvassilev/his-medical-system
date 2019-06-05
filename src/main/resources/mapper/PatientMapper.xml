@@ -9,6 +9,8 @@
         values (#{pid}, #{pname}, #{pgender}, #{page}, #{pbirth}, #{paddress}, #{state})
     </insert>
 
+
+
     <select id="getPatientById" resultType="Patient">
         select * from patient where pid = #{id}
     </select>
@@ -16,6 +18,29 @@
     <select id="countPatientOfId" resultType="Integer">
         select count(*) from patient where pid = #{id}
     </select>
+
+    <select id="getPatientsOfUserToday" resultType="Patient">
+        select p.pid as pid, pname, pgender, page, pbirth, paddress, state from
+        register r
+        join userrdept ud on r.uRid = ud.uRid
+        join user u on u.userid = ud.userid
+        join patient p on p.pid = r.pid
+        where u.userid = #{userid}
+        and p.state = #{state}
+        and TO_DAYS(r.date) = TO_DAYS(now())
+    </select>
+
+    <select id="getPatientsOfDeptToday" resultType="Patient">
+        select p.pid as pid, pname, pgender, page, pbirth, paddress, state from
+        register r
+        join userrdept ud on r.uRid = ud.uRid
+        join dept d on d.deptcode = ud.deptcode
+        join patient p on p.pid = r.pid
+        where d.deptcode = #{deptcode}
+        and p.state = #{state}
+        and TO_DAYS(r.date) = TO_DAYS(now())
+    </select>
+
 
 
 </mapper>

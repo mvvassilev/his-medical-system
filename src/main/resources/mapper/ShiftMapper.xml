@@ -23,7 +23,7 @@
 
     <select id="getShiftsAvailable" resultType="Shift">
         select s.shiftid as shiftid, s.dutydate as dutydate, s.aorp as aorp, n.nmedname as nmedname, u.realname as realname,
-        u.userid as userid, d.deptname as deptname, s.ration as ration, s.balance as balance from
+        u.userid as userid, s.uRid as uRid, d.deptname as deptname, s.ration as ration, s.balance as balance from
 
         (((userrdept ud join user u on u.userid = ud.userid)
         join dept d on d.deptcode = ud.deptcode)

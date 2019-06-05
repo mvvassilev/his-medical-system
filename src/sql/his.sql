@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2019-06-05 10:13:01
+Date: 2019-06-05 11:35:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -4015,31 +4015,16 @@ INSERT INTO `disease` VALUES ('ZZXP20', 'XPHCZ', '中医疾病', '心脾火炽�
 DROP TABLE IF EXISTS `exam`;
 CREATE TABLE `exam` (
   `exid` int(10) NOT NULL AUTO_INCREMENT,
-  `pid` int(10) NOT NULL,
   `uRid` int(10) NOT NULL,
-  `tempid` int(10) DEFAULT NULL,
+  `regid` int(10) NOT NULL,
   `extype` varchar(40) NOT NULL,
   `state` varchar(40) NOT NULL,
+  `itemcode` varchar(40) NOT NULL,
   PRIMARY KEY (`exid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of exam
--- ----------------------------
-
--- ----------------------------
--- Table structure for `exrel`
--- ----------------------------
-DROP TABLE IF EXISTS `exrel`;
-CREATE TABLE `exrel` (
-  `exRelid` int(10) NOT NULL AUTO_INCREMENT,
-  `exid` int(10) NOT NULL,
-  `itemcode` varchar(40) NOT NULL,
-  PRIMARY KEY (`exRelid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of exrel
 -- ----------------------------
 
 -- ----------------------------
@@ -4083,16 +4068,19 @@ INSERT INTO `fee` VALUES ('ZLF', '诊疗费');
 DROP TABLE IF EXISTS `homepage`;
 CREATE TABLE `homepage` (
   `hpid` int(10) NOT NULL AUTO_INCREMENT,
-  `discodeWest` varchar(255) NOT NULL,
-  `regid` int(11) NOT NULL,
-  `examAdvice` varchar(255) NOT NULL,
-  `cheifCP` varchar(255) NOT NULL,
-  `caution` varchar(255) NOT NULL,
-  `phyExam` varchar(255) NOT NULL,
-  `curHis` varchar(255) NOT NULL,
-  `discodeEast` varchar(255) NOT NULL,
-  `allergicHis` varchar(255) NOT NULL,
-  `pastHis` varchar(255) NOT NULL,
+  `regid` int(11) DEFAULT NULL,
+  `cheifCP` varchar(255) DEFAULT NULL,
+  `caution` varchar(255) DEFAULT NULL,
+  `phyExam` varchar(255) DEFAULT NULL,
+  `curHis` varchar(255) DEFAULT NULL,
+  `discodeEast` varchar(255) DEFAULT NULL,
+  `allergicHis` varchar(255) DEFAULT NULL,
+  `pastHis` varchar(255) DEFAULT NULL,
+  `examAdvice` varchar(255) DEFAULT NULL,
+  `examResult` varchar(255) DEFAULT NULL,
+  `treatAdvice` varchar(255) DEFAULT NULL,
+  `disType` varchar(40) DEFAULT NULL,
+  `state` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`hpid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -5201,9 +5189,8 @@ CREATE TABLE `prerel` (
 DROP TABLE IF EXISTS `prescription`;
 CREATE TABLE `prescription` (
   `preid` int(10) NOT NULL AUTO_INCREMENT,
-  `pid` int(10) NOT NULL,
   `uRid` int(10) NOT NULL,
-  `tempid` int(10) DEFAULT NULL,
+  `regid` int(10) NOT NULL,
   `pretype` varchar(40) NOT NULL,
   `state` varchar(40) NOT NULL,
   PRIMARY KEY (`preid`)
@@ -5347,7 +5334,6 @@ INSERT INTO `shift` VALUES ('55', '1', '3', '100', '100', 'ZJH', '2019-05-30', '
 INSERT INTO `shift` VALUES ('56', '1', '3', '100', '100', 'ZJH', '2019-05-31', '1');
 INSERT INTO `shift` VALUES ('57', '1', '3', '100', '100', 'ZJH', '2019-05-31', '0');
 
-
 -- ----------------------------
 -- Table structure for `template_all`
 -- ----------------------------
@@ -5370,6 +5356,7 @@ INSERT INTO `template_all` VALUES ('3', '111', 'examination', 'individual', '201
 INSERT INTO `template_all` VALUES ('8', '11', 'examination', 'individual', '2019-06-04 12:00:09');
 INSERT INTO `template_all` VALUES ('9', 'w', 'examination', 'department', '2019-06-04 13:31:14');
 INSERT INTO `template_all` VALUES ('10', 'ss', 'examination', 'individual', '2019-06-04 13:36:24');
+
 -- ----------------------------
 -- Table structure for `temprel`
 -- ----------------------------
@@ -5398,7 +5385,7 @@ CREATE TABLE `user` (
   `position` varchar(40) DEFAULT NULL,
   `shiftOrNot` tinyint(4) NOT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user

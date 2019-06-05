@@ -125,6 +125,8 @@ public class Shift {
                 ", nmedname='" + nmedname + '\'' +
                 ", ration=" + ration +
                 ", userid=" + userid +
+                ", uRid=" + uRid +
+                ", itemcode='" + itemcode + '\'' +
                 ", dutydate=" + dutydate +
                 ", balance=" + balance +
                 '}';

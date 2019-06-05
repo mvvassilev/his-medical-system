@@ -1,6 +1,9 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.neuedu.hismedicalsystem.model.po.Patient;
 import com.neuedu.hismedicalsystem.model.po.Template_all;
+import com.neuedu.hismedicalsystem.model.service.PatientService;
 import com.neuedu.hismedicalsystem.model.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +21,9 @@ public class OutpatientController {
     @Autowired
     private TemplateService templateService;
 
+    @Autowired
+    private PatientService patientService;
+
     @RequestMapping("/temps")
     public List<Template_all> getTemp(@RequestBody Template_all condition) {return templateService.getTemp(condition);}
 
@@ -31,4 +37,16 @@ public class OutpatientController {
         }
         return "{\"result\":true}";
     }
+
+    @RequestMapping("getPatientsOfUserToday")
+    public List<Patient> getPatientsOfUserToday(@RequestBody JSONObject obj){
+        return patientService.getPatientsOfUserToday(obj.getInteger("userid"),obj.getString("state"));
+    }
+
+    @RequestMapping("getPatientsOfDeptToday")
+    public List<Patient> getPatientsOfDeptToday(@RequestBody JSONObject obj){
+        return patientService.getPatientsOfDeptToday(obj.getString("deptcode"),obj.getString("state"));
+    }
+
+
 }

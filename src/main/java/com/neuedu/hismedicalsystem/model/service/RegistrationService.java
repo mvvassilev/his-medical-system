@@ -48,7 +48,6 @@ public class RegistrationService {
         bill.setCount(1);
         bill.setPaid(true);
         bill.setItemcode(registration.getItemcode());
-        bill.setPaid(false);
         bill.setFeecode(registration.getFeecode());
         bill.setDone(true);
         bill.setBillcat(billcat);
@@ -56,6 +55,10 @@ public class RegistrationService {
     }
 
     public void registerToShift(Patient patient, NonMedic registrationType, boolean newrecord, Shift shift) {
+        System.out.println("patient = " + patient);
+        System.out.println("registrationType = " + registrationType);
+        System.out.println("newrecord = " + newrecord);
+        System.out.println("shift = " + shift);
         Registration register = new Registration();
         register.setNewRecord(newrecord);
 
@@ -71,6 +74,12 @@ public class RegistrationService {
         register.setuRid(shift.getuRid());
         register.setItemcode(registrationType.getItemcode());
         register.setShiftid(shiftid);
+
+        System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
+        System.out.println("registerToShift");
+        System.out.println("register = " + register);
+        System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
+
         registrationMapper.addRegister(register);
 
         //Deduct one in balance field for the shift

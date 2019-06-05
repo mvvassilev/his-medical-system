@@ -28,8 +28,4 @@
         join register r on r.uRid = ud.uRid)
         where pid = #{pid}
     </select>
-
-
-
-
 </mapper>
