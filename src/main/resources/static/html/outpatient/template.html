@@ -14,8 +14,8 @@
 
 <body>
 <div id="template_all">
-    <el-row :gutter="5">
-        <el-col :span="8">
+    <el-row :gutter="15">
+        <el-col :span="6">
             <el-input type="text" v-model="tempname" placeholder="Name"></el-input>
         </el-col>
         <el-col :span="5">
@@ -43,7 +43,7 @@
         <el-col :span="3">
             <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
-        <el-col :span="3">
+        <el-col :span="5">
             <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm">Add New Template</el-button>
         </el-col>
     </el-row>
@@ -129,8 +129,8 @@
     <el-dialog
             title="Template Details"
             :visible.sync="dialogVisible"
-            width="80%"
-            height="80&">
+            width="90%"
+            height="80%">
         <el-row :model="form" :gutter="5">
             <el-col :span="8">
                 <el-input type="text" v-model="form.tempname" autocomplete="off" placeholder="Name"></el-input>
@@ -220,7 +220,7 @@
             </el-table-column>
         </el-table>
 
-        <el-dialog height="60%" title="Add new item" :visible.sync="dialogItemVisible" append-to-body>
+        <el-dialog width="80%" height="50%" title="Add new item" :visible.sync="dialogItemVisible" append-to-body>
             <el-row :gutter="5">
                 <el-col :span="20">
                     <el-input type="text" v-model="itemcode" placeholder="Code"></el-input>
