@@ -5346,6 +5346,7 @@ INSERT INTO `shift` VALUES ('55', '1', '3', '100', '100', 'ZJH', '2019-05-30', '
 INSERT INTO `shift` VALUES ('56', '1', '3', '100', '100', 'ZJH', '2019-05-31', '1');
 INSERT INTO `shift` VALUES ('57', '1', '3', '100', '100', 'ZJH', '2019-05-31', '0');
 
+
 -- ----------------------------
 -- Table structure for `template_all`
 -- ----------------------------
@@ -5368,7 +5369,6 @@ INSERT INTO `template_all` VALUES ('3', '111', 'examination', 'individual', '201
 INSERT INTO `template_all` VALUES ('8', '11', 'examination', 'individual', '2019-06-04 12:00:09');
 INSERT INTO `template_all` VALUES ('9', 'w', 'examination', 'department', '2019-06-04 13:31:14');
 INSERT INTO `template_all` VALUES ('10', 'ss', 'examination', 'individual', '2019-06-04 13:36:24');
-
 -- ----------------------------
 -- Table structure for `temprel`
 -- ----------------------------
