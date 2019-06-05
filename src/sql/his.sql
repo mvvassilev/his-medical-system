@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2019-06-01 14:37:20
+Date: 2019-06-05 10:13:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -5294,87 +5294,80 @@ CREATE TABLE `shift` (
 -- ----------------------------
 -- Records of shift
 -- ----------------------------
-INSERT INTO `shift` VALUES ('78', '7', '12', '100', '100', 'PTH', '2019-05-10', '0');
-INSERT INTO `shift` VALUES ('79', '7', '12', '100', '100', 'PTH', '2019-05-11', '1');
-INSERT INTO `shift` VALUES ('80', '7', '12', '100', '100', 'PTH', '2019-05-11', '0');
-INSERT INTO `shift` VALUES ('81', '1', '12', '78', '78', 'PTH', '2019-05-21', '1');
-INSERT INTO `shift` VALUES ('82', '1', '12', '78', '78', 'PTH', '2019-05-21', '0');
-INSERT INTO `shift` VALUES ('83', '1', '12', '78', '78', 'PTH', '2019-05-26', '1');
-INSERT INTO `shift` VALUES ('84', '1', '12', '78', '78', 'PTH', '2019-05-26', '0');
-INSERT INTO `shift` VALUES ('85', '1', '12', '78', '78', 'PTH', '2019-05-27', '1');
-INSERT INTO `shift` VALUES ('86', '1', '12', '78', '78', 'PTH', '2019-05-27', '0');
-INSERT INTO `shift` VALUES ('87', '1', '12', '78', '78', 'PTH', '2019-05-28', '1');
-INSERT INTO `shift` VALUES ('88', '1', '12', '78', '78', 'PTH', '2019-05-28', '0');
-INSERT INTO `shift` VALUES ('89', '1', '12', '78', '78', 'PTH', '2019-06-02', '1');
-INSERT INTO `shift` VALUES ('90', '1', '12', '78', '78', 'PTH', '2019-06-02', '0');
-INSERT INTO `shift` VALUES ('91', '1', '12', '78', '78', 'PTH', '2019-06-03', '1');
-INSERT INTO `shift` VALUES ('92', '1', '12', '78', '78', 'PTH', '2019-06-03', '0');
-INSERT INTO `shift` VALUES ('93', '1', '12', '78', '78', 'PTH', '2019-06-04', '1');
-INSERT INTO `shift` VALUES ('94', '1', '12', '78', '78', 'PTH', '2019-06-04', '0');
-INSERT INTO `shift` VALUES ('95', '1', '12', '78', '78', 'PTH', '2019-06-09', '1');
-INSERT INTO `shift` VALUES ('96', '1', '12', '78', '78', 'PTH', '2019-06-09', '0');
-INSERT INTO `shift` VALUES ('97', '1', '12', '78', '78', 'PTH', '2019-06-10', '1');
-INSERT INTO `shift` VALUES ('98', '1', '12', '78', '78', 'PTH', '2019-06-10', '0');
-INSERT INTO `shift` VALUES ('99', '1', '12', '78', '78', 'PTH', '2019-06-11', '1');
-INSERT INTO `shift` VALUES ('100', '1', '12', '78', '78', 'PTH', '2019-06-11', '0');
-INSERT INTO `shift` VALUES ('101', '1', '12', '78', '78', 'PTH', '2019-06-16', '1');
-INSERT INTO `shift` VALUES ('102', '1', '12', '78', '78', 'PTH', '2019-06-16', '0');
-INSERT INTO `shift` VALUES ('103', '1', '12', '78', '78', 'PTH', '2019-06-17', '1');
-INSERT INTO `shift` VALUES ('104', '1', '12', '78', '78', 'PTH', '2019-06-17', '0');
-INSERT INTO `shift` VALUES ('105', '1', '12', '78', '78', 'PTH', '2019-06-18', '1');
-INSERT INTO `shift` VALUES ('106', '1', '12', '78', '78', 'PTH', '2019-06-18', '0');
-INSERT INTO `shift` VALUES ('107', '7', '12', '100', '100', 'PTH', '2019-05-21', '0');
-INSERT INTO `shift` VALUES ('108', '7', '12', '100', '100', 'PTH', '2019-05-24', '0');
-INSERT INTO `shift` VALUES ('109', '7', '12', '100', '100', 'PTH', '2019-05-25', '1');
-INSERT INTO `shift` VALUES ('110', '7', '12', '100', '100', 'PTH', '2019-05-25', '0');
-INSERT INTO `shift` VALUES ('112', '7', '12', '100', '100', 'PTH', '2019-05-31', '0');
-INSERT INTO `shift` VALUES ('113', '7', '12', '100', '100', 'PTH', '2019-06-01', '1');
-INSERT INTO `shift` VALUES ('114', '7', '12', '100', '100', 'PTH', '2019-06-01', '0');
-INSERT INTO `shift` VALUES ('115', '7', '12', '100', '100', 'PTH', '2019-06-04', '0');
-INSERT INTO `shift` VALUES ('116', '7', '12', '100', '100', 'PTH', '2019-06-07', '0');
-INSERT INTO `shift` VALUES ('117', '7', '12', '100', '100', 'PTH', '2019-06-08', '1');
-INSERT INTO `shift` VALUES ('118', '7', '12', '100', '100', 'PTH', '2019-06-08', '0');
-INSERT INTO `shift` VALUES ('119', '7', '12', '100', '100', 'PTH', '2019-06-11', '0');
-INSERT INTO `shift` VALUES ('120', '7', '12', '100', '100', 'PTH', '2019-06-14', '0');
-INSERT INTO `shift` VALUES ('121', '7', '12', '100', '100', 'PTH', '2019-06-15', '1');
-INSERT INTO `shift` VALUES ('122', '7', '12', '100', '100', 'PTH', '2019-06-15', '0');
-INSERT INTO `shift` VALUES ('123', '7', '12', '100', '100', 'PTH', '2019-06-18', '0');
-INSERT INTO `shift` VALUES ('126', '1', '12', '100', '100', 'ZJH', '2019-05-31', '1');
-INSERT INTO `shift` VALUES ('127', '1', '12', '100', '100', 'ZJH', '2019-05-31', '0');
-INSERT INTO `shift` VALUES ('128', '1', '12', '100', '100', 'ZJH', '2019-06-07', '1');
-INSERT INTO `shift` VALUES ('129', '1', '12', '100', '100', 'ZJH', '2019-06-07', '0');
-INSERT INTO `shift` VALUES ('130', '1', '12', '100', '100', 'ZJH', '2019-06-14', '1');
-INSERT INTO `shift` VALUES ('131', '1', '12', '100', '100', 'ZJH', '2019-06-14', '0');
-INSERT INTO `shift` VALUES ('132', '1', '123', '100', '100', 'ZJH', '2019-05-03', '1');
-INSERT INTO `shift` VALUES ('133', '1', '123', '100', '100', 'ZJH', '2019-05-03', '0');
-INSERT INTO `shift` VALUES ('134', '1', '123', '78', '78', 'PTH', '2019-05-05', '1');
-INSERT INTO `shift` VALUES ('135', '1', '123', '78', '78', 'PTH', '2019-05-05', '0');
-INSERT INTO `shift` VALUES ('136', '1', '123', '78', '78', 'PTH', '2019-05-06', '1');
-INSERT INTO `shift` VALUES ('137', '1', '123', '78', '78', 'PTH', '2019-05-06', '0');
-INSERT INTO `shift` VALUES ('138', '1', '123', '78', '78', 'PTH', '2019-05-07', '1');
-INSERT INTO `shift` VALUES ('139', '1', '123', '78', '78', 'PTH', '2019-05-07', '0');
-INSERT INTO `shift` VALUES ('140', '7', '123', '100', '100', 'PTH', '2019-05-03', '0');
-INSERT INTO `shift` VALUES ('141', '7', '123', '100', '100', 'PTH', '2019-05-04', '1');
-INSERT INTO `shift` VALUES ('142', '7', '123', '100', '100', 'PTH', '2019-05-04', '0');
-INSERT INTO `shift` VALUES ('143', '7', '123', '100', '100', 'PTH', '2019-05-07', '0');
+INSERT INTO `shift` VALUES ('5', '1', '3', '100', '100', 'ZJH', '2019-05-01', '0');
+INSERT INTO `shift` VALUES ('6', '1', '3', '100', '100', 'ZJH', '2019-05-02', '1');
+INSERT INTO `shift` VALUES ('7', '1', '3', '100', '100', 'ZJH', '2019-05-02', '0');
+INSERT INTO `shift` VALUES ('8', '1', '3', '100', '100', 'ZJH', '2019-05-03', '1');
+INSERT INTO `shift` VALUES ('9', '1', '3', '100', '100', 'ZJH', '2019-05-03', '0');
+INSERT INTO `shift` VALUES ('10', '1', '3', '100', '100', 'ZJH', '2019-05-05', '1');
+INSERT INTO `shift` VALUES ('11', '1', '3', '100', '100', 'ZJH', '2019-05-05', '0');
+INSERT INTO `shift` VALUES ('12', '1', '3', '100', '100', 'ZJH', '2019-05-06', '1');
+INSERT INTO `shift` VALUES ('13', '1', '3', '100', '100', 'ZJH', '2019-05-06', '0');
+INSERT INTO `shift` VALUES ('14', '1', '3', '100', '100', 'ZJH', '2019-05-07', '1');
+INSERT INTO `shift` VALUES ('15', '1', '3', '100', '100', 'ZJH', '2019-05-07', '0');
+INSERT INTO `shift` VALUES ('16', '1', '3', '100', '100', 'ZJH', '2019-05-08', '1');
+INSERT INTO `shift` VALUES ('17', '1', '3', '100', '100', 'ZJH', '2019-05-08', '0');
+INSERT INTO `shift` VALUES ('18', '1', '3', '100', '100', 'ZJH', '2019-05-09', '1');
+INSERT INTO `shift` VALUES ('19', '1', '3', '100', '100', 'ZJH', '2019-05-09', '0');
+INSERT INTO `shift` VALUES ('20', '1', '3', '100', '100', 'ZJH', '2019-05-10', '1');
+INSERT INTO `shift` VALUES ('21', '1', '3', '100', '100', 'ZJH', '2019-05-10', '0');
+INSERT INTO `shift` VALUES ('22', '1', '3', '100', '100', 'ZJH', '2019-05-12', '1');
+INSERT INTO `shift` VALUES ('23', '1', '3', '100', '100', 'ZJH', '2019-05-12', '0');
+INSERT INTO `shift` VALUES ('24', '1', '3', '100', '100', 'ZJH', '2019-05-13', '1');
+INSERT INTO `shift` VALUES ('25', '1', '3', '100', '100', 'ZJH', '2019-05-13', '0');
+INSERT INTO `shift` VALUES ('26', '1', '3', '100', '100', 'ZJH', '2019-05-14', '1');
+INSERT INTO `shift` VALUES ('27', '1', '3', '100', '100', 'ZJH', '2019-05-14', '0');
+INSERT INTO `shift` VALUES ('28', '1', '3', '100', '100', 'ZJH', '2019-05-15', '1');
+INSERT INTO `shift` VALUES ('29', '1', '3', '100', '100', 'ZJH', '2019-05-15', '0');
+INSERT INTO `shift` VALUES ('32', '1', '3', '100', '100', 'ZJH', '2019-05-17', '1');
+INSERT INTO `shift` VALUES ('33', '1', '3', '100', '100', 'ZJH', '2019-05-17', '0');
+INSERT INTO `shift` VALUES ('34', '1', '3', '100', '100', 'ZJH', '2019-05-19', '1');
+INSERT INTO `shift` VALUES ('35', '1', '3', '100', '100', 'ZJH', '2019-05-19', '0');
+INSERT INTO `shift` VALUES ('36', '1', '3', '100', '100', 'ZJH', '2019-05-20', '1');
+INSERT INTO `shift` VALUES ('37', '1', '3', '100', '100', 'ZJH', '2019-05-20', '0');
+INSERT INTO `shift` VALUES ('38', '1', '3', '100', '100', 'ZJH', '2019-05-21', '1');
+INSERT INTO `shift` VALUES ('39', '1', '3', '100', '100', 'ZJH', '2019-05-21', '0');
+INSERT INTO `shift` VALUES ('40', '1', '3', '100', '100', 'ZJH', '2019-05-22', '1');
+INSERT INTO `shift` VALUES ('41', '1', '3', '100', '100', 'ZJH', '2019-05-22', '0');
+INSERT INTO `shift` VALUES ('42', '1', '3', '100', '100', 'ZJH', '2019-05-23', '1');
+INSERT INTO `shift` VALUES ('43', '1', '3', '100', '100', 'ZJH', '2019-05-23', '0');
+INSERT INTO `shift` VALUES ('44', '1', '3', '100', '100', 'ZJH', '2019-05-24', '1');
+INSERT INTO `shift` VALUES ('45', '1', '3', '100', '100', 'ZJH', '2019-05-24', '0');
+INSERT INTO `shift` VALUES ('46', '1', '3', '100', '100', 'ZJH', '2019-05-26', '1');
+INSERT INTO `shift` VALUES ('47', '1', '3', '100', '100', 'ZJH', '2019-05-26', '0');
+INSERT INTO `shift` VALUES ('48', '1', '3', '100', '100', 'ZJH', '2019-05-27', '1');
+INSERT INTO `shift` VALUES ('49', '1', '3', '100', '100', 'ZJH', '2019-05-27', '0');
+INSERT INTO `shift` VALUES ('50', '1', '3', '100', '100', 'ZJH', '2019-05-28', '1');
+INSERT INTO `shift` VALUES ('51', '1', '3', '100', '100', 'ZJH', '2019-05-28', '0');
+INSERT INTO `shift` VALUES ('52', '1', '3', '100', '100', 'ZJH', '2019-05-29', '1');
+INSERT INTO `shift` VALUES ('53', '1', '3', '100', '100', 'ZJH', '2019-05-29', '0');
+INSERT INTO `shift` VALUES ('54', '1', '3', '100', '100', 'ZJH', '2019-05-30', '1');
+INSERT INTO `shift` VALUES ('55', '1', '3', '100', '100', 'ZJH', '2019-05-30', '0');
+INSERT INTO `shift` VALUES ('56', '1', '3', '100', '100', 'ZJH', '2019-05-31', '1');
+INSERT INTO `shift` VALUES ('57', '1', '3', '100', '100', 'ZJH', '2019-05-31', '0');
 
 -- ----------------------------
 -- Table structure for `template_all`
 -- ----------------------------
 DROP TABLE IF EXISTS `template_all`;
 CREATE TABLE `template_all` (
-  `tempid` int(10) NOT NULL,
+  `tempid` int(10) NOT NULL AUTO_INCREMENT,
   `tempname` varchar(40) NOT NULL,
   `temptype` varchar(40) NOT NULL,
   `tempscope` varchar(40) NOT NULL,
   `createdate` datetime NOT NULL,
   PRIMARY KEY (`tempid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of template_all
 -- ----------------------------
 INSERT INTO `template_all` VALUES ('1', 'test', 'test', 'hospital', '2019-06-03 10:32:39');
+INSERT INTO `template_all` VALUES ('2', 'exam', 'examination', 'department', '2019-06-03 11:24:44');
+INSERT INTO `template_all` VALUES ('3', '111', 'examination', 'individual', '2019-06-03 16:46:34');
+INSERT INTO `template_all` VALUES ('8', '11', 'examination', 'individual', '2019-06-04 12:00:09');
+INSERT INTO `template_all` VALUES ('9', 'w', 'examination', 'department', '2019-06-04 13:31:14');
+INSERT INTO `template_all` VALUES ('10', 'ss', 'examination', 'individual', '2019-06-04 13:36:24');
 
 -- ----------------------------
 -- Table structure for `temprel`
@@ -5430,8 +5423,10 @@ CREATE TABLE `userrdept` (
 -- ----------------------------
 -- Records of userrdept
 -- ----------------------------
+INSERT INTO `userrdept` VALUES ('1', '1', 'CK');
 INSERT INTO `userrdept` VALUES ('2', '2', 'XDTK');
 INSERT INTO `userrdept` VALUES ('3', '3', 'CWK');
+INSERT INTO `userrdept` VALUES ('4', '1', 'CQJCK');
 INSERT INTO `userrdept` VALUES ('5', '4', 'YYGLK');
 INSERT INTO `userrdept` VALUES ('12', '5', 'CK');
 INSERT INTO `userrdept` VALUES ('13', '32', 'CRK');
