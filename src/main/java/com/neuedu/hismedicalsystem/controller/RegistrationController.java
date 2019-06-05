@@ -91,6 +91,7 @@ public class RegistrationController {
 
     @RequestMapping("/tryCompletePatientInfo")
     public Patient tryCompletingPatientInfo(@RequestBody Patient p) {
+        int id=3;
         System.out.println("Patient "+ registrationService.getPatientInfo(id).toString());
         return registrationService.getPatientInfo(p.getPid());
     }
