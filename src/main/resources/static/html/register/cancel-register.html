@@ -61,10 +61,10 @@
         el: '#cancel',
         data: {
             confirmDeleteFormVisible: false,
-            dialogpatientname: "Richard",
-            dialogpatientid: "6261223",
+            dialogpatientname: "",
+            dialogpatientid: "",
             pid: "",
-            pname: "hello",
+            pname: "",
             date: "",
             aorp: "",
             deptname: "",
@@ -74,38 +74,7 @@
             deleteObject: "",
 
             registrations: [],
-            att: {},
-
-            //--------------  FRONT-END TEST DATA   --------------//
-            // -----------    DELETE BEFORE RUNNING --------------//
-            patients: [
-                patient_1 = {
-                    pid: "1912",
-                    pname: "George",
-                    date: "2019/05/26",
-                    aorp: "Morning",
-                    deptname: "ER",
-                    state: "Beijing"
-                },
-                patient_2 = {
-                    pid: "6886",
-                    pname: "Cody",
-                    date: "2019/06/01",
-                    aorp: "Afternoon",
-                    deptname: "Toxicology",
-                    state: "Shenyang"
-                },
-                patient_3 = {
-                    pid: "6819",
-                    pname: "Garett",
-                    date: "2019/06/02",
-                    aorp: "Morning",
-                    deptname: "Phisiology",
-                    state: "Shanghai"
-                }
-            ]
-
-            //----------------------------------------------------------//
+            att: {}
         },
 
         mounted: function() {

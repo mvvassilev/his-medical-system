@@ -1,0 +1,197 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+<div id="bill">
+
+    <el-col :span="24">
+        <el-row>
+            <el-input style="padding: 3%; width: 30%" placeholder=" Enter Patient ID" v-model="pid"
+                      size="large"></el-input>
+            <el-button icon="el-icon-search" type="primary" @click="searchPatient">Search</el-button>
+            <el-button style="position: relative; left: 35%" icon="el-icon-coin" type="primary"
+                       @click="showConfirmPayDialogForm">Pay
+            </el-button>
+        </el-row>
+        <el-row>
+            <el-form :inline="true" class="demo-form-inline">
+                <el-input id="name" style="width: 24vw; pointer-events: none; padding: 1%"
+                          placeholder="Name: "></el-input>
+                <el-input id="age" style="width: 15vw; pointer-events: none; padding: 1%"
+                          placeholder="Age: "></el-input>
+                <el-input id="bdate" style="width: 22vw; pointer-events: none; padding: 1%"
+                          placeholder="Birth date:"></el-input>
+                <el-input id="gender" style="width: 22vw; pointer-events: none; padding: 1%"
+                          placeholder="Gender:"></el-input>
+                <el-input id="address" style="width: 42vw; pointer-events: none; padding: 1%"
+                          placeholder="Address:"></el-input>
+                <el-input id="billcat" style="width: 45vw; pointer-events: none; padding: 1%"
+                          placeholder="Billing category: "></el-input>
+            </el-form>
+        </el-row>
+    </el-col>
+
+    <el-table :data="bills" style="width: 90%; padding-left: 5%" @selection-change="addToPayment">
+        <el-table-column type="selection" width="70"></el-table-column>
+        <el-table-column prop="billid" label="ID" width="140"></el-table-column>
+        <el-table-column prop="itemcode" label="Item code" width="140"></el-table-column>
+        <el-table-column prop="billdate" label="Date" width="140"></el-table-column>
+        <el-table-column prop="totalprice" label="Price" width="140"></el-table-column>
+        <el-table-column prop="feecode" label="Fee code" width="140"></el-table-column>
+    </el-table>
+
+    <!-------------    CONFIRM PAYMENT POP-UP    ------------>
+    <el-dialog title="Confirm payment" :visible.sync="confirmPayFormVisible">
+        <el-table :data="payments" style="top: -15px;height: fit-content;width: 100%; padding-left: 5%">
+            <el-table-column prop="nmedname" label="Item" width="220"></el-table-column>
+            <el-table-column prop="price" label="Price" width="220"></el-table-column>
+        </el-table>
+        <el-col>
+            <el-input id="ttl" size="small" v-model="totalfee" style="pointer-events: none; padding: 1%"
+                      placeholder="Total: "></el-input>
+            <el-input size="small" style="padding: 1%" v-model="receivedpayment" placeholder="Received"></el-input>
+            <el-input id="chg" size="small" v-model="change" style="pointer-events: none; padding: 1%"
+                      placeholder="Change: "></el-input>
+        </el-col>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" icon="el-icon-coin" @click="onConfirmPay">Confirm</el-button>
+        </div>
+    </el-dialog>
+</div>
+</body>
+
+
+<script>
+    var app = new Vue({
+        el: '#bill',
+        data: {
+            pid: "",
+            receivedpayment: "",
+            confirmPayFormVisible: false,
+            dialogpatientname: "",
+            dialogpatientid: "",
+            pname: "",
+            date: "",
+            aorp: "",
+            deptname: "",
+            registrationLevel: "",
+            state: "",
+            confirmFormIndex: "",
+            confirmObject: "",
+            totalfee: "",
+            change: "",
+            nmedname: "",
+            price: "",
+            att: "",
+
+            payments: [],
+            bills: [],
+            registrations: []
+        },
+
+        mounted: function() {
+            console.log("refreshed")
+            var that = this;
+
+            axios.post('/registration/getRegistrations', {})
+                .then(function(response) {
+                    console.log(response.data);
+                    that.patients = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+
+        methods: {
+            refresh: function() {
+                console.log("refresh!!!")
+                this.currentPage = 1;
+                var that = this;
+                that.patients = [];
+                axios.post('/registration/patients', {})
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.patients = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            //------------------C H A N G E--------------------//
+            showConfirmPayDialogForm: function(index, row) {
+                this.confirmPayFormVisible = true;
+                this.confirmFormIndex = index;
+                this.confirmObject = row;
+
+
+                this.dialogitem = row.pname;
+                this.dialogprice = row.feecode;
+            },
+
+            //------------------C H A N G E--------------------//
+            onConfirmPay: function() {
+                var params = new URLSearchParams();
+                params.append('pid', this.confirmObject);
+                axios.post('/registration/getRegistrationPrice', params)
+                    .then(function(response) {
+
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+                this.confirmPayFormVisible = false;
+                this.refresh();
+            },
+
+            // ----------------          IMPORTANT!!!!             --------------------//
+            //---    IF THERE IS A PROBLEM WITH THE SEARCH METHOD, ASK MOMCHIL  -------//
+            //-------------------------------------------------------------------------//
+            searchPatient: function() {
+                //get data from database
+                let that = this;
+                console.log("Search")
+                axios.post('/registration/tryCompletePatientInfo', {
+                        pid: that.pid
+                    })
+                    .then(function(response) {
+                        that.patient = response.data;
+                        console.log(that.users);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+
+                //config Strings
+                let nameString = `Name: ${that.pname}`;
+                let ageString = `Age: ${that.page}`;
+                let bdateString = `Birth date: ${that.pbirth}`;
+                let genderString = `Gender: ${that.pgender}`;
+                let addressString = `Address: ${that.paddress}`;
+                let billcatString = `Billing category: ${that.billcat}`;
+
+                document.getElementById("name").setAttribute("placeholder", nameString);
+                document.getElementById("age").setAttribute("placeholder", ageString);
+                document.getElementById("bdate").setAttribute("placeholder", bdateString);
+                document.getElementById("gender").setAttribute("placeholder", genderString);
+                document.getElementById("address").setAttribute("placeholder", addressString);
+                document.getElementById("billcat").setAttribute("placeholder", billcatString);
+            },
+        }
+    })
+
+</script>
+
+</html>

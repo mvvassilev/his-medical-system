@@ -65,14 +65,10 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-switch v-model="value">
-        </el-switch>
-
         <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
                        :page-sizes="[5, 10, 20, 40]" :page-size="pagesize" :hide-on-single-page="value"
                        layout="total, sizes, prev, pager, next, jumper" :total="nonmedics.length">
         </el-pagination>
-
     </template>
 
 
@@ -128,7 +124,6 @@
             price: "",
             nonmedics: [],
 
-            value: false,
             currentPage: 1, //初始页
             pagesize: 10, //    每页的数据
 

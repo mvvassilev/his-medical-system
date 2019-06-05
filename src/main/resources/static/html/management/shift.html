@@ -18,7 +18,7 @@
     <el-row :gutter="30">
         <el-col :span="12" :gutter="10">
             <el-date-picker
-                    v-model="value"
+                    v-model="datevalue"
                     value-format="yyyy-MM-dd"
                     type="daterange"
                     align="right"
@@ -37,58 +37,71 @@
         </el-col>
     </el-row>
 
-    <el-table
-            :data="shift"
-            style="width: 100%"
-            @selection-change="handleSelectionChange"
-            ref="multipleTable">
-        <el-table-column
-                type="selection"
-                width="55">
-        </el-table-column>
-        <el-table-column
-                prop="shiftid"
-                label="ID"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="dutydate"
-                label="Date"
-                width="180"
-                :formatter="dateFormatter">
-        </el-table-column>
-        <el-table-column
-                prop="deptname"
-                label="Department"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="realname"
-                label="Doctor"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="aorp"
-                label="AM or PM"
-                width="180"
-                :formatter="aorpFormatter">
-        </el-table-column>
-        <el-table-column
-                prop="nmedname"
-                label="Register level"
-                width="180">
-        </el-table-column>
-        <el-table-column
-                prop="ration"
-                label="Quota">
-        </el-table-column>
-        <el-table-column fixed="right" label="Operations" width="250">
+    <template>
+        <el-table
+                :data="shift.slice((currentPage-1)*pagesize,currentPage*pagesize)"
+                style="width: 100%"
+                @selection-change="handleSelectionChange"
+                ref="multipleTable">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="shiftid"
+                    label="ID"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="dutydate"
+                    label="Date"
+                    width="180"
+                    :formatter="dateFormatter">
+            </el-table-column>
+            <el-table-column
+                    prop="deptname"
+                    label="Department"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="realname"
+                    label="Doctor"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="aorp"
+                    label="AM or PM"
+                    width="180"
+                    :formatter="aorpFormatter">
+            </el-table-column>
+            <el-table-column
+                    prop="nmedname"
+                    label="Register level"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="ration"
+                    label="Quota">
+            </el-table-column>
+            <el-table-column fixed="right" label="Operations" width="250">
             <span slot-scope="scope">
                 <el-button type="warning" size="mini"
                            @click="showDeleteDialogForm(scope.$index, scope.row)">delete</el-button>
             </span>
-        </el-table-column>
-    </el-table>
+            </el-table-column>
+        </el-table>
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5, 10, 20, 40]"
+
+                :page-size="pagesize"
+                :hide-on-single-page="value"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="shift.length">
+        </el-pagination>
+    </template>
     <div style="margin-top: 20px">
         <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection
         </el-button>
@@ -326,11 +339,14 @@
             datee:"",
             dates:"",
             shift:[],
-            value: [],
+            datevalue:[],
+            value: false,
             multipleSelection: [],
             deleteDialogVisible: false,//控制弹出删除窗口
             deletingIndex: -1,
             deletingObject:{},
+            currentPage: 1, //初始页
+            pagesize: 10,    //    每页的数据
         },
 
         mounted: function(){
@@ -457,6 +473,14 @@
                 addDialog.dialogVisible = true;
                 addDialog.fillRegSelect();
                 addDialog.fillDeptSelect();
+            },
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
             }
 
         }
