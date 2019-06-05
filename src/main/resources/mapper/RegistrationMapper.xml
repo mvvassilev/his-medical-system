@@ -20,5 +20,16 @@
         SELECT count(*) FROM register where shiftid = #{shiftid}
     </select>
 
+    <select id="getRegistrationsByPid" resultType="Registration">
+        select regid, newRecord , `order`, pid, itemcode, date, shiftid, u.username, d.deptname
+        from
+        (((userrdept ud join user u on u.userid = ud.userid)
+        join dept d on d.deptcode = ud.deptcode)
+        join register r on r.uRid = ud.uRid)
+        where pid = #{pid}
+    </select>
+
+
+
 
 </mapper>

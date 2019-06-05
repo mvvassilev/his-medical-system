@@ -9,6 +9,7 @@ import java.util.List;
 public interface ShiftMapper {
     public List<Shift> getShift(@Param("dates") Date dates, @Param("datee") Date datee);
 
+    //TODO: Here I omitted the date condition (The shifts to register have to be in today) for testing purpose.
     //For Registration Getting Available Doctors
     public List<Shift> getShiftsAvailable(@Param("aorp") boolean aorp,
                                           @Param("deptcode") String deptcode, @Param("nmedname") String nmedname);

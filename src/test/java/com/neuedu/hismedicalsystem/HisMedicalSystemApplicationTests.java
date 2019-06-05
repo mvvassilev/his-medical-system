@@ -98,6 +98,20 @@ public class HisMedicalSystemApplicationTests {
 		}
 	}
 
+	@Test
+	public void getRegById() {
+		try {
+			String jsonStr = "{\"dept\":\"CK\",\"date\":\"2019-06-02\",\"aorp\":\"true\",\"registrationLevel\":\"专家号\"}";
+			JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+			String responseString = mockMvc.perform(post("/registration/getRegistrations").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
+					.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+			after(responseString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	private void after(String responseString){
 		System.out.println("接口返回结果：" + responseString);
 		JSONObject resultObj = JSON.parseObject(responseString);
