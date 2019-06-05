@@ -20,4 +20,15 @@ public class OutpatientController {
 
     @RequestMapping("/temps")
     public List<Template_all> getTemp(@RequestBody Template_all condition) {return templateService.getTemp(condition);}
+
+    @RequestMapping("/addTemp")
+    public String addTemp(@RequestBody Template_all template_all) {
+        try{
+            templateService.addTemp(template_all);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{\"result\":false}";
+        }
+        return "{\"result\":true}";
+    }
 }

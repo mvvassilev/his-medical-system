@@ -17,4 +17,8 @@
             </if>
         </where>
     </select>
+
+    <insert id="addTemp">
+        insert into template_all (tempname, temptype,tempscope,createdate) values (#{tempname}, #{temptype},#{tempscope},#{createdate})
+    </insert>
 </mapper>

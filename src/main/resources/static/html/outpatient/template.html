@@ -20,23 +20,15 @@
         </el-col>
         <el-col :span="5">
             <el-select v-model="value1" placeholder="Scope">
-                <el-option-group
-                        v-for="group in option1"
-                        :key="group.label"
-                        :label="group.label">
-                    <el-option
-                            v-for="item in group.options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-option-group>
+                <el-option label="Individual" value="individual"></el-option>
+                <el-option label="Department" value="department"></el-option>
+                <el-option label="Hospital" value="hospital"></el-option>
             </el-select>
         </el-col>
         <el-col :span="5">
             <el-select v-model="value2" placeholder="Type">
                 <el-option-group
-                        v-for="group in option2"
+                        v-for="group in option"
                         :key="group.label"
                         :label="group.label">
                     <el-option
@@ -49,15 +41,15 @@
             </el-select>
         </el-col>
         <el-col :span="3">
-            <el-button icon="el-icon-search" type="primary" @click="handleClick">Search</el-button><!--search-->
+            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
         <el-col :span="3">
-            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="handleClick">Add New Entry</el-button><!--showDialogForm('Add')-->
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm">Add New Template</el-button>
         </el-col>
     </el-row>
 
     <el-table
-            :data="template_all"
+            :data="template_all.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             style="width: 100%">
         <el-table-column
                 prop="tempname"
@@ -67,7 +59,8 @@
         <el-table-column
                 prop="createdate"
                 label="Create Date"
-                width="180">
+                width="180"
+                :formatter="dateFormatter">
         </el-table-column>
         <el-table-column
                 prop="tempscope"
@@ -75,17 +68,18 @@
                 width="180">
         </el-table-column>
         <el-table-column
+
                 prop="temptype"
                 label="Type">
         </el-table-column>
         <el-table-column fixed="right" label="Operations" width="250">
-            <span>
-                <el-button size="mini" @click="handleClick">details</el-button><!--showDetailsDialogForm-->
+            <span slot-scope="scope">
+                <el-button size="mini" @click="showDetailsDialogForm(scope.row)">details</el-button>
             </span>
         </el-table-column>
     </el-table>
 
-    <!--<el-pagination
+    <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
@@ -95,67 +89,182 @@
             :hide-on-single-page="value"
             layout="total, sizes, prev, pager, next, jumper"
             :total="template_all.length">
-    </el-pagination>-->
+    </el-pagination>
 
-    <!--<el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="Name" :label-width="formLabelWidth">
                 <el-input v-model="form.tempname" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Create Date" :label-width="formLabelWidth">
-                <el-input v-model="form.createdate" autocomplete="off"></el-input>
-            </el-form-item>
             <el-form-item label="Scope" :label-width="formLabelWidth">
-                <el-input v-model="form.tempscope" autocomplete="off"></el-input>
+                <el-select v-model="form.tempscope" placeholder="Scope">
+                    <el-option label="Individual" value="individual"></el-option>
+                    <el-option label="Department" value="department"></el-option>
+                    <el-option label="Hospital" value="hospital"></el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="Type" :label-width="formLabelWidth">
-                <el-input v-model="form.temptype" autocomplete="off"></el-input>
+                <el-select v-model="form.temptype" placeholder="Type">
+                    <el-option-group
+                            v-for="group in option"
+                            :key="group.label"
+                            :label="group.label">
+                        <el-option
+                                v-for="item in group.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-option-group>
+                </el-select>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="handleClick">Confirm</el-button>
+            <el-button type="primary" @click="onSubmit">Confirm</el-button>
         </div>
-    </el-dialog>-->
+    </el-dialog>
+</div>
+<div id="details">
+    <el-dialog
+            title="Template Details"
+            :visible.sync="dialogVisible"
+            width="80%">
+        <el-row :model="form" :gutter="5">
+            <el-col :span="8">
+                <el-input type="text" v-model="form.tempname" autocomplete="off" placeholder="Name"></el-input>
+            </el-col>
+            <el-col :span="4">
+                <el-select v-model="form.tempscope" placeholder="Scope">
+                    <el-option label="Individual" value="individual"></el-option>
+                    <el-option label="Department" value="department"></el-option>
+                    <el-option label="Hospital" value="hospital"></el-option>
+                </el-select>
+            </el-col>
+            <el-col :span="12">
+                <el-select v-model="form.temptype" placeholder="Type">
+                    <el-option-group
+                            v-for="group in option"
+                            :key="group.label"
+                            :label="group.label">
+                        <el-option
+                                v-for="item in group.options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-option-group>
+                </el-select>
+            </el-col>
+        </el-row>
+
+        <el-row style="margin-top: 20px">
+            <el-col :span="4">
+                <el-button icon="el-icon-search" type="primary" @click="">Add New Item</el-button>
+            </el-col>
+            <el-col :span="4">
+                <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="visible">
+                    <p>This gonna change the template, continue or not</p>
+                    <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text" @click="uvisible = false">Cancel</el-button>
+                        <el-button type="primary" size="mini" @click="uvisible = false">Confirm</el-button>
+                    </div>
+                    <el-button icon="el-icon-check" type="primary" @click="" slot="reference">Update Confirm</el-button>
+                </el-popover>
+            </el-col>
+            <el-col :span="16">
+                <el-popover
+                        placement="top"
+                        width="160"
+                        v-model="visible">
+                    <p>Are you sure you want to delete this template?</p>
+                    <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text" @click="dvisible = false">Cancel</el-button>
+                        <el-button type="primary" size="mini" @click="dvisible = false">Confirm</el-button>
+                    </div>
+                    <el-button icon="el-icon-delete" type="primary" @click="" slot="reference">Delete Template</el-button>
+                </el-popover>
+            </el-col>
+        </el-row>
+
+        <el-table
+                ref="multipleTable"
+                :data="details"
+                style="width: 100%"
+                tooltip-effect="dark"
+                @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="itemcode"
+                    label="Item Code"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="itemname"
+                    label="Item Name"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="size"
+                    label="Size"
+                    width="180">
+            </el-table-column>
+            <el-table-column
+                    prop="part"
+                    label="Part">
+            </el-table-column>
+            <el-table-column fixed="right" label="Operations" width="250">
+            <span>
+                <el-button type="warning" size="mini" @click="">delete</el-button>
+            </span>
+            </el-table-column>
+        </el-table>
+        <div style="margin-top: 20px">
+            <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection</el-button>
+            <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
+                       @click="delAllItem(multipleSelection)">Delete All</el-button>
+        </div>
+        <el-dialog title="Add new item" :visible.sync="dialogItemFormVisible">
+            <el-form :model="form">
+                <el-form-item label="活动名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.name" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="活动区域" :label-width="formLabelWidth">
+                    <el-select v-model="form.region" placeholder="请选择活动区域">
+                        <el-option label="区域一" value="shanghai"></el-option>
+                        <el-option label="区域二" value="beijing"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            </div>
+        </el-dialog>
+    </el-dialog>
 </div>
 </body>
 <script>
     var app = new Vue({
         el: '#template_all',
         data(){
-            return {option1:[{
-                    options:[{
-                        value:'all',
-                        label:'All'
-                    }]
-                },{
-                    label:'Scope',
-                    options: [{
-                        value: 'individual',
-                        label: 'Individual'
-                    }, {
-                        value: 'department',
-                        label: 'Department'
-                    },{
-                        value:'hospital',
-                        label:'Hospital'
-                    }]
-                }],
-                option2: [{
-                    options:[{
-                        value:'all',
-                        label:'All'
-                    }]
-                },{
+            return {
+                option: [{
                     label: 'Medical Technology',
                     options: [{
-                        value: 'JCF',
+                        value: 'examination',
                         label: 'Examination'
                     }, {
-                        value: 'JYF',
+                        value: 'test',
                         label: 'Test'
                     },{
-                        value:'CZF',
+                        value:'disposal',
                         label:'Disposal'
                     }]
                 }, {
@@ -180,18 +289,25 @@
                 temptype:"",
                 template_all:[],
 
-                /*currentPage: 1,//初始页
-                pagesize: 10,//每页的数据
+                value: false,
+                currentPage: 1,//初始页
+                pagesize:5,//每页的数据
                 formTitle:"",
-                dialogFormVisible: false,*/
+                dialogFormVisible: false,
+                form:{
+                    tempname:"",
+                    tempscope:"",
+                    temptype:"",
+                },
+                formLabelWidth: '120px'
             }
         },
 
-        /*mounted: function(){
-            console.log("refresh!!!")
+        mounted: function(){
+            console.log("refresh!!!");
             this.currentPage = 1;
             var that = this;
-            axios.post('//', {})
+            axios.post('/outpatient/temps', {})
                 .then(function (response) {
                     console.log(response.data);
                     that.template_all = response.data;
@@ -199,18 +315,207 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-        },*/
+        },
 
         methods: {
-            handleClick() {
-                console.log("test");
+            dateFormatter:function(row){
+                var time1 = row.createdate;
+                var time2 = myTime(time1);
+                function myTime(date) {
+                    var arr=date.split("T");
+                    var d=arr[0];
+                    var darr = d.split('-');
+
+                    var t=arr[1];
+                    var tarr = t.split('.000');
+                    var marr = tarr[0].split(':');
+
+                    var dd = parseInt(darr[0])+"-"+parseInt(darr[1])+"-"+parseInt(darr[2])+" "+(parseInt(marr[0])+8)+":"+parseInt(marr[1])+":"+parseInt(marr[2]);
+
+                    return dd;
+                }
+                return time2;
             },
 
-            /*showDetailsDialogForm: function () {
+            showDialogForm:function(){
+                this.form = {
+                    tempname:"",
+                    tempscope:"",
+                    temptype:"",
+                };
+                this.dialogFormVisible = true;
+            },
+
+            onSubmit: function() {
+                this.onSubmitAdd();
+                this.dialogFormVisible = false;
+                this.refresh();
+            },
+
+            onSubmitAdd: function() {
+                var that = this;
+                var d=new Date();
+
+                console.log(that.form);
+                axios.post('/outpatient/addTemp', {
+                    tempname: that.form.tempname,
+                    tempscope: that.form.tempscope,
+                    temptype: that.form.temptype,
+                    createdate: d.getTime(),
+                })
+                    .then(function(response) {
+                        console.log(response.data);
+                        // that.depts=response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            search: function() {
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/outpatient/temps', {
+                    tempname: that.tempname,
+                    temptype: that.value2,
+                    tempscope: that.value1,
+                    createdate: that.createdate,
+                })
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.template_all = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            refresh: function() {
+                template_all=[];
+                this.currentPage = 1;
+                var that = this;
+                axios.post('/outpatient/temps', {
+                    tempname: "",
+                    temptype: "",
+                    tempscope: "",
+                    createdate: "",
+                })
+                    .then(function(response) {
+                        console.log(response.data);
+                        that.template_all = response.data;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+
+            showDetailsDialogForm: function (row) {
+                dialog.form = {
+                    tempname:row.tempname,
+                    tempscope:row.tempscope,
+                    temptype:row.temptype,
+                };
                 dialog.dialogVisible = true;
-            },*/
+            },
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
+            }
         }
     });
+
+    var dialog = new Vue({
+        el: '#details',
+        data(){
+            return{
+                option: [{
+                    label: 'Medical Technology',
+                    options: [{
+                        value: 'examination',
+                        label: 'Examination'
+                    }, {
+                        value: 'test',
+                        label: 'Test'
+                    },{
+                        value:'disposal',
+                        label:'Disposal'
+                    }]
+                }, {
+                    label: 'Medicine',
+                    options: [{
+                        value: 'XYF',
+                        label: 'Western Medicine'
+                    }, {
+                        value: 'ZCHYF',
+                        label: 'Patent Medicine'
+                    }, {
+                        value: 'ZCYF',
+                        label: 'Herbal Medicine'
+                    }]
+                }],
+                /*value1: '',
+                value2: '',*/
+
+                tempname:"",
+                tempscope:"",
+                temptype:"",
+
+                details:[],
+                dvisible: false,
+                uvisible: false,
+
+                dialogVisible: false,
+                multipleSelection:[],
+
+                deleteDialogVisible: false,//控制弹出删除窗口
+                deletingIndex: -1,
+                deletingObject:{},
+                form:{
+                    tempname:"",
+                    tempscope:"",
+                    temptype:"",
+                },
+            }
+        },
+        methods: {
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.multipleTable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.multipleTable.clearSelection();
+                }
+            },
+
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+
+            /*openConfirmDialog:function() {
+                this.$confirm('Sure to arrange?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    this.arrangeShift()
+                    this.$message({
+                        type: 'success',
+                        message: 'Arrange Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel Arrangement.'
+                    });
+                });
+            }*/
+        }
+    })
 </script>
 
 </html>
