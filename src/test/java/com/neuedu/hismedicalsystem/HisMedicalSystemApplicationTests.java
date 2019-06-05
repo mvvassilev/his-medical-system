@@ -111,6 +111,31 @@ public class HisMedicalSystemApplicationTests {
 		}
 	}
 
+    @Test
+    public void getPatientsOfUserToday() {
+        try {
+            String jsonStr = "{\"state\":\"已挂号\",\"userid\":\"20123\"}";
+            JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+            String responseString = mockMvc.perform(post("/outpatient/getPatientsOfUserToday").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
+                    .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+            after(responseString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getPatientsOfDeptToday() {
+        try {
+            String jsonStr = "{\"state\":\"已挂号\",\"deptcode\":\"FLK\"}";
+            JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+            String responseString = mockMvc.perform(post("/outpatient/getPatientsOfDeptToday").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
+                    .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+            after(responseString);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	private void after(String responseString){
 		System.out.println("接口返回结果：" + responseString);
