@@ -33,10 +33,10 @@ public class RegistrationController {
         String deptcode = obj.getString("deptcode");
         boolean aorp = obj.getBoolean("aorp");
         String nmedname = obj.getString("registrationLevel");
-        System.out.println("___________________*_*_*_*_*_*_*_*_*_*_*_**_*_*_*_*_");
+        System.out.println("*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
         System.out.println("nmedname "+nmedname);
         List<Shift> list = registrationService.getAvailableDoctorList(aorp,deptcode,nmedname);
-        System.out.println("___________________*_*_*_*_*_*_*_*_*_*_*_**_*_*_*_*_");
+        System.out.println("*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
         for(Shift shift : list){
             System.out.println(shift.toString());
         }
@@ -48,6 +48,9 @@ public class RegistrationController {
 //        try {
 //
         System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
+        System.out.println("Submit Registration");
+        System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
+
 
         Patient patient = (Patient) JSONObject.toJavaObject(obj.getJSONObject("patient"), Patient.class);
         System.out.println("patient = " + patient);
@@ -90,7 +93,7 @@ public class RegistrationController {
         System.out.println("Price "+price);
         return price;
     }
-    
+
     @RequestMapping("/getRegistrations")
     public List<Registration> getRegistrations() {
         List<Registration> rList = registrationService.getRegistrationsByPid(2);
