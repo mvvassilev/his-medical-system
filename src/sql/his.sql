@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50562
 File Encoding         : 65001
 
-Date: 2019-06-03 11:13:26
+Date: 2019-06-05 10:13:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -19,7 +19,7 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `bill`;
 CREATE TABLE `bill` (
-  `billid` int(10) NOT NULL,
+  `billid` int(10) NOT NULL AUTO_INCREMENT,
   `totalprice` double(20,0) NOT NULL,
   `pid` int(10) NOT NULL,
   `count` int(10) NOT NULL,
@@ -61,7 +61,7 @@ INSERT INTO `constant` VALUES ('3', 'XNH', 'billcat', '新农合');
 -- ----------------------------
 DROP TABLE IF EXISTS `dailyrecord`;
 CREATE TABLE `dailyrecord` (
-  `drid` int(10) NOT NULL,
+  `drid` int(10) NOT NULL AUTO_INCREMENT,
   `userid` int(10) NOT NULL,
   `state` varchar(40) NOT NULL,
   `recordtime` datetime NOT NULL,
@@ -2029,251 +2029,6 @@ INSERT INTO `disease` VALUES ('B67.902', 'FBCBFJQYB', '肺病', '肺包虫病[�
 INSERT INTO `disease` VALUES ('B67.903', 'FQJQYB', '其它腹部疾病', '腹腔棘球蚴病');
 INSERT INTO `disease` VALUES ('B67.905', 'NJQYB', '脑炎', '脑棘球蚴病');
 INSERT INTO `disease` VALUES ('B67.906', 'XMJQYB', '胸膜疾病', '胸膜棘球蚴病');
-INSERT INTO `disease` VALUES ('B68.001', 'ZRTCB', '虫病', '猪肉绦虫病');
-INSERT INTO `disease` VALUES ('B68.051', 'CTCB', '虫病', '肠绦虫病');
-INSERT INTO `disease` VALUES ('B68.101', 'NRTCB', '虫病', '牛肉绦虫病');
-INSERT INTO `disease` VALUES ('B68.951', 'TCB', '虫病', '绦虫病 NOS');
-INSERT INTO `disease` VALUES ('B68.952', 'TCXNBB', '脑炎', '绦虫性脑病变');
-INSERT INTO `disease` VALUES ('B69.001+', 'NNCBNNWYB', '脑炎', '脑囊虫病[脑囊尾蚴病]');
-INSERT INTO `disease` VALUES ('B69.051+', 'NWYBDX', '癫痫', '囊尾蚴病癫痫');
-INSERT INTO `disease` VALUES ('B69.052+', 'ZSSJXTNWYB', '神经系统疾病', '中枢神经系统囊尾蚴病');
-INSERT INTO `disease` VALUES ('B69.101+', 'NCBY', '眼部疾病', '囊虫病(眼)');
-INSERT INTO `disease` VALUES ('B69.801', 'GNCB', '肝部疾病', '肝囊虫病');
-INSERT INTO `disease` VALUES ('B69.802', 'GNCB', '虫病', '骨囊虫病');
-INSERT INTO `disease` VALUES ('B69.803', 'JRNCB', '虫病', '肌肉囊虫病');
-INSERT INTO `disease` VALUES ('B69.804', 'PFNCB', '皮肤病', '皮肤囊虫病');
-INSERT INTO `disease` VALUES ('B69.901', 'NWYBNCB', '虫病', '囊尾蚴病[囊虫病] NOS');
-INSERT INTO `disease` VALUES ('B69.902', 'NCGR', '感染', '囊虫感染');
-INSERT INTO `disease` VALUES ('S01.201', 'KFXBSK', '鼻部疾病', '开放性鼻伤口');
-INSERT INTO `disease` VALUES ('S01.202', 'DDYWBKFXSK', '开放性伤口', '蝶窦异物伴开放性伤口');
-INSERT INTO `disease` VALUES ('S01.251', 'BKFXSSBGR', '鼻部疾病', '鼻开放性损伤伴感染');
-INSERT INTO `disease` VALUES ('S01.301', 'EKKFXSK', '耳部疾病', '耳廓开放性伤口');
-INSERT INTO `disease` VALUES ('S01.351', 'EKKFXSSBGR', '耳部疾病', '耳廓开放性损伤伴感染');
-INSERT INTO `disease` VALUES ('S01.352', 'WEKFXSK', '耳部疾病', '外耳开放性伤口');
-INSERT INTO `disease` VALUES ('S01.451', 'JHNXHKFXSK', '开放性伤口', '颊和颞下颌开放性伤口');
-INSERT INTO `disease` VALUES ('S01.501', 'SKFXSK', '开放性伤口', '舌开放性伤口');
-INSERT INTO `disease` VALUES ('S01.502', 'CKFXSK', '开放性伤口', '唇开放性伤口');
-INSERT INTO `disease` VALUES ('S01.503', 'YYLS', '牙齿疾病', '牙龈裂伤');
-INSERT INTO `disease` VALUES ('S01.504', 'RECTS', '其它暂时无法归类的', '软腭穿通伤');
-INSERT INTO `disease` VALUES ('S01.551', 'KQKFXSK', '开放性伤口', '口腔开放性伤口');
-INSERT INTO `disease` VALUES ('S01.552', 'RESLS', '裂伤', '软腭撕裂伤');
-INSERT INTO `disease` VALUES ('S01.751', 'TBDCKFXSK', '开放性伤口', '头部多处开放性伤口');
-INSERT INTO `disease` VALUES ('S01.801', 'MBLS', '裂伤', '面部裂伤');
-INSERT INTO `disease` VALUES ('S01.802', 'MBKFXSK', '开放性伤口', '面部开放性伤口');
-INSERT INTO `disease` VALUES ('S01.803', 'MBYW', '其它暂时无法归类的', '面部异物');
-INSERT INTO `disease` VALUES ('S01.851', 'XHRZZLS', '裂伤', '下颌软组织裂伤');
-INSERT INTO `disease` VALUES ('S01.852', 'HBKFXSK', '开放性伤口', '颌部开放性伤口');
-INSERT INTO `disease` VALUES ('S01.853', 'MBCLS', '裂伤', '面部挫裂伤');
-INSERT INTO `disease` VALUES ('S01.854', 'MBCLSBGR', '感染', '面部挫裂伤伴感染');
-INSERT INTO `disease` VALUES ('S01.855', 'JQKFXSK', '开放性伤口', '颊区开放性伤口');
-INSERT INTO `disease` VALUES ('S01.856', 'EQYCLS', '裂伤', '额前叶挫裂伤');
-INSERT INTO `disease` VALUES ('S01.901', 'TBKFXSK', '开放性伤口', '头部开放性伤口 NOS');
-INSERT INTO `disease` VALUES ('S02.001', 'DGGZ', '骨折', '顶骨骨折');
-INSERT INTO `disease` VALUES ('S02.002', 'EGGZ', '骨折', '额骨骨折');
-INSERT INTO `disease` VALUES ('S02.011', 'DGKFXGZ', '骨折', '顶骨开放性骨折');
-INSERT INTO `disease` VALUES ('S02.012', 'EGKFXGZ', '骨折', '额骨开放性骨折');
-INSERT INTO `disease` VALUES ('S02.101', 'LDGZ', '骨折', '颅底骨折');
-INSERT INTO `disease` VALUES ('S02.102', 'ZGGZ', '骨折', '枕骨骨折');
-INSERT INTO `disease` VALUES ('S02.103', 'NGGZ', '骨折', '颞骨骨折');
-INSERT INTO `disease` VALUES ('S02.1051', 'SDGZ', '骨折', '筛窦骨折');
-INSERT INTO `disease` VALUES ('S02.1052', 'EDGZ', '骨折', '额窦骨折');
-INSERT INTO `disease` VALUES ('S02.1053', 'DGGZ', '骨折', '蝶骨骨折');
-INSERT INTO `disease` VALUES ('S02.111', 'LDKFXGZ', '骨折', '颅底开放性骨折');
-INSERT INTO `disease` VALUES ('S02.1151', 'NGKFXGZ', '骨折', '颞骨开放性骨折');
-INSERT INTO `disease` VALUES ('S02.201', 'BGGZ', '鼻部疾病', '鼻骨骨折');
-INSERT INTO `disease` VALUES ('S02.211', 'BGKFXGZ', '鼻部疾病', '鼻骨开放性骨折');
-INSERT INTO `disease` VALUES ('S02.3051', 'KDGZ', '骨折', '眶底骨折');
-INSERT INTO `disease` VALUES ('S02.401', 'QGGZ', '骨折', '颧弓骨折');
-INSERT INTO `disease` VALUES ('S02.402', 'QGGZ', '骨折', '颧骨骨折');
-INSERT INTO `disease` VALUES ('S02.403', 'SHGGZ', '骨折', '上颌骨骨折');
-INSERT INTO `disease` VALUES ('S02.404', 'QGJSHGGZ', '骨折', '颧骨及上颌骨骨折');
-INSERT INTO `disease` VALUES ('S02.4051', 'SHDGZ', '骨折', '上颌窦骨折');
-INSERT INTO `disease` VALUES ('S02.411', 'QGKFXGZ', '骨折', '颧骨开放性骨折');
-INSERT INTO `disease` VALUES ('S02.412', 'SHGKFXGZ', '骨折', '上颌骨开放性骨折');
-INSERT INTO `disease` VALUES ('S02.5151', 'CSXYZD', '牙齿疾病', '创伤性牙折断');
-INSERT INTO `disease` VALUES ('S02.601', 'XHGKZTGGZ', '骨折', '下颌骨髁状突颈骨折');
-INSERT INTO `disease` VALUES ('S02.602', 'XHGGZ', '骨折', '下颌骨骨折');
-INSERT INTO `disease` VALUES ('S02.611', 'XHGKFXGZ', '骨折', '下颌骨开放性骨折');
-INSERT INTO `disease` VALUES ('S02.701', 'DFXLGGZ', '骨折', '多发性颅骨骨折');
-INSERT INTO `disease` VALUES ('S02.7051', 'LGHMGBQTGTDDFXGZ', '骨折', '颅骨或面骨伴其他骨头的多发性骨折');
-INSERT INTO `disease` VALUES ('S02.711', 'LDSHGKFXGZ', '骨折', '颅底、上颌骨开放性骨折');
-INSERT INTO `disease` VALUES ('S02.712', 'LGDFXKFXGZ', '骨折', '颅骨多发性开放性骨折');
-INSERT INTO `disease` VALUES ('S02.801', 'KGGZ', '骨折', '眶骨骨折 NOS');
-INSERT INTO `disease` VALUES ('S02.802', 'YCGCCGZ', '牙齿疾病', '牙槽骨(齿槽)骨折');
-INSERT INTO `disease` VALUES ('S02.8051', 'EGGZ', '骨折', '腭骨骨折');
-INSERT INTO `disease` VALUES ('S02.811', 'BDKFXGZ', '鼻部疾病', '鼻窦开放性骨折');
-INSERT INTO `disease` VALUES ('S02.8151', 'YCKFXGZ', '牙齿疾病', '牙槽开放性骨折');
-INSERT INTO `disease` VALUES ('S02.901', 'MGGZ', '骨折', '面骨骨折 NOS');
-INSERT INTO `disease` VALUES ('S02.902', 'LGGZ', '骨折', '颅骨骨折 NOS');
-INSERT INTO `disease` VALUES ('S02.911', 'LGKFXGZ', '骨折', '颅骨开放性骨折 NOS');
-INSERT INTO `disease` VALUES ('S02.9151', 'LGMGDFXKFXGZ', '骨折', '颅骨、面骨多发性开放性骨折');
-INSERT INTO `disease` VALUES ('S03.051', 'HGJDCTW', '关节疾病', '颌关节单纯脱位');
-INSERT INTO `disease` VALUES ('S03.052', 'HGJDKXTW', '关节疾病', '颌关节哆开性脱位');
-INSERT INTO `disease` VALUES ('S03.053', 'NXHGJTW', '关节疾病', '颞下颌关节脱位');
-INSERT INTO `disease` VALUES ('S03.151', 'BZGRGTW', '鼻部疾病', '鼻中隔软骨脱位');
-INSERT INTO `disease` VALUES ('S03.251', 'CSXYCTL', '牙齿疾病', '创伤性牙齿脱落');
-INSERT INTO `disease` VALUES ('S03.351', 'TBQTHWTZBWDTW', '脱位', '头部其他和未特指部位的脱位');
-INSERT INTO `disease` VALUES ('S03.451', 'HGJNSHLS', '关节疾病', '颌关节扭损和劳损');
-INSERT INTO `disease` VALUES ('S03.452', 'NXHGJRDNS', '关节疾病', '颞下颌(关节)(韧带)扭伤');
-INSERT INTO `disease` VALUES ('S03.551', 'TBQTHWTBWDGJHRDNSHLS', '关节疾病', '头部其他和未特部位的关节和韧带扭伤和劳损');
-INSERT INTO `disease` VALUES ('S04.001', 'SSJSSDE', '神经系统疾病', '视神经损伤[第二]');
-INSERT INTO `disease` VALUES ('S04.101', 'DYSJSSDS', '神经系统疾病', '动眼神经损伤[第三]');
-INSERT INTO `disease` VALUES ('S04.251', 'HCSJSSDS', '神经系统疾病', '滑车神经损伤[第四]');
-INSERT INTO `disease` VALUES ('S04.301', 'KXSJSS', '神经系统疾病', '眶下神经损伤');
-INSERT INTO `disease` VALUES ('S04.351', 'SCSJSSDW', '神经系统疾病', '三叉神经损伤[第五]');
-INSERT INTO `disease` VALUES ('S04.451', 'WZSJSSDL', '神经系统疾病', '外展神经损伤[第六]');
-INSERT INTO `disease` VALUES ('S04.501', 'MSJWSDQ', '神经系统疾病', '面神经外伤[第七]');
-INSERT INTO `disease` VALUES ('S04.601', 'TSJSSDB', '神经系统疾病', '听神经损伤[第八]');
-INSERT INTO `disease` VALUES ('S04.651', 'CSXELDBLTHTLSJSS', '神经系统疾病', '创伤性耳聋[第八颅(听或听力)神经损伤]');
-INSERT INTO `disease` VALUES ('S04.751', 'FSJSSDSY', '神经系统疾病', '副神经损伤[第十一]');
-INSERT INTO `disease` VALUES ('S04.801', 'SXSJSSDSE', '神经系统疾病', '舌下神经损伤[第十二]');
-INSERT INTO `disease` VALUES ('S04.851', 'XSJSSDY', '神经系统疾病', '嗅神经损伤[第一]');
-INSERT INTO `disease` VALUES ('S04.852', 'LZWSJSS', '神经系统疾病', '颅周围神经损伤');
-INSERT INTO `disease` VALUES ('S04.853', 'MZSJSSDS', '神经系统疾病', '迷走神经损伤[第十]');
-INSERT INTO `disease` VALUES ('S04.854', 'HFSJSS', '神经系统疾病', '喉返神经损伤');
-INSERT INTO `disease` VALUES ('S04.855', 'SYSJSSDJ', '神经系统疾病', '舌咽神经损伤[第九]');
-INSERT INTO `disease` VALUES ('S04.951', 'LSJSS', '神经系统疾病', '颅神经损伤 NOS');
-INSERT INTO `disease` VALUES ('S05.051', 'JHMSS', '损伤', '结合膜损伤');
-INSERT INTO `disease` VALUES ('S05.052', 'JMCS', '角膜疾病', '角膜擦伤');
-INSERT INTO `disease` VALUES ('S05.101', 'YQCS', '眼部疾病', '眼球挫伤');
-INSERT INTO `disease` VALUES ('S05.102', 'CSXYQFCX', '眼部疾病', '创伤性眼前房出血');
-INSERT INTO `disease` VALUES ('S05.151', 'KZZCS', '挫伤', '眶组织挫伤');
-INSERT INTO `disease` VALUES ('S05.152', 'YQCSBQFJX', '眼部疾病', '眼球挫伤伴前房积血');
-INSERT INTO `disease` VALUES ('S05.201', 'CSXBLTS', '玻璃体疾病', '创伤性玻璃体疝');
-INSERT INTO `disease` VALUES ('S05.202', 'CSXHMQD', '创伤性疾病', '创伤性虹膜嵌顿');
-INSERT INTO `disease` VALUES ('S05.203', 'JMCTSBBLTQD', '玻璃体疾病', '角膜穿通伤伴玻璃体嵌顿');
-INSERT INTO `disease` VALUES ('S05.204', 'JMCTSBHMQD', '角膜疾病', '角膜穿通伤伴虹膜嵌顿');
-INSERT INTO `disease` VALUES ('S05.205', 'JMCTSBJZTQD', '角膜疾病', '角膜穿通伤伴晶状体嵌顿');
-INSERT INTO `disease` VALUES ('S05.206', 'JMCTSBBLTYC', '玻璃体疾病', '角膜穿透伤伴玻璃体溢出');
-INSERT INTO `disease` VALUES ('S05.207', 'CSXHMTC', '创伤性疾病', '创伤性虹膜脱垂');
-INSERT INTO `disease` VALUES ('S05.208', 'CSXJZTTC', '创伤性疾病', '创伤性睫状体脱垂');
-INSERT INTO `disease` VALUES ('S05.209', 'JMCTSBHMTC', '脱出', '角膜穿通伤伴虹膜脱出');
-INSERT INTO `disease` VALUES ('S05.210', 'YQLSBYNZZTC', '眼部疾病', '眼球裂伤伴眼内组织脱垂');
-INSERT INTO `disease` VALUES ('S05.251', 'CSHBLTTC', '玻璃体疾病', '创伤后玻璃体脱垂');
-INSERT INTO `disease` VALUES ('S05.252', 'JGMLSBYNZZTC', '眼部疾病', '角、巩膜裂伤伴眼内组织脱垂');
-INSERT INTO `disease` VALUES ('S05.253', 'YQSLBYNZZTC', '眼部疾病', '眼球撕裂伴眼内组织脱垂');
-INSERT INTO `disease` VALUES ('S05.254', 'YPLBYNZZBFQS', '眼部疾病', '眼破裂伴眼内组织部分缺失');
-INSERT INTO `disease` VALUES ('S05.301', 'GMPL', '其它暂时无法归类的', '巩膜破裂');
-INSERT INTO `disease` VALUES ('S05.302', 'JMLS', '裂伤', '角膜裂伤');
-INSERT INTO `disease` VALUES ('S05.303', 'JMLS', '裂伤', '结膜裂伤');
-INSERT INTO `disease` VALUES ('S05.304', 'YQPL', '眼部疾病', '眼球破裂');
-INSERT INTO `disease` VALUES ('S05.305', 'YSLSBBYYNZZTCHQS', '眼部疾病', '眼撕裂伤，不伴有眼内组织脱出或缺失');
-INSERT INTO `disease` VALUES ('S05.306', 'HMPL', '虹膜疾病', '虹膜破裂');
-INSERT INTO `disease` VALUES ('S05.307', 'CSXQFJPL', '创伤性疾病', '创伤性前房角破裂');
-INSERT INTO `disease` VALUES ('S05.308', 'YSLS', '眼部疾病', '眼撕裂伤 NOS');
-INSERT INTO `disease` VALUES ('S05.401', 'KNYW', '其它暂时无法归类的', '眶内异物');
-INSERT INTO `disease` VALUES ('S05.451', 'YKCTS', '眼部疾病', '眼眶穿透伤');
-INSERT INTO `disease` VALUES ('S05.452', 'YKCCSBKNYW', '眼部疾病', '眼眶穿刺伤伴眶内异物');
-INSERT INTO `disease` VALUES ('S05.501', 'CSXYNYW', '眼部疾病', '创伤性眼内异物');
-INSERT INTO `disease` VALUES ('S05.502', 'YQCTSBCXYW', '眼部疾病', '眼球穿通伤伴磁性异物');
-INSERT INTO `disease` VALUES ('S05.503', 'YQCTSBFCXYW', '眼部疾病', '眼球穿通伤伴非磁性异物');
-INSERT INTO `disease` VALUES ('S05.601', 'YQCTSBHMQS', '眼部疾病', '眼球穿通伤伴虹膜缺损');
-INSERT INTO `disease` VALUES ('S05.602', 'YQCTS', '眼部疾病', '眼球穿通伤');
-INSERT INTO `disease` VALUES ('S05.603', 'JMCTS', '角膜疾病', '角膜穿通伤');
-INSERT INTO `disease` VALUES ('S05.604', 'GMCTS', '其它暂时无法归类的', '巩膜穿通伤');
-INSERT INTO `disease` VALUES ('S05.651', 'KFXTSMTMYQCRXSK', '眼部疾病', '开放性特塞梅特膜(眼球穿入性伤口)');
-INSERT INTO `disease` VALUES ('S05.751', 'YSTS', '眼部疾病', '眼撕脱伤');
-INSERT INTO `disease` VALUES ('S05.752', 'CSXYWCS', '眼部疾病', '创伤性眼剜出术');
-INSERT INTO `disease` VALUES ('S05.801', 'CSXHMTL', '创伤性疾病', '创伤性虹膜脱离');
-INSERT INTO `disease` VALUES ('S05.802', 'CSXJZTTW', '创伤性疾病', '创伤性晶状体脱位');
-INSERT INTO `disease` VALUES ('S05.803', 'JMSS', '损伤', '角膜损伤');
-INSERT INTO `disease` VALUES ('S05.804', 'SWMZDBELBCSX', '创伤性疾病', '视网膜震荡[贝尔林病(创伤性)]');
-INSERT INTO `disease` VALUES ('S05.805', 'YCS', '眼部疾病', '眼挫伤');
-INSERT INTO `disease` VALUES ('S05.851', 'YHKDQTSS', '眼部疾病', '眼和眶的其他损伤');
-INSERT INTO `disease` VALUES ('S05.852', 'LDGSS', '损伤', '泪道管损伤');
-INSERT INTO `disease` VALUES ('S05.853', 'JZTSS', '损伤', '晶状体损伤');
-INSERT INTO `disease` VALUES ('S05.854', 'SWMSS', '损伤', '视网膜损伤');
-INSERT INTO `disease` VALUES ('S05.855', 'HMJZTSS', '损伤', '虹膜睫状体损伤');
-INSERT INTO `disease` VALUES ('S05.856', 'GMSS', '损伤', '巩膜损伤');
-INSERT INTO `disease` VALUES ('S05.901', 'CSXSM', '创伤性疾病', '创伤性失明');
-INSERT INTO `disease` VALUES ('S05.902', 'YWS', '眼部疾病', '眼外伤 NOS');
-INSERT INTO `disease` VALUES ('S05.903', 'YKFXWS', '眼部疾病', '眼开放性外伤');
-INSERT INTO `disease` VALUES ('S05.951', 'BLTSS', '玻璃体疾病', '玻璃体损伤');
-INSERT INTO `disease` VALUES ('S05.952', 'KSS', '损伤', '眶损伤');
-INSERT INTO `disease` VALUES ('S05.953', 'JZTTW', '脱位', '晶状体脱位');
-INSERT INTO `disease` VALUES ('S05.954', 'GMCKS', '其它暂时无法归类的', '巩膜穿孔伤');
-INSERT INTO `disease` VALUES ('S06.001', 'NZD', '脑炎', '脑震荡');
-INSERT INTO `disease` VALUES ('S06.0051', 'CSXJQDNB', '脑炎', '创伤性(近期的)脑病');
-INSERT INTO `disease` VALUES ('S06.1051', 'CSXDNSZ', '脑炎', '创伤性大脑水肿');
-INSERT INTO `disease` VALUES ('S06.201', 'NCS', '脑炎', '脑挫伤');
-INSERT INTO `disease` VALUES ('S06.202', 'MMXNSS', '脑炎', '弥漫性脑损伤');
-INSERT INTO `disease` VALUES ('S06.203', 'NGCS', '脑炎', '脑干挫伤');
-INSERT INTO `disease` VALUES ('S06.2051', 'DNSLS', '脑炎', '大脑撕裂伤 NOS');
-INSERT INTO `disease` VALUES ('S06.2052', 'CSXNSY', '脑炎', '创伤性脑受压 NOS');
-INSERT INTO `disease` VALUES ('S06.211', 'KFXNCS', '脑炎', '开放性脑挫伤');
-INSERT INTO `disease` VALUES ('S06.3051', 'CSXDNNCX', '脑炎', '创伤性大脑内出血');
-INSERT INTO `disease` VALUES ('S06.3052', 'BZXNSS', '脑炎', '病灶性脑损伤');
-INSERT INTO `disease` VALUES ('S06.3151', 'SZDPLBKFXLNSK', '口部疾病', '矢状窦破裂伴开放性颅内伤口');
-INSERT INTO `disease` VALUES ('S06.401', 'CSXYMWXZ', '血肿', '创伤性硬膜外血肿');
-INSERT INTO `disease` VALUES ('S06.4051', 'NCSBYNMWXZ', '脑膜炎', '脑挫伤伴硬脑膜外血肿');
-INSERT INTO `disease` VALUES ('S06.501', 'CSXYMXXZ', '血肿', '创伤性硬膜下血肿');
-INSERT INTO `disease` VALUES ('S06.5051', 'CSXZWMXQCX', '创伤性疾病', '创伤性蛛网膜下腔出血');
-INSERT INTO `disease` VALUES ('S06.5151', 'CSXYNMXCZBKFXLNSK', '脑膜炎', '创伤性硬脑膜下出肿伴开放性颅内伤口');
-INSERT INTO `disease` VALUES ('S06.601', 'NCSBYNMXXZ', '脑膜炎', '脑挫伤伴硬脑膜下血肿');
-INSERT INTO `disease` VALUES ('S06.6051', 'NCSBZWMXQCX', '脑炎', '脑挫伤伴蛛网膜下腔出血');
-INSERT INTO `disease` VALUES ('S06.6052', 'CSXZWMXQCX', '创伤性疾病', '创伤性蛛网膜下(腔)出血');
-INSERT INTO `disease` VALUES ('S06.7051', 'LNSSBYYCDHM', '颅内损伤', '颅内损伤伴有延长的昏迷');
-INSERT INTO `disease` VALUES ('S06.801', 'CSXNXZ', '脑炎', '创伤性脑血肿');
-INSERT INTO `disease` VALUES ('S06.802', 'CSXNCX', '脑炎', '创伤性脑出血');
-INSERT INTO `disease` VALUES ('S06.803', 'CSXNGCX', '脑炎', '创伤性脑干出血');
-INSERT INTO `disease` VALUES ('S06.804', 'CSXNS', '脑炎', '创伤性脑疝');
-INSERT INTO `disease` VALUES ('S06.8051', 'CSXLNXZ', '血肿', '创伤性颅内血肿');
-INSERT INTO `disease` VALUES ('S06.8052', 'NCSBNNXZ', '脑炎', '脑挫伤伴脑内血肿');
-INSERT INTO `disease` VALUES ('S06.8053', 'CSXLNXGSS', '创伤性疾病', '创伤性颅内血管损伤');
-INSERT INTO `disease` VALUES ('S06.8151', 'NCXBKFXLNSK', '脑炎', '脑出血伴开放性颅内伤口');
-INSERT INTO `disease` VALUES ('S06.8152', 'NGCSBKFXLNSK', '脑炎', '脑干挫伤伴开放性颅内伤口');
-INSERT INTO `disease` VALUES ('S06.9051', 'EDGZBLNSS', '颅内损伤', '额窦骨折伴颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9052', 'QGGZBLNSS', '颅内损伤', '颧弓骨折伴颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9053', 'DGGZBLNSS', '颅内损伤', '顶骨骨折伴颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9054', 'EGGZBLNSS', '颅内损伤', '额骨骨折伴颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9055', 'NGGZBLNSS', '颅内损伤', '颞骨骨折伴颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9056', 'LGDFXGZBLNSS', '颅内损伤', '颅骨多发性骨折伴颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9057', 'CSXNGS', '脑炎', '创伤性脑梗塞');
-INSERT INTO `disease` VALUES ('S06.9058', 'LDGZBLNSS', '颅内损伤', '颅底骨折伴颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9059', 'LGGZBLNSS', '颅内损伤', '颅骨骨折伴颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9060', 'LNSS', '颅内损伤', '颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9061', 'CSXNSS', '脑炎', '创伤性脑损伤');
-INSERT INTO `disease` VALUES ('S06.9062', 'NGSS', '脑炎', '脑干损伤');
-INSERT INTO `disease` VALUES ('S06.911', 'KFXLNYW', '颅内疾病', '开放性颅内异物');
-INSERT INTO `disease` VALUES ('S06.9151', 'DGGZBKFXLNSS', '颅内损伤', '顶骨骨折伴开放性颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9152', 'EGGZBKFXLNSS', '颅内损伤', '额骨骨折伴开放性颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9153', 'LGDFXGZBKFXLNSS', '颅内损伤', '颅骨多发性骨折伴开放性颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9154', 'LGDFXKFXGZBKFXLNSS', '颅内损伤', '颅骨多发性开放性骨折伴开放性颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9155', 'NNYWBKFXSK', '脑炎', '脑内异物伴开放性伤口');
-INSERT INTO `disease` VALUES ('S06.9156', 'LNKFXSSBLGGZ', '骨折', '颅内开放性损伤伴颅骨骨折');
-INSERT INTO `disease` VALUES ('S06.9157', 'LNYWBKFXSK', '开放性伤口', '颅内异物伴开放性伤口');
-INSERT INTO `disease` VALUES ('S06.9158', 'KFXLNSS', '颅内损伤', '开放性颅内损伤');
-INSERT INTO `disease` VALUES ('S06.9159', 'LNQDS', '颅内疾病', '颅内枪弹伤');
-INSERT INTO `disease` VALUES ('S06.9160', 'CSXNSSBKFXLNSK', '脑炎', '创伤性脑损伤伴开放性颅内伤口');
-INSERT INTO `disease` VALUES ('S07.051', 'MBJYS', '挤压伤', '面部挤压伤');
-INSERT INTO `disease` VALUES ('S07.151', 'LGJYS', '挤压伤', '颅骨挤压伤');
-INSERT INTO `disease` VALUES ('S07.851', 'TBQTBWDJYS', '挤压伤', '头部其他部位的挤压伤');
-INSERT INTO `disease` VALUES ('S07.951', 'TBJYS', '挤压伤', '头部挤压伤 NOS');
-INSERT INTO `disease` VALUES ('S08.051', 'TPST', '头部疾病', '头皮撕脱');
-INSERT INTO `disease` VALUES ('S08.151', 'ECSXQD', '耳部疾病', '耳创伤性切断');
-INSERT INTO `disease` VALUES ('S08.851', 'TBQTBWDCSXQD', '创伤性疾病', '头部其他部位的创伤性切断');
-INSERT INTO `disease` VALUES ('S08.951', 'TBCSXQD', '创伤性疾病', '头部创伤性切断 NOS');
-INSERT INTO `disease` VALUES ('S09.051', 'TBXGSS', '损伤', '头部血管损伤，NEC');
-INSERT INTO `disease` VALUES ('S09.151', 'TBJRHJJDSS', '损伤', '头部肌肉和肌腱的损伤');
-INSERT INTO `disease` VALUES ('S09.251', 'CSXGMCK', '创伤性疾病', '创伤性鼓膜穿孔');
-INSERT INTO `disease` VALUES ('S09.751', 'TBDFXSS', '损伤', '头部多发性损伤');
-INSERT INTO `disease` VALUES ('S09.851', 'TBQTTZDSS', '损伤', '头部其他特指的损伤');
-INSERT INTO `disease` VALUES ('S09.901', 'BSS', '鼻部疾病', '鼻损伤 NOS');
-INSERT INTO `disease` VALUES ('S09.902', 'CSS', '损伤', '唇损伤');
-INSERT INTO `disease` VALUES ('S09.903', 'ESS', '耳部疾病', '耳损伤 NOS');
-INSERT INTO `disease` VALUES ('S09.904', 'MBSS', '损伤', '面部损伤 NOS');
-INSERT INTO `disease` VALUES ('S09.905', 'TBWS', '头部疾病', '头部外伤');
-INSERT INTO `disease` VALUES ('S09.906', 'EKSS', '耳部疾病', '耳廓损伤');
-INSERT INTO `disease` VALUES ('S09.951', 'MBSS', '损伤', '眉部损伤');
-INSERT INTO `disease` VALUES ('S09.952', 'SSS', '损伤', '舌损伤');
-INSERT INTO `disease` VALUES ('S10.051', 'YHCS', '喉部疾病', '咽喉挫伤');
-INSERT INTO `disease` VALUES ('S10.052', 'CSXYBXZ', '血肿', '创伤性咽部血肿');
-INSERT INTO `disease` VALUES ('S10.053', 'QGCS', '其它气管病', '气管挫伤');
-INSERT INTO `disease` VALUES ('S10.054', 'GBSGCS', '挫伤', '颈部食管挫伤');
-INSERT INTO `disease` VALUES ('S10.151', 'YHDQBXSS', '喉部疾病', '咽喉的浅表性损伤');
-INSERT INTO `disease` VALUES ('S10.152', 'QGDQBXSS', '其它气管病', '气管的浅表性损伤');
-INSERT INTO `disease` VALUES ('S10.153', 'SDDQBXSS', '损伤', '声带的浅表性损伤');
-INSERT INTO `disease` VALUES ('S10.751', 'GBDFXQBXSS', '损伤', '颈部多发性浅表性损伤');
 INSERT INTO `disease` VALUES ('S10.851', 'GBQTBWQBXSS', '损伤', '颈部其他部位浅表性损伤');
 INSERT INTO `disease` VALUES ('S10.852', 'SGSWDQBXSS', '损伤', '锁骨上窝的浅表性损伤');
 INSERT INTO `disease` VALUES ('S10.901', 'GBCSBYW', '其它暂时无法归类的', '颈部擦伤伴异物');
@@ -2824,586 +2579,6 @@ INSERT INTO `disease` VALUES ('S51.951', 'QBKFXWSBYW', '其它暂时无法归类
 INSERT INTO `disease` VALUES ('S51.952', 'QBKFXSKBBFZ', '开放性伤口', '前臂开放性伤口伴并发症');
 INSERT INTO `disease` VALUES ('S52.001', 'ZGJGZ', '关节疾病', '肘关节骨折');
 INSERT INTO `disease` VALUES ('S52.002', 'CGSDGZ', '骨折', '尺骨上端骨折');
-INSERT INTO `disease` VALUES ('S52.003', 'YZGZ', '骨折', '鹰嘴骨折');
-INSERT INTO `disease` VALUES ('S52.0051', 'HTGZ', '骨折', '喙突骨折');
-INSERT INTO `disease` VALUES ('S52.0052', 'CGJDGZ', '骨折', '尺骨近端骨折');
-INSERT INTO `disease` VALUES ('S52.0053', 'MTJGZTW', '骨折', '蒙特贾骨折-脱位');
-INSERT INTO `disease` VALUES ('S52.0151', 'YZJKFXGZ', '骨折', '鹰嘴尖开放性骨折');
-INSERT INTO `disease` VALUES ('S52.1051', 'RGTGZ', '骨折', '桡骨头骨折');
-INSERT INTO `disease` VALUES ('S52.1052', 'RGGGZ', '骨折', '桡骨颈骨折');
-INSERT INTO `disease` VALUES ('S52.1053', 'RGJDGZ', '骨折', '桡骨近端骨折');
-INSERT INTO `disease` VALUES ('S52.201', 'CGGGGZ', '骨折', '尺骨骨干骨折');
-INSERT INTO `disease` VALUES ('S52.202', 'CGGZ', '骨折', '尺骨骨折');
-INSERT INTO `disease` VALUES ('S52.211', 'CGKFXGZ', '骨折', '尺骨开放性骨折');
-INSERT INTO `disease` VALUES ('S52.2151', 'CGGGKFXGZ', '骨折', '尺骨骨干开放性骨折');
-INSERT INTO `disease` VALUES ('S52.3051', 'RGGGGZ', '骨折', '桡骨骨干骨折');
-INSERT INTO `disease` VALUES ('S52.3151', 'RGGGKFXGZ', '骨折', '桡骨骨干开放性骨折');
-INSERT INTO `disease` VALUES ('S52.4051', 'CRGGGGZ', '骨折', '尺、桡骨骨干骨折');
-INSERT INTO `disease` VALUES ('S52.4151', 'RCGKFXGZ', '骨折', '桡、尺骨开放性骨折');
-INSERT INTO `disease` VALUES ('S52.501', 'RGXDGZKLSGZ', '骨折', '桡骨下端骨折[科雷氏骨折]');
-INSERT INTO `disease` VALUES ('S52.511', 'RGXDKFXGZKLSGZ', '骨折', '桡骨下端开放性骨折[科雷氏骨折]');
-INSERT INTO `disease` VALUES ('S52.6051', 'CGHRGLZXDDGZ', '骨折', '尺骨和桡骨两者下端的骨折');
-INSERT INTO `disease` VALUES ('S52.7051', 'QBDFXGZ', '骨折', '前臂多发性骨折');
-INSERT INTO `disease` VALUES ('S52.711', 'CRGKFXGZ', '骨折', '尺桡骨开放性骨折');
-INSERT INTO `disease` VALUES ('S52.801', 'RGGZ', '骨折', '桡骨骨折');
-INSERT INTO `disease` VALUES ('S52.8051', 'CGJTGZ', '骨折', '尺骨茎突骨折');
-INSERT INTO `disease` VALUES ('S52.8052', 'CGTGZ', '骨折', '尺骨头骨折');
-INSERT INTO `disease` VALUES ('S52.8053', 'CGXDGZ', '骨折', '尺骨下端骨折');
-INSERT INTO `disease` VALUES ('S52.9051', 'QBGZ', '骨折', '前臂骨折 NOS');
-INSERT INTO `disease` VALUES ('S53.001', 'RGTTW', '脱位', '桡骨头脱位');
-INSERT INTO `disease` VALUES ('S53.051', 'RGGJTW', '关节疾病', '桡肱关节脱位');
-INSERT INTO `disease` VALUES ('S53.101', 'ZGJTW', '关节疾病', '肘关节脱位 NOS');
-INSERT INTO `disease` VALUES ('S53.151', 'ZGJDKXTW', '关节疾病', '肘关节哆开性脱位');
-INSERT INTO `disease` VALUES ('S53.152', 'CGGJTW', '关节疾病', '尺肱关节脱位');
-INSERT INTO `disease` VALUES ('S53.251', 'RCFRDCSXPL', '创伤性疾病', '桡侧副韧带创伤性破裂');
-INSERT INTO `disease` VALUES ('S53.301', 'CCFRDDL', '其它暂时无法归类的', '尺侧副韧带断裂');
-INSERT INTO `disease` VALUES ('S53.401', 'RGHZRDNS', '其它骨疾病', '桡骨环状韧带扭伤');
-INSERT INTO `disease` VALUES ('S53.451', 'ZGJNS', '关节疾病', '肘关节扭伤');
-INSERT INTO `disease` VALUES ('S54.001', 'CSJSS', '神经系统疾病', '尺神经损伤 NOS');
-INSERT INTO `disease` VALUES ('S54.002', 'CSJDL', '神经系统疾病', '尺神经断裂');
-INSERT INTO `disease` VALUES ('S54.101', 'ZZSJSS', '神经系统疾病', '正中神经损伤 NOS');
-INSERT INTO `disease` VALUES ('S54.102', 'ZZSJDL', '神经系统疾病', '正中神经断裂');
-INSERT INTO `disease` VALUES ('S54.151', 'QBZZSJSS', '神经系统疾病', '前臂正中神经损伤');
-INSERT INTO `disease` VALUES ('S54.201', 'RSJSS', '神经系统疾病', '桡神经损伤 NOS');
-INSERT INTO `disease` VALUES ('S54.351', 'QBSPDPGJSJSS', '神经系统疾病', '前臂水平的皮感觉神经损伤');
-INSERT INTO `disease` VALUES ('S54.751', 'QBSPDDSJSS', '神经系统疾病', '前臂水平的多神经损伤');
-INSERT INTO `disease` VALUES ('S54.851', 'QBSPDQTSJSS', '神经系统疾病', '前臂水平的其他神经损伤');
-INSERT INTO `disease` VALUES ('S54.951', 'QBSPWTDSJSS', '神经系统疾病', '前臂水平未特的神经损伤');
-INSERT INTO `disease` VALUES ('S55.001', 'CSXCDMSS', '其他动脉疾病', '创伤性尺动脉损伤');
-INSERT INTO `disease` VALUES ('S55.102', 'CSXRDMSS', '其他动脉疾病', '创伤性桡动脉损伤');
-INSERT INTO `disease` VALUES ('S55.151', 'QBSPDRDMSS', '其他动脉疾病', '前臂水平的桡动脉损伤');
-INSERT INTO `disease` VALUES ('S55.251', 'RJMSS', '损伤', '桡静脉损伤');
-INSERT INTO `disease` VALUES ('S55.252', 'QBSPDJMSS', '损伤', '前臂水平的静脉损伤');
-INSERT INTO `disease` VALUES ('S55.751', 'QBSPDDCXGSS', '损伤', '前臂水平的多处血管损伤');
-INSERT INTO `disease` VALUES ('S55.851', 'QBSPDQTXGSS', '损伤', '前臂水平的其他血管损伤');
-INSERT INTO `disease` VALUES ('S55.901', 'CXGSS', '损伤', '尺血管损伤 NOS');
-INSERT INTO `disease` VALUES ('S55.951', 'RXGSS', '损伤', '桡血管损伤');
-INSERT INTO `disease` VALUES ('S56.051', 'QBSPDMZQJHJJSS', '损伤', '前臂水平的拇指屈肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S56.151', 'QBSPDQTSZQJHJJSS', '损伤', '前臂水平的其他手指屈肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S56.251', 'QBSPDQTQJHJJSS', '损伤', '前臂水平的其他屈肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S56.351', 'QBSPDMZSJHQJHJJSS', '损伤', '前臂水平的拇指伸肌或屈肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S56.451', 'QBSPDQTSZSJHJJSS', '损伤', '前臂水平的其他手指伸肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S56.551', 'QBSPDQTSJHJJSS', '损伤', '前臂水平的其他伸肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S56.751', 'QBSPDCJRHJJSS', '损伤', '前臂水平多处肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S56.801', 'QBJJSS', '损伤', '前臂肌腱损伤');
-INSERT INTO `disease` VALUES ('S56.851', 'QBKFXWSLJJJ', '肌腱疾病', '前臂开放性外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S56.852', 'QBSPQTHWTZJRHJJSS', '损伤', '前臂水平其他和未特指肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S57.051', 'ZJYS', '挤压伤', '肘挤压伤');
-INSERT INTO `disease` VALUES ('S57.851', 'QBQTBWDJYS', '挤压伤', '前臂其他部位的挤压伤');
-INSERT INTO `disease` VALUES ('S57.951', 'QBJYS', '挤压伤', '前臂挤压伤 NOS');
-INSERT INTO `disease` VALUES ('S58.051', 'ZSPCSXQD', '创伤性疾病', '肘水平创伤性切断');
-INSERT INTO `disease` VALUES ('S58.151', 'ZHWZJSPDCSXQD', '创伤性疾病', '肘和腕之间水平的创伤性切断');
-INSERT INTO `disease` VALUES ('S58.951', 'YCQBLD', '其它暂时无法归类的', '一侧前臂离断');
-INSERT INTO `disease` VALUES ('S58.952', 'BCZXQD', '其它暂时无法归类的', '臂创作性切断 NOS');
-INSERT INTO `disease` VALUES ('S59.751', 'QBDCSS', '损伤', '前臂多处损伤');
-INSERT INTO `disease` VALUES ('S59.851', 'QBQTTZSS', '损伤', '前臂其他特指损伤');
-INSERT INTO `disease` VALUES ('S59.951', 'QBSS', '损伤', '前臂损伤 NOS');
-INSERT INTO `disease` VALUES ('S60.001', 'SZCS', '挫伤', '手指挫伤');
-INSERT INTO `disease` VALUES ('S60.151', 'SZCSBYZJSH', '挫伤', '手指挫伤，伴有指甲损害');
-INSERT INTO `disease` VALUES ('S60.201', 'SCS', '挫伤', '手挫伤');
-INSERT INTO `disease` VALUES ('S60.251', 'WBCS', '挫伤', '腕部挫伤');
-INSERT INTO `disease` VALUES ('S60.751', 'WHSDCQBSS', '浅表损伤', '腕和手多处浅表损伤');
-INSERT INTO `disease` VALUES ('S60.851', 'SBQYW', '手部其它疾病', '手表浅异物');
-INSERT INTO `disease` VALUES ('S60.901', 'SCS', '手部其它疾病', '手擦伤');
-INSERT INTO `disease` VALUES ('S60.951', 'WQBSS', '浅表损伤', '腕浅表损伤 NOS');
-INSERT INTO `disease` VALUES ('S61.001', 'SZKFXSK', '开放性伤口', '手指开放性伤口 NOS');
-INSERT INTO `disease` VALUES ('S61.051', 'SZKFXWSBBFZ', '手部其它疾病', '手指开放性外伤伴并发症');
-INSERT INTO `disease` VALUES ('S61.151', 'SZKFXSKBYJSH', '开放性伤口', '手指开放性伤口，伴有甲损害');
-INSERT INTO `disease` VALUES ('S61.751', 'WHSDCKFXSK', '开放性伤口', '腕和手多处开放性伤口');
-INSERT INTO `disease` VALUES ('S61.851', 'WHSQTBWKFXSK', '开放性伤口', '腕和手其他部位开放性伤口');
-INSERT INTO `disease` VALUES ('S61.901', 'SCLS', '裂伤', '手挫裂伤');
-INSERT INTO `disease` VALUES ('S61.902', 'STTS', '手部其它疾病', '手套脱伤');
-INSERT INTO `disease` VALUES ('S61.903', 'SLSBGR', '感染', '手裂伤伴感染');
-INSERT INTO `disease` VALUES ('S61.951', 'SKFXSK', '开放性伤口', '手开放性伤口');
-INSERT INTO `disease` VALUES ('S61.952', 'SKFXWSBBFZ', '手部其它疾病', '手开放性外伤伴并发症');
-INSERT INTO `disease` VALUES ('S61.953', 'SSYS', '蛇咬伤', '手蛇咬伤');
-INSERT INTO `disease` VALUES ('S61.954', 'WBKFXSK', '开放性伤口', '腕部开放性伤口');
-INSERT INTO `disease` VALUES ('S61.955', 'WHSKFXSK', '开放性伤口', '腕和手开放性伤口 NOS');
-INSERT INTO `disease` VALUES ('S62.001', 'WZZGGZ', '骨折', '腕舟状骨骨折');
-INSERT INTO `disease` VALUES ('S62.0051', 'MSGZ', '骨折', '孟氏骨折');
-INSERT INTO `disease` VALUES ('S62.101', 'WGGZ', '骨折', '腕骨骨折');
-INSERT INTO `disease` VALUES ('S62.1051', 'GZGGZ', '骨折', '钩状骨骨折');
-INSERT INTO `disease` VALUES ('S62.1052', 'YZGBYGGZ', '骨折', '月状骨[半月骨]骨折');
-INSERT INTO `disease` VALUES ('S62.1053', 'SJGWXXGGZ', '骨折', '三角骨[腕楔形骨]骨折');
-INSERT INTO `disease` VALUES ('S62.111', 'WGKFXGZ', '骨折', '腕骨开放性骨折');
-INSERT INTO `disease` VALUES ('S62.201', 'BNTSGZZGJDBGZHBZWGJT', '关节疾病', '贝内特氏骨折[掌骨基底部骨折合并掌腕关节脱位]');
-INSERT INTO `disease` VALUES ('S62.301', 'ZGGZ', '骨折', '掌骨骨折');
-INSERT INTO `disease` VALUES ('S62.311', 'ZGKFXGZ', '骨折', '掌骨开放性骨折');
-INSERT INTO `disease` VALUES ('S62.4051', 'ZGDFXGZ', '骨折', '掌骨多发性骨折');
-INSERT INTO `disease` VALUES ('S62.5051', 'MZGZ', '骨折', '拇指骨折');
-INSERT INTO `disease` VALUES ('S62.601', 'ZGZGGZ', '骨折', '掌骨指骨骨折');
-INSERT INTO `disease` VALUES ('S62.602', 'ZGGZ', '骨折', '指骨骨折');
-INSERT INTO `disease` VALUES ('S62.611', 'ZGKFXGZ', '骨折', '指骨开放性骨折');
-INSERT INTO `disease` VALUES ('S62.7051', 'SZDFXGZ', '骨折', '手指多发性骨折');
-INSERT INTO `disease` VALUES ('S62.8051', 'SHWGGZ', '骨折', '手和腕骨骨折');
-INSERT INTO `disease` VALUES ('S62.8052', 'WBGZ', '骨折', '腕部骨折');
-INSERT INTO `disease` VALUES ('S62.8151', 'WBDKFXGZ', '骨折', '腕部的开放性骨折');
-INSERT INTO `disease` VALUES ('S62.8152', 'SHWGKFXGZ', '骨折', '手和腕骨开放性骨折');
-INSERT INTO `disease` VALUES ('S63.001', 'WGJTW', '关节疾病', '腕关节脱位');
-INSERT INTO `disease` VALUES ('S63.051', 'WGJDKXTW', '关节疾病', '腕关节哆开性脱位');
-INSERT INTO `disease` VALUES ('S63.052', 'CRGJTW', '关节疾病', '尺桡关节脱位');
-INSERT INTO `disease` VALUES ('S63.053', 'RWGJTW', '关节疾病', '桡腕关节脱位');
-INSERT INTO `disease` VALUES ('S63.054', 'CGYDTW', '脱位', '尺骨远端脱位');
-INSERT INTO `disease` VALUES ('S63.055', 'RGYDTW', '脱位', '桡骨远端脱位');
-INSERT INTO `disease` VALUES ('S63.056', 'WZGJTW', '关节疾病', '腕掌(关节)脱位');
-INSERT INTO `disease` VALUES ('S63.151', 'ZGJTW', '关节疾病', '指关节脱位');
-INSERT INTO `disease` VALUES ('S63.152', 'ZGJDKXTW', '关节疾病', '指关节哆开性脱位');
-INSERT INTO `disease` VALUES ('S63.153', 'ZZGJTW', '关节疾病', '掌指(关节)脱位');
-INSERT INTO `disease` VALUES ('S63.154', 'MZTW', '脱位', '拇指脱位');
-INSERT INTO `disease` VALUES ('S63.251', 'SZDCTW', '脱位', '手指多处脱位');
-INSERT INTO `disease` VALUES ('S63.351', 'RWGJRDCSXPL', '关节疾病', '桡腕关节韧带创伤性破裂');
-INSERT INTO `disease` VALUES ('S63.352', 'CWRDCSXPL', '创伤性疾病', '尺腕韧带创伤性破裂');
-INSERT INTO `disease` VALUES ('S63.451', 'ZRDCSXPL', '创伤性疾病', '掌韧带创伤性破裂');
-INSERT INTO `disease` VALUES ('S63.452', 'ZBCSXPL', '创伤性疾病', '掌板创伤性破裂');
-INSERT INTO `disease` VALUES ('S63.551', 'WGJNSHLS', '关节疾病', '腕关节扭伤和劳损');
-INSERT INTO `disease` VALUES ('S63.601', 'ZZGJNS', '关节疾病', '掌指关节扭伤');
-INSERT INTO `disease` VALUES ('S63.602', 'ZGJNS', '关节疾病', '指关节扭伤');
-INSERT INTO `disease` VALUES ('S63.651', 'ZSZGJNS', '关节疾病', '掌声指(关节)扭伤');
-INSERT INTO `disease` VALUES ('S63.652', 'MZNS', '其它暂时无法归类的', '拇指扭伤');
-INSERT INTO `disease` VALUES ('S63.751', 'SQTHWTZBWDNSHLS', '劳损', '手其他和未特指部位的扭伤和劳损');
-INSERT INTO `disease` VALUES ('S64.051', 'WHSSPDCSJSS', '神经系统疾病', '腕和手水平的尺神经损伤');
-INSERT INTO `disease` VALUES ('S64.151', 'WHSSPDZZSJSS', '神经系统疾病', '腕和手水平的正中神经损伤');
-INSERT INTO `disease` VALUES ('S64.251', 'WHSSPDRSJSS', '神经系统疾病', '腕和手水平的桡神经损伤');
-INSERT INTO `disease` VALUES ('S64.351', 'MZDZSJSS', '神经系统疾病', '拇指的指神经损伤');
-INSERT INTO `disease` VALUES ('S64.401', 'ZSJSS', '神经系统疾病', '指神经损伤');
-INSERT INTO `disease` VALUES ('S64.751', 'WHSSPDDSJSS', '神经系统疾病', '腕和手水平的多神经损伤');
-INSERT INTO `disease` VALUES ('S64.851', 'WHSSPDQTSJSS', '神经系统疾病', '腕和手水平的其他神经损伤');
-INSERT INTO `disease` VALUES ('S64.951', 'WHSSPMWTZDSJSS', '神经系统疾病', '腕和手水平面未特指的神经损伤');
-INSERT INTO `disease` VALUES ('S65.051', 'WHSSPDCDMSS', '其他动脉疾病', '腕和手水平的尺动脉损伤');
-INSERT INTO `disease` VALUES ('S65.151', 'WHSSPDRDMSS', '其他动脉疾病', '腕和手水平的桡动脉损伤');
-INSERT INTO `disease` VALUES ('S65.251', 'ZQDJMGSS', '损伤', '掌浅动静脉弓损伤');
-INSERT INTO `disease` VALUES ('S65.351', 'ZSDJMSS', '损伤', '掌深动静脉损伤');
-INSERT INTO `disease` VALUES ('S65.451', 'MZXGSS', '损伤', '拇指血管损伤');
-INSERT INTO `disease` VALUES ('S65.501', 'CSXZDMPL', '其他动脉疾病', '创伤性指动脉破裂');
-INSERT INTO `disease` VALUES ('S65.551', 'ZXGSS', '损伤', '指血管损伤');
-INSERT INTO `disease` VALUES ('S65.751', 'WHSSPDDXGSS', '损伤', '腕和手水平的多血管损伤');
-INSERT INTO `disease` VALUES ('S65.851', 'WHSSPDQTXGSS', '损伤', '腕和手水平的其他血管损伤');
-INSERT INTO `disease` VALUES ('S65.951', 'WHSSPWTZXGDSS', '损伤', '腕和手水平未特指血管的损伤');
-INSERT INTO `disease` VALUES ('S66.051', 'WHSSPDMZCQJHJJSS', '损伤', '腕和手水平的拇指长屈肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.151', 'WHSSPDQTSZQJHJJSS', '损伤', '腕和手水平的其他手指屈肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.251', 'WHSSPDMZSJHJJSS', '损伤', '腕和手水平的拇指伸肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.351', 'WHSSPQTSZSJHJJSS', '损伤', '腕和手水平其他手指伸肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.451', 'WHSSPDMZNZJHJJSS', '损伤', '腕和手水平的拇指内在肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.551', 'WHSSPDQTSZNZJHJJSS', '损伤', '腕和手水平的其他手指内在肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.651', 'WHSSPDDCQJHJJSS', '损伤', '腕和手水平的多处屈肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.751', 'WHSSPDDCSJHJJSS', '损伤', '腕和手水平的多处伸肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.851', 'WHSSPDQTJRHJJSS', '损伤', '腕和手水平的其他肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S66.901', 'SJDL', '肌断裂', '手肌断裂');
-INSERT INTO `disease` VALUES ('S66.902', 'SZJDL', '肌断裂', '手指肌断裂');
-INSERT INTO `disease` VALUES ('S66.903', 'WJDL', '肌断裂', '腕肌断裂');
-INSERT INTO `disease` VALUES ('S66.904', 'SKFXWSLJJJ', '肌腱疾病', '手开放性外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S66.905', 'ZKFXWSLJJJ', '肌腱疾病', '指开放性外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S66.951', 'SJJDL', '肌腱疾病', '手肌腱断裂');
-INSERT INTO `disease` VALUES ('S66.952', 'WKFXWSLJJJ', '肌腱疾病', '腕开放性外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S67.051', 'SZNCS', '挫伤', '手指碾挫伤');
-INSERT INTO `disease` VALUES ('S67.801', 'SJYS', '挤压伤', '手挤压伤');
-INSERT INTO `disease` VALUES ('S68.001', 'MZCSXJD', '创伤性疾病', '拇指创伤性截断');
-INSERT INTO `disease` VALUES ('S68.051', 'MZJDBQTSZ', '其它暂时无法归类的', '拇指截断伴其他手指');
-INSERT INTO `disease` VALUES ('S68.151', 'DGSZLD', '指', '单个手指离断');
-INSERT INTO `disease` VALUES ('S68.251', 'LGHGDSZJD', '其它暂时无法归类的', '两个或更多手指截断');
-INSERT INTO `disease` VALUES ('S68.351', 'SZDYBFBYWHSQTBWDHBCS', '创伤性疾病', '手指(的一部分)伴有腕和手其他部位的合并创伤性切断');
-INSERT INTO `disease` VALUES ('S68.451', 'WSPDSCSXQD', '创伤性疾病', '腕水平的手创伤性切断');
-INSERT INTO `disease` VALUES ('S68.851', 'WHSQTBWDCSXQD', '创伤性疾病', '腕和手其他部位的创伤性切断');
-INSERT INTO `disease` VALUES ('S68.901', 'DCSCSXJD', '创伤性疾病', '单侧手创伤性截断');
-INSERT INTO `disease` VALUES ('S68.951', 'YCSJD', '其它暂时无法归类的', '一侧手截断');
-INSERT INTO `disease` VALUES ('S69.751', 'WHSDCSS', '损伤', '腕和手多处损伤');
-INSERT INTO `disease` VALUES ('S69.851', 'WHSQTTZDSS', '损伤', '腕和手其他特指的损伤');
-INSERT INTO `disease` VALUES ('S69.901', 'MZSS', '损伤', '拇指损伤');
-INSERT INTO `disease` VALUES ('S69.902', 'SSS', '损伤', '手损伤');
-INSERT INTO `disease` VALUES ('S69.903', 'SZSS', '损伤', '手指损伤');
-INSERT INTO `disease` VALUES ('S70.051', 'KCS', '挫伤', '髋挫伤');
-INSERT INTO `disease` VALUES ('S70.151', 'DTCSHXZ', '血肿', '大腿挫伤和血肿');
-INSERT INTO `disease` VALUES ('S70.751', 'KHDTDCQBSS', '浅表损伤', '髋和大腿多处浅表损伤');
-INSERT INTO `disease` VALUES ('S70.851', 'KHDTDQTDCQBSS', '浅表损伤', '髋和大腿的其他多处浅表损伤');
-INSERT INTO `disease` VALUES ('S70.901', 'DTXZ', '血肿', '大腿血肿');
-INSERT INTO `disease` VALUES ('S70.951', 'KBHDTQBXSS', '损伤', '髋部和大腿浅表性损伤 NOS');
-INSERT INTO `disease` VALUES ('S71.051', 'KKFXSK', '开放性伤口', '髋开放性伤口');
-INSERT INTO `disease` VALUES ('S71.101', 'DTSTS', '腿部疾病', '大腿撕脱伤');
-INSERT INTO `disease` VALUES ('S71.102', 'DTKFXSK', '开放性伤口', '大腿开放性伤口');
-INSERT INTO `disease` VALUES ('S71.151', 'DTKFXSKBYBFZ', '开放性伤口', '大腿开放性伤口伴有并发症');
-INSERT INTO `disease` VALUES ('S71.751', 'KBHDTDCKFXSK', '开放性伤口', '髋部和大腿多处开放性伤口');
-INSERT INTO `disease` VALUES ('S71.851', 'GPDQTHWTZBWDKFXSK', '开放性伤口', '骨盆带其他和未特指部位的开放性伤口');
-INSERT INTO `disease` VALUES ('S72.001', 'GGTGZ', '骨折', '股骨头骨折');
-INSERT INTO `disease` VALUES ('S72.002', 'GGGGZ', '骨折', '股骨颈骨折');
-INSERT INTO `disease` VALUES ('S72.0051', 'KGGZ', '骨折', '髋骨骨折');
-INSERT INTO `disease` VALUES ('S72.0052', 'GGGNNGZ', '骨折', '股骨颈囊内骨折');
-INSERT INTO `disease` VALUES ('S72.0151', 'GGTKFXGZ', '骨折', '股骨头开放性骨折');
-INSERT INTO `disease` VALUES ('S72.0152', 'KGKFXGZ', '骨折', '髋骨开放性骨折');
-INSERT INTO `disease` VALUES ('S72.101', 'GGCLJGZ', '骨折', '股骨粗隆间骨折');
-INSERT INTO `disease` VALUES ('S72.1051', 'GGJDZZGZ', '骨折', '股骨经大转子骨折');
-INSERT INTO `disease` VALUES ('S72.1052', 'GGZZGZ', '骨折', '股骨转子骨折');
-INSERT INTO `disease` VALUES ('S72.2051', 'GGZZXGZ', '骨折', '股骨转子下骨折');
-INSERT INTO `disease` VALUES ('S72.301', 'GGGGZ', '骨折', '股骨干骨折');
-INSERT INTO `disease` VALUES ('S72.3151', 'GGGKFXGZ', '骨折', '股骨干开放性骨折');
-INSERT INTO `disease` VALUES ('S72.401', 'GGKGZ', '骨折', '股骨髁骨折');
-INSERT INTO `disease` VALUES ('S72.402', 'GGKJGZ', '骨折', '股骨髁间骨折');
-INSERT INTO `disease` VALUES ('S72.403', 'GGKSGZ', '骨折', '股骨髁上骨折');
-INSERT INTO `disease` VALUES ('S72.404', 'GGXDGZ', '骨折', '股骨下端骨折');
-INSERT INTO `disease` VALUES ('S72.4051', 'KZTGZ', '骨折', '髁状突骨折');
-INSERT INTO `disease` VALUES ('S72.411', 'GGXDKFXGZ', '骨折', '股骨下端开放性骨折');
-INSERT INTO `disease` VALUES ('S72.4151', 'KZTKFXGZ', '骨折', '髁状突开放性骨折');
-INSERT INTO `disease` VALUES ('S72.4152', 'GGKSKFXGZ', '骨折', '股骨髁上开放性骨折');
-INSERT INTO `disease` VALUES ('S72.7051', 'GGDFXGZ', '骨折', '股骨多发性骨折');
-INSERT INTO `disease` VALUES ('S72.901', 'GGGZ', '骨折', '股骨骨折');
-INSERT INTO `disease` VALUES ('S72.911', 'GGKFXGZ', '骨折', '股骨开放性骨折');
-INSERT INTO `disease` VALUES ('S73.001', 'KGJBTW', '关节疾病', '髋关节半脱位');
-INSERT INTO `disease` VALUES ('S73.051', 'GGTTW', '脱位', '股骨头脱位');
-INSERT INTO `disease` VALUES ('S73.052', 'KGJTW', '关节疾病', '髋关节脱位');
-INSERT INTO `disease` VALUES ('S73.053', 'DKXKGJTW', '关节疾病', '哆开性髋关节脱位');
-INSERT INTO `disease` VALUES ('S73.151', 'KGJNS', '关节疾病', '髋关节扭伤');
-INSERT INTO `disease` VALUES ('S74.001', 'ZGSJSS', '神经系统疾病', '坐骨神经损伤');
-INSERT INTO `disease` VALUES ('S74.101', 'GSJSS', '神经系统疾病', '股神经损伤');
-INSERT INTO `disease` VALUES ('S74.151', 'KHDTSPDGSJSS', '神经系统疾病', '髋和大腿水平的股神经损伤');
-INSERT INTO `disease` VALUES ('S74.251', 'KHDTSPDPGJSJSS', '神经系统疾病', '髋和大腿水平的皮感觉神经损伤');
-INSERT INTO `disease` VALUES ('S74.751', 'KHDTSPDDSJSS', '神经系统疾病', '髋和大腿水平的多神经损伤');
-INSERT INTO `disease` VALUES ('S74.801', 'BKSJSS', '神经系统疾病', '闭孔神经损伤');
-INSERT INTO `disease` VALUES ('S74.851', 'KHDTSPDQTSJSS', '神经系统疾病', '髋和大腿水平的其他神经损伤');
-INSERT INTO `disease` VALUES ('S74.951', 'KHDTSPDWTZSJSS', '神经系统疾病', '髋和大腿水平的未特指神经损伤');
-INSERT INTO `disease` VALUES ('S75.001', 'CSXGDMSS', '其他动脉疾病', '创伤性股动脉损伤');
-INSERT INTO `disease` VALUES ('S75.002', 'QGDMSS', '其他动脉疾病', '浅股动脉损伤');
-INSERT INTO `disease` VALUES ('S75.003', 'CSXGSDMPL', '其他动脉疾病', '创伤性股深动脉破裂');
-INSERT INTO `disease` VALUES ('S75.101', 'GJMSS', '损伤', '股静脉损伤');
-INSERT INTO `disease` VALUES ('S75.102', 'CSXGJMPL', '创伤性疾病', '创伤性股静脉破裂');
-INSERT INTO `disease` VALUES ('S75.251', 'KHDTSPDDYJMSS', '损伤', '髋和大腿水平的大隐静脉损伤');
-INSERT INTO `disease` VALUES ('S75.751', 'KHDTSPDDXGSS', '损伤', '髋和大腿水平的多血管损伤');
-INSERT INTO `disease` VALUES ('S75.801', 'CSXGDJML', '瘘病', '创伤性股动静脉瘘');
-INSERT INTO `disease` VALUES ('S75.851', 'KHDTSPDQTXGSS', '损伤', '髋和大腿水平的其他血管损伤');
-INSERT INTO `disease` VALUES ('S75.951', 'KHDTSPDWTZXGSS', '损伤', '髋和大腿水平的未特指血管损伤');
-INSERT INTO `disease` VALUES ('S76.051', 'KBJRHJJSS', '损伤', '髋部肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S76.151', 'GSTJJDL', '肌腱疾病', '股四头肌腱断裂');
-INSERT INTO `disease` VALUES ('S76.251', 'DTNSJHJJSS', '损伤', '大腿内收肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S76.351', 'DTSPDHBJQHJJSS', '损伤', '大腿水平的后部肌群和肌腱损伤');
-INSERT INTO `disease` VALUES ('S76.401', 'DTKFXWSLJJJ', '肌腱疾病', '大腿开放性外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S76.751', 'KGJHDTSPDDCJRHJJSS', '关节疾病', '髋关节和大腿水平的多处肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S77.051', 'KBJYS', '挤压伤', '髋部挤压伤');
-INSERT INTO `disease` VALUES ('S77.151', 'DTJYS', '挤压伤', '大腿挤压伤');
-INSERT INTO `disease` VALUES ('S77.251', 'KBYDTJYS', '挤压伤', '髋伴有大腿挤压伤');
-INSERT INTO `disease` VALUES ('S78.051', 'KBCSXQD', '创伤性疾病', '髋部创伤性切断');
-INSERT INTO `disease` VALUES ('S78.151', 'KHXGJZJSPDCSXQD', '关节疾病', '髋和膝关节之间水平的创伤性切断');
-INSERT INTO `disease` VALUES ('S78.951', 'KHDTSPWTZDCSXQD', '创伤性疾病', '髋和大腿水平未特指的创伤性切断');
-INSERT INTO `disease` VALUES ('S79.751', 'KHDTDCSS', '损伤', '髋和大腿多处损伤');
-INSERT INTO `disease` VALUES ('S79.851', 'KHDTQTTZDSS', '损伤', '髋和大腿其他特指的损伤');
-INSERT INTO `disease` VALUES ('S79.951', 'KHDTDSS', '损伤', '髋和大腿的损伤 NOS');
-INSERT INTO `disease` VALUES ('S80.051', 'XBCS', '挫伤', '膝部挫伤');
-INSERT INTO `disease` VALUES ('S80.101', 'XTCS', '挫伤', '小腿挫伤');
-INSERT INTO `disease` VALUES ('S80.751', 'XTCS', '腿部疾病', '小腿擦伤');
-INSERT INTO `disease` VALUES ('S80.752', 'XTDCQBSS', '浅表损伤', '小腿多处浅表损伤');
-INSERT INTO `disease` VALUES ('S80.801', 'XBCS', '膝部疾病', '膝部擦伤');
-INSERT INTO `disease` VALUES ('S80.802', 'XBCSBGR', '感染', '膝部擦伤伴感染');
-INSERT INTO `disease` VALUES ('S80.851', 'XTDQTQBSS', '浅表损伤', '小腿的其他浅表损伤');
-INSERT INTO `disease` VALUES ('S81.051', 'XBKFXSK', '开放性伤口', '膝部开放性伤口');
-INSERT INTO `disease` VALUES ('S81.751', 'XTDCKFXSK', '开放性伤口', '小腿多处开放性伤口');
-INSERT INTO `disease` VALUES ('S81.851', 'XTQTBWDKFXSK', '开放性伤口', '小腿其他部位的开放性伤口');
-INSERT INTO `disease` VALUES ('S81.901', 'XTKFXSK', '开放性伤口', '小腿开放性伤口 NOS');
-INSERT INTO `disease` VALUES ('S81.902', 'XTSTS', '腿部疾病', '小腿撕脱伤');
-INSERT INTO `disease` VALUES ('S81.951', 'XTKFXWSBBFZ', '腿部疾病', '小腿开放性外伤伴并发症');
-INSERT INTO `disease` VALUES ('S82.001', 'BGGZ', '骨折', '髌骨骨折');
-INSERT INTO `disease` VALUES ('S82.011', 'KFXBGGZ', '骨折', '开放性髌骨骨折');
-INSERT INTO `disease` VALUES ('S82.1051', 'JGSDGZ', '骨折', '胫骨上端骨折');
-INSERT INTO `disease` VALUES ('S82.1052', 'JGKGZ', '骨折', '胫骨髁骨折');
-INSERT INTO `disease` VALUES ('S82.1053', 'JGTGZ', '骨折', '胫骨头骨折');
-INSERT INTO `disease` VALUES ('S82.1054', 'JGJJGZ', '骨折', '胫骨结节骨折');
-INSERT INTO `disease` VALUES ('S82.1151', 'JGSDKFXGZ', '骨折', '胫骨上端开放性骨折');
-INSERT INTO `disease` VALUES ('S82.201', 'JFGGZ', '骨折', '胫腓骨骨折');
-INSERT INTO `disease` VALUES ('S82.202', 'JGGGZ', '骨折', '胫骨干骨折');
-INSERT INTO `disease` VALUES ('S82.203', 'JGGZ', '骨折', '胫骨骨折');
-INSERT INTO `disease` VALUES ('S82.211', 'JFGKFXGZ', '骨折', '胫腓骨开放性骨折');
-INSERT INTO `disease` VALUES ('S82.212', 'JGKFXGZ', '骨折', '胫骨开放性骨折');
-INSERT INTO `disease` VALUES ('S82.3051', 'JGXDGZ', '骨折', '胫骨下端骨折');
-INSERT INTO `disease` VALUES ('S82.401', 'FGGGZ', '骨折', '腓骨干骨折');
-INSERT INTO `disease` VALUES ('S82.402', 'FGGZ', '骨折', '腓骨骨折');
-INSERT INTO `disease` VALUES ('S82.4051', 'FGTGZ', '骨折', '腓骨头骨折');
-INSERT INTO `disease` VALUES ('S82.4151', 'FGKFXGZ', '骨折', '腓骨开放性骨折');
-INSERT INTO `disease` VALUES ('S82.501', 'JGGZLJHGJ', '关节疾病', '胫骨骨折累及踝关节');
-INSERT INTO `disease` VALUES ('S82.502', 'NHGZ', '骨折', '内踝骨折');
-INSERT INTO `disease` VALUES ('S82.511', 'NHKFXGZ', '骨折', '内踝开放性骨折');
-INSERT INTO `disease` VALUES ('S82.601', 'FGGZLJHGJ', '关节疾病', '腓骨骨折累及踝关节');
-INSERT INTO `disease` VALUES ('S82.602', 'WHGZ', '骨折', '外踝骨折');
-INSERT INTO `disease` VALUES ('S82.611', 'WHKFXGZ', '骨折', '外踝开放性骨折');
-INSERT INTO `disease` VALUES ('S82.7051', 'XTDFXGZ', '骨折', '小腿多发性骨折');
-INSERT INTO `disease` VALUES ('S82.801', 'HGGZ', '骨折', '踝骨骨折');
-INSERT INTO `disease` VALUES ('S82.802', 'HGJGZ', '关节疾病', '踝关节骨折');
-INSERT INTO `disease` VALUES ('S82.803', 'SHGZ', '骨折', '三踝骨折');
-INSERT INTO `disease` VALUES ('S82.804', 'SHGZ', '骨折', '双踝骨折');
-INSERT INTO `disease` VALUES ('S82.811', 'HGJKFXGZ', '关节疾病', '踝关节开放性骨折');
-INSERT INTO `disease` VALUES ('S82.812', 'SHKFXGZ', '骨折', '双踝开放性骨折');
-INSERT INTO `disease` VALUES ('S82.8151', 'SHKFXGZ', '骨折', '三踝开放性骨折');
-INSERT INTO `disease` VALUES ('S83.001', 'BGTW', '髌骨疾病', '髌骨脱位');
-INSERT INTO `disease` VALUES ('S83.002', 'BGBTW', '髌骨疾病', '髌骨半脱位');
-INSERT INTO `disease` VALUES ('S83.051', 'BGDKXTW', '髌骨疾病', '髌骨哆开性脱位');
-INSERT INTO `disease` VALUES ('S83.101', 'XGJTW', '关节疾病', '膝关节脱位');
-INSERT INTO `disease` VALUES ('S83.151', 'DCXXGJTW', '关节疾病', '单纯性膝关节脱位');
-INSERT INTO `disease` VALUES ('S83.152', 'XGJDKXTW', '关节疾病', '膝关节哆开性脱位');
-INSERT INTO `disease` VALUES ('S83.251', 'JQDXGJWCBYBSS', '关节疾病', '近期的膝关节外侧半月板损伤');
-INSERT INTO `disease` VALUES ('S83.252', 'JQDXNCBYBPL', '半月板疾病', '近期的膝内侧半月板破裂');
-INSERT INTO `disease` VALUES ('S83.253', 'JQDBYBSL', '半月板疾病', '近期的半月板撕裂');
-INSERT INTO `disease` VALUES ('S83.351', 'JQDXGJRGSL', '关节疾病', '近期的膝关节软骨撕裂');
-INSERT INTO `disease` VALUES ('S83.401', 'XGJNCFRDNS', '关节疾病', '膝关节内侧副韧带扭伤');
-INSERT INTO `disease` VALUES ('S83.451', 'XGJWCFRDNSHLS', '关节疾病', '膝关节外侧副韧带扭伤和劳损');
-INSERT INTO `disease` VALUES ('S83.501', 'XSZRDDL', '膝部疾病', '膝十字韧带断裂');
-INSERT INTO `disease` VALUES ('S83.551', 'XGJHSZRDNSHLS', '关节疾病', '膝关节后十字韧带扭伤和劳损');
-INSERT INTO `disease` VALUES ('S83.552', 'XGJJCFRDNS', '关节疾病', '膝关节交叉副韧带扭伤');
-INSERT INTO `disease` VALUES ('S83.553', 'XGJQSZRDNSHLS', '关节疾病', '膝关节前十字韧带扭伤和劳损');
-INSERT INTO `disease` VALUES ('S83.601', 'XGJNS', '关节疾病', '膝关节扭伤');
-INSERT INTO `disease` VALUES ('S83.602', 'XGJSS', '关节疾病', '膝关节损伤');
-INSERT INTO `disease` VALUES ('S83.651', 'CSXXGJHMY', '关节疾病', '创伤性膝关节滑膜炎');
-INSERT INTO `disease` VALUES ('S83.652', 'XBRDLNS', '膝部疾病', '膝髌韧带裂(扭)伤');
-INSERT INTO `disease` VALUES ('S83.653', 'BYBSS', '半月板疾病', '半月板损伤');
-INSERT INTO `disease` VALUES ('S83.751', 'XDDCJGDSS', '损伤', '膝的多处结构的损伤');
-INSERT INTO `disease` VALUES ('S83.752', 'SZRDDL', '其它暂时无法归类的', '十字韧带断裂');
-INSERT INTO `disease` VALUES ('S84.001', 'JHSJSS', '神经系统疾病', '胫后神经损伤');
-INSERT INTO `disease` VALUES ('S84.002', 'JSJSS', '神经系统疾病', '胫神经损伤');
-INSERT INTO `disease` VALUES ('S84.101', 'FSJSS', '神经系统疾病', '腓神经损伤');
-INSERT INTO `disease` VALUES ('S84.251', 'XTSPDPGJSJSS', '神经系统疾病', '小腿水平的皮感觉神经损伤');
-INSERT INTO `disease` VALUES ('S84.751', 'XTSPDDSJSS', '神经系统疾病', '小腿水平的多神经损伤');
-INSERT INTO `disease` VALUES ('S84.851', 'XTSPDQTSJSS', '神经系统疾病', '小腿水平的其他神经损伤');
-INSERT INTO `disease` VALUES ('S84.951', 'XTSPWTZSJDSS', '神经系统疾病', '小腿水平未特指神经的损伤');
-INSERT INTO `disease` VALUES ('S85.001', 'CSXMAH', '其他动脉疾病', '创伤性腘动脉损伤');
-INSERT INTO `disease` VALUES ('S85.101', 'JQHDMSS', '其他动脉疾病', '胫(前)(后)动脉损伤');
-INSERT INTO `disease` VALUES ('S85.251', 'FDMSS', '其他动脉疾病', '腓动脉损伤');
-INSERT INTO `disease` VALUES ('S85.351', 'XTSPDDYJMSS', '损伤', '小腿水平的大隐静脉损伤');
-INSERT INTO `disease` VALUES ('S85.451', 'XTSPDXYJMSS', '损伤', '小腿水平的小隐静脉损伤');
-INSERT INTO `disease` VALUES ('S85.501', 'CSXMCAH', '创伤性疾病', '创伤性腘静脉损伤');
-INSERT INTO `disease` VALUES ('S85.751', 'XTSPDDCXGSS', '损伤', '小腿水平的多处血管损伤');
-INSERT INTO `disease` VALUES ('S85.801', 'CSXJHDJMSS', '创伤性疾病', '创伤性胫后动静脉损伤');
-INSERT INTO `disease` VALUES ('S85.851', 'XTSPDQTXGSS', '损伤', '小腿水平的其他血管损伤');
-INSERT INTO `disease` VALUES ('S85.951', 'JXGSS', '损伤', '胫血管损伤');
-INSERT INTO `disease` VALUES ('S85.952', 'NQH', '损伤', '腘血管损伤');
-INSERT INTO `disease` VALUES ('S85.953', 'XTSPWTZXGDSS', '损伤', '小腿水平未特指血管的损伤');
-INSERT INTO `disease` VALUES ('S86.001', 'GJDL', '其它暂时无法归类的', '跟腱断裂');
-INSERT INTO `disease` VALUES ('S86.151', 'XTSPHBJQDQTJRHJJSS', '损伤', '小腿水平后部肌群的其他肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S86.251', 'XTSPQBJQDJRHJJSS', '损伤', '小腿水平前部肌群的肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S86.351', 'XTSPFCJQDJRHJJSS', '损伤', '小腿水平腓侧肌群的肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S86.751', 'XTSPDDCJRHJJSS', '损伤', '小腿水平的多处肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S86.851', 'JFRDSL', '其它暂时无法归类的', '胫腓韧带撕裂');
-INSERT INTO `disease` VALUES ('S86.901', 'XTJDL', '肌断裂', '小腿肌断裂');
-INSERT INTO `disease` VALUES ('S86.902', 'XTKFXWSLJJJ', '肌腱疾病', '小腿开放性外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S87.051', 'XBJYS', '挤压伤', '膝部挤压伤');
-INSERT INTO `disease` VALUES ('S87.801', 'XTJYS', '挤压伤', '小腿挤压伤');
-INSERT INTO `disease` VALUES ('S88.001', 'DCXYXCSXJD', '创伤性疾病', '单侧膝以下创伤性截断');
-INSERT INTO `disease` VALUES ('S88.051', 'YCXBJDWTJBFZ', '膝部疾病', '一侧膝部截断，未提及并发症');
-INSERT INTO `disease` VALUES ('S88.151', 'XHHZJSPDCSXQD', '创伤性疾病', '膝和踝之间水平的创伤性切断');
-INSERT INTO `disease` VALUES ('S88.951', 'SPWTZDXTCSXQD', '创伤性疾病', '水平未特指的小腿创伤性切断');
-INSERT INTO `disease` VALUES ('S89.751', 'XTDCSS', '损伤', '小腿多处损伤');
-INSERT INTO `disease` VALUES ('S89.851', 'NYH', '损伤', '腘窝损伤');
-INSERT INTO `disease` VALUES ('S89.901', 'XTSS', '损伤', '小腿损伤');
-INSERT INTO `disease` VALUES ('S89.951', 'XTSS', '损伤', '小腿损伤 NOS');
-INSERT INTO `disease` VALUES ('S90.051', 'HCS', '挫伤', '踝挫伤');
-INSERT INTO `disease` VALUES ('S90.151', 'ZCSBBYZJSH', '挫伤', '趾挫伤，不伴有趾甲损坏');
-INSERT INTO `disease` VALUES ('S90.251', 'ZCSBYZJSH', '挫伤', '趾挫伤，伴有趾甲损坏');
-INSERT INTO `disease` VALUES ('S90.301', 'ZCS', '挫伤', '足挫伤');
-INSERT INTO `disease` VALUES ('S90.351', 'JCS', '挫伤', '脚挫伤');
-INSERT INTO `disease` VALUES ('S90.751', 'HBCS', '踝部疾病', '踝部擦伤');
-INSERT INTO `disease` VALUES ('S90.752', 'HHZDCQBSS', '浅表损伤', '踝和足多处浅表损伤');
-INSERT INTO `disease` VALUES ('S90.851', 'HHZQTQBSS', '浅表损伤', '踝和足其他浅表损伤');
-INSERT INTO `disease` VALUES ('S90.951', 'ZCSBGR', '感染', '足擦伤伴感染');
-INSERT INTO `disease` VALUES ('S91.051', 'HKFXSK', '开放性伤口', '踝开放性伤口');
-INSERT INTO `disease` VALUES ('S91.101', 'ZKFXSK', '开放性伤口', '趾开放性伤口');
-INSERT INTO `disease` VALUES ('S91.251', 'ZKFXSKBYZJSH', '开放性伤口', '趾开放性伤口，伴有趾甲损坏');
-INSERT INTO `disease` VALUES ('S91.301', 'ZBLS', '裂伤', '足部裂伤');
-INSERT INTO `disease` VALUES ('S91.302', 'ZKFXWS', '其它足部疾病', '足开放性外伤');
-INSERT INTO `disease` VALUES ('S91.351', 'ZBPFSLS', '皮肤病', '足部皮肤撕裂伤');
-INSERT INTO `disease` VALUES ('S91.352', 'ZRZZSTS', '其它足部疾病', '足软组织撕脱伤');
-INSERT INTO `disease` VALUES ('S91.751', 'HHZDCKFXSK', '开放性伤口', '踝和足多处开放性伤口');
-INSERT INTO `disease` VALUES ('S92.001', 'GGGZ', '骨折', '跟骨骨折');
-INSERT INTO `disease` VALUES ('S92.011', 'GGKFXGZ', '骨折', '跟骨开放性骨折');
-INSERT INTO `disease` VALUES ('S92.101', 'JGGZ', '骨折', '距骨骨折');
-INSERT INTO `disease` VALUES ('S92.102', 'JGGGZ', '骨折', '距骨颈骨折');
-INSERT INTO `disease` VALUES ('S92.103', 'JGTGZ', '骨折', '距骨体骨折');
-INSERT INTO `disease` VALUES ('S92.1151', 'JGKFXGZ', '骨折', '距骨开放性骨折');
-INSERT INTO `disease` VALUES ('S92.201', 'TGGZ', '骨折', '骰骨骨折');
-INSERT INTO `disease` VALUES ('S92.202', 'XZGGZZ', '骨折', '楔状骨骨折(足)');
-INSERT INTO `disease` VALUES ('S92.203', 'ZZZGGZ', '骨折', '足舟状骨骨折');
-INSERT INTO `disease` VALUES ('S92.2151', 'XZGKFXGZ', '骨折', '楔状骨开放性骨折');
-INSERT INTO `disease` VALUES ('S92.2152', 'ZZGKFXGZ', '骨折', '舟状骨开放性骨折');
-INSERT INTO `disease` VALUES ('S92.301', 'ZGGZ', '骨折', '跖骨骨折');
-INSERT INTO `disease` VALUES ('S92.311', 'ZGKFXGZ', '骨折', '跖骨开放性骨折');
-INSERT INTO `disease` VALUES ('S92.4051', 'MZGZ', '骨折', '母趾骨折');
-INSERT INTO `disease` VALUES ('S92.501', 'ZGGZ', '骨折', '趾骨骨折');
-INSERT INTO `disease` VALUES ('S92.511', 'ZGKFXGZ', '骨折', '趾骨开放性骨折');
-INSERT INTO `disease` VALUES ('S92.7051', 'ZDFXGZ', '骨折', '足多发性骨折');
-INSERT INTO `disease` VALUES ('S92.9051', 'ZGZ', '骨折', '足骨折 NOS');
-INSERT INTO `disease` VALUES ('S93.001', 'HGJBTW', '关节疾病', '踝关节半脱位');
-INSERT INTO `disease` VALUES ('S93.002', 'HGJTW', '关节疾病', '踝关节脱位');
-INSERT INTO `disease` VALUES ('S93.003', 'JJGJTW', '关节疾病', '胫距关节脱位');
-INSERT INTO `disease` VALUES ('S93.004', 'HGJKFXTW', '关节疾病', '踝关节开放性脱位');
-INSERT INTO `disease` VALUES ('S93.051', 'JFYDGJTW', '关节疾病', '胫腓远端关节脱位');
-INSERT INTO `disease` VALUES ('S93.052', 'HGJDKXTW', '关节疾病', '踝关节哆开性脱位');
-INSERT INTO `disease` VALUES ('S93.053', 'JGDKXTW', '脱位', '距骨哆开性脱位');
-INSERT INTO `disease` VALUES ('S93.054', 'GJGJTW', '关节疾病', '跟距关节脱位');
-INSERT INTO `disease` VALUES ('S93.101', 'ZGJTW', '关节疾病', '趾关节脱位');
-INSERT INTO `disease` VALUES ('S93.151', 'ZZGJTW', '关节疾病', '跖趾(关节)脱位');
-INSERT INTO `disease` VALUES ('S93.251', 'HGJWCRDDL', '关节疾病', '踝关节外侧韧带断裂');
-INSERT INTO `disease` VALUES ('S93.301', 'ZGZTWZ', '其它足部疾病', '舟骨周脱位(足)');
-INSERT INTO `disease` VALUES ('S93.302', 'ZGTW', '脱位', '跖骨脱位');
-INSERT INTO `disease` VALUES ('S93.351', 'ZGTW', '脱位', '舟骨脱位');
-INSERT INTO `disease` VALUES ('S93.352', 'ZFGJTW', '关节疾病', '跖跗关节脱位');
-INSERT INTO `disease` VALUES ('S93.353', 'FGJTW', '关节疾病', '跗(关节)脱位');
-INSERT INTO `disease` VALUES ('S93.401', 'HGJNS', '关节疾病', '踝关节扭伤');
-INSERT INTO `disease` VALUES ('S93.402', 'JFRDSLYD', '其它暂时无法归类的', '胫腓韧带撕裂(远端)');
-INSERT INTO `disease` VALUES ('S93.451', 'HNCFRDSS', '损伤', '踝内侧副(韧带)损伤');
-INSERT INTO `disease` VALUES ('S93.452', 'GFRDNSHLS', '劳损', '跟腓(韧带)扭伤和劳损');
-INSERT INTO `disease` VALUES ('S93.453', 'SJRDNSHLS', '劳损', '三角(韧带)扭伤和劳损');
-INSERT INTO `disease` VALUES ('S93.454', 'JFYDRDNSHLS', '劳损', '胫腓远端(韧带)扭伤和劳损');
-INSERT INTO `disease` VALUES ('S93.455', 'JFRDNSHLS', '劳损', '距腓(韧带)扭伤和劳损');
-INSERT INTO `disease` VALUES ('S93.456', 'NCFRDNSHLS', '劳损', '内侧副(韧带)扭伤和劳损');
-INSERT INTO `disease` VALUES ('S93.551', 'ZZNSHLS', '劳损', '足趾扭伤和劳损');
-INSERT INTO `disease` VALUES ('S93.552', 'ZZGJNSHLS', '关节疾病', '跖趾(关节)扭伤和劳损');
-INSERT INTO `disease` VALUES ('S93.651', 'FGRDNSHLS', '劳损', '跗骨(韧带)扭伤和劳损');
-INSERT INTO `disease` VALUES ('S93.652', 'ZGRDNSHLS', '劳损', '跖骨(韧带)扭伤和劳损');
-INSERT INTO `disease` VALUES ('S94.051', 'ZDWCSJSS', '神经系统疾病', '足底外侧神经损伤');
-INSERT INTO `disease` VALUES ('S94.151', 'ZDNCSJSS', '神经系统疾病', '足底内侧神经损伤');
-INSERT INTO `disease` VALUES ('S94.251', 'HHZSPDFSSJDSS', '神经系统疾病', '踝和足水平的腓深神经的损伤');
-INSERT INTO `disease` VALUES ('S94.351', 'HHZSPDPGJSJSS', '神经系统疾病', '踝和足水平的皮感觉神经损伤');
-INSERT INTO `disease` VALUES ('S94.751', 'HHZSPDDSJSS', '神经系统疾病', '踝和足水平的多神经损伤');
-INSERT INTO `disease` VALUES ('S94.851', 'HHZSPDQTSJSS', '神经系统疾病', '踝和足水平的其他神经损伤');
-INSERT INTO `disease` VALUES ('S94.951', 'HHZSPWTZSJDSS', '神经系统疾病', '踝和足水平未特指神经的损伤');
-INSERT INTO `disease` VALUES ('S95.051', 'ZBDMSS', '其他动脉疾病', '足背动脉损伤');
-INSERT INTO `disease` VALUES ('S95.151', 'ZDDMSS', '其他动脉疾病', '足底动脉损伤');
-INSERT INTO `disease` VALUES ('S95.251', 'ZBJMSS', '损伤', '足背静脉损伤');
-INSERT INTO `disease` VALUES ('S95.751', 'HHZSPDDXGSS', '损伤', '踝和足水平的多血管损伤');
-INSERT INTO `disease` VALUES ('S95.851', 'HHZSPDQTXGSS', '损伤', '踝和足水平的其他血管损伤');
-INSERT INTO `disease` VALUES ('S95.951', 'HHZSPWTZXGDSS', '损伤', '踝和足水平未特指血管的损伤');
-INSERT INTO `disease` VALUES ('S96.051', 'HHZSPZCQJHJJSS', '损伤', '踝和足水平趾长屈肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S96.151', 'ZSJJDL', '肌腱疾病', '趾伸肌腱断裂');
-INSERT INTO `disease` VALUES ('S96.152', 'HHZSPZCSJHJJSS', '损伤', '踝和足水平趾长伸肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S96.251', 'HHZSPDNZJHJJSS', '损伤', '踝和足水平的内在肌和肌腱损伤');
-INSERT INTO `disease` VALUES ('S96.751', 'HHZSPDDCJRHJJSS', '损伤', '踝和足水平的多处肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S96.851', 'HHZSPDQTJRHJJSS', '损伤', '踝和足水平的其他肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('S96.901', 'ZKFXWSLJJJ', '肌腱疾病', '足开放性外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S96.902', 'ZJJDL', '肌腱疾病', '趾肌腱断裂');
-INSERT INTO `disease` VALUES ('S96.903', 'ZKFXWSLJJJ', '肌腱疾病', '趾开放性外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S96.951', 'ZWSLJJJ', '肌腱疾病', '足外伤累及肌腱');
-INSERT INTO `disease` VALUES ('S96.952', 'HHZSPWTZJRHJJDSS', '损伤', '踝和足水平未特指肌肉和肌腱的损伤');
-INSERT INTO `disease` VALUES ('S97.051', 'HJYS', '挤压伤', '踝挤压伤');
-INSERT INTO `disease` VALUES ('S97.151', 'ZZJYS', '挤压伤', '足趾挤压伤');
-INSERT INTO `disease` VALUES ('S97.801', 'ZJYS', '挤压伤', '足挤压伤 NOS');
-INSERT INTO `disease` VALUES ('S97.851', 'HHZQTBWDJYS', '挤压伤', '踝和足其他部位的挤压伤');
-INSERT INTO `disease` VALUES ('S98.051', 'ZZHSPDCSXQD', '创伤性疾病', '足在踝水平的创伤性切断');
-INSERT INTO `disease` VALUES ('S98.151', 'YGZZDCSXQD', '创伤性疾病', '一个足趾的创伤性切断');
-INSERT INTO `disease` VALUES ('S98.251', 'DGQBHBFZCSXJD', '创伤性疾病', '多个(全部或部分)趾创伤性截断');
-INSERT INTO `disease` VALUES ('S98.252', 'DZJD', '其它暂时无法归类的', '多趾截断');
-INSERT INTO `disease` VALUES ('S98.351', 'ZQTBWDCSXQD', '创伤性疾病', '足其他部位的创伤性切断');
-INSERT INTO `disease` VALUES ('S98.352', 'ZZHZQTBWDFHXCSXQD', '创伤性疾病', '足趾和足其他部位的复合性创伤性切断');
-INSERT INTO `disease` VALUES ('S98.451', 'ZJD', '其它足部疾病', '足截断');
-INSERT INTO `disease` VALUES ('S98.452', 'YCZJD', '其它足部疾病', '一侧足截断');
-INSERT INTO `disease` VALUES ('S99.751', 'DCHHZSS', '损伤', '多处踝和足损伤');
-INSERT INTO `disease` VALUES ('S99.851', 'HHZQTTZDSS', '损伤', '踝和足其他特指的损伤');
-INSERT INTO `disease` VALUES ('S99.901', 'ZSS', '损伤', '足损伤');
-INSERT INTO `disease` VALUES ('S99.951', 'ZWSBBFZ', '其它足部疾病', '足外伤伴并发症');
-INSERT INTO `disease` VALUES ('T00.051', 'THGDQBSS', '浅表损伤', '头和颈的浅表损伤');
-INSERT INTO `disease` VALUES ('T00.151', 'XBFXBHGPDQBSS', '浅表损伤', '胸伴腹、下背和骨盆的浅表损伤');
-INSERT INTO `disease` VALUES ('T00.251', 'SZDBWDQBSS', '浅表损伤', '上肢多部位的浅表损伤');
-INSERT INTO `disease` VALUES ('T00.351', 'XZDBWCS', '下肢其它疾病', '下肢多部位擦伤');
-INSERT INTO `disease` VALUES ('T00.651', 'SZHXZDBWDQBSS', '浅表损伤', '上肢和下肢多部位的浅表损伤');
-INSERT INTO `disease` VALUES ('T00.851', 'STQTFHBWQBSS', '浅表损伤', '身体其他复合部位浅表损伤');
-INSERT INTO `disease` VALUES ('T00.901', 'DCCS', '挫伤', '多处挫伤');
-INSERT INTO `disease` VALUES ('T00.951', 'STDCCS', '挫伤', '身体多处挫伤');
-INSERT INTO `disease` VALUES ('T00.952', 'STDCXZ', '血肿', '身体多处血肿');
-INSERT INTO `disease` VALUES ('T00.953', 'STDCQZ', '其它暂时无法归类的', '身体多处青肿');
-INSERT INTO `disease` VALUES ('T00.954', 'STDCSP', '其它暂时无法归类的', '身体多处水疱');
-INSERT INTO `disease` VALUES ('T00.955', 'STDCWDKCYS', '咬伤', '身体多处(无毒)昆虫咬伤');
-INSERT INTO `disease` VALUES ('T01.051', 'THGKFXSK', '开放性伤口', '头和颈开放性伤口');
-INSERT INTO `disease` VALUES ('T01.151', 'XBFXBHGPKFXSK', '开放性伤口', '胸伴腹、下背和骨盆开放性伤口');
-INSERT INTO `disease` VALUES ('T01.251', 'SZDBWKFXSK', '开放性伤口', '上肢多部位开放性伤口');
-INSERT INTO `disease` VALUES ('T01.301', 'XZDCLS', '裂伤', '下肢多处裂伤');
-INSERT INTO `disease` VALUES ('T01.351', 'XTHHDKFXSKDTCW', '开放性伤口', '膝、腿和踝的开放性伤口(大腿除外)');
-INSERT INTO `disease` VALUES ('T01.352', 'XZDBWKFXSK', '开放性伤口', '下肢多部位开放性伤口');
-INSERT INTO `disease` VALUES ('T01.353', 'XZDBWKFXWSBBFZ', '下肢其它疾病', '下肢多部位开放性外伤伴并发症');
-INSERT INTO `disease` VALUES ('T01.651', 'SZHXZDGBWKFXSK', '开放性伤口', '上肢和下肢多个部位开放性伤口');
-INSERT INTO `disease` VALUES ('T01.851', 'QGDCDKFXSK', '开放性伤口', '躯干多处的开放性伤口');
-INSERT INTO `disease` VALUES ('T01.901', 'DCKFXWS', '其它暂时无法归类的', '多处开放性外伤');
-INSERT INTO `disease` VALUES ('T01.951', 'DCDWYS', '咬伤', '多处动物咬伤');
-INSERT INTO `disease` VALUES ('T01.952', 'DCQGS', '其它暂时无法归类的', '多处切割伤');
-INSERT INTO `disease` VALUES ('T01.953', 'DCSLS', '裂伤', '多处撕裂伤');
-INSERT INTO `disease` VALUES ('T01.954', 'DCCCSK', '口部疾病', '多处穿刺伤口');
-INSERT INTO `disease` VALUES ('T02.0051', 'THGDGZ', '骨折', '头和颈的骨折');
-INSERT INTO `disease` VALUES ('T02.101', 'QGDFXGZ', '骨折', '躯干多发性骨折');
-INSERT INTO `disease` VALUES ('T02.1051', 'XBXBHGPDGZ', '骨折', '胸伴下背和骨盆的骨折');
-INSERT INTO `disease` VALUES ('T02.201', 'DCSZDFXGZ', '骨折', '单侧上肢多发性骨折');
-INSERT INTO `disease` VALUES ('T02.3051', 'DCXZDGBWGZ', '骨折', '单侧下肢多个部位骨折');
-INSERT INTO `disease` VALUES ('T02.311', 'DCXZDFXKFXGZ', '骨折', '单侧下肢多发性开放性骨折');
-INSERT INTO `disease` VALUES ('T02.3151', 'DCXZDGBWKFXGZ', '骨折', '单侧下肢多个部位开放性骨折');
-INSERT INTO `disease` VALUES ('T02.4051', 'SCSZDGBWGZ', '骨折', '双侧上肢多个部位骨折');
-INSERT INTO `disease` VALUES ('T02.5151', 'SCXZDGBWKFXGZ', '骨折', '双侧下肢多个部位开放性骨折');
-INSERT INTO `disease` VALUES ('T02.5152', 'SCXZLD', '下肢其它疾病', '双侧下肢离断');
-INSERT INTO `disease` VALUES ('T02.601', 'SZBXZGGZ', '骨折', '上肢伴下肢骨骨折');
-INSERT INTO `disease` VALUES ('T02.6051', 'SZHXZDGBWGZ', '骨折', '上肢和下肢多个部位骨折');
-INSERT INTO `disease` VALUES ('T02.701', 'GPBXZGGZ', '骨折', '骨盆伴下肢骨骨折');
-INSERT INTO `disease` VALUES ('T02.702', 'SZXZBLGGZ', '骨折', '上肢、下肢伴肋骨骨折');
-INSERT INTO `disease` VALUES ('T02.7051', 'XBBYXBHGPJSZDGZ', '骨折', '胸并伴有下背和骨盆及四肢的骨折');
-INSERT INTO `disease` VALUES ('T02.801', 'MGBXZGGZ', '骨折', '面骨伴下肢骨骨折');
-INSERT INTO `disease` VALUES ('T02.802', 'MGBSXZGGZ', '骨折', '面骨伴上下肢骨骨折');
-INSERT INTO `disease` VALUES ('T02.8051', 'STQTFHBWDGZ', '骨折', '身体其他复合部位的骨折');
-INSERT INTO `disease` VALUES ('T02.901', 'DFXGZ', '骨折', '多发性骨折 NOS');
-INSERT INTO `disease` VALUES ('T03.051', 'THGDTWNSHLS', '劳损', '头和颈的脱位、扭伤和劳损');
-INSERT INTO `disease` VALUES ('T03.151', 'XBXBHGPDTWNSHLS', '劳损', '胸伴下背和骨盆的脱位、扭伤和劳损');
-INSERT INTO `disease` VALUES ('T03.251', 'SZDGBWTWNSHLS', '劳损', '上肢多个部位脱位、扭伤和劳损');
-INSERT INTO `disease` VALUES ('T03.351', 'XZDGBWTWNSHLS', '劳损', '下肢多个部位脱位、扭伤和劳损');
-INSERT INTO `disease` VALUES ('T03.451', 'SZHXZDGBWDTWNSHLS', '劳损', '上肢和下肢多个部位的脱位、扭伤和劳损');
-INSERT INTO `disease` VALUES ('T03.851', 'STQTFHBWDDTWNSHLS', '劳损', '身体其他复合部位的的脱位、扭伤和劳损');
-INSERT INTO `disease` VALUES ('T03.951', 'WTZDDCTWNSHLS', '劳损', '未特指的多处脱位、扭伤和劳损');
-INSERT INTO `disease` VALUES ('T04.051', 'THGDJYS', '挤压伤', '头和颈的挤压伤');
-INSERT INTO `disease` VALUES ('T04.151', 'QGDCJYS', '挤压伤', '躯干多处挤压伤');
-INSERT INTO `disease` VALUES ('T04.152', 'XBYFXBHGPDJYS', '挤压伤', '胸伴有腹、下背和骨盆的挤压伤');
-INSERT INTO `disease` VALUES ('T04.201', 'SZJYS', '挤压伤', '上肢挤压伤');
-INSERT INTO `disease` VALUES ('T04.251', 'SZDGBWJYS', '挤压伤', '上肢多个部位挤压伤');
-INSERT INTO `disease` VALUES ('T04.301', 'XZJYS', '挤压伤', '下肢挤压伤');
-INSERT INTO `disease` VALUES ('T04.351', 'XZDGBWJYS', '挤压伤', '下肢多个部位挤压伤');
-INSERT INTO `disease` VALUES ('T04.451', 'SZHXZDBWJYS', '挤压伤', '上肢和下肢多部位挤压伤');
-INSERT INTO `disease` VALUES ('T04.751', 'XBFXBHGPJSZDJYS', '挤压伤', '胸伴腹、下背和骨盆及四肢的挤压伤');
-INSERT INTO `disease` VALUES ('T04.801', 'QSXJYS', '挤压伤', '全身性挤压伤');
-INSERT INTO `disease` VALUES ('T04.901', 'DCJYS', '挤压伤', '多处挤压伤 NOS');
-INSERT INTO `disease` VALUES ('T05.051', 'SCSCSXQD', '创伤性疾病', '双侧手创伤性切断');
-INSERT INTO `disease` VALUES ('T05.151', 'SYZHLYBCSXQDRHSPCWS', '创伤性疾病', '手一只和另一臂创伤性切断[任何水平，除外手]');
-INSERT INTO `disease` VALUES ('T05.201', 'SBCSXJD', '创伤性疾病', '双臂创伤性截断');
-INSERT INTO `disease` VALUES ('T05.351', 'SZCSXQD', '创伤性疾病', '双足创伤性切断');
-INSERT INTO `disease` VALUES ('T05.451', 'YZZHLYXTCSXQDRHSPCWZ', '创伤性疾病', '一只足和另一小腿创伤性切断[任何水平，除外足]');
-INSERT INTO `disease` VALUES ('T05.551', 'SXTCSXJDRHSP', '创伤性疾病', '双小腿创伤性截断[任何水平]');
-INSERT INTO `disease` VALUES ('T05.651', 'SZHXZRHZHCSXQDRHSP', '创伤性疾病', '上肢和下肢任何组合创伤性切断[任何水平]');
-INSERT INTO `disease` VALUES ('T05.851', 'STQTFHBWCSXQD', '创伤性疾病', '身体其他复合部位创伤性切断');
-INSERT INTO `disease` VALUES ('T05.951', 'DCCSXQD', '创伤性疾病', '多处创伤性切断 NOS');
-INSERT INTO `disease` VALUES ('T06.051', 'NHLSJSSBYGSPDSJHJSSS', '神经系统疾病', '脑和颅神经损伤，伴有颈水平的神经和脊髓损伤');
-INSERT INTO `disease` VALUES ('T06.151', 'STQTDGBWDSJHJSSS', '神经系统疾病', '身体其他多个部位的神经和脊髓损伤');
-INSERT INTO `disease` VALUES ('T06.251', 'STDGBWSJSS', '神经系统疾病', '身体多个部位神经损伤');
-INSERT INTO `disease` VALUES ('T06.351', 'DFXSZXGSS', '损伤', '多发性上肢血管损伤');
-INSERT INTO `disease` VALUES ('T06.352', 'DFXXZXGSS', '损伤', '多发性下肢血管损伤');
-INSERT INTO `disease` VALUES ('T06.353', 'STDGBWDXGSS', '损伤', '身体多个部位的血管损伤');
-INSERT INTO `disease` VALUES ('T06.451', 'STDGBWDJRHJJSS', '损伤', '身体多个部位的肌肉和肌腱损伤');
-INSERT INTO `disease` VALUES ('T06.501', 'KFXXFSS', '损伤', '开放性胸腹损伤');
-INSERT INTO `disease` VALUES ('T06.551', 'XNQGBBYFNHGPQGDSS', '损伤', '胸内器官并伴有腹内和骨盆器官的损伤');
-INSERT INTO `disease` VALUES ('T06.851', 'STDGBWDQTTZSS', '损伤', '身体多个部位的其他特指损伤');
-INSERT INTO `disease` VALUES ('T07.X01', 'DBWSS', '损伤', '多部位损伤 NOS');
-INSERT INTO `disease` VALUES ('T08.X01', 'JZGZBJT', '骨折', '脊柱骨折伴截瘫');
-INSERT INTO `disease` VALUES ('T08.X051', 'JZGZ', '骨折', '脊柱骨折');
-INSERT INTO `disease` VALUES ('T08.X151', 'JZKFXGZ', '骨折', '脊柱开放性骨折');
-INSERT INTO `disease` VALUES ('T09.051', 'QGPFCSSPWTZ', '皮肤病', '躯干皮肤擦伤，水平未特指');
-INSERT INTO `disease` VALUES ('T09.052', 'QGBQYWSPWTZ', '其它暂时无法归类的', '躯干表浅异物，水平未特指');
-INSERT INTO `disease` VALUES ('T09.151', 'QGKFXSKSPWTZ', '开放性伤口', '躯干开放性伤口，水平未特指');
-INSERT INTO `disease` VALUES ('T09.251', 'QGWTZGJHRDDTWNSHLS', '关节疾病', '躯干未特指关节和韧带的脱位、扭伤和劳损');
-INSERT INTO `disease` VALUES ('T09.301', 'CSXJT', '创伤性疾病', '创伤性截瘫');
-INSERT INTO `disease` VALUES ('T09.302', 'JSSS', '损伤', '脊髓损伤');
-INSERT INTO `disease` VALUES ('T09.351', 'JSBQZHZYWSSZJSBCSS', '损伤', '脊髓半切综合征(由外伤所致脊髓半侧损伤)');
-INSERT INTO `disease` VALUES ('T09.352', 'GZGZBJSZD', '骨折', '颈椎骨折伴脊髓震荡');
-INSERT INTO `disease` VALUES ('T09.353', 'XZGZBZGXZ', '骨折', '胸椎骨折伴椎管狭窄');
-INSERT INTO `disease` VALUES ('T09.354', 'KFXYZGZBJSSHJT', '骨折', '开放性腰椎骨折伴脊髓损害(截瘫)');
-INSERT INTO `disease` VALUES ('T09.355', 'KFXXZGZBJT', '骨折', '开放性胸椎骨折伴截瘫');
-INSERT INTO `disease` VALUES ('T09.356', 'KFXGZGZBJT', '骨折', '开放性颈椎骨折伴截瘫');
-INSERT INTO `disease` VALUES ('T09.451', 'JSJZWSJSS', '神经系统疾病', '脊神经周围神经损伤');
-INSERT INTO `disease` VALUES ('T09.452', 'QGSJJSJGHSJCDSS', '神经系统疾病', '躯干神经、脊神经根和神经丛的损伤 NOS');
-INSERT INTO `disease` VALUES ('T09.551', 'QGJRHJJDSS', '损伤', '躯干肌肉和肌腱的损伤 NOS');
-INSERT INTO `disease` VALUES ('T09.651', 'QGCSXQDSPWTZ', '创伤性疾病', '躯干创伤性切断，水平未特指');
-INSERT INTO `disease` VALUES ('T09.851', 'QGSSSPWTZ', '损伤', '躯干损伤，水平未特指');
-INSERT INTO `disease` VALUES ('T09.951', 'QGSS', '损伤', '躯干损伤 NOS');
-INSERT INTO `disease` VALUES ('T10.X051', 'BGZ', '骨折', '臂骨折');
-INSERT INTO `disease` VALUES ('T10.X052', 'SZGZBMQD', '骨折', '上肢骨折，不明确的');
-INSERT INTO `disease` VALUES ('T10.X151', 'SZKFXGZBMQD', '骨折', '上肢开放性骨折，不明确的');
-INSERT INTO `disease` VALUES ('T10.X152', 'DB', '其它暂时无法归类的', '断臂');
-INSERT INTO `disease` VALUES ('T11.051', 'SZCSQBSS', '浅表损伤', '上肢擦伤(浅表损伤)');
-INSERT INTO `disease` VALUES ('T11.101', 'SZKFXSK', '开放性伤口', '上肢开放性伤口');
-INSERT INTO `disease` VALUES ('T11.102', 'SZSTS', '上肢其它疾病', '上肢撕脱伤');
-INSERT INTO `disease` VALUES ('T11.251', 'SZGJHRDDTWNSHLSSPWTZ', '关节疾病', '上肢关节和韧带的脱位、扭伤和劳损，水平未特指');
-INSERT INTO `disease` VALUES ('T11.351', 'SZSJSSSPWTZ', '神经系统疾病', '上肢神经损伤，水平未特指');
 INSERT INTO `disease` VALUES ('T11.401', 'SZXGSSSPWTZ', '损伤', '上肢血管损伤，水平未特指');
 INSERT INTO `disease` VALUES ('T11.501', 'SZKFXWSLJJJ', '上肢其它疾病', '上肢开放性外伤累及肌腱');
 INSERT INTO `disease` VALUES ('T11.551', 'SZJRHJJDSSSPWTZ', '损伤', '上肢肌肉和肌腱的损伤，水平未特指');
@@ -4472,410 +3647,6 @@ INSERT INTO `disease` VALUES ('Z63.851', 'JTBHDWT', '其它暂时无法归类的
 INSERT INTO `disease` VALUES ('Z63.852', 'JZBXDGDQXJDDWT', '其它暂时无法归类的', '家中表现的高度情绪激动的问题');
 INSERT INTO `disease` VALUES ('Z63.853', 'JZJWBZHQJDWT', '其它暂时无法归类的', '家中交往不足或曲解的问题');
 INSERT INTO `disease` VALUES ('Z63.951', 'YJZYGDWT', '其它暂时无法归类的', '与家族有关的问题 NOS');
-INSERT INTO `disease` VALUES ('Z64.051', 'YBXYDRSYGDWT', '妊娠引起的疾病', '与不想要的妊娠有关的问题');
-INSERT INTO `disease` VALUES ('Z64.151', 'YDCYGDWT', '产科疾病', '与多产有关的问题');
-INSERT INTO `disease` VALUES ('Z64.251', 'XQHJSQTYYHHXXGYCSZXC', '营养不良', '寻求和接受躯体、营养和化学性干预措施，这些措施已知是危险和有害的');
-INSERT INTO `disease` VALUES ('Z64.351', 'XQHJSXWHXLSDGYCSZXCS', '心脏疾病', '寻求和接受行为和心理上的干预措施，这些措施已知是危险和有害的');
-INSERT INTO `disease` VALUES ('Z64.451', 'YJDHXFDGYBHDWT', '其它暂时无法归类的', '与监督缓刑犯的官员不和的问题');
-INSERT INTO `disease` VALUES ('Z64.452', 'YSHGZZBHDWT', '其它暂时无法归类的', '与社会工作者不和的问题');
-INSERT INTO `disease` VALUES ('Z65.051', 'ZMSHXSSSCXZDZDWTWBJJ', '其它暂时无法归类的', '在民事和刑事诉讼程序中定罪的问题，未被监禁');
-INSERT INTO `disease` VALUES ('Z65.151', 'JJHQTRYDWT', '其它暂时无法归类的', '监禁和其他入狱的问题');
-INSERT INTO `disease` VALUES ('Z65.251', 'YCJYSFDWT', '其它暂时无法归类的', '与从监狱释放的问题');
-INSERT INTO `disease` VALUES ('Z65.351', 'ETJHHFYDSSCXWT', '其它暂时无法归类的', '儿童监护或抚养的诉讼程序问题');
-INSERT INTO `disease` VALUES ('Z65.352', 'DBWT', '其它暂时无法归类的', '逮捕问题');
-INSERT INTO `disease` VALUES ('Z65.353', 'QSWT', '其它暂时无法归类的', '起诉问题');
-INSERT INTO `disease` VALUES ('Z65.354', 'SSWT', '其它暂时无法归类的', '诉讼问题');
-INSERT INTO `disease` VALUES ('Z65.451', 'KDDSHZ', '其它暂时无法归类的', '拷打的受害者');
-INSERT INTO `disease` VALUES ('Z65.551', 'BLYZHZZHQTDDXWWT', '其它暂时无法归类的', '暴露于灾害、战争和其他敌对行为问题');
-INSERT INTO `disease` VALUES ('Z65.851', 'YXLSHQKYGDQTTZWT', '心脏疾病', '与心理社会情况有关的其他特指问题');
-INSERT INTO `disease` VALUES ('Z65.951', 'YXLSHQKYGDWT', '心脏疾病', '与心理社会情况有关的问题 NOS');
-INSERT INTO `disease` VALUES ('Z70.051', 'YXTDYGDZX', '其它暂时无法归类的', '与性态度有关的咨询');
-INSERT INTO `disease` VALUES ('Z70.151', 'BRDYWGX', '心脏疾病', '病人对阳萎关心');
-INSERT INTO `disease` VALUES ('Z70.152', 'BRDWFYXGX', '心脏疾病', '病人对无反应性关心');
-INSERT INTO `disease` VALUES ('Z70.153', 'BRDNNLXGX', '心脏疾病', '病人对男女乱性关心');
-INSERT INTO `disease` VALUES ('Z70.154', 'BRDXQXGX', '心脏疾病', '病人对性取向关心');
-INSERT INTO `disease` VALUES ('Z70.251', 'XQDHZDXXWHXQXDZD', '其它暂时无法归类的', '寻求对孩子的性行为和性取向的指导');
-INSERT INTO `disease` VALUES ('Z70.252', 'XQDHBDXXWHXQXDZD', '其它暂时无法归类的', '寻求对伙伴的性行为和性取向的指导');
-INSERT INTO `disease` VALUES ('Z70.253', 'XQDPODXXWHXQXDZD', '其它暂时无法归类的', '寻求对配偶的性行为和性取向的指导');
-INSERT INTO `disease` VALUES ('Z70.351', 'ZHSJYXTDXXWHXQXYGDZX', '其它暂时无法归类的', '综合涉及与性态度、性行为和性取向有关的咨询');
-INSERT INTO `disease` VALUES ('Z70.851', 'XJYZX', '其它暂时无法归类的', '性教育咨询');
-INSERT INTO `disease` VALUES ('Z70.951', 'XZX', '其它暂时无法归类的', '性咨询 NOS');
-INSERT INTO `disease` VALUES ('Z71.051', 'DBTRZXDR', '其它暂时无法归类的', '代表他人咨询的人');
-INSERT INTO `disease` VALUES ('Z71.052', 'DWZCDDSZDZDHCL', '其它暂时无法归类的', '对未在场的第三者的指导和处理');
-INSERT INTO `disease` VALUES ('Z71.151', 'KJQKWZS', '其它暂时无法归类的', '恐惧情况未证实');
-INSERT INTO `disease` VALUES ('Z71.152', 'SYZCZTDWT', '其它暂时无法归类的', '属于正常状态的问题');
-INSERT INTO `disease` VALUES ('Z71.153', 'GFDX', '心脏疾病', '过分担心');
-INSERT INTO `disease` VALUES ('Z71.251', 'WXQJSDCJGDR', '其它暂时无法归类的', '为寻求解释调查结果的人');
-INSERT INTO `disease` VALUES ('Z71.351', 'JCYYSDZXHJD', '肠炎', '结肠炎饮食的咨询和监督');
-INSERT INTO `disease` VALUES ('Z71.352', 'TNBYSDZXHJD', '糖尿病', '糖尿病饮食的咨询和监督');
-INSERT INTO `disease` VALUES ('Z71.353', 'SPGMHBNSYSDZXHJD', '其它暂时无法归类的', '食品过敏或不耐受饮食的咨询和监督');
-INSERT INTO `disease` VALUES ('Z71.354', 'WYYSDZXHJD', '胃炎', '胃炎饮食的咨询和监督');
-INSERT INTO `disease` VALUES ('Z71.355', 'GDGCXZYSDZXHJD', '胆囊疾病', '高胆固醇血症饮食的咨询和监督');
-INSERT INTO `disease` VALUES ('Z71.356', 'FPYSDZXHJD', '肥胖', '肥胖饮食的咨询和监督');
-INSERT INTO `disease` VALUES ('Z71.451', 'JLYDZXHJD', '其它暂时无法归类的', '酒滥用的咨询和监督');
-INSERT INTO `disease` VALUES ('Z71.551', 'YWLYDZXHJD', '药物引起的疾病', '药物滥用的咨询和监督');
-INSERT INTO `disease` VALUES ('Z71.651', 'YCLYDZX', '其它暂时无法归类的', '烟草滥用的咨询');
-INSERT INTO `disease` VALUES ('Z71.751', 'RLMYQXBDDZX', '免疫性疾病', '人类免疫缺陷病毒[HIV]的咨询');
-INSERT INTO `disease` VALUES ('Z71.851', 'XYZX', '其它血液疾病', '血缘咨询');
-INSERT INTO `disease` VALUES ('Z71.951', 'ZXFW', '其它暂时无法归类的', '咨询服务');
-INSERT INTO `disease` VALUES ('Z71.952', 'YLZD', '其它暂时无法归类的', '医疗指导');
-INSERT INTO `disease` VALUES ('Z72.051', 'XYDWT', '其它暂时无法归类的', '吸烟的问题');
-INSERT INTO `disease` VALUES ('Z72.151', 'YJDWT', '其它暂时无法归类的', '饮酒的问题');
-INSERT INTO `disease` VALUES ('Z72.251', 'YYDWT', '其它暂时无法归类的', '用药的问题');
-INSERT INTO `disease` VALUES ('Z72.351', 'QFSTDLDWT', '其它暂时无法归类的', '缺乏身体锻炼的问题');
-INSERT INTO `disease` VALUES ('Z72.451', 'BQDDYSHJSXGDWT', '其它暂时无法归类的', '不恰当的饮食和进食习惯的问题');
-INSERT INTO `disease` VALUES ('Z72.551', 'GWDXXWDWT', '其它暂时无法归类的', '高危的性行为的问题');
-INSERT INTO `disease` VALUES ('Z72.651', 'DBHDDDWT', '其它暂时无法归类的', '赌博和打赌的问题');
-INSERT INTO `disease` VALUES ('Z72.851', 'YSHFSYGDQTWT', '其它暂时无法归类的', '与生活方式有关的其他问题');
-INSERT INTO `disease` VALUES ('Z72.852', 'ZWSHXWDWT', '其它暂时无法归类的', '自我损害行为的问题');
-INSERT INTO `disease` VALUES ('Z72.951', 'YSHFSYGDWT', '其它暂时无法归类的', '与生活方式有关的问题 NOS');
-INSERT INTO `disease` VALUES ('Z73.051', 'TLHJDWT', '其它暂时无法归类的', '体力耗尽的问题');
-INSERT INTO `disease` VALUES ('Z73.151', 'GXPZZQDWT', '其它暂时无法归类的', '个性品质增强的问题');
-INSERT INTO `disease` VALUES ('Z73.251', 'QFXXHKXSJDWT', '其它暂时无法归类的', '缺乏休息和空暇时间的问题');
-INSERT INTO `disease` VALUES ('Z73.351', 'STHJSGDDWT', '精神和行为障碍', '身体和精神过度的问题');
-INSERT INTO `disease` VALUES ('Z73.451', 'SHJNBZDWT', '其它暂时无法归类的', '社会技能不足的问题，NEC');
-INSERT INTO `disease` VALUES ('Z73.551', 'SHZZCTDWT', '其它暂时无法归类的', '社会职责冲突的问题，NEC');
-INSERT INTO `disease` VALUES ('Z73.651', 'SCYQDHDSXDWT', '其它暂时无法归类的', '伤残引起的活动受限的问题');
-INSERT INTO `disease` VALUES ('Z73.851', 'YSHGLKNYGDQTWT', '其它暂时无法归类的', '与生活管理困难有关的其他问题');
-INSERT INTO `disease` VALUES ('Z73.951', 'YSHGLKNYGDWT', '其它暂时无法归类的', '与生活管理困难有关的问题 NOS');
-INSERT INTO `disease` VALUES ('Z74.051', 'KCDWT', '其它暂时无法归类的', '困床的问题');
-INSERT INTO `disease` VALUES ('Z74.151', 'XYBZHRYZGDWT', '其它暂时无法归类的', '需要帮助和人员照顾的问题');
-INSERT INTO `disease` VALUES ('Z74.251', 'ZJXYBZQWQTJTCYNGGYZG', '其它暂时无法归类的', '在家需要帮助且无其他家庭成员能够给予照顾的问题');
-INSERT INTO `disease` VALUES ('Z74.351', 'XYCXDJHDWT', '其它暂时无法归类的', '需要持续的监护的问题');
-INSERT INTO `disease` VALUES ('Z74.851', 'YYLYZLRYYGDQTWT', '其它暂时无法归类的', '与依赖于照料人员有关的其他问题');
-INSERT INTO `disease` VALUES ('Z74.951', 'YYLYZLRYYGDWT', '其它暂时无法归类的', '与依赖于照料人员有关的问题 NOS');
-INSERT INTO `disease` VALUES ('Z75.051', 'JZBJBYLTJDWT', '其它暂时无法归类的', '家中不具备医疗条件的问题');
-INSERT INTO `disease` VALUES ('Z75.151', 'DDZRTCYCZYLSSCSDRDWT', '其它暂时无法归类的', '等待住入他处有充足医疗设施场所的人的问题');
-INSERT INTO `disease` VALUES ('Z75.251', 'QTWJCHZLECYDDQXDRDWT', '其它暂时无法归类的', '其他为检查和治疗而处于等待期限的人的问题');
-INSERT INTO `disease` VALUES ('Z75.351', 'BJBJDBDWSBJSSDWT', '其它暂时无法归类的', '不具备及得不到卫生保健设施的问题');
-INSERT INTO `disease` VALUES ('Z75.451', 'BJBJDDQTFZSSDWT', '其它暂时无法归类的', '不具备及得到其他辅助设施的问题');
-INSERT INTO `disease` VALUES ('Z75.551', 'JRJCZLDWT', '其它暂时无法归类的', '假日解除照料的问题');
-INSERT INTO `disease` VALUES ('Z75.552', 'ZHZLDWT', '其它暂时无法归类的', '暂缓照料的问题');
-INSERT INTO `disease` VALUES ('Z75.851', 'JZZLYYHQTYLJGTYDWT', '其它暂时无法归类的', '居住者离医院或其他医疗机构太远的问题');
-INSERT INTO `disease` VALUES ('Z75.951', 'YYLSSHQTWSBJYGDWT', '其它暂时无法归类的', '与医疗设施和其他卫生保健有关的问题 NOS');
-INSERT INTO `disease` VALUES ('Z76.051', 'WYWFGZCCF', '药物引起的疾病', '为药物发给再次处方');
-INSERT INTO `disease` VALUES ('Z76.052', 'WYJFGZCCF', '眼部疾病', '为眼镜发给再次处方');
-INSERT INTO `disease` VALUES ('Z76.053', 'WZZFGZCCF', '其它暂时无法归类的', '为装置发给再次处方');
-INSERT INTO `disease` VALUES ('Z76.151', 'QYDJKJDHZL', '其它暂时无法归类的', '弃婴的健康监督和照料');
-INSERT INTO `disease` VALUES ('Z76.251', 'JKYEZJZBLDSHJJTJDQKX', '其它暂时无法归类的', '健康婴儿在家中不利的社会经济条件的情况下获得医疗、护理或监督');
-INSERT INTO `disease` VALUES ('Z76.252', 'JKYEZDDSYHLYCSDQKXHD', '其它暂时无法归类的', '健康婴儿在等待收养或领养处所的情况下获得医疗、护理或监督');
-INSERT INTO `disease` VALUES ('Z76.253', 'JKYEZMQSBDQKXHDYLHLH', '其它疾病', '健康婴儿在母亲生病的情况下获得医疗、护理或监督');
-INSERT INTO `disease` VALUES ('Z76.351', 'PBBRDJKZ', '其它疾病', '陪伴病人的健康者');
-INSERT INTO `disease` VALUES ('Z76.451', 'ZWSBJSSZQTDJSZ', '其它暂时无法归类的', '在卫生保健设施中其他的寄膳者');
-INSERT INTO `disease` VALUES ('Z76.551', 'ZZBZJZYBDR', '其它疾病', '诈(装)病者(假装有病的人)');
-INSERT INTO `disease` VALUES ('Z76.552', 'JZYBDRJYMXDDJ', '其它疾病', '假装有病的人(具有明显的动机)');
-INSERT INTO `disease` VALUES ('Z76.851', 'ZQTTZQKXYBJJGJCDR', '其它暂时无法归类的', '在其他特指情况下与保健机构接触的人');
-INSERT INTO `disease` VALUES ('Z76.951', 'ZWTZQKXYBJJGJCDR', '其它暂时无法归类的', '在未特指情况下与保健机构接触的人');
-INSERT INTO `disease` VALUES ('Z80.051', 'XHQGEXZLJZS', '肿瘤', '消化器官恶性肿瘤家族史');
-INSERT INTO `disease` VALUES ('Z80.052', 'WCDEXZLJZSZ', '肿瘤', '胃肠道恶性肿瘤家族史者');
-INSERT INTO `disease` VALUES ('Z80.151', 'QGZQGHFEXZLJZS', '肿瘤', '气管、支气管和肺恶性肿瘤家族史');
-INSERT INTO `disease` VALUES ('Z80.251', 'QTHXHXQNQGEXZLJZS', '肿瘤', '其他呼吸和胸腔内器官恶性肿瘤家族史');
-INSERT INTO `disease` VALUES ('Z80.351', 'RFEXZLJZS', '肿瘤', '乳房恶性肿瘤家族史');
-INSERT INTO `disease` VALUES ('Z80.451', 'SZQGEXZLJZS', '肿瘤', '生殖器官恶性肿瘤家族史');
-INSERT INTO `disease` VALUES ('Z80.551', 'MNDEXZLJZS', '肿瘤', '泌尿道恶性肿瘤家族史');
-INSERT INTO `disease` VALUES ('Z80.651', 'BXBJZS', '白血病', '白血病家族史');
-INSERT INTO `disease` VALUES ('Z80.751', 'LBZXHYGZZEXZLJZS', '肿瘤', '淋巴、造血和有关组织恶性肿瘤家族史');
-INSERT INTO `disease` VALUES ('Z80.851', 'QTQGHXTEXZLJZS', '肿瘤', '其他器官或系统恶性肿瘤家族史');
-INSERT INTO `disease` VALUES ('Z80.951', 'EXZLJZS', '肿瘤', '恶性肿瘤家族史 NOS');
-INSERT INTO `disease` VALUES ('Z81.051', 'JSFYCZJZS', '精神和行为障碍', '精神发育迟滞家族史');
-INSERT INTO `disease` VALUES ('Z81.151', 'JJLYJZS', '其它暂时无法归类的', '酒精滥用家族史');
-INSERT INTO `disease` VALUES ('Z81.251', 'YCLYJZS', '其它暂时无法归类的', '烟草滥用家族史');
-INSERT INTO `disease` VALUES ('Z81.351', 'QTJSHXWZLYJZS', '精神和行为障碍', '其他精神活性物质滥用家族史');
-INSERT INTO `disease` VALUES ('Z81.451', 'QTWZLYJZS', '其它暂时无法归类的', '其他物质滥用家族史');
-INSERT INTO `disease` VALUES ('Z81.851', 'JSBQKJZSZ', '精神和行为障碍', '精神病情况家族史者');
-INSERT INTO `disease` VALUES ('Z82.051', 'DXHSJXTQTJBJZS', '神经系统疾病', '癫痫和神经系统其他疾病家族史');
-INSERT INTO `disease` VALUES ('Z82.151', 'MHSLSSJZSZ', '视力疾病', '盲或视力丧失家族史者');
-INSERT INTO `disease` VALUES ('Z82.251', 'LHTLSSJZS', '耳聋', '聋和听力丧失家族史');
-INSERT INTO `disease` VALUES ('Z82.351', 'ZFJZS', '其它暂时无法归类的', '中风家族史');
-INSERT INTO `disease` VALUES ('Z82.451', 'QXXXZBHQTXHXTJBJZS', '心脏病', '缺血性心脏病和其他循环系统疾病家族史');
-INSERT INTO `disease` VALUES ('Z82.551', 'XCHQTMXXHXDJBJZS', '其它呼吸疾病', '哮喘和其他慢性下呼吸道疾病家族史');
-INSERT INTO `disease` VALUES ('Z82.651', 'GJYHJRGGXTHJDZZQTJBJ', '关节疾病', '关节炎和肌肉骨骼系统和结缔组织其他疾病家族史');
-INSERT INTO `disease` VALUES ('Z82.751', 'XTXJXBXHRSYCJZS', '先天性疾病', '先天性畸形、变形和染色异常家族史');
-INSERT INTO `disease` VALUES ('Z82.851', 'DZLDNLSSDMXSCHJBJZS', '其它疾病', '导致劳动能力丧失的某些伤残和疾病家族史，NEC');
-INSERT INTO `disease` VALUES ('Z83.051', 'RLMYQXBDBJZS', '免疫性疾病', '人类免疫缺陷病毒[HIV]病家族史');
-INSERT INTO `disease` VALUES ('Z83.151', 'QTCRBHJSCBJZS', '寄生虫病', '其他传染病和寄生虫病家族史');
-INSERT INTO `disease` VALUES ('Z83.251', 'XYJZXQGJBHMXSJMYJZDJ', '免疫性疾病', '血液及造血器官疾病和某些涉及免疫机制的疾患家族史');
-INSERT INTO `disease` VALUES ('Z83.351', 'TNBJZSZ', '糖尿病', '糖尿病家族史者');
-INSERT INTO `disease` VALUES ('Z83.451', 'QTNFMYYHDXJBJZS', '营养过度', '其他内分泌、营养和代谢疾病家族史');
-INSERT INTO `disease` VALUES ('Z83.551', 'YHEJHJZS', '眼部疾病', '眼和耳疾患家族史');
-INSERT INTO `disease` VALUES ('Z83.651', 'HXXTJBJZS', '其它呼吸疾病', '呼吸系统疾病家族史');
-INSERT INTO `disease` VALUES ('Z83.751', 'XHXTJBJZS', '消化疾病', '消化系统疾病家族史');
-INSERT INTO `disease` VALUES ('Z84.051', 'PFHPXZZJBJZS', '皮肤病', '皮肤和皮下组织疾病家族史');
-INSERT INTO `disease` VALUES ('Z84.151', 'SHSNGJHJZS', '肾病', '肾和输尿管疾患家族史');
-INSERT INTO `disease` VALUES ('Z84.251', 'MNSZXTQTJBJZS', '其它泌尿系统疾病', '泌尿生殖系统其他疾病家族史');
-INSERT INTO `disease` VALUES ('Z84.351', 'TXYJZS', '其它血液疾病', '同血缘家族史');
-INSERT INTO `disease` VALUES ('Z84.851', 'QTTZQKJZS', '其它暂时无法归类的', '其他特指情况家族史');
-INSERT INTO `disease` VALUES ('Z85.001', 'WEXZLS', '肿瘤', '胃恶性肿瘤史');
-INSERT INTO `disease` VALUES ('Z85.002', 'ZCEXZLS', '肿瘤', '直肠恶性肿瘤史');
-INSERT INTO `disease` VALUES ('Z85.051', 'SDAQCGRS', '癌症', '食道癌切除个人史');
-INSERT INTO `disease` VALUES ('Z85.052', 'GAQCGRS', '肝部疾病', '肝癌切除个人史');
-INSERT INTO `disease` VALUES ('Z85.053', 'CDAQCGRS', '肠道疾病', '肠道癌切除个人史');
-INSERT INTO `disease` VALUES ('Z85.054', 'DNAQCGRS', '胆囊疾病', '胆囊癌切除个人史');
-INSERT INTO `disease` VALUES ('Z85.101', 'FEXZLS', '肿瘤', '肺恶性肿瘤史');
-INSERT INTO `disease` VALUES ('Z85.201', 'HXXTEXZLS', '肿瘤', '呼吸系统恶性肿瘤史');
-INSERT INTO `disease` VALUES ('Z85.301', 'RXEXZLS', '肿瘤', '乳腺恶性肿瘤史');
-INSERT INTO `disease` VALUES ('Z85.401', 'RAS', '癌症', '绒癌史');
-INSERT INTO `disease` VALUES ('Z85.451', 'SZQGAQCGRS', '男科疾病', '生殖器官癌切除个人史');
-INSERT INTO `disease` VALUES ('Z85.452', 'LCAQCGRS', '妇科疾病', '卵巢癌切除个人史');
-INSERT INTO `disease` VALUES ('Z85.453', 'YJAQCGRS', '男科疾病', '阴茎癌切除个人史');
-INSERT INTO `disease` VALUES ('Z85.551', 'MNQGAQCSGRS', '癌症', '泌尿器官癌切除术个人史');
-INSERT INTO `disease` VALUES ('Z85.651', 'BXBGRS', '白血病', '白血病个人史');
-INSERT INTO `disease` VALUES ('Z85.751', 'LBZXHYGZZQTEXZLGRS', '肿瘤', '淋巴造血和有关组织其他恶性肿瘤个人史');
-INSERT INTO `disease` VALUES ('Z85.851', 'LNEXZLQCGRS', '肿瘤', '颅脑恶性肿瘤切除个人史');
-INSERT INTO `disease` VALUES ('Z85.852', 'JZXAQCGRS', '癌症', '甲状腺癌切除个人史');
-INSERT INTO `disease` VALUES ('Z85.853', 'YEXZLZCGRS', '肿瘤', '眼恶性肿瘤摘除个人史');
-INSERT INTO `disease` VALUES ('Z85.951', 'EXZLQCGRS', '肿瘤', '恶性肿瘤切除个人史 NOS');
-INSERT INTO `disease` VALUES ('Z86.051', 'NMLSHGRS', '脑膜炎', '脑膜瘤术后个人史');
-INSERT INTO `disease` VALUES ('Z86.101', 'SHGRS', '伤寒', '伤寒个人史');
-INSERT INTO `disease` VALUES ('Z86.251', 'XYHZXQGJBHMXSJMYJZDJ', '免疫性疾病', '血液和造血器官疾病和某些涉及免疫机制的疾患个人史');
-INSERT INTO `disease` VALUES ('Z86.351', 'NFMYYHDXJBGRS', '营养过度', '内分泌、营养和代谢疾病个人史');
-INSERT INTO `disease` VALUES ('Z86.451', 'JSHXWZJYGRS', '精神和行为障碍', '精神活性物质监用个人史');
-INSERT INTO `disease` VALUES ('Z86.501', 'JSBGRS', '精神和行为障碍', '精神病个人史');
-INSERT INTO `disease` VALUES ('Z86.651', 'YZGXZJYSHGRS', '手术', '腰椎管狭窄减压术后个人史');
-INSERT INTO `disease` VALUES ('Z86.652', 'ZJSSHGRS', '手术', '椎间手术后个人史');
-INSERT INTO `disease` VALUES ('Z86.751', 'XZSSGRS', '心脏病', '心脏手术个人史');
-INSERT INTO `disease` VALUES ('Z86.752', 'DXGSSGRS', '手术', '大血管手术个人史');
-INSERT INTO `disease` VALUES ('Z87.051', 'BTTSHGRS', '手术', '扁桃体术后个人史');
-INSERT INTO `disease` VALUES ('Z87.052', 'HXXTJBGRS', '其它呼吸疾病', '呼吸系统疾病个人史');
-INSERT INTO `disease` VALUES ('Z87.151', 'WQCGRS', '胃部疾病', '胃切除个人史');
-INSERT INTO `disease` VALUES ('Z87.152', 'XHXTJBGRS', '消化疾病', '消化系统疾病个人史');
-INSERT INTO `disease` VALUES ('Z87.251', 'PFHPXZZJBGRS', '皮肤病', '皮肤和皮下组织疾病个人史');
-INSERT INTO `disease` VALUES ('Z87.351', 'JRGGXTHJDZZJBGRS', '其它骨疾病', '肌肉骨骼系统和结缔组织疾病个人史');
-INSERT INTO `disease` VALUES ('Z87.451', 'MNSZXTJBGRS', '其它泌尿系统疾病', '泌尿生殖系统疾病个人史');
-INSERT INTO `disease` VALUES ('Z87.452', 'ZGQQCGRS', '妇科疾病', '子宫全切除个人史');
-INSERT INTO `disease` VALUES ('Z87.453', 'MNDSSGRS', '手术', '泌尿道手术个人史');
-INSERT INTO `disease` VALUES ('Z87.551', 'RSFMHCRQBFZGRS', '妊娠引起的疾病', '妊娠分娩和产褥期并发症个人史');
-INSERT INTO `disease` VALUES ('Z87.651', 'QYYWSQDMXQKGRS', '其它暂时无法归类的', '起源于围生期的某些情况个人史');
-INSERT INTO `disease` VALUES ('Z87.751', 'XTJXBXHRSTYCGRS', '畸形', '先天畸形、变形和染色体异常个人史');
-INSERT INTO `disease` VALUES ('Z87.851', 'QTZYQGDWKSSGRS', '手术', '其它重要器官的外科手术个人史');
-INSERT INTO `disease` VALUES ('Z87.852', 'GZHGRS', '骨折', '骨折后个人史');
-INSERT INTO `disease` VALUES ('Z88.001', 'QMSGMS', '其它暂时无法归类的', '青霉素过敏史');
-INSERT INTO `disease` VALUES ('Z88.151', 'QTKSSZJGMGRS', '其它暂时无法归类的', '其他抗生素制剂过敏个人史');
-INSERT INTO `disease` VALUES ('Z88.251', 'HALYGMGRS', '其它暂时无法归类的', '磺胺类药过敏个人史');
-INSERT INTO `disease` VALUES ('Z88.351', 'QTKGRZJGMGRS', '感染', '其他抗感染制剂过敏个人史');
-INSERT INTO `disease` VALUES ('Z88.451', 'MZJGMGRS', '其它暂时无法归类的', '麻醉剂过敏个人史');
-INSERT INTO `disease` VALUES ('Z88.551', 'MZCMJGMGRS', '其它暂时无法归类的', '麻醉催眠剂过敏个人史');
-INSERT INTO `disease` VALUES ('Z88.651', 'ZTYGMGRS', '其它疼痛', '镇痛药过敏个人史');
-INSERT INTO `disease` VALUES ('Z88.751', 'XQHYMGMGRS', '其它血液疾病', '血清和疫苗过敏个人史');
-INSERT INTO `disease` VALUES ('Z88.851', 'QTYWYJHSWZPGMGRS', '药物引起的疾病', '其他药物、药剂和生物制品过敏个人史');
-INSERT INTO `disease` VALUES ('Z88.951', 'YWYJHSWZPGMGRS', '药物引起的疾病', '药物、药剂和生物制品过敏个人史 NOS');
-INSERT INTO `disease` VALUES ('Z89.051', 'MZHTXQS', '其它暂时无法归类的', '拇指后天性缺损');
-INSERT INTO `disease` VALUES ('Z89.052', 'ZHTXQS', '其它暂时无法归类的', '指后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.053', 'SHTXQS', '其它暂时无法归类的', '手后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.151', 'SHWHTXQS', '其它暂时无法归类的', '手和腕后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.251', 'BHTXQS', '其它暂时无法归类的', '臂后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.351', 'SSZRHSPHTXQS', '上肢其它疾病', '双上肢[任何水平]后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.352', 'SCSZHTXQS', '其它暂时无法归类的', '双侧手指后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.451', 'ZHHHTXQS', '其它足部疾病', '足和踝后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.452', 'ZHTXQS', '其它暂时无法归类的', '趾后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.551', 'JGHTXQS', '其它骨疾病', '胫骨后天性缺损');
-INSERT INTO `disease` VALUES ('Z89.552', 'XHXYXXTHTXQS', '腿部疾病', '膝或膝以下小腿后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.601', 'SSHGGQS', '手术', '手术后股骨缺失');
-INSERT INTO `disease` VALUES ('Z89.651', 'XYSDTHTXQS', '腿部疾病', '膝以上大腿后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.652', 'THTXQS', '腿部疾病', '腿后天性缺失');
-INSERT INTO `disease` VALUES ('Z89.751', 'SXZHTXQSRHSPCWJZ', '下肢其它疾病', '双下肢后天性缺失[任何水平，除外仅趾]');
-INSERT INTO `disease` VALUES ('Z89.851', 'SZHXZHTXQSRHSP', '上肢其它疾病', '上肢和下肢后天性缺失[任何水平]');
-INSERT INTO `disease` VALUES ('Z89.951', 'ZTQX', '肢体疾病', '肢体缺陷');
-INSERT INTO `disease` VALUES ('Z89.952', 'JZSH', '手术', '截肢术后');
-INSERT INTO `disease` VALUES ('Z89.953', 'SZHTXQS', '四肢其它疾病', '四肢后天性缺失 NOS');
-INSERT INTO `disease` VALUES ('Z90.001', 'SSHLGQS', '手术', '手术后颅骨缺失');
-INSERT INTO `disease` VALUES ('Z90.002', 'SSHHGQS', '手术', '手术后颌骨缺损');
-INSERT INTO `disease` VALUES ('Z90.003', 'HGQS', '颌骨疾病', '颌骨缺失');
-INSERT INTO `disease` VALUES ('Z90.004', 'HTXWYQ', '眼部疾病', '后天性无眼球');
-INSERT INTO `disease` VALUES ('Z90.005', 'SEQS', '其它暂时无法归类的', '上腭缺损');
-INSERT INTO `disease` VALUES ('Z90.006', 'XHGHTQS', '颌骨疾病', '下颌骨后天缺失');
-INSERT INTO `disease` VALUES ('Z90.051', 'NMHTXQS', '脑膜炎', '脑膜后天性缺损');
-INSERT INTO `disease` VALUES ('Z90.052', 'BHTXQS', '鼻部疾病', '鼻后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.053', 'JHTXQS', '其它暂时无法归类的', '睑后天性缺损');
-INSERT INTO `disease` VALUES ('Z90.054', 'TBHTXQX', '头部疾病', '头部后天性缺陷');
-INSERT INTO `disease` VALUES ('Z90.055', 'YHTXQS', '眼部疾病', '眼后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.056', 'HHTXQS', '喉部疾病', '喉后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.057', 'HTXBQS', '鼻部疾病', '后天性鼻缺失');
-INSERT INTO `disease` VALUES ('Z90.151', 'RFHTXQS', '妇科疾病', '乳房后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.251', 'FBFHTXQS', '肺病', '肺[部分]后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.351', 'WBFHTXQS', '胃部疾病', '胃部分后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.451', 'XHDQTBFHTXQS', '消化道疾病', '消化道其他部分后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.501', 'SSHSQS', '手术', '手术后肾缺失');
-INSERT INTO `disease` VALUES ('Z90.651', 'MNDQTBFHTXQS', '尿道疾病', '泌尿道其他部分后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.751', 'GWHTXQS', '男科疾病', '睾丸后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.752', 'SZQGHTXQS', '男科疾病', '生殖器官后天性缺失');
-INSERT INTO `disease` VALUES ('Z90.851', 'NZQGHTXQX', '其它暂时无法归类的', '内脏器官后天性缺陷');
-INSERT INTO `disease` VALUES ('Z91.051', 'FYWHSWZPGMGRS', '药物引起的疾病', '非药物和生物制品过敏个人史');
-INSERT INTO `disease` VALUES ('Z91.151', 'BFCYLHYLZDGRS', '其它暂时无法归类的', '不服从医疗和医疗制度个人史');
-INSERT INTO `disease` VALUES ('Z91.251', 'GRWSBLGRS', '其它暂时无法归类的', '个人卫生不良个人史');
-INSERT INTO `disease` VALUES ('Z91.351', 'YHJKDZXAPGRS', '其它暂时无法归类的', '有害健康的作息安排个人史');
-INSERT INTO `disease` VALUES ('Z91.451', 'XLCSGRS', '心脏疾病', '心理创伤个人史 NEC');
-INSERT INTO `disease` VALUES ('Z91.551', 'JZSGRS', '自杀', '假自杀个人史');
-INSERT INTO `disease` VALUES ('Z91.552', 'ZFDGRS', '其它暂时无法归类的', '自服毒个人史');
-INSERT INTO `disease` VALUES ('Z91.553', 'ZSQTGRS', '自杀', '自杀企图个人史');
-INSERT INTO `disease` VALUES ('Z91.601', 'QTSTCSGRS', '其它暂时无法归类的', '其他身体创伤个人史');
-INSERT INTO `disease` VALUES ('Z91.801', 'QZDS', '中毒', '铅中毒史');
-INSERT INTO `disease` VALUES ('Z91.851', 'NDGRS', '其它暂时无法归类的', '虐待个人史');
-INSERT INTO `disease` VALUES ('Z91.852', 'LRGRS', '其它暂时无法归类的', '凌辱个人史');
-INSERT INTO `disease` VALUES ('Z92.051', 'BYGRS', '其它暂时无法归类的', '避孕个人史');
-INSERT INTO `disease` VALUES ('Z92.151', 'KNXYCQJQSYGRS', '凝血疾病', '抗凝血药长期(近期)使用个人史');
-INSERT INTO `disease` VALUES ('Z92.251', 'YJCQJQSYGRS', '其它暂时无法归类的', '药剂长期(近期)使用个人史');
-INSERT INTO `disease` VALUES ('Z92.252', 'ASPLSYGRS', '其它暂时无法归类的', '阿斯匹林使用个人史');
-INSERT INTO `disease` VALUES ('Z92.351', 'ZLXFSSYGRS', '其它暂时无法归类的', '治疗性放射使用个人史');
-INSERT INTO `disease` VALUES ('Z92.401', 'WQCS', '胃部疾病', '胃切除史');
-INSERT INTO `disease` VALUES ('Z92.451', 'PFCSYGRS', '产科疾病', '剖腹产使用个人史');
-INSERT INTO `disease` VALUES ('Z92.452', 'YFQSHSYGRS', '眼部疾病', '眼(附器)术后使用个人史');
-INSERT INTO `disease` VALUES ('Z92.551', 'KFCSGRS', '其它暂时无法归类的', '康复措施个人史');
-INSERT INTO `disease` VALUES ('Z92.851', 'QTYLGRS', '其它暂时无法归类的', '其他医疗个人史');
-INSERT INTO `disease` VALUES ('Z92.951', 'YLGRS', '其它暂时无法归类的', '医疗个人史 NOS');
-INSERT INTO `disease` VALUES ('Z93.051', 'QGZKSHZT', '其它气管病', '气管造口术后状态');
-INSERT INTO `disease` VALUES ('Z93.151', 'WZKSHZT', '胃部疾病', '胃造口术后状态');
-INSERT INTO `disease` VALUES ('Z93.251', 'HCZKSHZT', '手术', '回肠造口术后状态');
-INSERT INTO `disease` VALUES ('Z93.351', 'JCZKSHZT', '手术', '结肠造口术后状态');
-INSERT INTO `disease` VALUES ('Z93.401', 'CZKSZT', '手术', '肠造口术状态');
-INSERT INTO `disease` VALUES ('Z93.451', 'QTWCDRGZKSHZT', '肠道疾病', '其它胃肠道人工造口术后状态');
-INSERT INTO `disease` VALUES ('Z93.551', 'BGZLSHZT', '手术', '膀胱造瘘术后状态');
-INSERT INTO `disease` VALUES ('Z93.601', 'SZKS', '手术', '肾造口术');
-INSERT INTO `disease` VALUES ('Z93.651', 'RGYDSHZT', '妇科疾病', '人工阴道术后状态');
-INSERT INTO `disease` VALUES ('Z93.652', 'SNGZKSHZT', '手术', '输尿管造口术后状态');
-INSERT INTO `disease` VALUES ('Z93.653', 'NDZKSZT', '手术', '尿道造口术状态');
-INSERT INTO `disease` VALUES ('Z93.851', 'QTRGZKZT', '口部疾病', '其他人工造口状态');
-INSERT INTO `disease` VALUES ('Z93.951', 'WTZDRGZKZT', '口部疾病', '未特指的人工造口状态');
-INSERT INTO `disease` VALUES ('Z94.001', 'ZTSYZZT', '肾病', '自体肾移植状态');
-INSERT INTO `disease` VALUES ('Z94.002', 'YTSYZZT', '肾病', '异体肾移植状态');
-INSERT INTO `disease` VALUES ('Z94.151', 'XZYZZT', '心脏病', '心脏移植状态');
-INSERT INTO `disease` VALUES ('Z94.251', 'FYZZT', '肺病', '肺移植状态');
-INSERT INTO `disease` VALUES ('Z94.351', 'XHFYZZT', '肺病', '心和肺移植状态');
-INSERT INTO `disease` VALUES ('Z94.451', 'GYZ', '肝部疾病', '肝移植');
-INSERT INTO `disease` VALUES ('Z94.551', 'PFYZZT', '皮肤病', '皮肤移植状态');
-INSERT INTO `disease` VALUES ('Z94.552', 'ZTPFYZZT', '皮肤病', '自体皮肤移植状态');
-INSERT INTO `disease` VALUES ('Z94.651', 'GYZZT', '移植', '骨移植状态');
-INSERT INTO `disease` VALUES ('Z94.701', 'JMYZSH', '手术', '角膜移植术后');
-INSERT INTO `disease` VALUES ('Z94.851', 'YYZSHZT', '手术', '胰移植术后状态');
-INSERT INTO `disease` VALUES ('Z94.852', 'GSYZZT', '移植', '骨髓移植状态');
-INSERT INTO `disease` VALUES ('Z94.853', 'PYZZT', '脾病', '脾移植状态');
-INSERT INTO `disease` VALUES ('Z94.854', 'YJZZZT', '男科疾病', '阴茎再植状态');
-INSERT INTO `disease` VALUES ('Z94.855', 'CYZZT', '移植', '肠移植状态');
-INSERT INTO `disease` VALUES ('Z94.951', 'QGHZZYZZT', '移植', '器官和组织移植状态 NOS');
-INSERT INTO `disease` VALUES ('Z95.001', 'AZXZQBQZT', '心脏病', '安装心脏起搏器状态');
-INSERT INTO `disease` VALUES ('Z95.151', 'ZDMGZDMDJSYZW', '主动脉疾病', '主动脉冠状动脉搭挢术移植物');
-INSERT INTO `disease` VALUES ('Z95.201', 'RGXZBMYZZT', '心脏病', '人工心脏瓣膜移植状态');
-INSERT INTO `disease` VALUES ('Z95.351', 'YZXZBM', '心脏病', '异种心脏瓣膜');
-INSERT INTO `disease` VALUES ('Z95.451', 'QTXZBMZH', '心脏病', '其他心脏瓣膜置换');
-INSERT INTO `disease` VALUES ('Z95.551', 'GZXGCXSZRWHYZW', '手术', '冠状血管成形术植入物和移植物');
-INSERT INTO `disease` VALUES ('Z95.552', 'GZDMJT', '冠状动脉疾病', '冠状动脉假体');
-INSERT INTO `disease` VALUES ('Z95.851', 'QTXZHXGZRWHYZW', '心脏病', '其他心脏和血管植入物和移植物');
-INSERT INTO `disease` VALUES ('Z95.852', 'XGNJT', '血管疾病', '血管内假体');
-INSERT INTO `disease` VALUES ('Z95.951', 'XZHXGZRWHYZW', '心脏病', '心脏和血管植入物和移植物 NOS');
-INSERT INTO `disease` VALUES ('Z96.051', 'MNSZQZRW', '男科疾病', '泌尿生殖器植入物');
-INSERT INTO `disease` VALUES ('Z96.151', 'YNJZT', '眼部疾病', '眼内晶状体');
-INSERT INTO `disease` VALUES ('Z96.152', 'JJZT', '其它暂时无法归类的', '假晶状体');
-INSERT INTO `disease` VALUES ('Z96.251', 'EGCDTLZZ', '耳部疾病', '耳骨传导听力装置');
-INSERT INTO `disease` VALUES ('Z96.252', 'EWZRW', '耳部疾病', '耳蜗植入物');
-INSERT INTO `disease` VALUES ('Z96.253', 'YGGYZPGDM', '移植', '咽鼓管移植片固定模');
-INSERT INTO `disease` VALUES ('Z96.254', 'GMQKSG', '手术', '鼓膜切开术管');
-INSERT INTO `disease` VALUES ('Z96.255', 'DGZH', '其它骨疾病', '镫骨置换');
-INSERT INTO `disease` VALUES ('Z96.351', 'RGH', '喉部疾病', '人工喉');
-INSERT INTO `disease` VALUES ('Z96.451', 'NFMKZRW', '内分泌系统疾病', '内分泌科植入物');
-INSERT INTO `disease` VALUES ('ZYXRE0', 'XYHRZ', '中医疾病', '血瘀化热证');
-INSERT INTO `disease` VALUES ('ZYXRE1', 'YXHRZ', '中医疾病', '瘀血化热证');
-INSERT INTO `disease` VALUES ('ZYXRE2', 'JYHRZ', '中医疾病', '积瘀化热证');
-INSERT INTO `disease` VALUES ('ZYXRF0', 'YZHRZ', '中医疾病', '瘀滞化热证');
-INSERT INTO `disease` VALUES ('ZYXT10', 'YZZSZ', '中医疾病', '瘀浊阻塞证');
-INSERT INTO `disease` VALUES ('ZYXT20', 'XYTNZ', '中医疾病', '血瘀痰凝证');
-INSERT INTO `disease` VALUES ('ZYXT21', 'XYTZZ', '中医疾病', '血瘀痰滞证');
-INSERT INTO `disease` VALUES ('ZYXT30', 'YTHHZ', '中医疾病', '瘀痰化火证');
-INSERT INTO `disease` VALUES ('ZYXU10', 'XYHHZ', '中医疾病', '血瘀化火证');
-INSERT INTO `disease` VALUES ('ZYXU20', 'YZHHZ', '中医疾病', '瘀滞化火证');
-INSERT INTO `disease` VALUES ('ZYXV10', 'YZQDZ', '中医疾病', '瘀阻气道证');
-INSERT INTO `disease` VALUES ('ZYXV20', 'YZQBZ', '中医疾病', '瘀阻气闭证');
-INSERT INTO `disease` VALUES ('ZYXV30', 'XXQWZ', '中医疾病', '血虚气脱证');
-INSERT INTO `disease` VALUES ('ZYXV40', 'XYQZZ', '中医疾病', '血瘀气滞证');
-INSERT INTO `disease` VALUES ('ZYXV50', 'XYQNZ', '中医疾病', '血瘀气逆证');
-INSERT INTO `disease` VALUES ('ZYXV51', 'XYQNAZSQQZ', '中医疾病', '血瘀气逆、阻塞清窍证');
-INSERT INTO `disease` VALUES ('ZYXX10', 'BXCXZ', '中医疾病', '败血冲心证');
-INSERT INTO `disease` VALUES ('ZYXX20', 'YXLXZ', '中医疾病', '瘀血凌心证');
-INSERT INTO `disease` VALUES ('ZYXX30', 'XBYXZ', '中医疾病', '血不养心证');
-INSERT INTO `disease` VALUES ('ZYXY10', 'XXYKZ', '中医疾病', '血虚阴亏证');
-INSERT INTO `disease` VALUES ('ZYXZ10', 'XZSFZ', '中医疾病', '血燥生风证');
-INSERT INTO `disease` VALUES ('ZYXZ20', 'XZSYZ', '中医疾病', '血燥失养证');
-INSERT INTO `disease` VALUES ('ZYY010', 'WYZ', '中医疾病', '亡阴证');
-INSERT INTO `disease` VALUES ('ZYY020', 'YBZ', '中医疾病', '阴闭证');
-INSERT INTO `disease` VALUES ('ZYY030', 'SYZ', '中医疾病', '伤阴证');
-INSERT INTO `disease` VALUES ('ZYY040', 'FSYSZ', '中医疾病', '腑实阴伤证');
-INSERT INTO `disease` VALUES ('ZYY050', 'JBSYZ', '中医疾病', '久病伤阴证');
-INSERT INTO `disease` VALUES ('ZYY051', 'JBSYAXHSYZ', '中医疾病', '久病伤阴、虚火上炎证');
-INSERT INTO `disease` VALUES ('ZYY060', 'ZHYSZ', '中医疾病', '疹后阴伤证');
-INSERT INTO `disease` VALUES ('ZYY070', 'ZYSJZ', '中医疾病', '真阴衰竭证');
-INSERT INTO `disease` VALUES ('ZYY11', 'YHNZZ', '中医疾病', '阴寒凝滞证');
-INSERT INTO `disease` VALUES ('ZYYA10', 'YYLXZ', '中医疾病', '阴阳两虚证');
-INSERT INTO `disease` VALUES ('ZYYA20', 'YYSDZ', '中医疾病', '阴阳失调证');
-INSERT INTO `disease` VALUES ('ZYYA30', 'YYLJZ', '中医疾病', '阴阳离决证');
-INSERT INTO `disease` VALUES ('ZYYA40', 'YSYSZ', '中医疾病', '阴盛阳衰证');
-INSERT INTO `disease` VALUES ('ZYYA41', 'YSYXZ', '中医疾病', '阴盛阳虚证');
-INSERT INTO `disease` VALUES ('ZYYA50', 'YSJYZ', '中医疾病', '阴损及阳证');
-INSERT INTO `disease` VALUES ('ZYYA60', 'YSYKZ', '中医疾病', '阴损阳亏证');
-INSERT INTO `disease` VALUES ('ZYYA70', 'YJYWZ', '中医疾病', '阴竭阳脱证');
-INSERT INTO `disease` VALUES ('ZYYA80', 'YXYFZ', '中医疾病', '阴虚阳浮证');
-INSERT INTO `disease` VALUES ('ZYYA90', 'YXYKZ', '中医疾病', '阴虚阳亢证');
-INSERT INTO `disease` VALUES ('ZYYA91', 'YXYKAFYSQZ', '中医疾病', '阴虚阳亢、风阳上扰证');
-INSERT INTO `disease` VALUES ('ZYYD10', 'YDWFZ', '中医疾病', '阴毒外发证');
-INSERT INTO `disease` VALUES ('ZYYD20', 'YXDLZ', '中医疾病', '阴虚毒恋证');
-INSERT INTO `disease` VALUES ('ZYYF10', 'YXFRZ', '中医疾病', '阴虚肺热证');
-INSERT INTO `disease` VALUES ('ZYYF20', 'YXFZZ', '中医疾病', '阴虚肺燥证');
-INSERT INTO `disease` VALUES ('ZYYF30', 'YXCZZ', '中医疾病', '阴虚肠燥证');
-INSERT INTO `disease` VALUES ('ZYYG10', 'YXGWZ', '中医疾病', '阴虚肝旺证');
-INSERT INTO `disease` VALUES ('ZYYG20', 'YXFDZ', '中医疾病', '阴虚风动证');
-INSERT INTO `disease` VALUES ('ZYYH00', 'YHZ', '中医疾病', '阴寒证');
-INSERT INTO `disease` VALUES ('ZYYH10', 'YHNJZ', '中医疾病', '阴寒凝聚证');
-INSERT INTO `disease` VALUES ('ZYYH20', 'YHNBZ', '中医疾病', '阴寒内闭证');
-INSERT INTO `disease` VALUES ('ZYYH21', 'YHNJZ', '中医疾病', '阴寒内结证');
-INSERT INTO `disease` VALUES ('ZYYM10', 'YXSRZ', '中医疾病', '阴虚湿热证');
-INSERT INTO `disease` VALUES ('ZYYP10', 'YSWBZ', '中医疾病', '阴伤胃败证');
-INSERT INTO `disease` VALUES ('ZYYR10', 'YXNRZ', '中医疾病', '阴虚内热证');
-INSERT INTO `disease` VALUES ('ZYYR20', 'YXRYZ', '中医疾病', '阴虚热郁证');
-INSERT INTO `disease` VALUES ('ZYYR30', 'YXRDZ', '中医疾病', '阴虚热毒证');
-INSERT INTO `disease` VALUES ('ZYYS00', 'YSZ', '中医疾病', '阴暑证');
-INSERT INTO `disease` VALUES ('ZYYSA0', 'YXSKZ', '中医疾病', '阴虚肾亏证');
-INSERT INTO `disease` VALUES ('ZYYT10', 'YBTSZ', '中医疾病', '阴闭痰湿证');
-INSERT INTO `disease` VALUES ('ZYYT20', 'YXTRZ', '中医疾病', '阴虚痰热证');
-INSERT INTO `disease` VALUES ('ZYYT30', 'YXTHZ', '中医疾病', '阴虚痰火证');
-INSERT INTO `disease` VALUES ('ZYYU10', 'YXHDZ', '中医疾病', '阴虚火动证');
-INSERT INTO `disease` VALUES ('ZYYU20', 'YXHFZ', '中医疾病', '阴虚火浮证');
-INSERT INTO `disease` VALUES ('ZYYU30', 'YXHWZ', '中医疾病', '阴虚火旺证');
-INSERT INTO `disease` VALUES ('ZYYU31', 'YXHCZ', '中医疾病', '阴虚火炽证');
-INSERT INTO `disease` VALUES ('ZYYU40', 'XHSYZ', '中医疾病', '虚火上炎证');
-INSERT INTO `disease` VALUES ('ZYYU41', 'XHSFZ', '中医疾病', '虚火上浮证');
-INSERT INTO `disease` VALUES ('ZYYU50', 'XHZLZ', '中医疾病', '虚火灼络证');
-INSERT INTO `disease` VALUES ('ZYYV10', 'YSQHZ', '中医疾病', '阴伤气耗证');
-INSERT INTO `disease` VALUES ('ZYYX10', 'YXXLZ', '中医疾病', '阴虚邪恋证');
-INSERT INTO `disease` VALUES ('ZYYX11', 'YXXLZ', '中医疾病', '阴虚邪留证');
-INSERT INTO `disease` VALUES ('ZYYXA0', 'YXXYZ', '中医疾病', '阴虚血瘀证');
-INSERT INTO `disease` VALUES ('ZYYXB0', 'YXXRZ', '中医疾病', '阴虚血热证');
-INSERT INTO `disease` VALUES ('ZYYXC0', 'YXXZZ', '中医疾病', '阴虚血燥证');
-INSERT INTO `disease` VALUES ('ZYYZ10', 'YXZRZ', '中医疾病', '阴虚燥热证');
-INSERT INTO `disease` VALUES ('ZZF010', 'FZKXZ', '中医疾病', '肺脏亏虚证');
-INSERT INTO `disease` VALUES ('ZZF020', 'FSZJASDBLZ', '中医疾病', '肺失治节、水道不利证');
-INSERT INTO `disease` VALUES ('ZZF030', 'FXBGZ', '中医疾病', '肺虚不固证');
-INSERT INTO `disease` VALUES ('ZZF040', 'FWBGZ', '中医疾病', '肺卫不固证');
-INSERT INTO `disease` VALUES ('ZZF041', 'FWQXZ', '中医疾病', '肺卫气虚证');
-INSERT INTO `disease` VALUES ('ZZF40', 'FSYXZ', '中医疾病', '肺肾阳虚证');
-INSERT INTO `disease` VALUES ('ZZFG10', 'FGFRZ', '中医疾病', '肺肝风热证');
-INSERT INTO `disease` VALUES ('ZZFG11', 'FGFRAXRYZZ', '中医疾病', '肺肝风热、血热壅滞证');
-INSERT INTO `disease` VALUES ('ZZFG20', 'GFRSZ', '中医疾病', '肝肺热盛证');
-INSERT INTO `disease` VALUES ('ZZFH10', 'FAHZL', '中医疾病', '肺、寒证类');
-INSERT INTO `disease` VALUES ('ZZFH20', 'FXGHZ', '中医疾病', '肺虚感寒证');
-INSERT INTO `disease` VALUES ('ZZFJ10', 'FJFRZ', '中医疾病', '肺经风热证');
-INSERT INTO `disease` VALUES ('ZZFJ20', 'FJRSZ', '中医疾病', '肺经热盛证');
-INSERT INTO `disease` VALUES ('ZZFJ30', 'FJSRZ', '中医疾病', '肺经受热证');
-INSERT INTO `disease` VALUES ('ZZFJ31', 'FJSRATSNZZ', '中医疾病', '肺经受热、痰湿凝滞证');
-INSERT INTO `disease` VALUES ('ZZFJ40', 'FJSRZ', '中医疾病', '肺经湿热证');
-INSERT INTO `disease` VALUES ('ZZFJ41', 'FJSRAYJBQZ', '鼻部疾病', '肺经湿热、壅结鼻窍证');
-INSERT INTO `disease` VALUES ('ZZFJ50', 'FJXRZ', '中医疾病', '肺经虚热证');
-INSERT INTO `disease` VALUES ('ZZFJ60', 'FJYHZ', '中医疾病', '肺经郁火证');
-INSERT INTO `disease` VALUES ('ZZFJ70', 'FJYRZ', '中医疾病', '肺经蕴热证');
-INSERT INTO `disease` VALUES ('ZZFJ71', 'FJYRAXDWXZ', '中医疾病', '肺经蕴热、邪毒外袭证');
-INSERT INTO `disease` VALUES ('ZZFJ80', 'FJZRZ', '中医疾病', '肺经燥热证');
-INSERT INTO `disease` VALUES ('ZZFJ90', 'FJYZZ', '中医疾病', '肺经瘀阻证');
-INSERT INTO `disease` VALUES ('ZZFJA0', 'FLBCZ', '中医疾病', '肺络不畅证');
-INSERT INTO `disease` VALUES ('ZZFJB0', 'CFSLZ', '中医疾病', '肠风伤络证');
-INSERT INTO `disease` VALUES ('ZZFJB1', 'FSCLZ', '中医疾病', '风伤肠络证');
-INSERT INTO `disease` VALUES ('ZZFM10', 'CDSRZ', '中医疾病', '肠道湿热证');
 INSERT INTO `disease` VALUES ('ZZFM11', 'DCSRZ', '中医疾病', '大肠湿热证');
 INSERT INTO `disease` VALUES ('ZZFP10', 'FPLXZ', '中医疾病', '肺脾两虚证');
 INSERT INTO `disease` VALUES ('ZZFP11', 'FPLXAXZBQZ', '鼻部疾病', '肺脾两虚、邪滞鼻窍证');
@@ -5243,7 +4014,7 @@ INSERT INTO `disease` VALUES ('ZZXP20', 'XPHCZ', '中医疾病', '心脾火炽�
 -- ----------------------------
 DROP TABLE IF EXISTS `exam`;
 CREATE TABLE `exam` (
-  `exid` int(10) NOT NULL,
+  `exid` int(10) NOT NULL AUTO_INCREMENT,
   `pid` int(10) NOT NULL,
   `uRid` int(10) NOT NULL,
   `tempid` int(10) DEFAULT NULL,
@@ -5261,7 +4032,7 @@ CREATE TABLE `exam` (
 -- ----------------------------
 DROP TABLE IF EXISTS `exrel`;
 CREATE TABLE `exrel` (
-  `exRelid` int(10) NOT NULL,
+  `exRelid` int(10) NOT NULL AUTO_INCREMENT,
   `exid` int(10) NOT NULL,
   `itemcode` varchar(40) NOT NULL,
   PRIMARY KEY (`exRelid`)
@@ -5311,14 +4082,15 @@ INSERT INTO `fee` VALUES ('ZLF', '诊疗费');
 -- ----------------------------
 DROP TABLE IF EXISTS `homepage`;
 CREATE TABLE `homepage` (
-  `hpid` int(10) NOT NULL,
+  `hpid` int(10) NOT NULL AUTO_INCREMENT,
+  `discodeWest` varchar(255) NOT NULL,
   `regid` int(11) NOT NULL,
   `examAdvice` varchar(255) NOT NULL,
   `cheifCP` varchar(255) NOT NULL,
-  `situation` varchar(255) NOT NULL,
   `caution` varchar(255) NOT NULL,
   `phyExam` varchar(255) NOT NULL,
   `curHis` varchar(255) NOT NULL,
+  `discodeEast` varchar(255) NOT NULL,
   `allergicHis` varchar(255) NOT NULL,
   `pastHis` varchar(255) NOT NULL,
   PRIMARY KEY (`hpid`)
@@ -6413,7 +5185,7 @@ CREATE TABLE `patient` (
 -- ----------------------------
 DROP TABLE IF EXISTS `prerel`;
 CREATE TABLE `prerel` (
-  `preRelid` int(10) NOT NULL,
+  `preRelid` int(10) NOT NULL AUTO_INCREMENT,
   `itemcode` varchar(40) NOT NULL,
   `preid` int(10) NOT NULL,
   PRIMARY KEY (`preRelid`)
@@ -6428,7 +5200,7 @@ CREATE TABLE `prerel` (
 -- ----------------------------
 DROP TABLE IF EXISTS `prescription`;
 CREATE TABLE `prescription` (
-  `preid` int(10) NOT NULL,
+  `preid` int(10) NOT NULL AUTO_INCREMENT,
   `pid` int(10) NOT NULL,
   `uRid` int(10) NOT NULL,
   `tempid` int(10) DEFAULT NULL,
@@ -6465,13 +5237,14 @@ CREATE TABLE `receipt` (
 -- ----------------------------
 DROP TABLE IF EXISTS `register`;
 CREATE TABLE `register` (
-  `regid` int(10) NOT NULL,
+  `regid` int(10) NOT NULL AUTO_INCREMENT,
   `newRecord` tinyint(1) NOT NULL,
   `order` int(10) NOT NULL,
   `pid` int(10) NOT NULL,
   `uRid` int(10) NOT NULL,
   `itemcode` varchar(40) NOT NULL,
   `date` date NOT NULL,
+  `shiftid` int(10) NOT NULL,
   PRIMARY KEY (`regid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -6491,15 +5264,17 @@ CREATE TABLE `rule` (
   `reglevel` varchar(40) NOT NULL,
   `ration` int(10) NOT NULL,
   PRIMARY KEY (`ruleid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of rule
 -- ----------------------------
-INSERT INTO `rule` VALUES ('1', 'max产科', '1', '11111111111100', '专家号', '100');
-INSERT INTO `rule` VALUES ('2', 'hzh变态反应科', '6', '11111111111111', '普通号', '100');
-INSERT INTO `rule` VALUES ('3', 'max产前检查科', '4', '00000000000011', '专家号', '0');
-INSERT INTO `rule` VALUES ('4', 'max产后疑云', '4', '01100110011001', '急诊号', '45');
+INSERT INTO `rule` VALUES ('1', 'max产科', '1', '00000000001100', '专家号', '100');
+INSERT INTO `rule` VALUES ('2', 'hzh艾滋病科', '6', '01101101001100', '专家号', '50');
+INSERT INTO `rule` VALUES ('3', 'max产前检查科', '4', '00000000000011', '普通号', '50');
+INSERT INTO `rule` VALUES ('4', 'hzh产科', '7', '00000100000111', '普通号', '100');
+INSERT INTO `rule` VALUES ('6', 'max干他', '1', '11111100000000', '普通号', '78');
+INSERT INTO `rule` VALUES ('7', 'max产前抑郁', '4', '00001111000011', '急诊号', '67');
 
 -- ----------------------------
 -- Table structure for `shift`
@@ -6572,30 +5347,35 @@ INSERT INTO `shift` VALUES ('55', '1', '3', '100', '100', 'ZJH', '2019-05-30', '
 INSERT INTO `shift` VALUES ('56', '1', '3', '100', '100', 'ZJH', '2019-05-31', '1');
 INSERT INTO `shift` VALUES ('57', '1', '3', '100', '100', 'ZJH', '2019-05-31', '0');
 
+
 -- ----------------------------
 -- Table structure for `template_all`
 -- ----------------------------
 DROP TABLE IF EXISTS `template_all`;
 CREATE TABLE `template_all` (
-  `tempid` int(10) NOT NULL,
+  `tempid` int(10) NOT NULL AUTO_INCREMENT,
   `tempname` varchar(40) NOT NULL,
   `temptype` varchar(40) NOT NULL,
   `tempscope` varchar(40) NOT NULL,
   `createdate` datetime NOT NULL,
   PRIMARY KEY (`tempid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of template_all
 -- ----------------------------
 INSERT INTO `template_all` VALUES ('1', 'test', 'test', 'hospital', '2019-06-03 10:32:39');
-
+INSERT INTO `template_all` VALUES ('2', 'exam', 'examination', 'department', '2019-06-03 11:24:44');
+INSERT INTO `template_all` VALUES ('3', '111', 'examination', 'individual', '2019-06-03 16:46:34');
+INSERT INTO `template_all` VALUES ('8', '11', 'examination', 'individual', '2019-06-04 12:00:09');
+INSERT INTO `template_all` VALUES ('9', 'w', 'examination', 'department', '2019-06-04 13:31:14');
+INSERT INTO `template_all` VALUES ('10', 'ss', 'examination', 'individual', '2019-06-04 13:36:24');
 -- ----------------------------
 -- Table structure for `temprel`
 -- ----------------------------
 DROP TABLE IF EXISTS `temprel`;
 CREATE TABLE `temprel` (
-  `tempRelid` int(10) NOT NULL,
+  `tempRelid` int(10) NOT NULL AUTO_INCREMENT,
   `tempid` int(10) NOT NULL,
   `itemcode` varchar(40) NOT NULL,
   PRIMARY KEY (`tempRelid`)
@@ -6610,7 +5390,7 @@ CREATE TABLE `temprel` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `userid` int(10) NOT NULL,
+  `userid` int(10) NOT NULL AUTO_INCREMENT,
   `username` varchar(40) NOT NULL,
   `pwd` varchar(40) NOT NULL,
   `realname` varchar(40) NOT NULL,
@@ -6628,17 +5408,18 @@ INSERT INTO `user` VALUES ('2', 'sama', '123', '汪凯君', '医技医生', '', 
 INSERT INTO `user` VALUES ('3', 'phoenix', '123', '冯淇奎', '财务管理员', '', '0');
 INSERT INTO `user` VALUES ('4', 'root', '123', '管理员', '医院管理员', '', '0');
 INSERT INTO `user` VALUES ('5', 'reek', '123', '韩子豪', '门诊医生', '主任医师', '1');
+INSERT INTO `user` VALUES ('32', '巨化股份', '123', '深入贯彻v', '门诊医生', '副主任医师', '1');
 
 -- ----------------------------
 -- Table structure for `userrdept`
 -- ----------------------------
 DROP TABLE IF EXISTS `userrdept`;
 CREATE TABLE `userrdept` (
-  `uRid` int(10) NOT NULL,
+  `uRid` int(10) NOT NULL AUTO_INCREMENT,
   `userid` int(10) NOT NULL,
   `deptcode` varchar(40) NOT NULL,
   PRIMARY KEY (`uRid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of userrdept
@@ -6648,4 +5429,9 @@ INSERT INTO `userrdept` VALUES ('2', '2', 'XDTK');
 INSERT INTO `userrdept` VALUES ('3', '3', 'CWK');
 INSERT INTO `userrdept` VALUES ('4', '1', 'CQJCK');
 INSERT INTO `userrdept` VALUES ('5', '4', 'YYGLK');
-INSERT INTO `userrdept` VALUES ('6', '5', 'BTFYK');
+INSERT INTO `userrdept` VALUES ('12', '5', 'CK');
+INSERT INTO `userrdept` VALUES ('13', '32', 'CRK');
+INSERT INTO `userrdept` VALUES ('14', '32', 'EKZH');
+INSERT INTO `userrdept` VALUES ('15', '1', 'BTFYK');
+INSERT INTO `userrdept` VALUES ('16', '1', 'CK');
+INSERT INTO `userrdept` VALUES ('17', '1', 'CQJCK');

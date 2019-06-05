@@ -29,12 +29,12 @@
                     </template>
                     <el-submenu index="1-1">
                         <span slot="title">Waiting</span>
-                        <el-menu-item index="1-1-1">Patient1</el-menu-item>
+                        <el-menu-item v-for="(item,index) in myWait" :key="item.pid" :index="'1-1-'+(index+1)" :value="item.pid">{{ item.pname}}</el-menu-item>
                     </el-submenu>
 
                     <el-submenu index="1-2">
                         <span slot="title">Diagnosed</span>
-                        <el-menu-item index="1-2-1">Patient2</el-menu-item>
+                        <el-menu-item v-for="(item,index) in myDiagnosed" :key="item.pid" :index="'1-2-'+(index+1)" :value="item.pid">{{ item.pname}}</el-menu-item>
                     </el-submenu>
                 </el-submenu>
 
@@ -45,12 +45,12 @@
                     </template>
                     <el-submenu index="2-1">
                         <span slot="title">Waiting</span>
-                        <el-menu-item index="2-1-1">Patient3</el-menu-item>
+                        <el-menu-item v-for="(item,index) in deptWait" :key="item.pid" :index="'2-1-'+(index+1)" :value="item.pid">{{ item.pname}}</el-menu-item>
                     </el-submenu>
 
                     <el-submenu index="2-2">
                         <span slot="title">Diagnosed</span>
-                        <el-menu-item index="2-2-1">Patient4</el-menu-item>
+                        <el-menu-item v-for="(item,index) in deptDiagnosed" :key="item.pid" :index="'2-2-'+(index+1)" :value="item.pid">{{ item.pname}}</el-menu-item>
                     </el-submenu>
                 </el-submenu>
             </el-menu>
@@ -96,7 +96,14 @@
             return {
                 url: '',
                 isCollapse: true,
-                activeName: 'homepageframe/frontpage.html'
+                activeName: 'homepageframe/frontpage.html',
+
+                myWait:[],
+                myDiagnosed:[],
+                deptWait:[],
+                deptDiagnosed:[],
+                shiftid:[],
+                list:[]
             };
         },
         methods: {
@@ -111,10 +118,17 @@
                 this.url = tab.name;
                 console.log("navigateTo" + this.url)
             },
-            /*navigateTo(url) {
-                console.log("navigateTo " + url);
-                this.url = url;
-            }*/
+            loadPatientList(){
+                var that = this ;
+                axios.post('/outpatient/loadlist', {'shiftid': this.shiftid})
+                .then(function (response) {
+                    console.log(response.data);
+                    that.list = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            }
 
         }
     });

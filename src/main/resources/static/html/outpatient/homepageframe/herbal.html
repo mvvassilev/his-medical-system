@@ -14,24 +14,31 @@
 <div id="patentmed">
     <el-container>
         <el-header>
-            <el-row type="flex" justify="space-between">
-                <el-col :span="6">
-                    <el-tag size="medium" effect="plain">Pre-Diagnosis</el-tag>
-                </el-col>
-                <el-col :span="18">
-                    <el-button size="small" icon="el-icon-circle-plus-outline" type="primary" @click="addPrescription"
-                               round>Add
-                    </el-button>
-                    <el-button size="small" icon="el-icon-remove-outline" type="primary" @click="" round>Delete
-                    </el-button>
-                    <el-button size="small" icon="el-icon-circle-check" type="primary" @click="" round>Open</el-button>
-                    <el-button size="small" icon="el-icon-delete" type="primary" @click="" round>Revoke</el-button>
-                    <el-button size="small" icon="el-icon-edit-outline" type="primary" @click="" round>Save</el-button>
-                    <el-button size="small" icon="el-icon-refresh" type="primary" @click="" round>Refresh</el-button>
-                </el-col>
-            </el-row>
+            <el-card class="box-card">
+                <el-row type="flex" justify="space-between">
+                    <el-col :span="6">
+                        <el-tag size="medium" effect="plain">Pre-Diagnosis</el-tag>
+                    </el-col>
+                    <el-col :span="18">
+                        <el-button size="small" icon="el-icon-circle-plus-outline" type="primary"
+                                   @click="addPrescription"
+                                   round>Add
+                        </el-button>
+                        <el-button size="small" icon="el-icon-remove-outline" type="primary" @click="" round>Delete
+                        </el-button>
+                        <el-button size="small" icon="el-icon-circle-check" type="primary" @click="" round>Open
+                        </el-button>
+                        <el-button size="small" icon="el-icon-delete" type="primary" @click="" round>Revoke</el-button>
+                        <el-button size="small" icon="el-icon-edit-outline" type="primary" @click="" round>Save
+                        </el-button>
+                        <el-button size="small" icon="el-icon-refresh" type="primary" @click="" round>Refresh
+                        </el-button>
+                    </el-col>
+                </el-row>
+            </el-card>
         </el-header>
-        <el-container>
+
+        <el-container style="margin-top: 30px">
             <el-aside width="250px">
 
                 <el-row>
@@ -88,7 +95,7 @@
                         </el-col>
                     </el-row>
                     <el-table :data="medicine">
-                        <el-table-column width="160" property="medname" label="Name"></el-table-column>
+                        <el-table-column width="150" property="medname" label="Name"></el-table-column>
                         <el-table-column width="100" property="size" label="Size"></el-table-column>
                         <el-table-column width="100" property="price" label="Price"></el-table-column>
                         <el-table-column width="100" property="count" label="Count"></el-table-column>
