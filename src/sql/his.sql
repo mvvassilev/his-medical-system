@@ -5244,6 +5244,7 @@ CREATE TABLE `register` (
   `uRid` int(10) NOT NULL,
   `itemcode` varchar(40) NOT NULL,
   `date` date NOT NULL,
+  `shiftid` int(10) NOT NULL,
   PRIMARY KEY (`regid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -5289,7 +5290,7 @@ CREATE TABLE `shift` (
   `dutydate` date NOT NULL,
   `aorp` tinyint(1) NOT NULL,
   PRIMARY KEY (`shiftid`)
-) ENGINE=InnoDB AUTO_INCREMENT=144 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shift
