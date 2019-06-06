@@ -1,5 +1,7 @@
 package com.neuedu.hismedicalsystem.model.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.*;
 import com.neuedu.hismedicalsystem.model.po.*;
 import org.springframework.stereotype.Service;
@@ -86,11 +88,20 @@ public class RegistrationService {
         shiftMapper.deductOneBalance(shiftid);
     }
 
-    public Patient getPatientInfo(int id) {
-        if(patientMapper.countPatientOfId(id)==1)
-            return patientMapper.getPatientById(id);
-        else
-            return new Patient();
+    public JSONObject getPatientInfo(int id) {
+        Patient p;
+        JSONObject result = new JSONObject();
+        if(patientMapper.countPatientOfId(id)==1){
+            p = patientMapper.getPatientById(id);
+            result.put("patient",(JSONObject) JSON.toJSON(p));
+            result.put("exists","Yes");
+        }
+        else{
+            p =  new Patient();
+            result.put("patient",(JSONObject) JSON.toJSON(p));
+            result.put("exists","No");
+        }
+        return result;
     }
 
     public List<Registration> getRegistrationsByPid(int id){

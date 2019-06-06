@@ -102,9 +102,12 @@ public class RegistrationController {
     }
     
     @RequestMapping("/tryCompletePatientInfo")
-    public Patient tryCompletingPatientInfo(@RequestBody Patient p) {
-        int id=3;
-        System.out.println("Patient "+ registrationService.getPatientInfo(id).toString());
-        return registrationService.getPatientInfo(p.getPid());
+    public JSONObject tryCompletingPatientInfo(@RequestBody JSONObject obj) {
+        int id = obj.getInteger("id");
+        System.out.println("id = " + obj.getInteger("id"));
+        System.out.println("Patient "+ registrationService.getPatientInfo(id));
+//        return registrationService.getPatientInfo(p.getPid());
+
+        return registrationService.getPatientInfo(id);
     }
 }
