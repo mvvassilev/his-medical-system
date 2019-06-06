@@ -54,7 +54,7 @@
     <!-------------    CONFIRM PAYMENT POP-UP    ------------>
     <el-dialog title="Confirm payment" :visible.sync="confirmPayFormVisible">
         <el-table :data="payments" style="top: -15px;height: fit-content;width: 100%; padding-left: 5%">
-            <el-table-column prop="nmedname" label="Item" width="220"></el-table-column>
+            <el-table-column prop="itemname" label="Item" width="220"></el-table-column>
             <el-table-column prop="price" label="Price" width="220"></el-table-column>
         </el-table>
         <el-col>
@@ -91,7 +91,7 @@
             confirmObject: "",
             totalfee: "",
             change: "",
-            nmedname: "",
+            itemname: "",
             price: "",
             att: "",
 

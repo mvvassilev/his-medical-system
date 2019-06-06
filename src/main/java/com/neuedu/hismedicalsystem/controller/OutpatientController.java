@@ -1,5 +1,6 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.FrontPage;
 import com.neuedu.hismedicalsystem.model.po.Patient;
@@ -37,6 +38,16 @@ public class OutpatientController {
             return "{\"result\":false}";
         }
         return "{\"result\":true}";
+    }
+
+    @RequestMapping("/delTemp")
+    public void delTemp(int tempid){
+        templateService.delTemp(tempid);
+    }
+
+    @RequestMapping("/item")
+    public JSONArray getItem(String temptype){
+       return templateService.getItem(temptype);
     }
 
     @RequestMapping("getDiagnosedPatientsOfUserToday")
