@@ -32,11 +32,11 @@ public class NonMedic {
         this.deptcode = deptcode;
     }
 
-    public String getitemname() {
+    public String getItemname() {
         return itemname;
     }
 
-    public void setitemname(String itemname) {
+    public void setItemname(String itemname) {
         this.itemname = itemname;
     }
 

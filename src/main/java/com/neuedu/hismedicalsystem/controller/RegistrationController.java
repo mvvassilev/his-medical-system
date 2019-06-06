@@ -61,11 +61,11 @@ public class RegistrationController {
         Shift shift = (Shift)JSONObject.toJavaObject(obj.getJSONObject("selectedShift"), Shift.class);
         System.out.println("shift = " + shift);
 
-        String registrationLevel = shift.getitemname();
+        String registrationLevel = shift.getItemname();
         System.out.println("registrationLevel = " + registrationLevel);
 
         NonMedic nonMedicItem = new NonMedic();
-        nonMedicItem.setitemname(registrationLevel);
+        nonMedicItem.setItemname(registrationLevel);
 
         //Insert patient
         registrationService.insertPatient(patient);
@@ -86,7 +86,7 @@ public class RegistrationController {
     public double getRegistrationPrice(@RequestBody JSONObject obj){
         Shift shift = (Shift)JSONObject.toJavaObject(obj.getJSONObject("selectedShift"), Shift.class);
         System.out.println("shift = " + shift);
-        double price = nonMedicService.getPrice(shift.getitemname());
+        double price = nonMedicService.getPrice(shift.getItemname());
         System.out.println("Price "+price);
         return price;
     }

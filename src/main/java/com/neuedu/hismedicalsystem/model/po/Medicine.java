@@ -9,11 +9,11 @@ public class Medicine {
     private String medtype;
     private String medcat;
 
-    public String getsize() {
+    public String getSize() {
         return size;
     }
 
-    public void setsize(String size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
@@ -41,11 +41,11 @@ public class Medicine {
         this.itemcode = itemcode;
     }
 
-    public String getitemname() {
+    public String getItemname() {
         return itemname;
     }
 
-    public void setitemname(String itemname) {
+    public void setItemname(String itemname) {
         this.itemname = itemname;
     }
 

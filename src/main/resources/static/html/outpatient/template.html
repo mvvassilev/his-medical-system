@@ -361,7 +361,6 @@
             onSubmit: function() {
                 this.onSubmitAdd();
                 this.dialogFormVisible = false;
-                this.refresh();
             },
             onSubmitAdd: function() {
                 var that = this;
@@ -376,7 +375,7 @@
                 })
                     .then(function(response) {
                         console.log(response.data);
-                        // that.depts=response.data;
+                        that.refresh();
                     })
                     .catch(function(error) {
                         console.log(error);

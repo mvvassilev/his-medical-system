@@ -74,11 +74,11 @@ public class Shift {
         this.aorp = aorp;
     }
 
-    public String getitemname() {
+    public String getItemname() {
         return itemname;
     }
 
-    public void setitemname(String itemname) {
+    public void setItemname(String itemname) {
         this.itemname = itemname;
     }
 
