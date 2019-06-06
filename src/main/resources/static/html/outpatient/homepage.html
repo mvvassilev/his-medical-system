@@ -127,7 +127,8 @@
                 userid: 1,
 
                 pname:'',
-                pid:'',
+                pid:0,
+                regid:0,
 
                 myWait: [],
                 myDiagnosed: [],
@@ -191,18 +192,22 @@
                 if(select[0] === "1" && select[1] === "1"){
                     this.pid = this.myWait[parseInt(select[2])-1].pid;
                     this.pname = this.myWait[parseInt(select[2])-1].pname;
+                    this.regid = this.myWait[parseInt(select[2])-1].regid;
                     this.switchStep(this.myWait[parseInt(select[2])-1].state);
                 }else if(select[0] === "1" && select[1] === "2"){
                     this.pid = this.myDiagnosed[parseInt(select[2])-1].pid;
                     this.pname = this.myDiagnosed[parseInt(select[2])-1].pname;
+                    this.regid = this.myDiagnosed[parseInt(select[2])-1].regid;
                     this.switchStep(this.myDiagnosed[parseInt(select[2])-1].state);
                 }else if(select[0] === "2" && select[1] === "1"){
                     this.pid = this.deptWait[parseInt(select[2])-1].pid;
                     this.pname = this.deptWait[parseInt(select[2])-1].pname;
+                    this.regid = this.deptWait[parseInt(select[2])-1].regid;
                     this.switchStep(this.deptWait[parseInt(select[2])-1].state);
                 }else if(select[0] === "2" && select[1] === "2"){
                     this.pid = this.deptDiagnosed[parseInt(select[2])-1].pid;
                     this.pname = this.deptDiagnosed[parseInt(select[2])-1].pname;
+                    this.regid = this.deptDiagnosed[parseInt(select[2])-1].regid;
                     this.switchStep(this.deptDiagnosed[parseInt(select[2])-1].state);
                 }
 

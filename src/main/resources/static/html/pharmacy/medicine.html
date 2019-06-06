@@ -43,12 +43,12 @@
                 width="180">
         </el-table-column>
         <el-table-column
-                prop="medname"
+                prop="itemname"
                 label="Medicine Name"
                 width="250">
         </el-table-column>
         <el-table-column
-                prop="medsize"
+                prop="size"
                 label="Medicine Size"
                 width="180">
         </el-table-column>
@@ -107,10 +107,10 @@
                 <el-input v-model="form.itemcode" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Medicine Name" :label-width="formLabelWidth">
-                <el-input v-model="form.medname" autocomplete="off"></el-input>
+                <el-input v-model="form.itemname" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Medicine Size" :label-width="formLabelWidth">
-                <el-input v-model="form.medsize" autocomplete="off"></el-input>
+                <el-input v-model="form.size" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Unit" :label-width="formLabelWidth">
                 <el-input v-model="form.unit" autocomplete="off"></el-input>
@@ -161,8 +161,8 @@
         el: '#medicine',
         data: {
             itemcode: "",
-            medname: "",
-            medsize: "",
+            itemname: "",
+            size: "",
             unit: "",
             price:"",
             medtype:"",
@@ -186,8 +186,8 @@
             updatingObject:{},
             form: {
                 itemcode: "",
-                medname: "",
-                medsize: "",
+                itemname: "",
+                size: "",
                 unit: "",
                 price:"",
                 medtype:"",
@@ -216,8 +216,8 @@
                 var that = this;
                 axios.post('/management/med', {
                     itemcode: that.itemcode,
-                    medname: that.medname,
-                    medsize: that.medsize,
+                    itemname: that.itemname,
+                    size: that.size,
                     unit: that.unit,
                     price:that.price,
                     medtype:that.medtype,
@@ -237,8 +237,8 @@
                 var that = this;
                 axios.post('/management/med', {
                     itemcode: "",
-                    medname: "",
-                    medsize: "",
+                    itemname: "",
+                    size: "",
                     unit: "",
                     price:"",
                     medtype:"",
@@ -267,8 +267,8 @@
                 console.log(that.form);
                 axios.post('/management/addMed', {
                     itemcode: that.form.itemcode,
-                    medname: that.form.medname,
-                    medsize: that.form.medsize,
+                    itemname: that.form.itemname,
+                    size: that.form.size,
                     unit: that.form.unit,
                     price:that.form.price,
                     medtype:that.form.medtype,
@@ -288,8 +288,8 @@
                 console.log(that.form);
                 axios.post('/management/updateMed', {
                     itemcode: that.form.itemcode,
-                    medname: that.form.medname,
-                    medsize: that.form.medsize,
+                    itemname: that.form.itemname,
+                    size: that.form.size,
                     unit: that.form.unit,
                     price:that.form.price,
                     medtype:that.form.medtype,
@@ -324,8 +324,8 @@
                 if (method == "Add") {
                     this.form = {
                         itemcode: "",
-                        medname: "",
-                        medsize: "",
+                        itemname: "",
+                        size: "",
                         unit: "",
                         price:"",
                         medtype:"",
@@ -336,8 +336,8 @@
                 if (method == "Update"){
                     this.form = {
                         itemcode: row.itemcode,
-                        medname: row.medname,
-                        medsize: row.medsize,
+                        itemname: row.itemname,
+                        size: row.size,
                         unit: row.unit,
                         price:row.price,
                         medtype:row.medtype,

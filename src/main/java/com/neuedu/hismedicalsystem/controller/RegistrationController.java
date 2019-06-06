@@ -32,10 +32,10 @@ public class RegistrationController {
     public List<Shift> getDoctorsAvailable(@RequestBody JSONObject obj) {
         String deptcode = obj.getString("deptcode");
         boolean aorp = obj.getBoolean("aorp");
-        String nmedname = obj.getString("registrationLevel");
+        String itemname = obj.getString("registrationLevel");
         System.out.println("*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
-        System.out.println("nmedname "+nmedname);
-        List<Shift> list = registrationService.getAvailableDoctorList(aorp,deptcode,nmedname);
+        System.out.println("itemname "+itemname);
+        List<Shift> list = registrationService.getAvailableDoctorList(aorp,deptcode,itemname);
         System.out.println("*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
         for(Shift shift : list){
             System.out.println(shift.toString());
@@ -67,13 +67,13 @@ public class RegistrationController {
         Shift shift = (Shift)JSONObject.toJavaObject(obj.getJSONObject("selectedShift"), Shift.class);
         System.out.println("shift = " + shift);
 
-        String registrationLevel = shift.getNmedname();
+        String registrationLevel = shift.getItemname();
         System.out.println("registrationLevel = " + registrationLevel);
 
 
 
         NonMedic nonMedicItem = new NonMedic();
-        nonMedicItem.setNmedname(registrationLevel);
+        nonMedicItem.setItemname(registrationLevel);
 
         //Insert patient
         if(!patientExists) {
@@ -95,7 +95,7 @@ public class RegistrationController {
     public double getRegistrationPrice(@RequestBody JSONObject obj){
         Shift shift = (Shift)JSONObject.toJavaObject(obj.getJSONObject("selectedShift"), Shift.class);
         System.out.println("shift = " + shift);
-        double price = nonMedicService.getPrice(shift.getNmedname());
+        double price = nonMedicService.getPrice(shift.getItemname());
         System.out.println("Price "+price);
         return price;
     }
@@ -115,5 +115,10 @@ public class RegistrationController {
 //        return registrationService.getPatientInfo(p.getPid());
 
         return registrationService.getPatientInfo(id);
+    }
+
+    @RequestMapping("/test")
+    public void test(@RequestBody JSONObject obj) {
+        registrationService.test();
     }
 }

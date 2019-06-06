@@ -26,8 +26,8 @@ public class RegistrationService {
     @Resource
     private RegistrationMapper registrationMapper;
 
-    public List<Shift> getAvailableDoctorList(boolean aorp, String deptcode, String nmedname){
-        List<Shift> availableShifts = shiftMapper.getShiftsAvailable(aorp,deptcode,nmedname);
+    public List<Shift> getAvailableDoctorList(boolean aorp, String deptcode, String itemname){
+        List<Shift> availableShifts = shiftMapper.getShiftsAvailable(aorp,deptcode,itemname);
         return availableShifts;
     }
 
@@ -77,11 +77,25 @@ public class RegistrationService {
         System.out.println("register = " + register);
         System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
 
-        int regid = registrationMapper.addRegister(register);
+        registrationMapper.addRegister(register);
         //Deduct one in balance field for the shift
         shiftMapper.deductOneBalance(shiftid);
         //Create Homepage For this registration
-        patientMapper.insertHomepage(regid);
+        patientMapper.insertHomepage(register.getRegid());
+    }
+
+    //TODO:DELETE TEST
+    public void test(){
+        Registration register = new Registration();
+        register.setShiftid(1);
+        register.setOrder(2);
+        register.setPid(2394);
+        register.setuRid(234);
+        register.setItemcode("testing");
+        register.setNewRecord(true);
+
+        int regid = registrationMapper.addRegister(register);
+        System.out.println("regid = " + register.getRegid());
     }
 
     public JSONObject getPatientInfo(int id) {

@@ -1,5 +1,6 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.FrontPage;
 import com.neuedu.hismedicalsystem.model.po.Patient;
@@ -39,6 +40,16 @@ public class OutpatientController {
         return "{\"result\":true}";
     }
 
+    @RequestMapping("/delTemp")
+    public void delTemp(int tempid){
+        templateService.delTemp(tempid);
+    }
+
+    @RequestMapping("/item")
+    public JSONArray getItem(String temptype){
+       return templateService.getItem(temptype);
+    }
+
     @RequestMapping("getDiagnosedPatientsOfUserToday")
     public List<Patient> getDiagnosedPatientsOfUserToday(@RequestBody JSONObject obj){
         return patientService.getPatientsOfUserToday(obj.getInteger("userid"),obj.getString("state"));
@@ -61,8 +72,8 @@ public class OutpatientController {
     }
 
     @RequestMapping("getFrontPageByPid")
-    public FrontPage getFrontPageByPid(long pid){
-        return patientService.getFrontPageByPid(pid);
+    public FrontPage getFrontPageByRegid(long regid){
+        return patientService.getFrontPageByRegid(regid);
     }
 
 

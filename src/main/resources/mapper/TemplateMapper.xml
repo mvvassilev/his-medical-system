@@ -21,4 +21,16 @@
     <insert id="addTemp">
         insert into template_all (tempname, temptype,tempscope,createdate) values (#{tempname}, #{temptype},#{tempscope},#{createdate})
     </insert>
+
+    <delete id="delTemp">
+        delete from template_all where tempid=#{tempid}
+    </delete>
+
+    <select id="getMedItem" resultType="Medicine">
+        select * from medicine where medcat=#{temptype}
+    </select>
+
+    <select id="getNonItem" resultType="NonMedic">
+        select * from non_medic where nmedtype=#{temptype}
+    </select>
 </mapper>

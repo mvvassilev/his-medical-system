@@ -331,8 +331,8 @@ public class ManagementController {
                 int ruleid = params.getJSONObject(i).getInteger("ruleid");
                 int uRid = ruleService.getURid(ruleid);
 
-                String nmedname = params.getJSONObject(i).getString("nmedname");
-                String itemcode = nonMedicService.getRegItemCode(nmedname);
+                String itemname = params.getJSONObject(i).getString("itemname");
+                String itemcode = nonMedicService.getRegItemCode(itemname);
 
                 System.out.println(uRid);
                 System.out.println(itemcode);

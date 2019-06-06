@@ -13,8 +13,8 @@ public class NonMedicService {
     @Resource
     private NonMedicMapper nonMedicMapper;
 
-    public String getRegItemCode(String nmedname) {
-        return nonMedicMapper.getRegItemCode(nmedname);
+    public String getRegItemCode(String itemname) {
+        return nonMedicMapper.getRegItemCode(itemname);
     }
 
     public List<NonMedic> getNonMedicItems(NonMedic condition) {
@@ -41,7 +41,7 @@ public class NonMedicService {
         return nonMedicMapper.getRegLevel();
     }
 
-    public double getPrice(String nmedname) {
-        return nonMedicMapper.getPrice(nmedname);
+    public double getPrice(String itemname) {
+        return nonMedicMapper.getPrice(itemname);
     }
 }
