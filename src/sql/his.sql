@@ -4073,7 +4073,7 @@ CREATE TABLE `homepage` (
   `caution` varchar(255) DEFAULT NULL,
   `phyExam` varchar(255) DEFAULT NULL,
   `curHis` varchar(255) DEFAULT NULL,
-  `discodeEast` varchar(255) DEFAULT NULL,
+  `situation` varchar(255) DEFAULT NULL,
   `allergicHis` varchar(255) DEFAULT NULL,
   `pastHis` varchar(255) DEFAULT NULL,
   `examAdvice` varchar(255) DEFAULT NULL,
@@ -4095,7 +4095,7 @@ DROP TABLE IF EXISTS `hprel`;
 CREATE TABLE `hprel` (
   `hpRid` int(10) NOT NULL AUTO_INCREMENT,
   `hpid` int(10) NOT NULL,
-  `discode` varchar(40) NOT NULL,
+  `icdcode` varchar(40) NOT NULL,
   `westOrEast` tinyint(4) NOT NULL,
   PRIMARY KEY (`hpRid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

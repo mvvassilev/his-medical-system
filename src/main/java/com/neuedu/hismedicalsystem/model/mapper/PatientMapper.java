@@ -18,5 +18,5 @@ public interface PatientMapper {
 
     List<Patient> getPatientsOfDeptToday(@Param("deptcode") String deptcode, @Param("state") String state);
 
-    FrontPage getFrontPageByPid(long pid);
+    FrontPage getFrontPageByRegid(long regid);
 }
