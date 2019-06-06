@@ -21,7 +21,7 @@ public class PatientService {
         return patientMapper.getPatientsOfDeptToday(deptcode, state);
     }
 
-    public FrontPage getFrontPageByRegid(long regid) {
+    public FrontPage getFrontPageByRegid(int regid) {
         return patientMapper.getFrontPageByRegid(regid);
     }
 }

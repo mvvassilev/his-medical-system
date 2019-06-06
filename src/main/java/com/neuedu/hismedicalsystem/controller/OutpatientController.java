@@ -60,8 +60,8 @@ public class OutpatientController {
        return patientService.getPatientsOfDeptToday(obj.getString("deptcode"),"");
     }
 
-    @RequestMapping("getFrontPageByPid")
-    public FrontPage getFrontPageByRegid(long regid){
+    @RequestMapping("getFrontPageByRegid")
+    public FrontPage getFrontPageByRegid(int regid){
         return patientService.getFrontPageByRegid(regid);
     }
 

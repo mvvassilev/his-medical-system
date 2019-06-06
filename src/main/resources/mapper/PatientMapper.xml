@@ -32,7 +32,7 @@
             and r.state = #{state}
         </if>
         <if test="state == ''">
-            and r.state != '诊毕'
+            and r.state != 6
         </if>
 
         and TO_DAYS(r.date) = TO_DAYS(now())
@@ -49,12 +49,12 @@
             and r.state = #{state}
         </if>
         <if test="state == ''">
-            and r.state != '诊毕'
+            and r.state != 6
         </if>
         and TO_DAYS(r.date) = TO_DAYS(now())
     </select>
 
-    <select id="getFrontPageByPid" resultMap="_frontpage">
+    <select id="getFrontPageByRegid" resultMap="_frontpage">
         select *
         from homepage hp join register r on hp.regid = r.regid
         join patient p on p.pid = r.pid
