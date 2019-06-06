@@ -116,4 +116,9 @@ public class RegistrationController {
 
         return registrationService.getPatientInfo(id);
     }
+
+    @RequestMapping("/test")
+    public void test(@RequestBody JSONObject obj) {
+        registrationService.test();
+    }
 }

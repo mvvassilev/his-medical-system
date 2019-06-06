@@ -6,7 +6,7 @@
 
 
     <insert id="addRegister">
-        <selectKey resultType="Integer" order="AFTER" keyProperty="regid">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="regid">
             SELECT LAST_INSERT_ID()
         </selectKey>
         insert into register (newRecord, `order`, pid, uRid, itemcode, date, shiftid, state)
