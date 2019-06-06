@@ -33,10 +33,10 @@ public class RegistrationController {
         String deptcode = obj.getString("deptcode");
         boolean aorp = obj.getBoolean("aorp");
         String itemname = obj.getString("registrationLevel");
-        System.out.println("___________________*_*_*_*_*_*_*_*_*_*_*_**_*_*_*_*_");
+        System.out.println("*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
         System.out.println("itemname "+itemname);
         List<Shift> list = registrationService.getAvailableDoctorList(aorp,deptcode,itemname);
-        System.out.println("___________________*_*_*_*_*_*_*_*_*_*_*_**_*_*_*_*_");
+        System.out.println("*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
         for(Shift shift : list){
             System.out.println(shift.toString());
         }
@@ -48,9 +48,15 @@ public class RegistrationController {
 //        try {
 //
         System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
+        System.out.println("Submit Registration");
+        System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
+
 
         Patient patient = (Patient) JSONObject.toJavaObject(obj.getJSONObject("patient"), Patient.class);
         System.out.println("patient = " + patient);
+
+        Boolean patientExists = obj.getBoolean("patientExists");
+        System.out.println("patientExists = " + patientExists);
 
         boolean newrecord = obj.getBoolean("newrecord");
         System.out.println("newrecord = " + newrecord);
@@ -64,12 +70,15 @@ public class RegistrationController {
         String registrationLevel = shift.getItemname();
         System.out.println("registrationLevel = " + registrationLevel);
 
+
+
         NonMedic nonMedicItem = new NonMedic();
         nonMedicItem.setItemname(registrationLevel);
 
         //Insert patient
-        registrationService.insertPatient(patient);
-
+        if(!patientExists) {
+            registrationService.insertPatient(patient);
+        }
         //Get all the information of registration as non-medic
         NonMedic registrationType = nonMedicService.getNonMedicItems(nonMedicItem).get(0);
 
@@ -90,7 +99,7 @@ public class RegistrationController {
         System.out.println("Price "+price);
         return price;
     }
-    
+
     @RequestMapping("/getRegistrations")
     public List<Registration> getRegistrations() {
         List<Registration> rList = registrationService.getRegistrationsByPid(2);
@@ -99,9 +108,17 @@ public class RegistrationController {
     }
     
     @RequestMapping("/tryCompletePatientInfo")
-    public Patient tryCompletingPatientInfo(@RequestBody Patient p) {
-        int id=3;
-        System.out.println("Patient "+ registrationService.getPatientInfo(id).toString());
-        return registrationService.getPatientInfo(p.getPid());
+    public JSONObject tryCompletingPatientInfo(@RequestBody JSONObject obj) {
+        int id = obj.getInteger("id");
+        System.out.println("id = " + obj.getInteger("id"));
+        System.out.println("Patient "+ registrationService.getPatientInfo(id));
+//        return registrationService.getPatientInfo(p.getPid());
+
+        return registrationService.getPatientInfo(id);
+    }
+
+    @RequestMapping("/test")
+    public void test(@RequestBody JSONObject obj) {
+        registrationService.test();
     }
 }

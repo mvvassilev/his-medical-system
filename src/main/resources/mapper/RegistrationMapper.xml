@@ -6,9 +6,12 @@
 
 
     <insert id="addRegister">
-        insert into register (newRecord, `order`, pid, uRid, itemcode, date, shiftid)
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="regid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into register (newRecord, `order`, pid, uRid, itemcode, date, shiftid, state)
         values
-        (#{newRecord}, #{order}, #{pid}, #{uRid}, #{itemcode}, now(), #{shiftid})
+        (#{newRecord}, #{order}, #{pid}, #{uRid}, #{itemcode}, now(), #{shiftid}, 1)
     </insert>
 
 
@@ -28,8 +31,4 @@
         join register r on r.uRid = ud.uRid)
         where pid = #{pid}
     </select>
-
-
-
-
 </mapper>

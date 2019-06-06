@@ -1,5 +1,7 @@
 package com.neuedu.hismedicalsystem.model.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.*;
 import com.neuedu.hismedicalsystem.model.po.*;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,6 @@ public class RegistrationService {
         bill.setCount(1);
         bill.setPaid(true);
         bill.setItemcode(registration.getItemcode());
-        bill.setPaid(false);
         bill.setFeecode(registration.getFeecode());
         bill.setDone(true);
         bill.setBillcat(billcat);
@@ -58,7 +59,6 @@ public class RegistrationService {
     public void registerToShift(Patient patient, NonMedic registrationType, boolean newrecord, Shift shift) {
         Registration register = new Registration();
         register.setNewRecord(newrecord);
-
         //Get the current order for the patient ( maximum in shift +1 )
         int shiftid = shift.getShiftid();
         int currentOrder = 1;
@@ -71,17 +71,47 @@ public class RegistrationService {
         register.setuRid(shift.getuRid());
         register.setItemcode(registrationType.getItemcode());
         register.setShiftid(shiftid);
-        registrationMapper.addRegister(register);
 
+        System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
+        System.out.println("registerToShift");
+        System.out.println("register = " + register);
+        System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
+
+        registrationMapper.addRegister(register);
         //Deduct one in balance field for the shift
         shiftMapper.deductOneBalance(shiftid);
+        //Create Homepage For this registration
+        patientMapper.insertHomepage(register.getRegid());
     }
 
-    public Patient getPatientInfo(int id) {
-        if(patientMapper.countPatientOfId(id)==1)
-            return patientMapper.getPatientById(id);
-        else
-            return new Patient();
+    //TODO:DELETE TEST
+    public void test(){
+        Registration register = new Registration();
+        register.setShiftid(1);
+        register.setOrder(2);
+        register.setPid(2394);
+        register.setuRid(234);
+        register.setItemcode("testing");
+        register.setNewRecord(true);
+
+        int regid = registrationMapper.addRegister(register);
+        System.out.println("regid = " + register.getRegid());
+    }
+
+    public JSONObject getPatientInfo(int id) {
+        Patient p;
+        JSONObject result = new JSONObject();
+        if(patientMapper.countPatientOfId(id)==1){
+            p = patientMapper.getPatientById(id);
+            result.put("patient",(JSONObject) JSON.toJSON(p));
+            result.put("exists","Yes");
+        }
+        else{
+            p =  new Patient();
+            result.put("patient",(JSONObject) JSON.toJSON(p));
+            result.put("exists","No");
+        }
+        return result;
     }
 
     public List<Registration> getRegistrationsByPid(int id){

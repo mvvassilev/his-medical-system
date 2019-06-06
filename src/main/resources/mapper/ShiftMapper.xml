@@ -38,7 +38,7 @@
                 and n.itemname = #{itemname}
             </if>
             and s.balance > 0
---             and to_days(s.dutydate) = to_days(now())
+            and to_days(s.dutydate) = to_days(now())
         </where>
     </select>
 

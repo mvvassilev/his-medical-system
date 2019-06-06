@@ -10,6 +10,7 @@ public class Patient {
     private Date pbirth;
     private String paddress;
     private String state;
+    private int regid;
 
     public Patient(int pid, String pname, boolean pgender, int page, Date pbirth, String paddress) {
         this.pid = pid;
@@ -89,6 +90,14 @@ public class Patient {
         this.state = state;
     }
 
+    public int getRegid() {
+        return regid;
+    }
+
+    public void setRegid(int regid) {
+        this.regid = regid;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
@@ -99,6 +108,7 @@ public class Patient {
                 ", pbirth=" + pbirth +
                 ", paddress='" + paddress + '\'' +
                 ", state='" + state + '\'' +
+                ", regid='" + regid + '\'' +
                 '}';
     }
 }
