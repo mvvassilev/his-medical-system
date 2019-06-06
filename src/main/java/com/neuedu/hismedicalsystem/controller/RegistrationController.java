@@ -55,6 +55,9 @@ public class RegistrationController {
         Patient patient = (Patient) JSONObject.toJavaObject(obj.getJSONObject("patient"), Patient.class);
         System.out.println("patient = " + patient);
 
+        Boolean patientExists = obj.getBoolean("patientExists");
+        System.out.println("patientExists = " + patientExists);
+
         boolean newrecord = obj.getBoolean("newrecord");
         System.out.println("newrecord = " + newrecord);
 
@@ -67,12 +70,15 @@ public class RegistrationController {
         String registrationLevel = shift.getNmedname();
         System.out.println("registrationLevel = " + registrationLevel);
 
+
+
         NonMedic nonMedicItem = new NonMedic();
         nonMedicItem.setNmedname(registrationLevel);
 
         //Insert patient
-        registrationService.insertPatient(patient);
-
+        if(!patientExists) {
+            registrationService.insertPatient(patient);
+        }
         //Get all the information of registration as non-medic
         NonMedic registrationType = nonMedicService.getNonMedicItems(nonMedicItem).get(0);
 

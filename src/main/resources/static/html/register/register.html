@@ -181,6 +181,7 @@
                 paddress: "FK",
                 pgender: true,
             },
+            patientExists: false,
 
             //To get all the shifts available we need:
             screeningConditions:{
@@ -354,6 +355,7 @@
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
                     data:{
                         patient: that.patientInfo,
+                        patientExists: that.patientExists,
                         selectedShift: that.selectedShift,
                         billcat: that.billcat,
                         newrecord: that.newrecord
@@ -384,6 +386,7 @@
                     console.log(response.data);
                     if(response.data.exists=="Yes"){
                         that.patientInfo = response.data.patient;
+                        that.patientExists = true;
                         that.$message({
                             message: 'Successfully retrieved patient info',
                             type: 'success'
