@@ -16,8 +16,8 @@
             <if test="deptcode != null and deptcode!='' ">
                 and deptcode = #{deptcode}
             </if>
-            <if test="nmedname != null and nmedname!='' ">
-                and nmedname = #{nmedname}
+            <if test="itemname != null and itemname!='' ">
+                and itemname = #{itemname}
             </if>
             <if test="size != null and size!='' ">
                 and size = #{size}
@@ -29,8 +29,8 @@
     </select>
 
     <insert id="addNonMedicItem">
-        insert into non_medic (itemcode,feecode,deptcode,nmedname,size,price)
-        values (#{itemcode},#{feecode},#{deptcode},#{nmedname},#{size},#{price})
+        insert into non_medic (itemcode,feecode,deptcode,itemname,size,price)
+        values (#{itemcode},#{feecode},#{deptcode},#{itemname},#{size},#{price})
     </insert>
 
     <delete id="delNonMedicItem">
@@ -38,7 +38,7 @@
     </delete>
 
     <update id="updateNonMedicItem">
-        update non_medic set nmedname = #{nmedname},feecode = #{feecode},deptcode = #{deptcode},size = #{size},price=
+        update non_medic set itemname = #{itemname},feecode = #{feecode},deptcode = #{deptcode},size = #{size},price=
         #{price}
         where itemcode = #{itemcode}
     </update>
@@ -50,11 +50,11 @@
 
     <select id="getRegItemCode" resultType="String">
         select itemcode from non_medic
-        where nmedname = #{nmedname}
+        where itemname = #{itemname}
     </select>
 
     <select id="getPrice" resultType="Double">
-        select price from non_medic where nmedname = #{nmedname}
+        select price from non_medic where itemname = #{itemname}
     </select>
 
 </mapper>

@@ -8,7 +8,7 @@ public class Shift {
     private String username;
     private String realname;
     private boolean aorp;
-    private String nmedname;
+    private String itemname;
     private int ration;
     private int userid;
 
@@ -74,12 +74,12 @@ public class Shift {
         this.aorp = aorp;
     }
 
-    public String getNmedname() {
-        return nmedname;
+    public String getitemname() {
+        return itemname;
     }
 
-    public void setNmedname(String nmedname) {
-        this.nmedname = nmedname;
+    public void setitemname(String itemname) {
+        this.itemname = itemname;
     }
 
     public int getRation() {
@@ -122,7 +122,7 @@ public class Shift {
                 ", username='" + username + '\'' +
                 ", realname='" + realname + '\'' +
                 ", aorp=" + aorp +
-                ", nmedname='" + nmedname + '\'' +
+                ", itemname='" + itemname + '\'' +
                 ", ration=" + ration +
                 ", userid=" + userid +
                 ", dutydate=" + dutydate +

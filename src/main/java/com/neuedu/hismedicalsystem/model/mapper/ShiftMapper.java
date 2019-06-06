@@ -12,7 +12,7 @@ public interface ShiftMapper {
     //TODO: Here I omitted the date condition (The shifts to register have to be in today) for testing purpose.
     //For Registration Getting Available Doctors
     public List<Shift> getShiftsAvailable(@Param("aorp") boolean aorp,
-                                          @Param("deptcode") String deptcode, @Param("nmedname") String nmedname);
+                                          @Param("deptcode") String deptcode, @Param("itemname") String itemname);
 
     void updateShift(List<Shift> updateshifts);
 

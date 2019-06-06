@@ -32,10 +32,10 @@ public class RegistrationController {
     public List<Shift> getDoctorsAvailable(@RequestBody JSONObject obj) {
         String deptcode = obj.getString("deptcode");
         boolean aorp = obj.getBoolean("aorp");
-        String nmedname = obj.getString("registrationLevel");
+        String itemname = obj.getString("registrationLevel");
         System.out.println("___________________*_*_*_*_*_*_*_*_*_*_*_**_*_*_*_*_");
-        System.out.println("nmedname "+nmedname);
-        List<Shift> list = registrationService.getAvailableDoctorList(aorp,deptcode,nmedname);
+        System.out.println("itemname "+itemname);
+        List<Shift> list = registrationService.getAvailableDoctorList(aorp,deptcode,itemname);
         System.out.println("___________________*_*_*_*_*_*_*_*_*_*_*_**_*_*_*_*_");
         for(Shift shift : list){
             System.out.println(shift.toString());
@@ -61,11 +61,11 @@ public class RegistrationController {
         Shift shift = (Shift)JSONObject.toJavaObject(obj.getJSONObject("selectedShift"), Shift.class);
         System.out.println("shift = " + shift);
 
-        String registrationLevel = shift.getNmedname();
+        String registrationLevel = shift.getitemname();
         System.out.println("registrationLevel = " + registrationLevel);
 
         NonMedic nonMedicItem = new NonMedic();
-        nonMedicItem.setNmedname(registrationLevel);
+        nonMedicItem.setitemname(registrationLevel);
 
         //Insert patient
         registrationService.insertPatient(patient);
@@ -86,7 +86,7 @@ public class RegistrationController {
     public double getRegistrationPrice(@RequestBody JSONObject obj){
         Shift shift = (Shift)JSONObject.toJavaObject(obj.getJSONObject("selectedShift"), Shift.class);
         System.out.println("shift = " + shift);
-        double price = nonMedicService.getPrice(shift.getNmedname());
+        double price = nonMedicService.getPrice(shift.getitemname());
         System.out.println("Price "+price);
         return price;
     }

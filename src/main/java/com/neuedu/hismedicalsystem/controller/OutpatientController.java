@@ -1,5 +1,6 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.neuedu.hismedicalsystem.model.po.Template_all;
 import com.neuedu.hismedicalsystem.model.service.TemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class OutpatientController {
     }
 
     @RequestMapping("/item")
-    public void getItem(String temptype){
-       templateService.getItem(temptype);
+    public JSONArray getItem(String temptype){
+       return templateService.getItem(temptype);
     }
 }

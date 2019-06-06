@@ -23,7 +23,7 @@
             <el-input type="text" v-model="feecode" placeholder="Feecode"></el-input>
         </el-col>
         <el-col :span="4">
-            <el-input type="text" v-model="nmedname" placeholder="Name"></el-input>
+            <el-input type="text" v-model="itemname" placeholder="Name"></el-input>
         </el-col>
         <el-col :span="4">
             <el-input type="text" v-model="deptcode" placeholder="Department"></el-input>
@@ -47,7 +47,7 @@
             </el-table-column>
             <el-table-column prop="deptcode" label="Department Code" width="180">
             </el-table-column>
-            <el-table-column prop="nmedname" label="Name">
+            <el-table-column prop="itemname" label="Name">
             </el-table-column>
             <el-table-column prop="size" label="Size">
             </el-table-column>
@@ -84,7 +84,7 @@
                 <el-input v-model="form.deptcode" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Name" :label-width="formLabelWidth">
-                <el-input v-model="form.nmedname" autocomplete="off"></el-input>
+                <el-input v-model="form.itemname" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="Size" :label-width="formLabelWidth">
                 <el-input v-model="form.size" autocomplete="off"></el-input>
@@ -119,7 +119,7 @@
             itemcode: "",
             feecode: "",
             deptcode: "",
-            nmedname: "",
+            itemname: "",
             size: "",
             price: "",
             nonmedics: [],
@@ -140,7 +140,7 @@
                 itemcode: "",
                 feecode: "",
                 deptcode: "",
-                nmedname: "",
+                itemname: "",
                 size: "",
                 price: "",
             },
@@ -169,7 +169,7 @@
                         itemcode: that.itemcode,
                         feecode: that.feecode,
                         deptcode: that.deptcode,
-                        nmedname: that.nmedname,
+                        itemname: that.itemname,
                         size: that.size,
                         price: that.price,
                     })
@@ -190,7 +190,7 @@
                         itemcode: "",
                         feecode: "",
                         deptcode: "",
-                        nmedname: "",
+                        itemname: "",
                         size: "",
                         price: "",
                     })
@@ -220,7 +220,7 @@
                         itemcode: that.form.itemcode,
                         feecode: that.form.feecode,
                         deptcode: that.form.deptcode,
-                        nmedname: that.form.nmedname,
+                        itemname: that.form.itemname,
                         size: that.form.size,
                         price: that.form.price,
                     })
@@ -240,7 +240,7 @@
                         itemcode: that.form.itemcode,
                         feecode: that.form.feecode,
                         deptcode: that.form.deptcode,
-                        nmedname: that.form.nmedname,
+                        itemname: that.form.itemname,
                         size: that.form.size,
                         price: that.form.price,
                     })
@@ -280,7 +280,7 @@
                         itemcode: "",
                         feecode: "",
                         deptcode: "",
-                        nmedname: "",
+                        itemname: "",
                         size: "",
                         price: "",
                     }
@@ -290,7 +290,7 @@
                         itemcode: row.itemcode,
                         feecode: row.feecode,
                         deptcode: row.deptcode,
-                        nmedname: row.nmedname,
+                        itemname: row.itemname,
                         size: row.size,
                         price: row.price,
                     }

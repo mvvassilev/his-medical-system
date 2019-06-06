@@ -91,7 +91,7 @@
                         <el-col :span="6">
                             <el-select v-model="screeningConditions.registrationLevel" placeholder="Register level"
                                        @change="onChangeScreeningConditions()" size="medium">
-                                <el-option v-for="item in registrationLevels" :key="item.itemcode" :label="item.nmedname" :value="item.nmedname">
+                                <el-option v-for="item in registrationLevels" :key="item.itemcode" :label="item.itemname" :value="item.itemname">
                                 </el-option>
                             </el-select>
                         </el-col>
@@ -254,7 +254,7 @@
                  itemcode: "",
                  feecode: "GHF",
                  deptcode: "",
-                 nmedname: "",
+                 itemname: "",
                  size: "",
                  price: "",
              })

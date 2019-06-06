@@ -32,7 +32,7 @@
                         <el-dropdown-item v-popover:popover>
                             <el-popover ref="popover" placement="left" width="400" trigger="hover">
                                 <el-table :data="template">
-                                    <el-table-column width="150" property="nmedname" label="ExamName"></el-table-column>
+                                    <el-table-column width="150" property="itemname" label="ExamName"></el-table-column>
                                     <el-table-column width="150" property="deptname"
                                                      label="Department"></el-table-column>
                                     <el-table-column width="100" property="price" label="Price"></el-table-column>
@@ -67,7 +67,7 @@
                 width="55">
         </el-table-column>
         <el-table-column
-                prop="nmedname"
+                prop="itemname"
                 label="ExamName"
                 width="180">
         </el-table-column>
@@ -108,31 +108,31 @@
         el: '#examination',
         data: {
             exams: [{
-                'nmedname': '大抢救',
+                'itemname': '大抢救',
                 'deptname': '急救科',
                 'state': '开立',
                 'price': 900,
                 'result': '查看'
             }, {
-                'nmedname': '大抢救',
+                'itemname': '大抢救',
                 'deptname': '急救科',
                 'state': '开立',
                 'price': 900,
                 'result': '查看'
             }, {
-                'nmedname': '大抢救',
+                'itemname': '大抢救',
                 'deptname': '急救科',
                 'state': '开立',
                 'price': 900,
                 'result': '查看'
             }, {
-                'nmedname': '大抢救',
+                'itemname': '大抢救',
                 'deptname': '急救科',
                 'state': '开立',
                 'price': 900,
                 'result': '查看'
             }, {
-                'nmedname': '大抢救',
+                'itemname': '大抢救',
                 'deptname': '急救科',
                 'state': '开立',
                 'price': 900,

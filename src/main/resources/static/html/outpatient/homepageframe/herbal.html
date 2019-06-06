@@ -52,7 +52,7 @@
                             <el-dropdown-item v-popover:popover>
                                 <el-popover ref="popover" placement="left" width="400" trigger="hover">
                                     <el-table :data="template">
-                                        <el-table-column width="150" property="nmedname"
+                                        <el-table-column width="150" property="itemname"
                                                          label="TreatmentName"></el-table-column>
                                         <el-table-column width="150" property="deptname"
                                                          label="Department"></el-table-column>
@@ -95,7 +95,7 @@
                         </el-col>
                     </el-row>
                     <el-table :data="medicine">
-                        <el-table-column width="150" property="medname" label="Name"></el-table-column>
+                        <el-table-column width="150" property="itemname" label="Name"></el-table-column>
                         <el-table-column width="100" property="size" label="Size"></el-table-column>
                         <el-table-column width="100" property="price" label="Price"></el-table-column>
                         <el-table-column width="100" property="count" label="Count"></el-table-column>
@@ -147,7 +147,7 @@
                   tooltip-effect="dark">
             <el-table-column
                     fixed="left"
-                    prop="medname"
+                    prop="itemname"
                     label="Medicine Name"
                     width="180">
             </el-table-column>
@@ -195,27 +195,27 @@
             prescription: [],
             template: [],
             medicine: [{
-                'medname': '哥水药',
+                'itemname': '哥水药',
                 'size': '支',
                 'price': '23.0',
                 'count': 10
             }, {
-                'medname': '哥水药',
+                'itemname': '哥水药',
                 'size': '支',
                 'price': '23.0',
                 'count': 10
             }, {
-                'medname': '哥水药',
+                'itemname': '哥水药',
                 'size': '支',
                 'price': '23.0',
                 'count': 10
             }, {
-                'medname': '哥水药',
+                'itemname': '哥水药',
                 'size': '支',
                 'price': '23.0',
                 'count': 10
             }, {
-                'medname': '哥水药',
+                'itemname': '哥水药',
                 'size': '支',
                 'price': '23.0',
                 'count': 10
@@ -267,7 +267,7 @@
                 itemcode: '',
                 medicine: [
                     {
-                        'medname': '哥水药',
+                        'itemname': '哥水药',
                         'size': '支',
                         'type': '艺术',
                         'price': 23.0

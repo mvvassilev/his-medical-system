@@ -4110,12 +4110,12 @@ CREATE TABLE `hprel` (
 DROP TABLE IF EXISTS `medicine`;
 CREATE TABLE `medicine` (
   `itemcode` varchar(40) NOT NULL,
-  `medname` varchar(40) NOT NULL,
+  `itemname` varchar(40) NOT NULL,
   `medcat` varchar(40) NOT NULL,
   `unit` varchar(40) NOT NULL,
   `medtype` varchar(40) NOT NULL,
   `price` double(20,0) NOT NULL,
-  `medsize` varchar(40) NOT NULL,
+  `size` varchar(40) NOT NULL,
   PRIMARY KEY (`itemcode`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -5012,7 +5012,7 @@ CREATE TABLE `non_medic` (
   `itemcode` varchar(40) NOT NULL,
   `feecode` varchar(40) NOT NULL,
   `deptcode` varchar(40) NOT NULL,
-  `nmedname` varchar(40) NOT NULL,
+  `itemname` varchar(40) NOT NULL,
   `size` varchar(40) DEFAULT NULL,
   `price` double(20,0) NOT NULL,
   PRIMARY KEY (`itemcode`)

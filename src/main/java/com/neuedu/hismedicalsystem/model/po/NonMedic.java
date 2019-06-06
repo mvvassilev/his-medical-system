@@ -4,7 +4,7 @@ public class NonMedic {
     private String itemcode;
     private String feecode;
     private String deptcode;
-    private String nmedname;
+    private String itemname;
     private String size;
     private double price;
 
@@ -32,12 +32,12 @@ public class NonMedic {
         this.deptcode = deptcode;
     }
 
-    public String getNmedname() {
-        return nmedname;
+    public String getitemname() {
+        return itemname;
     }
 
-    public void setNmedname(String nmedname) {
-        this.nmedname = nmedname;
+    public void setitemname(String itemname) {
+        this.itemname = itemname;
     }
 
     public String getSize() {
@@ -62,7 +62,7 @@ public class NonMedic {
                 "itemcode='" + itemcode + '\'' +
                 ", feecode='" + feecode + '\'' +
                 ", deptcode='" + deptcode + '\'' +
-                ", nmedname='" + nmedname + '\'' +
+                ", itemname='" + itemname + '\'' +
                 ", size='" + size + '\'' +
                 ", price=" + price +
                 '}';
