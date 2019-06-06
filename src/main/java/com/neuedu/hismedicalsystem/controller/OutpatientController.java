@@ -1,6 +1,7 @@
 package com.neuedu.hismedicalsystem.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.neuedu.hismedicalsystem.model.po.FrontPage;
 import com.neuedu.hismedicalsystem.model.po.Patient;
 import com.neuedu.hismedicalsystem.model.po.Template_all;
 import com.neuedu.hismedicalsystem.model.service.PatientService;
@@ -38,14 +39,30 @@ public class OutpatientController {
         return "{\"result\":true}";
     }
 
+    @RequestMapping("getDiagnosedPatientsOfUserToday")
+    public List<Patient> getDiagnosedPatientsOfUserToday(@RequestBody JSONObject obj){
+        return patientService.getPatientsOfUserToday(obj.getInteger("userid"),obj.getString("state"));
+    }
+
+    @RequestMapping("getDiagnosedPatientsOfDeptToday")
+    public List<Patient> getDiagnosedPatientsOfDeptToday(@RequestBody JSONObject obj){
+        return patientService.getPatientsOfDeptToday(obj.getString("deptcode"),obj.getString("state"));
+    }
+
     @RequestMapping("getPatientsOfUserToday")
     public List<Patient> getPatientsOfUserToday(@RequestBody JSONObject obj){
-        return patientService.getPatientsOfUserToday(obj.getInteger("userid"),obj.getString("state"));
+        return patientService.getPatientsOfUserToday(obj.getInteger("userid"),"");
+
     }
 
     @RequestMapping("getPatientsOfDeptToday")
     public List<Patient> getPatientsOfDeptToday(@RequestBody JSONObject obj){
-        return patientService.getPatientsOfDeptToday(obj.getString("deptcode"),obj.getString("state"));
+       return patientService.getPatientsOfDeptToday(obj.getString("deptcode"),"");
+    }
+
+    @RequestMapping("getFrontPageByPid")
+    public FrontPage getFrontPageByPid(long pid){
+        return patientService.getFrontPageByPid(pid);
     }
 
 

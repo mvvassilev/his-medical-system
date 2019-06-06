@@ -57,13 +57,8 @@ public class RegistrationService {
     }
 
     public void registerToShift(Patient patient, NonMedic registrationType, boolean newrecord, Shift shift) {
-        System.out.println("patient = " + patient);
-        System.out.println("registrationType = " + registrationType);
-        System.out.println("newrecord = " + newrecord);
-        System.out.println("shift = " + shift);
         Registration register = new Registration();
         register.setNewRecord(newrecord);
-
         //Get the current order for the patient ( maximum in shift +1 )
         int shiftid = shift.getShiftid();
         int currentOrder = 1;
@@ -82,10 +77,11 @@ public class RegistrationService {
         System.out.println("register = " + register);
         System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
 
-        registrationMapper.addRegister(register);
-
+        int regid = registrationMapper.addRegister(register);
         //Deduct one in balance field for the shift
         shiftMapper.deductOneBalance(shiftid);
+        //Create Homepage For this registration
+        patientMapper.insertHomepage(regid);
     }
 
     public JSONObject getPatientInfo(int id) {

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RegistrationMapper {
 
-    void addRegister(Registration registration);
+    int addRegister(Registration registration);
 
     int getCurrentOrder(int shiftid);
 
