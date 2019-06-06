@@ -28,7 +28,7 @@
                         <el-button style="float: right; padding: 3px 0" type="text" @click="clearPInfo">Clear</el-button>
                     </div>
                     <div style="margin-top: 10px;" class="hintFont">ID：</div>
-                    <el-input placeholder="Patient ID" v-model="patientInfo.pid" size="medium"></el-input>
+                    <el-input placeholder="Patient ID" v-model="patientInfo.pid" size="medium" v-on:blur="tryCompletePInfo()"></el-input>
                     <div class="hintFont">Name：</div>
                     <el-input placeholder="Name" v-model="patientInfo.pname" size="medium"></el-input>
                     <div class="hintFont">Age：</div>
@@ -172,14 +172,16 @@
     var app = new Vue({
         el: '#register',
         data: {
+            //TODO: Change to Custom
             patientInfo: {
                 pid: "",
-                pname: "",
-                page: "",
+                pname: "Birk",
+                page: "21",
                 pbirth: "",
-                paddress: "",
-                pgender: false,
+                paddress: "FK",
+                pgender: true,
             },
+            patientExists: false,
 
             //To get all the shifts available we need:
             screeningConditions:{
@@ -300,7 +302,7 @@
                 axios({
                     url: '/registration/getDoctorsAvailable',
                     method: 'post',
-                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    contentType: 'application/json',
                     data:  this.screeningConditions,
                 })
                 .then(function (response) {
@@ -353,6 +355,7 @@
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
                     data:{
                         patient: that.patientInfo,
+                        patientExists: that.patientExists,
                         selectedShift: that.selectedShift,
                         billcat: that.billcat,
                         newrecord: that.newrecord
@@ -366,7 +369,37 @@
                     console.log(error);
                 });
                 this.clearPInfo();
+            },
+
+            tryCompletePInfo:function () {
+                console.log("Blur")
+                var that = this;
+                axios({
+                    url: '/registration/tryCompletePatientInfo',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:{id: that.patientInfo.pid},
+                })
+                .then(function (response) {
+                    console.log("success complete pinfo");
+                    console.log(response.data);
+                    if(response.data.exists=="Yes"){
+                        that.patientInfo = response.data.patient;
+                        that.patientExists = true;
+                        that.$message({
+                            message: 'Successfully retrieved patient info',
+                            type: 'success'
+                        });
+                    }
+                    else{
+                        that.$message('Did not find patient with the ID');
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             }
+
             ,test:function () {
                 console.log("Test!!!")
                 this.shifts = [];

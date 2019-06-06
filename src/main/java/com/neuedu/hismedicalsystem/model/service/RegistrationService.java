@@ -1,5 +1,7 @@
 package com.neuedu.hismedicalsystem.model.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.*;
 import com.neuedu.hismedicalsystem.model.po.*;
 import org.springframework.stereotype.Service;
@@ -55,13 +57,8 @@ public class RegistrationService {
     }
 
     public void registerToShift(Patient patient, NonMedic registrationType, boolean newrecord, Shift shift) {
-        System.out.println("patient = " + patient);
-        System.out.println("registrationType = " + registrationType);
-        System.out.println("newrecord = " + newrecord);
-        System.out.println("shift = " + shift);
         Registration register = new Registration();
         register.setNewRecord(newrecord);
-
         //Get the current order for the patient ( maximum in shift +1 )
         int shiftid = shift.getShiftid();
         int currentOrder = 1;
@@ -80,17 +77,27 @@ public class RegistrationService {
         System.out.println("register = " + register);
         System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
 
-        registrationMapper.addRegister(register);
-
+        int regid = registrationMapper.addRegister(register);
         //Deduct one in balance field for the shift
         shiftMapper.deductOneBalance(shiftid);
+        //Create Homepage For this registration
+        patientMapper.insertHomepage(regid);
     }
 
-    public Patient getPatientInfo(int id) {
-        if(patientMapper.countPatientOfId(id)==1)
-            return patientMapper.getPatientById(id);
-        else
-            return new Patient();
+    public JSONObject getPatientInfo(int id) {
+        Patient p;
+        JSONObject result = new JSONObject();
+        if(patientMapper.countPatientOfId(id)==1){
+            p = patientMapper.getPatientById(id);
+            result.put("patient",(JSONObject) JSON.toJSON(p));
+            result.put("exists","Yes");
+        }
+        else{
+            p =  new Patient();
+            result.put("patient",(JSONObject) JSON.toJSON(p));
+            result.put("exists","No");
+        }
+        return result;
     }
 
     public List<Registration> getRegistrationsByPid(int id){
