@@ -1,5 +1,6 @@
 package com.neuedu.hismedicalsystem.model.mapper;
 
+import com.neuedu.hismedicalsystem.model.po.FrontPage;
 import com.neuedu.hismedicalsystem.model.po.Patient;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,4 +17,6 @@ public interface PatientMapper {
     List<Patient> getPatientsOfUserToday(@Param("userid") int userid, @Param("state") String state);
 
     List<Patient> getPatientsOfDeptToday(@Param("deptcode") String deptcode, @Param("state") String state);
+
+    FrontPage getFrontPageByPid(long pid);
 }

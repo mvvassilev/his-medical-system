@@ -14,22 +14,23 @@
 <div id="patient">
     <el-card shadow="always" style="margin-bottom: 10px;">
         <el-row type="flex" justify="space-between">
-            <el-col :span="6">
+            <el-col :span="8">
                 <el-radio-group v-model="isCollapse">
-                    <el-radio-button :label="false">Show Patients</el-radio-button>
-                    <el-radio-button :label="true">Hide Patients</el-radio-button>
+                    <el-radio-button :label="false">Show</el-radio-button>
+                    <el-radio-button :label="true">Hide</el-radio-button>
                 </el-radio-group>
+                <el-button style="margin-left: 20px" size="medium" icon="el-icon-refresh" @click="refreshList" type="success" plain round>Reload</el-button>
             </el-col>
             <el-col :span="8">
-                <el-button>Name: MAX</el-button>
-                <el-button>ID: 20165221</el-button>
+                <el-button>Name: {{pname}}</el-button>
+                <el-button>ID: {{pid}}</el-button>
             </el-col>
         </el-row>
     </el-card>
     <el-row glutter="20">
         <el-col id="sidebar" style="width: auto">
             <el-menu default-active="1-1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                     :collapse="isCollapse">
+                     @select="handleSelect" :collapse="isCollapse">
                 <el-submenu index="1">
                     <template slot="title">
                         <i class="el-icon-s-custom"></i>
@@ -91,7 +92,7 @@
             </template>
         </el-col>
         <el-col :span="4" style="margin-left: 10px;margin-top: 45px;height: 600px">
-            <el-steps direction="vertical" finish-status="success" process-status="finish" :active="1">
+            <el-steps direction="vertical" finish-status="success" process-status="finish" :active="active">
                 <el-step icon="el-icon-edit-outline" title="Register"></el-step>
                 <el-step icon="el-icon-document-remove" title="Pre-Diagnose"></el-step>
                 <el-step icon="el-icon-search" title="Examine"></el-step>
@@ -120,12 +121,13 @@
                 isCollapse: true,
                 activeName: 'homepageframe/frontpage.html',
 
-                show2: false,
+                active: 0,
 
+                deptcode:'CK',
+                userid: 1,
 
-                shiftid: [],
-                myList: [],
-                deptList: [],
+                pname:'',
+                pid:'',
 
                 myWait: [],
                 myDiagnosed: [],
@@ -145,18 +147,90 @@
                 this.url = tab.name;
                 console.log("navigateTo" + this.url)
             },
+            refreshList(){
+                this.loadPatientList();
+            },
             loadPatientList() {
                 var that = this;
-                axios.post('/outpatient/getPatientsOfUserToday', {'shiftid': this.shiftid})
+                axios.post('/outpatient/getPatientsOfUserToday', {'userid': this.userid, 'state':'诊毕'})
                     .then(function (response) {
                         console.log(response.data);
-                        that.list = response.data;
+                        that.myWait = response.data;
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
-            }
+                axios.post('/outpatient/getDiagnosedPatientsOfUserToday', {'userid': this.userid, 'state':'诊毕'})
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.myDiagnosed = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                    axios.post('/outpatient/getPatientsOfDeptToday', {'deptcode': this.deptcode, 'state':'诊毕'})
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.deptWait = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                    axios.post('/outpatient/getDiagnosedPatientsOfDeptToday', {'deptcode': this.deptcode, 'state':'诊毕'})
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.deptDiagnosed = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
 
+            },
+            handleSelect(key, value){
+                var select = key.toString().split("-");
+                if(select[0] === "1" && select[1] === "1"){
+                    this.pid = this.myWait[parseInt(select[2])-1].pid;
+                    this.pname = this.myWait[parseInt(select[2])-1].pname;
+                    this.switchStep(this.myWait[parseInt(select[2])-1].state);
+                }else if(select[0] === "1" && select[1] === "2"){
+                    this.pid = this.myDiagnosed[parseInt(select[2])-1].pid;
+                    this.pname = this.myDiagnosed[parseInt(select[2])-1].pname;
+                    this.switchStep(this.myDiagnosed[parseInt(select[2])-1].state);
+                }else if(select[0] === "2" && select[1] === "1"){
+                    this.pid = this.deptWait[parseInt(select[2])-1].pid;
+                    this.pname = this.deptWait[parseInt(select[2])-1].pname;
+                    this.switchStep(this.deptWait[parseInt(select[2])-1].state);
+                }else if(select[0] === "2" && select[1] === "2"){
+                    this.pid = this.deptDiagnosed[parseInt(select[2])-1].pid;
+                    this.pname = this.deptDiagnosed[parseInt(select[2])-1].pname;
+                    this.switchStep(this.deptDiagnosed[parseInt(select[2])-1].state);
+                }
+
+
+            },
+
+            switchStep(state){
+                switch (state) {
+                    case "已挂号":
+                        this.active = 1;
+                        break;
+                    case "已初诊":
+                        this.active = 2;
+                        break;
+                    case "已检查":
+                        this.active = 3;
+                        break;
+                    case "已确诊":
+                        this.active = 4;
+                        break;
+                    case "已治疗":
+                        this.active = 5;
+                        break;
+                    case "诊毕":
+                        this.active = 6;
+                        break;
+                }
+            }
         }
     });
 

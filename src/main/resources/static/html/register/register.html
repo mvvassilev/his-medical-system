@@ -101,7 +101,7 @@
                             <el-card shadow="never" style="height: 90%">
                                 <el-table
                                         ref="singleTable"
-                                        :data="shifts"
+                                        v-bind:data="shifts"
                                         highlight-current-row
                                         style="height: 480px">
                                     <el-table-column type="index" width="50">
@@ -360,12 +360,11 @@
                 })
                 .then(function (response) {
                     console.log("success register");
+                    that.refresh();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-                this.paymentFormVisible = false;
-                this.refresh();
                 this.clearPInfo();
             }
             ,test:function () {
