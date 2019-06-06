@@ -18,19 +18,19 @@
     <el-col :span="5">
         <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                  style="height: 100vh">
-            <el-menu-item index="1" v-on:click="navigateTo('constant.html')">
+            <el-menu-item index="1" v-on:click="navigateTo('patient.html')">
                 <span>Patient</span>
             </el-menu-item>
-            <el-menu-item index="2" v-on:click="navigateTo('dept.html')">
+            <el-menu-item index="2" v-on:click="navigateTo('receipt.html')">
                 <span>Receipt</span>
             </el-menu-item>
             <el-menu-item index="3" v-on:click="navigateTo('register.html')">
                 <span>Register</span>
             </el-menu-item>
-            <el-menu-item index="4" v-on:click="navigateTo('non-medical.html')">
+            <el-menu-item index="4" v-on:click="navigateTo('bill.html')">
                 <span>Bill</span>
             </el-menu-item>
-            <el-menu-item index="5" v-on:click="navigateTo('shift.html')">
+            <el-menu-item index="5" v-on:click="navigateTo('daily-record.html')">
                 <span>Daily Record</span>
             </el-menu-item>
             <el-menu-item index="6" v-on:click="navigateTo('cancel-register.html')">
@@ -39,7 +39,8 @@
         </el-menu>
     </el-col>
     <el-col :span="19">
-        <iframe  height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url" style="overflow: hidden"></iframe>
+        <iframe height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url"
+                style="overflow: hidden"></iframe>
     </el-col>
 </div>
 </body>

@@ -20,7 +20,11 @@
             <el-input style="padding: 3%; width: 30%" placeholder=" Enter Patient ID" v-model="pid"
                       size="large"></el-input>
             <el-button icon="el-icon-search" type="primary" @click="searchPatient">Search</el-button>
-            <el-button style="position: relative; left: 35%" icon="el-icon-coin" type="primary"
+            <el-select v-model="paytype" placeholder="Method" style="width: 10%; left: 25%">
+                <el-option v-for="item in paytypes" :key="item" :label="item" :value="item">
+                </el-option>
+            </el-select>
+            <el-button style="position: relative; left: 27%" icon="el-icon-coin" type="primary"
                        @click="showConfirmPayDialogForm">Pay
             </el-button>
         </el-row>
@@ -94,10 +98,12 @@
             nmedname: "",
             price: "",
             att: "",
+            paytype: "",
 
             payments: [],
             bills: [],
-            registrations: []
+            registrations: [],
+            paytypes: ["WeChat", "Alipay", "Cash"],
         },
 
         mounted: function() {
@@ -191,7 +197,6 @@
             },
         }
     })
-
 </script>
 
 </html>

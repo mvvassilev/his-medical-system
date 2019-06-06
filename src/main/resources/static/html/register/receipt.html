@@ -26,18 +26,20 @@
     </el-row>
 
     <!-----   RECEIPT TABLE    ------>
-    <el-table :data="receiptdata" style="width: fit-content; height: fit-content">
-        <el-table-column>
-            <el-table-column prop="usernname" label="Cashier" width="150"></el-table-column>
-            <el-table-column prop="date" label="Date" width="150"></el-table-column>
-        </el-table-column>
-        <el-table-column>
-            <el-tabs type="border-card">
-                <el-tab-pane label="Daily record"></el-tab-pane>
-                <el-tab-pane label="Invoice information"></el-tab-pane>
+    <el-row :gutter="20" style="padding: 3%">
+        <el-col :span="6" style="padding-right: 0%">
+            <el-table :data="receiptdata" border style="width: fit-content; height: fit-content">
+                <el-table-column prop="usernname" label="Cashier" width="115"></el-table-column>
+                <el-table-column prop="date" label="Date" width="115"></el-table-column>
+            </el-table>
+        </el-col>
+        <el-col :span="14" style="padding-right: 0%">
+            <el-tabs type="border-card" style="width: 50%; height: fit-content;">
+                <el-tab-pane label="Daily record">Daily record</el-tab-pane>
+                <el-tab-pane label="Invoice information">Invoice information</el-tab-pane>
             </el-tabs>
-        </el-table-column>
-    </el-table>
+        </el-col>
+    </el-row>
 </div>
 </body>
 
@@ -48,6 +50,9 @@
         data: {
             dateRange: '',
             date: "",
+            dailyrecord: "",
+            invoiceinformation: "",
+
 
             return: {
 
@@ -67,7 +72,6 @@
             }
         }
     });
-
 </script>
 
 </html>
