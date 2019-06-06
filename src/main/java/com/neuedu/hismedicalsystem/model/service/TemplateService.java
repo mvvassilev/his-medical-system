@@ -26,4 +26,15 @@ public class TemplateService {
     public void delTemp(int tempid){
         templateMapper.delTemp(tempid);
     }
+
+    @Transactional
+    public void getItem(String temptype){
+        switch (temptype){
+            case "examination": case "test": case "disposal":
+                templateMapper.getNonItem(temptype);
+                break;
+            case "西药": case "中成药": case "中草药":
+                templateMapper.getMedItem(temptype);
+        }
+    }
 }

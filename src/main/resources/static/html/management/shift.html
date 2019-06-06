@@ -379,9 +379,8 @@
 
             search: function () {
                 var params = new URLSearchParams();
-                params.append("dates", this.value[0]);
-                params.append("datee", this.value[1]);
-                //this.currentPage = 1;
+                params.append("dates", this.datevalue[0]);
+                params.append("datee", this.datevalue[1]);
                 var that = this;
                 axios.post('/management/shift',params)
                     .then(function (response) {

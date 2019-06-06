@@ -36,4 +36,9 @@ public class OutpatientController {
     public void delTemp(int tempid){
         templateService.delTemp(tempid);
     }
+
+    @RequestMapping("/item")
+    public void getItem(String temptype){
+       templateService.getItem(temptype);
+    }
 }

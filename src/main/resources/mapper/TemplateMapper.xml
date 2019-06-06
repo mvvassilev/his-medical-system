@@ -25,4 +25,12 @@
     <delete id="delTemp">
         delete from template_all where tempid=#{tempid}
     </delete>
+
+    <select id="getMedItem" resultType="Medicine">
+        select * from medicine where medcat=#{temptype}
+    </select>
+
+    <select id="getNonItem" resultType="NonMedic">
+        select * from non_medic where nmedtype=#{temptype}
+    </select>
 </mapper>
