@@ -13,6 +13,7 @@ public class Registration {
     private String itemcode;
     private Date date;
     private int shiftid;
+    private int state;
 
     public int getRegid() {
         return regid;
@@ -92,6 +93,14 @@ public class Registration {
 
     public void setDeptname(String deptname) {
         this.deptname = deptname;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     @Override

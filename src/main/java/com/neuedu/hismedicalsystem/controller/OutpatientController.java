@@ -61,8 +61,8 @@ public class OutpatientController {
     }
 
     @RequestMapping("getFrontPageByPid")
-    public FrontPage getFrontPageByPid(long pid){
-        return patientService.getFrontPageByPid(pid);
+    public FrontPage getFrontPageByRegid(long regid){
+        return patientService.getFrontPageByRegid(regid);
     }
 
 
