@@ -114,7 +114,7 @@ public class HisMedicalSystemApplicationTests {
     @Test
     public void getPatientsOfUserToday() {
         try {
-            String jsonStr = "{\"state\":\"已挂号\",\"userid\":\"20123\"}";
+            String jsonStr = "{\"state\":\"已挂号\",\"userid\":\"13215\"}";
             JSONObject jsonObject = JSONObject.parseObject(jsonStr);
             String responseString = mockMvc.perform(post("/outpatient/getPatientsOfUserToday").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
                     .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
@@ -127,7 +127,7 @@ public class HisMedicalSystemApplicationTests {
     @Test
     public void getPatientsOfDeptToday() {
         try {
-            String jsonStr = "{\"state\":\"已挂号\",\"deptcode\":\"FLK\"}";
+            String jsonStr = "{\"state\":\"已挂号\",\"deptcode\":\"CK\"}";
             JSONObject jsonObject = JSONObject.parseObject(jsonStr);
             String responseString = mockMvc.perform(post("/outpatient/getPatientsOfDeptToday").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
                     .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();

@@ -192,8 +192,20 @@
                         {validator: validateDisType, trigger: 'blur'}
                     ]
                 },
+                pid: null,
+                hpid: null,
+                regid: null,
             }
         },
+
+        mounted: function () {
+            this.pid = parent.patient.pid;
+            console.log("Now diagnosing: " + this.pid);
+
+            this.loadFrontPage();
+
+        },
+
         methods: {
             onSubmit() {
                 console.log('submit!');
@@ -215,6 +227,17 @@
                         return false;
                     }
                 });
+            },
+            loadFrontPage() {
+                var that = this;
+                axios.post('/outpatient/getFrontPageByPid', {'pid': this.pid})
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.myWait = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     })

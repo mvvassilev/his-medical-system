@@ -9,7 +9,9 @@
         values (#{pid}, #{pname}, #{pgender}, #{page}, #{pbirth}, #{paddress}, #{state})
     </insert>
 
-
+    <insert id="insertHomepage">
+        insert into homepage (regid) values (#{regid})
+    </insert>
 
     <select id="getPatientById" resultType="Patient">
         select * from patient where pid = #{id}
@@ -26,7 +28,13 @@
         join user u on u.userid = ud.userid
         join patient p on p.pid = r.pid
         where u.userid = #{userid}
-        and p.state = #{state}
+        <if test="state != null and state != ''">
+            and p.state = #{state}
+        </if>
+        <if test="state == ''">
+            and p.state != '诊毕'
+        </if>
+
         and TO_DAYS(r.date) = TO_DAYS(now())
     </select>
 
@@ -37,7 +45,12 @@
         join dept d on d.deptcode = ud.deptcode
         join patient p on p.pid = r.pid
         where d.deptcode = #{deptcode}
-        and p.state = #{state}
+        <if test="state != null and state != ''">
+            and p.state = #{state}
+        </if>
+        <if test="state == ''">
+            and p.state != '诊毕'
+        </if>
         and TO_DAYS(r.date) = TO_DAYS(now())
     </select>
 
