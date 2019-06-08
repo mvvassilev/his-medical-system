@@ -163,6 +163,14 @@
 
 </body>
 <script>
+
+    function refreshPage() {
+        frontpage.regid = parent.patient.regid;
+        console.log("Now diagnosing: " + frontpage.regid);
+
+        frontpage.loadFrontPage();
+    }
+
     var frontpage = new Vue({
         el: '#frontpage',
         data() {
@@ -241,7 +249,8 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-            }
+            },
+
         }
     })
 
