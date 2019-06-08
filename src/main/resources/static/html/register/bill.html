@@ -20,7 +20,11 @@
             <el-input style="padding: 3%; width: 30%" placeholder=" Enter Patient ID" v-model="pid"
                       size="large"></el-input>
             <el-button icon="el-icon-search" type="primary" @click="searchPatient">Search</el-button>
-            <el-button style="position: relative; left: 35%" icon="el-icon-coin" type="primary"
+            <el-select v-model="paytype" placeholder="Method" style="width: 10%; left: 25%">
+                <el-option v-for="item in paytypes" :key="item" :label="item" :value="item">
+                </el-option>
+            </el-select>
+            <el-button style="position: relative; left: 27%" icon="el-icon-coin" type="primary"
                        @click="showConfirmPayDialogForm">Pay
             </el-button>
         </el-row>
@@ -42,7 +46,7 @@
         </el-row>
     </el-col>
 
-    <el-table :data="bills" style="width: 90%; padding-left: 5%" @selection-change="addToPayment">
+    <el-table ref="billstable" :data="bills" style="width: 90%; padding-left: 5%" @selection-change="addToPayment">
         <el-table-column type="selection" width="70"></el-table-column>
         <el-table-column prop="billid" label="ID" width="140"></el-table-column>
         <el-table-column prop="itemcode" label="Item code" width="140"></el-table-column>
@@ -52,7 +56,7 @@
     </el-table>
 
     <!-------------    CONFIRM PAYMENT POP-UP    ------------>
-    <el-dialog title="Confirm payment" :visible.sync="confirmPayFormVisible">
+    <el-dialog style="left: 190px" title="Confirm payment" :visible.sync="confirmPayFormVisible">
         <el-table :data="payments" style="top: -15px;height: fit-content;width: 100%; padding-left: 5%">
             <el-table-column prop="itemname" label="Item" width="220"></el-table-column>
             <el-table-column prop="price" label="Price" width="220"></el-table-column>
@@ -68,6 +72,15 @@
             <el-button type="primary" icon="el-icon-coin" @click="onConfirmPay">Confirm</el-button>
         </div>
     </el-dialog>
+    <el-dialog style="left: 240px; width: 500px" title="Confirm payment" :visible.sync="confirmWeChatFormVisible">
+        <img style="left: 35px; width: 190px; height: auto;" src="../../img/wechat-qr.jpg"/>
+    </el-dialog>
+    <el-dialog style="left: 240px; width: 500px" title="Confirm payment" :visible.sync="confirmAlipayFormVisible">
+        <img style="left: 35px; width: 190px; height: auto;" src="../../img/alipay-qr.jpg"/>
+    </el-dialog>
+    <el-dialog style="left: 240px" title="Oops" :visible.sync="confirmErrFormVisible">
+        <h4>Please, select a payment method...</h4>
+    </el-dialog>
 </div>
 </body>
 
@@ -79,6 +92,9 @@
             pid: "",
             receivedpayment: "",
             confirmPayFormVisible: false,
+            confirmWeChatFormVisible: false,
+            confirmAlipayFormVisible: false,
+            confirmErrFormVisible: false,
             dialogpatientname: "",
             dialogpatientid: "",
             pname: "",
@@ -94,10 +110,13 @@
             itemname: "",
             price: "",
             att: "",
+            paytype: "",
 
             payments: [],
             bills: [],
-            registrations: []
+            registrations: [],
+            billstable: [],
+            paytypes: ["WeChat", "Alipay", "Cash"],
         },
 
         mounted: function() {
@@ -130,9 +149,16 @@
                     });
             },
 
-            //------------------C H A N G E--------------------//
             showConfirmPayDialogForm: function(index, row) {
-                this.confirmPayFormVisible = true;
+                if (this.paytype == "WeChat") {
+                    this.confirmWeChatFormVisible = true;
+                } else if (this.paytype == "Alipay") {
+                    this.confirmAlipayFormVisible = true;
+                } else if (this.paytype == "Cash") {
+                    this.confirmPayFormVisible = true;
+                } else {
+                    this.confirmErrFormVisible = true;
+                }
                 this.confirmFormIndex = index;
                 this.confirmObject = row;
 
@@ -141,7 +167,6 @@
                 this.dialogprice = row.feecode;
             },
 
-            //------------------C H A N G E--------------------//
             onConfirmPay: function() {
                 var params = new URLSearchParams();
                 params.append('pid', this.confirmObject);
@@ -156,9 +181,6 @@
                 this.refresh();
             },
 
-            // ----------------          IMPORTANT!!!!             --------------------//
-            //---    IF THERE IS A PROBLEM WITH THE SEARCH METHOD, ASK MOMCHIL  -------//
-            //-------------------------------------------------------------------------//
             searchPatient: function() {
                 //get data from database
                 let that = this;
@@ -189,9 +211,20 @@
                 document.getElementById("address").setAttribute("placeholder", addressString);
                 document.getElementById("billcat").setAttribute("placeholder", billcatString);
             },
+            toggleSelection(rows) {
+                if (rows) {
+                    rows.forEach(row => {
+                        this.$refs.billstable.toggleRowSelection(row);
+                    });
+                } else {
+                    this.$refs.billstable.clearSelection();
+                }
+            },
+            addToPayment(val) {
+                this.billstable = val;
+            }
         }
     })
-
 </script>
 
 </html>
