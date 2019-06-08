@@ -26,11 +26,46 @@
         delete from template_all where tempid=#{tempid}
     </delete>
 
+    <update id="updateTemp">
+        update template_all set tempname = #{tempname},tempscope=#{tempscope}
+        where tempid=#{tempid}
+    </update>
+
+    <insert id="addItem">
+        insert into temprel (tempid, itemcode) values (#{tempid},#{itemcode})
+    </insert>
+
     <select id="getMedItem" resultType="Medicine">
-        select * from medicine where medcat=#{temptype}
+        select * from medicine
+        <where>
+            <if test="itemcode!=null and itemcode!=''">
+                and itemcode=#{itemcode}
+            </if>
+            and medcat=#{temptype}
+        </where>
     </select>
 
     <select id="getNonItem" resultType="NonMedic">
-        select * from non_medic where nmedtype=#{temptype}
+        select * from non_medic
+        <where>
+            <if test="itemcode!=null and itemcode!=''">
+                and itemcode=#{itemcode}
+            </if>
+            and nmedtype=#{temptype}
+        </where>
     </select>
+
+    <select id="getDetails" resultType="Medicine">
+        (select n.itemcode, itemname, size, price,tempRelid
+        from non_medic n join temprel tr on n.itemcode=tr.itemcode
+        where tempid = #{tempid})
+        union
+        (select m.itemcode, itemname, size, price,tempRelid
+        from medicine  m join temprel tr on m.itemcode=tr.itemcode
+        where tempid = #{tempid})
+    </select>
+
+    <delete id="delDetails">
+        delete from temprel where tempRelid=#{tempRelid}
+    </delete>
 </mapper>

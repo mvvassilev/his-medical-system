@@ -3,6 +3,7 @@ package com.neuedu.hismedicalsystem.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.FrontPage;
+import com.neuedu.hismedicalsystem.model.po.Medicine;
 import com.neuedu.hismedicalsystem.model.po.Patient;
 import com.neuedu.hismedicalsystem.model.po.Template_all;
 import com.neuedu.hismedicalsystem.model.service.PatientService;
@@ -45,10 +46,22 @@ public class OutpatientController {
         templateService.delTemp(tempid);
     }
 
+    @RequestMapping("/updateTemp")
+    public void updateTemp(int tempid, String tempname, String tempscope){templateService.updateTemp(tempid,tempname,tempscope);}
+
+    @RequestMapping("/addItem")
+    public void addItem(int tempid,String itemcode){templateService.addItem(tempid,itemcode);}
+
     @RequestMapping("/item")
-    public JSONArray getItem(String temptype){
-       return templateService.getItem(temptype);
+    public JSONArray getItem(String temptype, String itemcode){
+       return templateService.getItem(temptype,itemcode);
     }
+
+    @RequestMapping("/getDetails")
+    public List<Medicine> getDetails(int tempid){return templateService.getDeatils(tempid);}
+
+    @RequestMapping("/delDetails")
+    public void delDetails(int tempRelid){templateService.delDetails(tempRelid);}
 
     @RequestMapping("getDiagnosedPatientsOfUserToday")
     public List<Patient> getDiagnosedPatientsOfUserToday(@RequestBody JSONObject obj){
