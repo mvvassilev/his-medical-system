@@ -24,7 +24,7 @@
     </select>
 
     <select id="getRegistrationsByPid" resultType="Registration">
-        select regid, newRecord , `order`, pid, itemcode, date, shiftid, u.username, d.deptname
+        select regid, newRecord , `order`, pid, itemcode, date, shiftid, u.username, d.deptname, r.state
         from
         (((userrdept ud join user u on u.userid = ud.userid)
         join dept d on d.deptcode = ud.deptcode)

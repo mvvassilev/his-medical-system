@@ -1,0 +1,365 @@
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="cancel">
+
+        <el-row>
+            <el-card class="el-card__body">
+                <el-row type="flex" justify="space-between" align="middle">
+                    <el-col :span="8">
+                        <div style="padding-left:30px; font-weight: bold; font-size: larger">Cancel Registration</div>
+                    </el-col>
+                    <el-col :span="10">
+                        <el-input placeholder="Enter Patient ID" v-model="searchingPid" class="input-with-select">
+                            <el-button @click="tryCompletePInfo" slot="append" icon="el-icon-search"></el-button>
+                        </el-input>
+                    </el-col>
+                </el-row>
+            </el-card>
+        </el-row>
+
+        <el-row :gutter="10" style="margin-top: 5px;">
+            <el-col :span="18">
+                <el-row>
+                    <el-card class="box-card">
+                        <div slot="header" class="clearfix">
+                            <span style="font-weight: bold">Registration Information</span>
+                        </div>
+                        <el-table
+                                ref="multipleTable"
+                                size="small"
+                                :data="tableData"
+                                tooltip-effect="dark"
+                                style="width: 100%"
+                                @selection-change="handleSelectionChange"
+                                :row-class-name="tableRowClassName">
+                            <el-table-column
+                                    type="selection"
+                                    width="55">
+                            </el-table-column>
+                            <el-table-column prop="date" label="Date" width="120"></el-table-column>
+                            <el-table-column prop="username" label="Doctor" width="120"></el-table-column>
+                            <el-table-column prop="deptname" label="Department" width="140"></el-table-column>
+                            <el-table-column prop="registrationLevel" label="Registration level" width="160"></el-table-column>
+                            <el-table-column prop="state" label="State" width="100"></el-table-column>
+                            <el-table-column label="Operation" fixed="right" width="120">
+                                <template slot-scope="scope">
+                                    <el-button
+                                            size="mini"
+                                            type="danger"
+                                            @click="handleDelete(scope.$index, scope.row)">Cancel</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-card>
+                </el-row>
+
+                <!--   Payment Info    -->
+                <el-row style="margin-top: 5px;">
+                    <el-card class="box-card">
+                        <el-collapse accordion v-model="activeName">
+                            <el-collapse-item name="1">
+                                <template slot="title" class="el-collapse-item__header focusing">
+                                    Payment & Confirmation
+                                </template>
+                                <el-row type="flex" justify="space-between">
+                                    <el-col :span="16">
+                                        <entry-line property="Registration Fee" fee="-5"></entry-line>
+                                    </el-col>
+                                    <el-col :span="8">
+                                        <el-row style="margin-top: 30px;" type="flex" justify="end">
+                                            <el-button round size="medium" @click="onConfirm">Confirm</el-button>
+                                        </el-row>
+                                    </el-col>
+                                </el-row>
+                            </el-collapse-item>
+                        </el-collapse>
+                    </el-card>
+                </el-row>
+
+            </el-col>
+            <el-col :span="6">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span style="font-weight: bold">Patient Information</span>
+                    </div>
+                    <div style="padding: 15px;">
+                        <patient-info-line property="ID" :val="patientInfo.pid"></patient-info-line>
+                        <patient-info-line property="Name" :val="patientInfo.pname"></patient-info-line>
+                        <patient-info-line property="Gender" :val="patientInfo.pgender"></patient-info-line>
+                        <patient-info-line property="Age" :val="patientInfo.page"></patient-info-line>
+                        <patient-info-line property="Birth Date" :val="patientInfo.pbirth"></patient-info-line>
+                        <patient-info-line property="Address" :val="patientInfo.paddress"></patient-info-line>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
+
+
+<!--        &lt;!&ndash;-&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;    CONFIRM CANCEL POP-UP    &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--        <el-dialog title="Cancel registration" :visible.sync="confirmDeleteFormVisible" width="300">-->
+<!--            <span style="padding: 5%">Patient: {{dialogpatientname}}</span>-->
+<!--            <span style="padding: 5%">ID: {{dialogpatientid}}</span>-->
+<!--            <div slot="footer" class="dialog-footer">-->
+<!--                <el-button type="primary" @click="onConfirmDelete">Confirm</el-button>-->
+<!--            </div>-->
+<!--        </el-dialog>-->
+    </div>
+</body>
+
+<script>
+    Vue.component('patient-info-line', {
+        props: ['property','val'],
+        template: `
+            <el-row
+                    type="flex"
+                    align="center"
+                    :gutter="20"
+                    style="font-weight: bold;
+                           margin-top: 15px">
+                <el-col style="padding-left:5px; font-size: small" :span="8">
+                    <div style="margin-top:8px;">
+                        {{property}}:
+                    </div>
+                </el-col>
+                <el-col :span="16">
+                    <el-tag v-if="val!=null" class="el-tag">{{val}}</el-tag>
+                </el-col>
+            </el-row>
+        `
+    })
+
+    Vue.component('entry-line', {
+        props: ['property','fee'],
+        template: `
+            <el-row style="margin-left: 20px; font-size: medium" type="flex" justify="space-between">
+                <el-col :span="6">
+                    {{property}}
+                </el-col>
+                <el-col :span="10">
+                    Department-registrationLevel
+                </el-col>
+                <el-col :span="6">
+                    {{fee}}元
+                </el-col>
+            </el-row>
+        `
+    })
+
+    var app = new Vue({
+        el: '#cancel',
+        // components:{
+        //     'cancel-reg-table': cancelRegTable
+        // },
+        data: {
+            tableData: [
+                {
+                    regid: 1,
+                    username: "Max",
+                    deptname:"Dentistry",
+                    registrationLevel: "ZJH",
+                    date:"2019-07-02"
+                },
+                {
+                    regid: 1,
+                    username: "Max",
+                    deptname:"Dentistry",
+                    registrationLevel: "ZJH",
+                    date:"2019-07-02"
+                },
+                {
+                    regid: 1,
+                    username: "Max",
+                    deptname:"Dentistry",
+                    registrationLevel: "ZJH",
+                    date:"2019-07-02"
+                }
+            ],
+            multipleSelection: [],
+
+
+
+            searchingPid: "",
+            patientInfo: {
+                pid: null,
+                pname: null,
+                page: null,
+                pbirth: null,
+                paddress: null,
+                pgender: null,
+            },
+
+
+            registrations: [],
+
+            isCollapse: true,
+
+        },
+
+        mounted: function() {
+            console.log("refreshed")
+            var that = this;
+
+            axios.post('/registration/getRegistrations', {})
+                .then(function(response) {
+                    console.log(response.data);
+                    that.patients = response.data;
+                })
+                .catch(function(error) {
+                    console.log(error);
+                });
+        },
+
+        methods: {
+            tryCompletePInfo: function () {
+                console.log("Complete PInfo")
+                var that = this;
+                axios({
+                    url: '/registration/tryCompletePatientInfo',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {id: that.searchingPid},
+                })
+                    .then(function (response) {
+                        console.log("success complete pinfo");
+                        console.log(response.data);
+                        if (response.data.exists == "Yes") {
+                            that.patientInfo = response.data.patient;
+                            that.patientInfo.pgender = that.patientInfo.pgender?"Male":"Female";
+                            that.patientExists = true;
+                            that.$message({
+                                message: 'Successfully retrieved patient info',
+                                type: 'success'
+                            });
+                            // if(!response.data.lastRegFinished){
+                            //     that.$confirm('The patient is still being treated. No registration available.', 'Attention', {
+                            //         confirmButtonText: 'Confirm',
+                            //         type: 'warning',
+                            //         customClass: 'messageBox-prompt'
+                            //     })
+                            // }
+                        } else {
+                            that.$message('Did not find patient with the ID');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            getRegistrationsByPid(){
+                var that = this;
+                axios({
+                    url: '/registration/getRegistrations',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {id: that.patientInfo.pid},
+                })
+                .then(function (response) {
+                    console.log("success get Registrations");
+                    console.log(response.data);
+                    that.registrations = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+
+            // // ----------------          IMPORTANT!!!!             --------------------//
+            // //---    IF THERE IS A PROBLEM WITH THE SEARCH METHOD, ASK MOMCHIL  -------//
+            // //-------------------------------------------------------------------------//
+            // searchPatient: function() {
+            //     //get data from database
+            //     let that = this;
+            //     console.log("Search")
+            //     axios.post('/registration/tryCompletePatientInfo', {
+            //             pid: that.pid
+            //         })
+            //         .then(function(response) {
+            //             that.patient = response.data;
+            //             console.log(that.users);
+            //         })
+            //         .catch(function(error) {
+            //             console.log(error);
+            //         });
+            //
+            //     //config Strings
+            //     let nameString = `Name: ${that.pname}`;
+            //     let ageString = `Age: ${that.page}`;
+            //     let bdateString = `Birth date: ${that.pbirth}`;
+            //     let genderString = `Gender: ${that.pgender}`;
+            //     let addressString = `Address: ${that.paddress}`;
+            //     let billcatString = `Billing category: ${that.billcat}`;
+            //
+            //     document.getElementById("name").setAttribute("placeholder", nameString);
+            //     document.getElementById("age").setAttribute("placeholder", ageString);
+            //     document.getElementById("bdate").setAttribute("placeholder", bdateString);
+            //     document.getElementById("gender").setAttribute("placeholder", genderString);
+            //     document.getElementById("address").setAttribute("placeholder", addressString);
+            //     document.getElementById("billcat").setAttribute("placeholder", billcatString);
+            // },
+
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleDelete(index, row) {
+
+
+            }
+        }
+    })
+</script>
+
+<style>
+    body{
+        font-family: Helvetica, sans-serif;
+    }
+    .el-card__body{
+        padding: 5px;
+    }
+    .el-tag{
+        background-color:#ecf5ff;
+        border-color:#d9ecff;
+        display:inline-block;
+        padding:0 10px;
+        line-height:30px;
+        height: auto;
+        font-size:12px;
+        color:#409EFF;
+        border-width:1px;
+        border-style:solid;
+        border-radius:4px;
+        box-sizing:border-box;
+        white-space: pre-line;
+    }
+    .el-table .used-row {
+        background: #8492a6;
+    }
+
+    .el-collapse-item__header {
+
+        margin-top: 0;
+        font-size: medium;
+        font-weight: bold;
+        margin-left: 20px;
+    }
+
+
+</style>
+</html>

@@ -11,9 +11,18 @@ public class Registration {
     private String username;
     private String deptname;
     private String itemcode;
+    private String regLevel;
     private Date date;
     private int shiftid;
     private int state;
+
+    public String getRegLevel() {
+        return regLevel;
+    }
+
+    public void setRegLevel(String regLevel) {
+        this.regLevel = regLevel;
+    }
 
     public int getRegid() {
         return regid;
@@ -116,6 +125,7 @@ public class Registration {
                 ", itemcode='" + itemcode + '\'' +
                 ", date=" + date +
                 ", shiftid=" + shiftid +
+                ", state=" + state +
                 '}';
     }
 }

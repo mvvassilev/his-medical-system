@@ -101,10 +101,11 @@ public class RegistrationController {
     }
 
     @RequestMapping("/getRegistrations")
-    public List<Registration> getRegistrations() {
-        List<Registration> rList = registrationService.getRegistrationsByPid(2);
+    public List<Registration> getRegistrations(@RequestBody JSONObject obj) {
+        int id = obj.getInteger("id");
+        List<Registration> rList = registrationService.getRegistrationsByPid(id);
         System.out.println("rList = " + rList);
-        return registrationService.getRegistrationsByPid(2);
+        return registrationService.getRegistrationsByPid(id);
     }
     
     @RequestMapping("/tryCompletePatientInfo")
