@@ -8,6 +8,15 @@ public class Medicine {
     private double price;
     private String medtype;
     private String medcat;
+    private int tempRelid;
+
+    public int getTempRelid() {
+        return tempRelid;
+    }
+
+    public void setTempRelid(int tempRelid) {
+        this.tempRelid = tempRelid;
+    }
 
     public String getSize() {
         return size;

@@ -1,6 +1,7 @@
 package com.neuedu.hismedicalsystem.model.po;
 
 import java.util.Date;
+import java.util.List;
 
 public class Template_all {
     private int tempid;
