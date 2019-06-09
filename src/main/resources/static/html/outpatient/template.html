@@ -569,7 +569,7 @@
             chooseItem:function(row){
                 var that = this;
                 var params = new URLSearchParams();
-                console.log(row.itemcode);
+                // console.log(row.itemcode);
                 params.append("tempid", this.form.tempid);
                 params.append("itemcode",row.itemcode);
                 this.$confirm('Do you want to add this item into template?', 'Notice', {
@@ -580,8 +580,7 @@
                     axios.post('/outpatient/addItem',params)
                         .then(function (response) {
                             that.dialogItemVisible=false;
-                            /*console.log(response.data);
-                            that.details=response.data;*/
+                            that.refreshDeatils();
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -654,11 +653,26 @@
                 var that= this;
                 var params = new URLSearchParams();
                 params.append('tempRelid', this.details[index].tempRelid);
-                axios.post('/outpatient/delDetails',params)
-                    .then(function (response) {
-                        that.refreshDeatils();
-                    }).catch(function(error){
-                    console.log(error);
+                this.$confirm('Do you want to delete this item?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/outpatient/delDetails',params)
+                        .then(function (response) {
+                            that.refreshDeatils();
+                        }).catch(function(error){
+                        console.log(error);
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: 'Add success!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel!'
+                    });
                 });
             },
             /**
