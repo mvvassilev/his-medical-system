@@ -3,6 +3,7 @@ package com.neuedu.hismedicalsystem.model.po;
 import java.util.List;
 
 public class FrontPage {
+    private int hpid;
     private String cheifCP;
     private String curHis;
     private String pastHis;
@@ -12,8 +13,17 @@ public class FrontPage {
     private String phyExam;
     private String examAdvice;
     private String disType;
+    private String state;
 
     private List<Disease> diseaseList;
+
+    public int getHpid() {
+        return hpid;
+    }
+
+    public void setHpid(int hpid) {
+        this.hpid = hpid;
+    }
 
     public String getCheifCP() {
         return cheifCP;
@@ -93,5 +103,13 @@ public class FrontPage {
 
     public void setDiseaseList(List<Disease> diseaseList) {
         this.diseaseList = diseaseList;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

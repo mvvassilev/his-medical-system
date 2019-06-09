@@ -24,4 +24,12 @@ public class PatientService {
     public FrontPage getFrontPageByRegid(int regid) {
         return patientMapper.getFrontPageByRegid(regid);
     }
+
+    public int getHpidByRegid(int regid) {
+        return patientMapper.getHpidByRegid(regid);
+    }
+
+    public void updateHomepage(FrontPage frontPage) {
+        patientMapper.updateHomepage(frontPage);
+    }
 }

@@ -22,4 +22,8 @@ public interface PatientMapper {
     void insertHomepage(int regid);
 
     FrontPage getFrontPageByRegid(int regid);
+
+    int getHpidByRegid(int regid);
+
+    void updateHomepage(FrontPage frontPage);
 }

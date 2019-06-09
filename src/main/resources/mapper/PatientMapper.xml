@@ -81,6 +81,24 @@
         </collection>
     </resultMap>
 
+    <select id="getHpidByRegid" resultType="Integer">
+        select hpid from homepage where regid = #{regid};
+    </select>
+
+    <update id="updateHomepage">
+        update homepage set cheifCP = #{cheifCP},
+                    curHis = #{curHis},
+                    pastHis = #{pastHis},
+                    allergicHis = #{allergicHis},
+                    situation = #{situation},
+                    caution = #{caution},
+                    phyExam = #{phyExam},
+                    examAdvice = #{examAdvice},
+                    disType = #{disType},
+                    state = #{state}
+        where hpid = #{hpid}
+    </update>
+
 
 
 </mapper>
