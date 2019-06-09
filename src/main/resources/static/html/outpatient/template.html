@@ -13,7 +13,9 @@
 </head>
 
 <body>
+                                <!--whole template-->
 <div id="template_all">
+                                <!--template function-->
     <el-row :gutter="15">
         <el-col :span="6">
             <el-input type="text" v-model="tempname" placeholder="Name"></el-input>
@@ -47,7 +49,7 @@
             <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm">Add New Template</el-button>
         </el-col>
     </el-row>
-
+                                    <!--template table-->
     <el-table
             :data="template_all.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             style="width: 100%">
@@ -78,7 +80,7 @@
             </span>
         </el-table-column>
     </el-table>
-
+                                <!--template page-->
     <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -90,7 +92,7 @@
             layout="total, sizes, prev, pager, next, jumper"
             :total="template_all.length">
     </el-pagination>
-
+                            <!--add new template dialog-->
     <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="Name" :label-width="formLabelWidth">
@@ -125,43 +127,30 @@
         </div>
     </el-dialog>
 </div>
-<div id="details">
+                                <!--details-->
+<div id="detail">
     <el-dialog
             title="Template Details"
             :visible.sync="dialogVisible"
             width="90%"
             height="80%">
-        <el-row :model="form" :gutter="5">
-            <el-col :span="8">
+                                <!--first row details function-->
+        <el-row :model="form" :gutter="10">
+            <el-col :span="12">
                 <el-input type="text" v-model="form.tempname" autocomplete="off" placeholder="Name"></el-input>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="12">
                 <el-select v-model="form.tempscope" placeholder="Scope">
                     <el-option label="Individual" value="individual"></el-option>
                     <el-option label="Department" value="department"></el-option>
                     <el-option label="Hospital" value="hospital"></el-option>
                 </el-select>
             </el-col>
-            <el-col :span="12">
-                <el-select v-model="form.temptype" placeholder="Type">
-                    <el-option-group
-                            v-for="group in option"
-                            :key="group.label"
-                            :label="group.label">
-                        <el-option
-                                v-for="item in group.options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
-                        </el-option>
-                    </el-option-group>
-                </el-select>
-            </el-col>
         </el-row>
-
+                                <!--second row details function-->
         <el-row style="margin-top: 20px">
             <el-col :span="4">
-                <el-button icon="el-icon-search" type="primary" @click="dialogItemVisible = true">Add New Item</el-button>
+                <el-button icon="el-icon-search" type="primary" @click="searchItem">Add New Item</el-button>
             </el-col>
             <el-col :span="4">
                 <el-popover
@@ -171,9 +160,9 @@
                     <p>This gonna change the template, continue or not</p>
                     <div style="text-align: right; margin: 0">
                         <el-button size="mini" type="text" @click="uvisible = false">Cancel</el-button>
-                        <el-button type="primary" size="mini" @click="uvisible = false">Confirm</el-button>
+                        <el-button type="primary" size="mini" @click="updateTemp">Confirm</el-button>
                     </div>
-                    <el-button icon="el-icon-check" type="primary" @click="" slot="reference">Update Confirm</el-button>
+                    <el-button icon="el-icon-check" type="primary" @click=" " slot="reference">Update Confirm</el-button>
                 </el-popover>
             </el-col>
             <el-col :span="16">
@@ -184,13 +173,13 @@
                     <p>Are you sure you want to delete this template?</p>
                     <div style="text-align: right; margin: 0">
                         <el-button size="mini" type="text" @click="dvisible = false">Cancel</el-button>
-                        <el-button type="primary" size="mini" @click="dvisible = false">Confirm</el-button>
+                        <el-button type="primary" size="mini" @click="delTemp">Confirm</el-button>
                     </div>
-                    <el-button icon="el-icon-delete" type="primary" @click="" slot="reference">Delete Template</el-button>
+                    <el-button icon="el-icon-delete" type="primary" slot="reference">Delete Template</el-button>
                 </el-popover>
             </el-col>
         </el-row>
-
+                                    <!--details table-->
         <el-table
                 :data="details"
                 style="width: 100%">
@@ -214,42 +203,45 @@
                     label="Price">
             </el-table-column>
             <el-table-column fixed="right" label="Operations" width="250">
-            <span>
-                <el-button type="warning" size="mini" @click="">delete</el-button>
+            <span slot-scope="scope">
+                <el-button type="warning" size="mini" @click="delDetails(scope.$index, scope.row)">delete</el-button>
             </span>
             </el-table-column>
         </el-table>
-
+                                <!--add new item-->
         <el-dialog width="80%" height="50%" title="Add new item" :visible.sync="dialogItemVisible" append-to-body>
+                                <!--add new item function-->
             <el-row :gutter="5">
                 <el-col :span="20">
                     <el-input type="text" v-model="itemcode" placeholder="Code"></el-input>
                 </el-col>
                 <el-col :span="4">
-                    <el-button icon="el-icon-search" type="primary" @click="">Search</el-button>
+                    <el-button icon="el-icon-search" type="primary" @click="searchItemcode(itemcode)">Search</el-button>
                 </el-col>
             </el-row>
+                                <!--add new item medicine table-->
             <template>
-                <el-table :data="nonmedics.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+                <el-table :data="item.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
                     <el-table-column prop="itemcode" label="Code" width="180">
                     </el-table-column>
-                    <el-table-column prop="nmedname" label="Name">
+                    <el-table-column prop="itemname" label="Name">
                     </el-table-column>
                     <el-table-column prop="size" label="Size">
                     </el-table-column>
                     <el-table-column prop="price" label="Price">
                     </el-table-column>
                     <el-table-column fixed="right" label="Operations" width="120">
-                        <template slot-scope="scope">
-                            <el-button @click="" type="primary" size="small">choose</el-button>
-                        </template>
+                        <span slot-scope="scope">
+                            <el-button @click="chooseItem(scope.row)" type="primary" size="small">choose</el-button>
+                        </span>
                     </el-table-column>
                 </el-table>
                 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
                                :page-sizes="[5, 10, 20, 40]" :page-size="pagesize" :hide-on-single-page="value"
-                               layout="total, sizes, prev, pager, next, jumper" :total="nonmedics.length">
+                               layout="total, sizes, prev, pager, next, jumper" :total="item.length">
                 </el-pagination>
             </template>
+                                <!--add new item table operate-->
             <div slot="footer" class="dialog-footer">
                 <el-button size="small" type="primary" @click="dialogItemVisible = false">Close</el-button>
             </div>
@@ -258,6 +250,9 @@
 </div>
 </body>
 <script>
+    /**
+     * template all js
+     */
     var app = new Vue({
         el: '#template_all',
         data(){
@@ -277,19 +272,20 @@
                 }, {
                     label: 'Medicine',
                     options: [{
-                        value: 'XYF',
+                        value: '西药',
                         label: 'Western Medicine'
                     }, {
-                        value: 'ZCHYF',
+                        value: '中成药',
                         label: 'Patent Medicine'
                     }, {
-                        value: 'ZCYF',
+                        value: '中草药',
                         label: 'Herbal Medicine'
                     }]
                 }],
                 value1: '',
                 value2: '',
 
+                tempid:"",
                 tempname:"",
                 createdate:"",
                 tempscope:"",
@@ -298,7 +294,7 @@
 
                 value: false,
                 currentPage: 1,//初始页
-                pagesize:5,//每页的数据
+                pagesize:10,//每页的数据
                 formTitle:"",
                 dialogFormVisible: false,
                 form:{
@@ -309,7 +305,9 @@
                 formLabelWidth: '120px'
             }
         },
-
+        /**
+         * initial refresh
+         */
         mounted: function(){
             console.log("refresh!!!");
             this.currentPage = 1;
@@ -325,6 +323,9 @@
         },
 
         methods: {
+            /**
+             * change date format
+             * */
             dateFormatter:function(row){
                 var time1 = row.createdate;
                 var time2 = myTime(time1);
@@ -343,7 +344,9 @@
                 }
                 return time2;
             },
-
+            /**
+             * add new template
+             * */
             showDialogForm:function(){
                 this.form = {
                     tempname:"",
@@ -352,13 +355,13 @@
                 };
                 this.dialogFormVisible = true;
             },
-
+            /**
+             * add new template finish
+             * */
             onSubmit: function() {
                 this.onSubmitAdd();
                 this.dialogFormVisible = false;
-                this.refresh();
             },
-
             onSubmitAdd: function() {
                 var that = this;
                 var d=new Date();
@@ -372,13 +375,15 @@
                 })
                     .then(function(response) {
                         console.log(response.data);
-                        // that.depts=response.data;
+                        that.refresh();
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
             },
-
+            /**
+             * search template
+             * */
             search: function() {
                 this.currentPage = 1;
                 var that = this;
@@ -396,7 +401,9 @@
                         console.log(error);
                     });
             },
-
+            /**
+             *refresh template
+             * */
             refresh: function() {
                 template_all=[];
                 this.currentPage = 1;
@@ -415,15 +422,33 @@
                         console.log(error);
                     });
             },
-
+            /**
+             * details
+             * */
             showDetailsDialogForm: function (row) {
                 dialog.form = {
+                    tempid:row.tempid,
                     tempname:row.tempname,
                     tempscope:row.tempscope,
                     temptype:row.temptype,
                 };
                 dialog.dialogVisible = true;
+                // console.log(dialog.form.tempid);
+                var that = this;
+                var params = new URLSearchParams();
+                params.append("tempid",row.tempid);
+                axios.post('/outpatient/getDetails', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        dialog.details = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
+            /**
+             * page
+             * */
             handleSizeChange: function(pagesize) {
                 this.pagesize = pagesize;
                 console.log(pagesize);
@@ -434,9 +459,11 @@
             }
         }
     });
-
+    /**
+     * detail all js
+     */
     var dialog = new Vue({
-        el: '#details',
+        el: '#detail',
         data(){
             return{
                 option: [{
@@ -454,19 +481,20 @@
                 }, {
                     label: 'Medicine',
                     options: [{
-                        value: 'XYF',
+                        value: '西药',
                         label: 'Western Medicine'
                     }, {
-                        value: 'ZCHYF',
+                        value: '中成药',
                         label: 'Patent Medicine'
                     }, {
-                        value: 'ZCYF',
+                        value: '中草药',
                         label: 'Herbal Medicine'
                     }]
                 }],
 
                 value:false,
 
+                tempid:"",
                 tempname:"",
                 tempscope:"",
                 temptype:"",
@@ -479,22 +507,177 @@
                 dialogItemVisible: false,
 
                 form:{
+                    tempid:"",
                     tempname:"",
                     tempscope:"",
                     temptype:"",
                 },
 
+                tempRelid:0,
                 itemcode: "",
-                nmedname: "",
+                itemname: "",
                 size: "",
                 price: "",
-                nonmedics: [],
+                item:[],
 
                 currentPage: 1, //初始页
                 pagesize: 10, //    每页的数据
             }
         },
         methods: {
+            /**
+             * distinguish template type
+             * */
+            searchItem:function(){
+                this.currentPage = 1;
+                var params = new URLSearchParams();
+                params.append("temptype", this.form.temptype);
+                params.append("itemcode",this.itemcode);
+                var that = this;
+                axios.post('/outpatient/item',params)
+                    .then(function (response) {
+                        that.dialogItemVisible=true;
+                        console.log(response.data);
+                        that.item=response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            /**
+             * search with itemcode
+             * */
+            searchItemcode:function(itemcode){
+                this.currentPage = 1;
+                var params = new URLSearchParams();
+                params.append("temptype", this.form.temptype);
+                params.append("itemcode",this.itemcode);
+                var that = this;
+                axios.post('/outpatient/item',params)
+                    .then(function (response) {
+                        that.dialogItemVisible=true;
+                        console.log(response.data);
+                        that.item=response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            /**
+             * choose item for template
+             * */
+            chooseItem:function(row){
+                var that = this;
+                var params = new URLSearchParams();
+                // console.log(row.itemcode);
+                params.append("tempid", this.form.tempid);
+                params.append("itemcode",row.itemcode);
+                this.$confirm('Do you want to add this item into template?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/outpatient/addItem',params)
+                        .then(function (response) {
+                            that.dialogItemVisible=false;
+                            that.refreshDeatils();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    this.$message({
+                        type: 'success',
+                        message: 'Add success!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel!'
+                    });
+                });
+            },
+            /**
+             * delete template
+             * */
+            delTemp:function(){
+                var that= this;
+                var params = new URLSearchParams();
+                params.append('tempid', this.form.tempid);
+                axios.post('/outpatient/delTemp',params)
+                    .then(function (response) {
+                        that.dialogVisible=false;
+                        that.dvisible = false;
+                        app.refresh();
+                    }).catch(function(error){
+                    console.log(error);
+                });
+            },
+            /**
+             * update template info
+             * */
+            updateTemp:function(){
+                var that= this;
+                var params = new URLSearchParams();
+                params.append('tempid',this.form.tempid);
+                params.append('tempname', this.form.tempname);
+                params.append('tempscope',this.form.tempscope);
+                axios.post('/outpatient/updateTemp',params)
+                    .then(function (response) {
+                        that.dialogVisible=false;
+                        that.uvisible = false;
+                        app.refresh();
+                    }).catch(function(error){
+                    console.log(error);
+                });
+            },
+            /**
+             * refresh details
+             * */
+            refreshDeatils:function(){
+                var that = this;
+                var params = new URLSearchParams();
+                params.append("tempid",this.form.tempid);
+                axios.post('/outpatient/getDetails', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.details = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            /**
+             * delete details
+             * */
+            delDetails:function(index, row){
+                var that= this;
+                var params = new URLSearchParams();
+                params.append('tempRelid', this.details[index].tempRelid);
+                this.$confirm('Do you want to delete this item?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/outpatient/delDetails',params)
+                        .then(function (response) {
+                            that.refreshDeatils();
+                        }).catch(function(error){
+                        console.log(error);
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: 'Add success!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel!'
+                    });
+                });
+            },
+            /**
+             * page
+             * */
             handleSizeChange: function(pagesize) {
                 this.pagesize = pagesize;
                 console.log(pagesize);
@@ -503,24 +686,6 @@
                 this.currentPage = currentPage;
                 console.log(currentPage);
             }
-            /*openConfirmDialog:function() {
-                this.$confirm('Sure to arrange?', 'Notice', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
-                    type: 'warning'
-                }).then(() => {
-                    this.arrangeShift()
-                    this.$message({
-                        type: 'success',
-                        message: 'Arrange Succeed!'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: 'Cancel Arrangement.'
-                    });
-                });
-            }*/
         }
     })
 </script>

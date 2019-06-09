@@ -31,4 +31,15 @@ public class DisService {
     public void updateDis(Disease disease) {
         disMapper.updateDis(disease);
     }
+
+    public void deleteDiseaseFromDiag(int regid, String icdcode) {
+        disMapper.deleteDiseaseFromDiag(regid, icdcode);
+    }
+
+    public List<Disease> getDiseasesByPinyin(String discode) { return disMapper.getDiseasesByPinyin(discode);
+    }
+
+    public void addDiseaseToDiag(int hpid, List<Disease> diseaseList) {
+        disMapper.addDiseaseToDiag(hpid, diseaseList);
+    }
 }

@@ -26,8 +26,8 @@ public class RegistrationService {
     @Resource
     private RegistrationMapper registrationMapper;
 
-    public List<Shift> getAvailableDoctorList(boolean aorp, String deptcode, String nmedname){
-        List<Shift> availableShifts = shiftMapper.getShiftsAvailable(aorp,deptcode,nmedname);
+    public List<Shift> getAvailableDoctorList(boolean aorp, String deptcode, String itemname){
+        List<Shift> availableShifts = shiftMapper.getShiftsAvailable(aorp,deptcode,itemname);
         return availableShifts;
     }
 

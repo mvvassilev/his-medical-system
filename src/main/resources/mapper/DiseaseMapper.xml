@@ -34,4 +34,20 @@
         update disease set disname = #{disname},discode = #{discode},discat = #{discat}
         where icdcode = #{icdcode}
     </update>
+
+    <delete id="deleteDiseaseFromDiag">
+        delete hprel from hprel, homepage where hprel.hpid = homepage.hpid
+        and homepage.regid = #{regid} and hprel.icdcode = #{icdcode}
+    </delete>
+
+    <select id="getDiseasesByPinyin" resultType="Disease">
+        select * from disease where discode like CONCAT(#{discode},'%')
+    </select>
+
+    <insert id="addDiseaseToDiag" useGeneratedKeys="true" keyProperty="hpRid">
+        insert into hprel(hpid, icdcode) values
+        <foreach item="item" collection="diseaseList" separator=",">
+            (#{hpid}, #{item.icdcode})
+        </foreach>
+    </insert>
 </mapper>

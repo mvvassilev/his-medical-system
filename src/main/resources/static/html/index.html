@@ -16,8 +16,7 @@
 
 <body>
 <div id="topbar">
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"
-             >
+    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item id="mng" index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management
         </el-menu-item>
         <el-menu-item id="reg" index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register & Payment
@@ -62,7 +61,7 @@
         el: '#app',
         data: function() {
             return {
-                url_sidebar: "register/sidebar.html",
+                url_sidebar: "",
                 loginDialogVisible: true,
 
                 ruleForm: {

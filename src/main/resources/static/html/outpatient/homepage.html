@@ -30,7 +30,7 @@
     <el-row glutter="20">
         <el-col id="sidebar" style="width: auto">
             <el-menu default-active="1-1-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                     @select="handleSelect" :collapse="isCollapse">
+                     @select="handleSelect" :collapse="isCollapse" :unique-opened="true">
                 <el-submenu index="1">
                     <template slot="title">
                         <i class="el-icon-s-custom"></i>
@@ -38,14 +38,14 @@
                     </template>
                     <el-submenu index="1-1">
                         <span slot="title">Waiting</span>
-                        <el-menu-item v-for="(item,index) in myWait" :key="item.pid" :index="'1-1-'+(index+1)"
-                                      :value="item.pid">{{ item.pname}}</el-menu-item>
+                        <el-menu-item v-for="(item,index) in myWait" :key="item.regid" :index="'1-1-'+(index+1)"
+                                      :value="item.regid">{{ item.pname}}</el-menu-item>
                     </el-submenu>
 
                     <el-submenu index="1-2">
                         <span slot="title">Diagnosed</span>
-                        <el-menu-item v-for="(item,index) in myDiagnosed" :key="item.pid" :index="'1-2-'+(index+1)"
-                                      :value="item.pid">{{ item.pname}}</el-menu-item>
+                        <el-menu-item v-for="(item,index) in myDiagnosed" :key="item.regid" :index="'1-2-'+(index+1)"
+                                      :value="item.regid">{{ item.pname}}</el-menu-item>
                     </el-submenu>
                 </el-submenu>
 
@@ -56,14 +56,14 @@
                     </template>
                     <el-submenu index="2-1">
                         <span slot="title">Waiting</span>
-                        <el-menu-item v-for="(item,index) in deptWait" :key="item.pid" :index="'2-1-'+(index+1)"
-                                      :value="item.pid">{{ item.pname}}</el-menu-item>
+                        <el-menu-item v-for="(item,index) in deptWait" :key="item.regid" :index="'2-1-'+(index+1)"
+                                      :value="item.regid">{{ item.pname}}</el-menu-item>
                     </el-submenu>
 
                     <el-submenu index="2-2">
                         <span slot="title">Diagnosed</span>
-                        <el-menu-item v-for="(item,index) in deptDiagnosed" :key="item.pid" :index="'2-2-'+(index+1)"
-                                      :value="item.pid">{{ item.pname}}</el-menu-item>
+                        <el-menu-item v-for="(item,index) in deptDiagnosed" :key="item.regid" :index="'2-2-'+(index+1)"
+                                      :value="item.regid">{{ item.pname}}</el-menu-item>
                     </el-submenu>
                 </el-submenu>
             </el-menu>
@@ -85,7 +85,8 @@
                 </el-tabs>
                 <el-row>
                     <el-col :span="24">
-                        <iframe width="100%" height="100%" frameborder="no" v-bind:src="url"></iframe>
+                        <iframe v-loading="loading" element-loading-text="不是..欸..卧槽!YES"
+                        name="myFrame" width="100%" height="100%" frameborder="no" v-bind:src="url"></iframe>
                     </el-col>
                 </el-row>
             </template>
@@ -133,6 +134,7 @@
                 myDiagnosed: [],
                 deptWait: [],
                 deptDiagnosed: [],
+                loading:true
             };
         },
         methods: {
@@ -146,13 +148,14 @@
                 console.log(tab, event);
                 this.url = tab.name;
                 console.log("navigateTo" + this.url)
+
             },
             refreshList(){
                 this.loadPatientList();
             },
             loadPatientList() {
                 var that = this;
-                axios.post('/outpatient/getPatientsOfUserToday', {'userid': this.userid, 'state':'诊毕'})
+                axios.post('/outpatient/getPatientsOfUserToday', {'userid': this.userid, 'state':6})
                     .then(function (response) {
                         console.log(response.data);
                         that.myWait = response.data;
@@ -160,7 +163,7 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-                axios.post('/outpatient/getDiagnosedPatientsOfUserToday', {'userid': this.userid, 'state':'诊毕'})
+                axios.post('/outpatient/getDiagnosedPatientsOfUserToday', {'userid': this.userid, 'state':6})
                     .then(function (response) {
                         console.log(response.data);
                         that.myDiagnosed = response.data;
@@ -168,7 +171,7 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-                    axios.post('/outpatient/getPatientsOfDeptToday', {'deptcode': this.deptcode, 'state':'诊毕'})
+                    axios.post('/outpatient/getPatientsOfDeptToday', {'deptcode': this.deptcode, 'state':6})
                     .then(function (response) {
                         console.log(response.data);
                         that.deptWait = response.data;
@@ -176,7 +179,7 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-                    axios.post('/outpatient/getDiagnosedPatientsOfDeptToday', {'deptcode': this.deptcode, 'state':'诊毕'})
+                    axios.post('/outpatient/getDiagnosedPatientsOfDeptToday', {'deptcode': this.deptcode, 'state':6})
                     .then(function (response) {
                         console.log(response.data);
                         that.deptDiagnosed = response.data;
@@ -210,30 +213,14 @@
                     this.switchStep(this.deptDiagnosed[parseInt(select[2])-1].state);
                 }
 
+                this.url = 'homepageframe/frontpage.html'
+                myFrame.window.refreshPage();
+
 
             },
 
             switchStep(state){
-                switch (state) {
-                    case "已挂号":
-                        this.active = 1;
-                        break;
-                    case "已初诊":
-                        this.active = 2;
-                        break;
-                    case "已检查":
-                        this.active = 3;
-                        break;
-                    case "已确诊":
-                        this.active = 4;
-                        break;
-                    case "已治疗":
-                        this.active = 5;
-                        break;
-                    case "诊毕":
-                        this.active = 6;
-                        break;
-                }
+                this.active = parseInt(state);
             }
         }
     });

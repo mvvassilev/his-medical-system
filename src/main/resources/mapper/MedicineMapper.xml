@@ -13,8 +13,8 @@
     </select>
 
     <insert id="addMed">
-        insert into medicine (itemcode,medname,unit,medtype,price,medsize,medcat)
-        values (#{itemcode},#{medname},#{unit},#{medtype},#{price},#{medsize},#{medcat})
+        insert into medicine (itemcode,itemname,unit,medtype,price,size,medcat)
+        values (#{itemcode},#{itemname},#{unit},#{medtype},#{price},#{size},#{medcat})
     </insert>
 
     <delete id="delMed">
@@ -22,8 +22,8 @@
     </delete>
 
     <update id="updateMed">
-        update medicine set medname = #{medname},unit = #{unit},medtype = #{medtype},price = #{price},
-        medsize=#{medsize},medcat=#{medcat}
+        update medicine set itemname = #{itemname},unit = #{unit},medtype = #{medtype},price = #{price},
+        size=#{size},medcat=#{medcat}
         where itemcode = #{itemcode}
     </update>
 </mapper>
