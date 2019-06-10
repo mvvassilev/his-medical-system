@@ -223,7 +223,7 @@
             newPreVisible: false,
             visible: false,
 
-            totalprice: '',
+            totalprice:'',
             number: 1,
             preid: '',
             uRid: 1,
@@ -400,12 +400,17 @@
                 var judgestate = val.state;
                 this.stateTrans(judgestate);
                 var that = this;
+                this.totalprice=0;
                 var params = new URLSearchParams();
                 params.append("preid", val.preid);
                 axios.post('/outpatient/getItem', params)
                     .then(function (response) {
-                        // console.log(response.data);
                         that.medicine = response.data;
+                        for(var i=0;i<that.medicine.length;i++){
+                            that.totalprice += (that.medicine[i].price) * (that.medicine[i].count);
+                            // console.log(i+":"+that.totalprice);
+                        }
+                        that.totalprice = parseFloat(that.totalprice).toFixed(2);
                     })
                     .catch(function (error) {
                         console.log(error);

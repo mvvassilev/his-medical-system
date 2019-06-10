@@ -15,4 +15,8 @@ public interface RegistrationMapper {
 
     List<Registration> getRegistrationsByPid(int pid);
 
+    List<Registration> getCancellableRegistrationsByPid(int pid);
+
+    void delReg(int regid);
+
 }

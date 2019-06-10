@@ -151,6 +151,19 @@ public class HisMedicalSystemApplicationTests {
 		}
 	}
 
+	@Test
+	public void testAPIforFinancial(){
+		try {
+			String jsonStr = "{\"state\":\"已挂号\",\"deptcode\":\"CK\"}";
+			JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+			String responseString = mockMvc.perform(post("/financial/testAPI").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
+					.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+			after(responseString);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void after(String responseString){
 		System.out.println("接口返回结果：" + responseString);
 		JSONObject resultObj = JSON.parseObject(responseString);
