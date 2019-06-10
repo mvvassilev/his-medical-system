@@ -12,11 +12,19 @@ public class BillService {
     @Resource
     private BillMapper billMapper;
 
-    public List<Bill> getBillsWithCondition(Bill bill){
-        return billMapper.getBillsWithCondition(bill);
+    public List<Bill> getUnpaidBills(Bill bill){
+        return billMapper.getUnpaidBills(bill);
+    }
+
+    public List<Bill> getUndoneBills(Bill bill){
+        return billMapper.getUndoneBills(bill);
     }
 
     public void changeStateToPaid(int billId){
         billMapper.changeStateToPaid(billId);
+    }
+
+    public void refundBill(int billId){
+        billMapper.deleteBill(billId);
     }
 }
