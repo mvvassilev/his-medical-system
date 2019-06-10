@@ -13,6 +13,7 @@
 <body>
 <div id="patentmed">
     <el-container>
+        <!--up operation-->
         <el-header>
             <el-card class="box-card">
                 <el-row type="flex" justify="space-between">
@@ -21,14 +22,17 @@
                     </el-col>
                     <el-col :span="20">
                         <el-button size="small" icon="el-icon-circle-plus-outline" type="primary"
-                                   @click="addPrescription"
+                                   @click="newPreVisible = true"
                                    round>Add
                         </el-button>
-                        <el-button size="small" icon="el-icon-remove-outline" type="primary" @click="" round>Delete
+                        <el-button size="small" :disabled="currentStated"
+                                   icon="el-icon-remove-outline" type="primary" @click="delPre" round>Delete
                         </el-button>
-                        <el-button size="small" icon="el-icon-circle-check" type="primary" @click="" round>Open
+                        <el-button size="small" :disabled="currentStateo"
+                                   icon="el-icon-circle-check" type="primary" @click="changeState('Opened')" round>Open
                         </el-button>
-                        <el-button size="small" icon="el-icon-delete" type="primary" @click="" round>Revoke</el-button>
+                        <el-button size="small" :disabled="currentStater"
+                                   icon="el-icon-delete" type="primary" @click="changeState('Revoked')" round>Revoke</el-button>
                         <el-button size="small" icon="el-icon-edit-outline" type="primary" @click="" round>Save
                         </el-button>
                         <el-button size="small" icon="el-icon-refresh" type="primary" @click="" round>Refresh
@@ -37,11 +41,13 @@
                 </el-row>
             </el-card>
         </el-header>
-        <el-container style="margin-top: 30px">
-            <el-aside width="250px">
 
+        <el-container style="margin-top: 30px">
+            <!--left prescription info-->
+            <el-aside width="250px">
                 <el-row>
                     <el-tag type="success" size="medium" effect="plain">Prescription</el-tag>
+                    <!--template dropdown-->
                     <el-dropdown trigger="click">
                         <el-button size="small" icon="el-icon-arrow-down" type="primary" style="margin-left: 30px"
                                    plain>
@@ -67,18 +73,22 @@
                                     </el-col>
                                 </el-row>
                             </el-dropdown-item>
-
                             <el-dropdown-item icon="el-icon-arrow-left">螺蛳粉</el-dropdown-item>
                             <el-dropdown-item icon="el-icon-arrow-left">双皮奶</el-dropdown-item>
                             <el-dropdown-item icon="el-icon-arrow-left">蚵仔煎</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </el-row>
-                <el-table :data="prescription">
+                            <!--prescription table-->
+                <el-table :data="prescription"
+                          highlight-current-row
+                          ref="singleTable"
+                          @current-change="handleCurrentChange">
                     <el-table-column width="100" property="prename" label="Name"></el-table-column>
-                    <el-table-column width="100" property="prestate" label="State"></el-table-column>
+                    <el-table-column width="100" property="state" label="State"></el-table-column>
                 </el-table>
             </el-aside>
+                    <!--prescription details-->
             <el-main style="padding: 0">
                 <el-card class="box-card">
                     <el-row type="flex" justify="space-between">
@@ -88,11 +98,13 @@
                         </el-col>
                         <el-col :span="6">
                             <el-button size="small" icon="el-icon-circle-plus-outline" type="primary"
+                                       :disabled="currentStatea"
                                        @click="addMedicineDialog">
                                 Add Medicine
                             </el-button>
                         </el-col>
                     </el-row>
+                                    <!--details table-->
                     <el-table :data="medicine">
                         <el-table-column width="150" property="itemname" label="Name"></el-table-column>
                         <el-table-column width="100" property="size" label="Size"></el-table-column>
@@ -102,34 +114,33 @@
                                 fixed="right"
                                 label="Operation"
                                 width="100">
-                            <template slot-scope="scope">
-                                <el-button icon="el-icon-remove-outline" size="medium" type="text">Delete</el-button>
-                            </template>
+                            <span slot-scope="scope">
+                                <el-button icon="el-icon-remove-outline" size="medium" type="text"
+                                           @click="delMed(scope.$index, scope.row)">Delete</el-button>
+                            </span>
                         </el-table-column>
                     </el-table>
                 </el-card>
             </el-main>
         </el-container>
     </el-container>
-
+                    <!--add new prescription-->
     <el-dialog
             title="New Prescription"
             :visible.sync="newPreVisible"
             width="65%">
         <el-row :gutter="20">
             <el-col :span="24">
-                <el-input v-model="newPreName" style="width:300px" placeholder="Enter Name"></el-input>
+                <el-input v-model="prename" style="width:300px" placeholder="Enter Name"></el-input>
             </el-col>
         </el-row>
         <el-row type="flex" justify="space-between" style="margin-top: 20px">
             <el-button type="primary" @click="createConfirmDialog">Create</el-button>
-            <el-button @click="closeDialog">Cancel</el-button>
+            <el-button @click="newPreVisible=false">Cancel</el-button>
         </el-row>
-
     </el-dialog>
-
 </div>
-
+                        <!--add medicine-->
 <div id="addDialog">
     <el-dialog
             title="Add Medicine"
@@ -138,9 +149,10 @@
         <el-row :gutter="20">
             <el-col :span="24">
                 <el-input v-model="itemcode" style="width:300px" placeholder="Enter PingYin Code"></el-input>
-                <el-button icon="el-icon-search" type="primary" @click="searchMedicine">search</el-button>
+                <el-button icon="el-icon-search" type="primary" @click="searchMedicine(itemcode)">search</el-button>
             </el-col>
         </el-row>
+        <!--medicine form-->
         <el-table :data="medicine"
                   style="width: 100%"
                   tooltip-effect="dark">
@@ -156,31 +168,22 @@
                     width="130">
             </el-table-column>
             <el-table-column
-                    prop="type"
-                    label="Type"
-                    width="130">
-            </el-table-column>
-            <el-table-column
                     prop="price"
                     label="Price"
                     width="130">
             </el-table-column>
         </el-table>
         <el-row :gutter="20" style="margin-top: 20px" type="flex" justify="space-around">
-
             <el-col :span="8">
-
                 <el-input-number style="width: 160px" @change="handleChange"
-                                 size="medium" v-model="count">
+                                 size="medium" v-model="number">
                 </el-input-number>
-
             </el-col>
             <el-col :span="10">
                 <el-button type="primary" @click="openConfirmDialog">Confirm</el-button>
-                <el-button @click="closeDialog">Cancel</el-button>
+                <el-button @click="dialogVisible=false">Cancel</el-button>
             </el-col>
         </el-row>
-
     </el-dialog>
 </div>
 
@@ -189,57 +192,103 @@
         el: '#patentmed',
         data: {
             newPreVisible: false,
-            newPreName: '',
 
+            totalprice:'',
+            number: 1,
+            preid:'',
+            uRid:1,
+            regid:"",
+            pretype:"成药",
+            prename: "",
+            state:"",
+            currentRow: {},
+            currentStated:false,
+            currentStateo:false,
+            currentStater:false,
+            currentStatea:true,
             prescription: [],
             template: [],
-            medicine: [{
-                'itemname': '哥水药',
-                'size': '支',
-                'price': '23.0',
-                'count': 10
-            }, {
-                'itemname': '哥水药',
-                'size': '支',
-                'price': '23.0',
-                'count': 10
-            }, {
-                'itemname': '哥水药',
-                'size': '支',
-                'price': '23.0',
-                'count': 10
-            }, {
-                'itemname': '哥水药',
-                'size': '支',
-                'price': '23.0',
-                'count': 10
-            }, {
-                'itemname': '哥水药',
-                'size': '支',
-                'price': '23.0',
-                'count': 10
-            }
-            ],
-            totalprice: '233 元',
-            count: 1,
+            medicine: [],
+        },
+        mounted: function(){
+            /*var params = new URLSearchParams();
+            params.append("uRid",this.uRid);
+            params.append("regid",parent.patient.regid);*/
+            //用上面方法会报错415，应该将数据重新组装成JSON
+            var that = this;
+            axios.post('/outpatient/getPre', {
+                uRid:this.uRid,
+                regid:parent.patient.regid,
+            })
+                .then(function (response) {
+                    console.log(response.data);
+                    that.prescription = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         methods: {
+            stateTrans:function(judgestate){
+                if(judgestate){
+                    if(judgestate==='Opened'){
+                        this.currentStated=true;
+                        this.currentStateo=true;
+                        this.currentStater=false;
+                        this.currentStatea=true;
+                    }else if (judgestate==='Revoked'||judgestate==='Executed'){
+                        this.currentStated=true;
+                        this.currentStateo=true;
+                        this.currentStater=true;
+                        this.currentStatea=true;
+                    }else if(judgestate==='Saved'){
+                        this.currentStated=false;
+                        this.currentStateo=false;
+                        this.currentStater=true;
+                        this.currentStatea=false;
+                    } else{
+                        this.currentStated=false;
+                        this.currentStateo=false;
+                        this.currentStater=false;
+                        this.currentStatea=true;
+                    }
+                }
+            },
             addMedicineDialog() {
-                console.log("wo tm add bao!");
                 dialog.dialogVisible = true;
             },
-            addPrescription() {
-                console.log("wo tm new bao!");
-                this.newPreVisible = true;
+            refreshPre:function(){
+                var that = this;
+                axios.post('/outpatient/getPre', {
+                    uRid:this.uRid,
+                    regid:parent.patient.regid,
+                })
+                    .then(function (response) {
+                        that.prescription = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             createConfirmDialog: function () {
+                var that= this;
+                var params = new URLSearchParams();
+                params.append('uRid',this.uRid);
+                params.append('regid',parent.patient.regid);
+                params.append('pretype',this.pretype);
+                params.append('prename',this.prename);
                 this.$confirm('Sure to create?', 'Notice', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
-                    console.log("add!!!!!!");
-                    this.dialogVisible = false;
+                    this.newPreVisible = false;
+                    axios.post('/outpatient/addPre',params)
+                        .then(function (response) {
+                            that.refreshPre();
+                        }).catch(function(error){
+                        console.log(error);
+                    });
                     this.$message({
                         type: 'success',
                         message: 'Add Succeed!'
@@ -251,9 +300,120 @@
                     });
                 });
             },
-            closeDialog() {
-                this.dialogVisible = false;
+            delPre:function(){
+                var that= this;
+                var params = new URLSearchParams();
+                params.append('preid',this.currentRow.preid);
+                this.$confirm('Sure to delete?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/outpatient/delPre',params)
+                        .then(function (response) {
+                            that.refreshPre();
+                        }).catch(function(error){
+                        console.log(error);
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: 'Delete Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel'
+                    });
+                });
             },
+            changeState:function(pickstate){
+                var that= this;
+                var params = new URLSearchParams();
+                params.append('state',pickstate);
+                params.append('preid',this.currentRow.preid);
+                this.$confirm('Sure to change?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/outpatient/changeState',params)
+                        .then(function (response) {
+                            that.refreshPre();
+                        }).catch(function(error){
+                        console.log(error);
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: 'Change Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel'
+                    });
+                });
+            },
+            handleCurrentChange(val) {
+                this.currentRow = val;
+                dialog.preid=val.preid;
+                var judgestate=val.state;
+                this.stateTrans(judgestate);
+                var that = this;
+                this.totalprice=0;
+                var params = new URLSearchParams();
+                params.append("preid",val.preid);
+                axios.post('/outpatient/getItem', params)
+                    .then(function (response) {
+                        that.medicine = response.data;
+                        for(var i=0;i<that.medicine.length;i++){
+                            that.totalprice += (that.medicine[i].price) * (that.medicine[i].count);
+                            // console.log(i+":"+that.totalprice);
+                        }
+                        that.totalprice = parseFloat(that.totalprice).toFixed(2);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            delMed:function(index,row){
+                var that= this;
+                var params = new URLSearchParams();
+                params.append('preRelid', this.medicine[index].preRelid);
+                this.$confirm('Do you want to delete this item?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/outpatient/delMed',params)
+                        .then(function (response) {
+                            that.refreshItem();
+                        }).catch(function(error){
+                        console.log(error);
+                    });
+                    this.$message({
+                        type: 'success',
+                        message: 'Delete success!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel!'
+                    });
+                });
+            },
+            refreshItem:function () {
+                var that = this;
+                var params = new URLSearchParams();
+                params.append("preid",this.currentRow.preid);
+                axios.post('/outpatient/getItem', params)
+                    .then(function (response) {
+                        // console.log(response.data);
+                        that.medicine = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
         }
     });
 
@@ -261,31 +421,45 @@
         el: '#addDialog',
         data() {
             return {
-
                 dialogVisible: false,
                 itemcode: '',
-                medicine: [
-                    {
-                        'itemname': '哥水药',
-                        'size': '支',
-                        'type': '艺术',
-                        'price': 23.0
-                    }
-                ],
-                count: 1,
+                preid:'',
+                medicine: [],
+                number: 1,
             }
         },
         methods: {
-            searchMedicine: function () {
-                console.log("search");
+            searchMedicine: function (itemcode) {
+                var params = new URLSearchParams();
+                params.append("itemcode",this.itemcode);
+                var that = this;
+                axios.post('/outpatient/getMed',params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.medicine=response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             openConfirmDialog: function () {
+                var params = new URLSearchParams();
+                params.append("preid",this.preid);
+                params.append("itemcode",this.itemcode);
+                params.append("count",this.number);
+                var that = this;
                 this.$confirm('Sure to add?', 'Notice', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
-                    console.log("add!!!!!!");
+                    axios.post('/outpatient/addMed',params)
+                        .then(function (response) {
+                            patentmed.refreshItem();
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                     this.dialogVisible = false;
                     this.$message({
                         type: 'success',
@@ -298,12 +472,9 @@
                     });
                 });
             },
-            closeDialog() {
-                this.dialogVisible = false;
-            },
             handleChange(value) {
-                console.log(value);
-            }
+                this.number=value;
+            },
         }
     })
 </script>
