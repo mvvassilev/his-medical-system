@@ -9,6 +9,24 @@ public class Medicine {
     private String medtype;
     private String medcat;
     private int tempRelid;
+    private int preRelid;
+    private int count;
+
+    public int getPreRelid() {
+        return preRelid;
+    }
+
+    public void setPreRelid(int preRelid) {
+        this.preRelid = preRelid;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public int getTempRelid() {
         return tempRelid;

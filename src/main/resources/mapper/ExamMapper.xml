@@ -61,8 +61,8 @@
 
     </insert>
 
-    <select id="getItemCodeByTempid" resultType="String">
-        select itemcode from his.temprel where tempid = #{tempid}
+    <select id="getItemCodeByTempid" resultType="Medicine">
+        select * from his.temprel where tempid = #{tempid}
     </select>
 
     <insert id="addTemplateToExam" useGeneratedKeys="true" keyProperty="exid">

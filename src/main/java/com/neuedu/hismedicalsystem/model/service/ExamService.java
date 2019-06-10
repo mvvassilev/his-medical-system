@@ -3,6 +3,7 @@ package com.neuedu.hismedicalsystem.model.service;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.ExamMapper;
 import com.neuedu.hismedicalsystem.model.po.Exam;
+import com.neuedu.hismedicalsystem.model.po.Medicine;
 import com.neuedu.hismedicalsystem.model.po.NonMedic;
 import org.springframework.stereotype.Service;
 
@@ -45,4 +46,5 @@ public class ExamService {
         object.put("itemcodes", itemcodes);
         examMapper.addTemplateToExam(object);
     }
+
 }

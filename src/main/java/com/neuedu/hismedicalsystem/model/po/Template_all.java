@@ -11,6 +11,7 @@ public class Template_all {
     private Date createdate;
 
     private List<NonMedic> nonMedicList;
+    private List<Medicine> medicineList;
 
     public int getTempid() {
         return tempid;
@@ -58,5 +59,13 @@ public class Template_all {
 
     public void setNonMedicList(List<NonMedic> nonMedicList) {
         this.nonMedicList = nonMedicList;
+    }
+
+    public List<Medicine> getMedicineList() {
+        return medicineList;
+    }
+
+    public void setMedicineList(List<Medicine> medicineList) {
+        this.medicineList = medicineList;
     }
 }

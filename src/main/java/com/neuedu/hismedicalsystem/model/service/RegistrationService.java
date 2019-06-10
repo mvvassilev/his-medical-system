@@ -117,5 +117,4 @@ public class RegistrationService {
     public List<Registration> getRegistrationsByPid(int id){
         return registrationMapper.getRegistrationsByPid(id);
     }
-
 }

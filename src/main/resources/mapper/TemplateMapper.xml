@@ -89,4 +89,70 @@
             <result property="price" column="price"/>
         </collection>
     </resultMap>
+
+    <select id="getTemplateForPre" resultMap="_templatePre">
+         select * from his.template_all t join his.temprel tr on t.tempid = tr.tempid
+        join his.medicine m on m.itemcode = tr.itemcode
+        where t.temptype = #{temptype}
+    </select>
+
+    <resultMap id="_templatePre" type="Template_all">
+        <id property="tempid" column="tempid" />
+        <result property="tempname" column="tempname"/>
+        <result property="temptype" column="temptype"/>
+        <result property="tempscope" column="tempscope"/>
+        <result property="createdate" column="createdate"/>
+        <collection property="medicineList" ofType="Medicine">
+            <id property="itemcode" column="itemcode" />
+            <id property="itemname" column="itemname" />
+            <result property="size" column="size"/>
+            <result property="price" column="price"/>
+            <result property="count" column="count"/>
+        </collection>
+    </resultMap>
+
+    <select id="getTemplateForPreByTempid" resultType="Medicine">
+        select * from his.template_all t join his.temprel tr on t.tempid = tr.tempid
+        join his.medicine m on m.itemcode = tr.itemcode
+        where t.tempid = #{tempid}
+    </select>
+
+    <select id="getPreidBack" resultType="Integer">
+        select preid from his.prescription order by preid desc limit 1
+    </select>
+
+    <insert id="addTemplateToPre" useGeneratedKeys="true" keyProperty="preid">
+        insert into his.prescription(uRid, regid, pretype, state, prename)
+        values (#{uRid}, #{regid}, #{pretype}, 'Saved', #{tempname})
+    </insert>
+
+    <insert id="addTemplateToPreRel" useGeneratedKeys="true" keyProperty="preRelid">
+        insert into his.prerel(itemcode, preid, count) values
+        <foreach item="item" collection="medicineList" separator=",">
+            (#{item.itemcode}, #{preid}, #{item.count})
+        </foreach>
+    </insert>
+
+
+    <insert id="savePreToTemplate" useGeneratedKeys="true" keyProperty="tempid">
+        insert into template_all(tempname, temptype, createdate) values
+        (#{tempname}, #{temptype}, now())
+    </insert>
+
+    <insert id="savePreToTemplateRel" useGeneratedKeys="true" keyProperty="tempRelid">
+        insert into his.temprel(tempid, itemcode, count) values
+        <foreach item="item" collection="itemcodes" separator=",">
+            (#{tempid}, #{item.itemcode}, #{item.count})
+        </foreach>
+
+    </insert>
+
+    <select id="getTempidBack" resultType="Integer">
+        select tempid from his.template_all order by createdate desc limit 1
+    </select>
+
+    <select id="getItemCodeByPreid" resultType="Medicine">
+        select * from prerel where preid =#{preid}
+
+    </select>
 </mapper>

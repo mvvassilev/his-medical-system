@@ -1,5 +1,7 @@
 package com.neuedu.hismedicalsystem.model.mapper;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.Medicine;
 import com.neuedu.hismedicalsystem.model.po.NonMedic;
 import com.neuedu.hismedicalsystem.model.po.Template_all;
@@ -27,4 +29,22 @@ public interface TemplateMapper {
     public void delDetails(int tempRelid);
 
     List<Template_all> getTemplateForExam(String temptype);
+
+    List<Template_all> getTemplateForPre(String temptype);
+
+    List<Medicine> getTemplateForPreByTempid(Integer tempid);
+
+    void addTemplateToPre(JSONObject object);
+
+    void addTemplateToPreRel(JSONObject object);
+
+    int getPreidBack();
+
+    void savePreToTemplate(JSONObject object);
+
+    int getTempidBack();
+
+    List<Medicine> getItemCodeByPreid(String preid);
+
+    void savePreToTemplateRel(@Param("itemcodes") List<Medicine> itemcodes, @Param("tempid") int tempid);
 }

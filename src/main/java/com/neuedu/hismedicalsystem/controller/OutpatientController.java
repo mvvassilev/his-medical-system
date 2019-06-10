@@ -6,6 +6,11 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.DisMapper;
 import com.neuedu.hismedicalsystem.model.po.*;
+import com.neuedu.hismedicalsystem.model.service.DisService;
+import com.neuedu.hismedicalsystem.model.service.PatientService;
+import com.neuedu.hismedicalsystem.model.service.PrescriptionService;
+import com.neuedu.hismedicalsystem.model.service.TemplateService;
+import com.neuedu.hismedicalsystem.model.po.*;
 import com.neuedu.hismedicalsystem.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,12 +27,6 @@ public class OutpatientController {
      */
     @Autowired
     private TemplateService templateService;
-
-    @Autowired
-    private PatientService patientService;
-
-    @Autowired
-    private DisService disService;
 
     @Autowired
     private ExamService examService;
@@ -62,7 +61,7 @@ public class OutpatientController {
 
     @RequestMapping("/item")
     public JSONArray getItem(String temptype, String itemcode){
-       return templateService.getItem(temptype,itemcode);
+        return templateService.getItem(temptype,itemcode);
     }
 
     @RequestMapping("/getDetails")
@@ -70,6 +69,12 @@ public class OutpatientController {
 
     @RequestMapping("/delDetails")
     public void delDetails(int tempRelid){templateService.delDetails(tempRelid);}
+
+    /**
+     * patient
+     */
+    @Autowired
+    private PatientService patientService;
 
     @RequestMapping("/getDiagnosedPatientsOfUserToday")
     public List<Patient> getDiagnosedPatientsOfUserToday(@RequestBody JSONObject obj){
@@ -89,13 +94,30 @@ public class OutpatientController {
 
     @RequestMapping("/getPatientsOfDeptToday")
     public List<Patient> getPatientsOfDeptToday(@RequestBody JSONObject obj){
-       return patientService.getPatientsOfDeptToday(obj.getString("deptcode"),"");
+        return patientService.getPatientsOfDeptToday(obj.getString("deptcode"),"");
     }
 
     @RequestMapping("/getFrontPageByRegid")
     public FrontPage getFrontPageByRegid(int regid){
         return patientService.getFrontPageByRegid(regid);
     }
+
+    @RequestMapping("/updateHomepage")
+    public void updateHomepage(@RequestBody JSONObject obj){
+        int hpid = patientService.getHpidByRegid(obj.getInteger("regid"));
+        JSONObject tempobj = obj.getJSONObject("homepage");
+
+        FrontPage frontPage = JSONObject.parseObject(tempobj.toJSONString(), FrontPage.class);
+        frontPage.setHpid(hpid);
+
+        patientService.updateHomepage(frontPage);
+    }
+
+    /**
+     * disease
+     */
+    @Autowired
+    private DisService disService;
 
     @RequestMapping("/deleteDiseaseFromDiag")
     public void deleteDiseaseFromDiag(int regid, String icdcode){disService.deleteDiseaseFromDiag(regid, icdcode);}
@@ -121,16 +143,46 @@ public class OutpatientController {
         }
     }
 
-    @RequestMapping("/updateHomepage")
-    public void updateHomepage(@RequestBody JSONObject obj){
-        int hpid = patientService.getHpidByRegid(obj.getInteger("regid"));
-        JSONObject tempobj = obj.getJSONObject("homepage");
+    /**
+     * prescription
+     */
+    @Autowired
+    private PrescriptionService prescriptionService;
 
-        FrontPage frontPage = JSONObject.parseObject(tempobj.toJSONString(), FrontPage.class);
-        frontPage.setHpid(hpid);
-
-        patientService.updateHomepage(frontPage);
+    @RequestMapping("/getPre")
+    public List<Prescription> getPre(@RequestBody Prescription condition){return prescriptionService.getPre(condition);}
+    @RequestMapping("/addPre")
+    public void addPre(int uRid, int regid, String pretype, String prename) {
+        prescriptionService.addPre(uRid, regid, pretype, prename);
     }
+
+    @RequestMapping("/delPre")
+    public void delPre(int preid){
+        prescriptionService.delPre(preid);
+    }
+
+    @RequestMapping("/changeState")
+    public void changeState(String state, int preid){
+        prescriptionService.changeState(state,preid);
+    }
+
+    @RequestMapping("/getItem")
+    public List<Medicine> getItem(int preid){
+        return prescriptionService.getItem(preid);
+    }
+
+    @RequestMapping("/getMed")
+    public List<Medicine> getMed(String itemcode){
+        return prescriptionService.getMed(itemcode);
+    }
+
+    @RequestMapping("/addMed")
+    public void addMed(int preid,String itemcode, int count){
+        prescriptionService.addMed(preid, itemcode, count);
+    }
+
+    @RequestMapping("/delMed")
+    public void delMed(int preRelid){prescriptionService.delMed(preRelid);}
 
     @RequestMapping("/getExamByRegidAndType")
     public List<Exam> getExamByRegidAndType(int regid, String extype){
@@ -138,7 +190,7 @@ public class OutpatientController {
     }
 
     @RequestMapping("/getNonMedicByPinyin")
-    public List<NonMedic> getNonMedicByPinyin(@RequestBody JSONObject obj){
+    public List<NonMedic> getNonMedicByPinyin(@RequestBody JSONObject obj) {
         String itemcode = obj.getString("itemcode");
         String nmedtype = obj.getString("nmedtype");
 
@@ -184,5 +236,21 @@ public class OutpatientController {
     @RequestMapping("/updatePatientState")
     public void updatePatientState(@RequestBody JSONObject object){
         patientService.updatePatientState(object);
+    }
+
+    @RequestMapping("/getTemplateForPre")
+    public List<Template_all> getTemplateForPre(@RequestBody JSONObject object){
+        String temptype = object.getString("temptype");
+        return templateService.getTemplateForPre(temptype);
+    }
+
+    @RequestMapping("/addTemplateToPre")
+    public void addTemplateToPre(@RequestBody JSONObject object){
+        templateService.addTemplateToPre(object);
+    }
+
+    @RequestMapping("/savePreToTemplate")
+    public void savePreToTemplate(@RequestBody JSONObject object){
+        templateService.savePreToTemplate(object);
     }
 }
