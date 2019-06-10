@@ -11,65 +11,85 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
-<div id="inspection">
+<div id="test">
     <el-card class="box-card">
         <el-row type="flex" justify="space-between">
             <el-col :span="18">
-                <el-button size="small" icon="el-icon-circle-plus-outline" type="primary" @click="" round>Add
+                <el-button size="small" icon="el-icon-circle-plus-outline" type="primary" @click="openAddDialog" round>
+                    Add
                 </el-button>
-                <el-button size="small" icon="el-icon-remove-outline" type="primary" @click="" round>Delete</el-button>
-                <el-button size="small" icon="el-icon-circle-check" type="primary" @click="" round>Open</el-button>
-                <el-button size="small" icon="el-icon-delete" type="primary" @click="" round>Revoke</el-button>
-                <el-button size="small" icon="el-icon-edit-outline" type="primary" @click="" round>Save</el-button>
-                <el-button size="small" icon="el-icon-refresh" type="primary" @click="" round>Refresh</el-button>
+                <el-button v-bind:disabled="deleteDisabled" size="small" icon="el-icon-remove-outline" type="primary" @click="deleteItem" round>Delete
+                </el-button>
+                <el-button v-bind:disabled="openDisabled" size="small" icon="el-icon-circle-check" type="primary" @click="updateItemState('Opene')"
+                           round>Open
+                </el-button>
+                <el-button v-bind:disabled="revokeDisabled" size="small" icon="el-icon-delete" type="primary" @click="updateItemState('Revoke')" round>
+                    Revoke
+                </el-button>
+                <el-popover
+                        placement="bottom"
+                        width="200"
+                        v-model="visible">
+                    <div style="text-align: right; margin: 0">
+                        <el-row>
+                            <el-input size="medium" v-model="tempname" placeholder="Template Name"></el-input>
+                        </el-row>
+                        <el-row type="flex" justify="space-between" style="margin-top: 10px">
+                            <el-button size="mini" @click="visible = false">cancel</el-button>
+                            <el-button type="primary" size="mini" @click="saveToTemplate">confirm</el-button>
+                        </el-row>
+                    </div>
+                    <el-button v-bind:disabled="saveDisabled" size="small" icon="el-icon-edit-outline" type="primary"
+                               slot="reference" round>Save
+                    </el-button>
+                </el-popover>
+
+                <el-button size="small" icon="el-icon-refresh" type="primary" @click="loadTest" round>Refresh
+                </el-button>
             </el-col>
             <el-col :span="6">
-                <el-dropdown trigger="click">
+
+                <el-dropdown trigger="click" :hide-on-click="false">
+
                     <el-button size="medium" icon="el-icon-arrow-down" type="primary" plain>
                         <i class="el-icon-s-order"></i> Invoke Template
                     </el-button>
-                    <el-dropdown-menu slot="dropdown" style="width: 250px">
-                        <el-dropdown-item v-popover:popover>
-                            <el-popover ref="popover" placement="left" width="400" trigger="hover">
-                                <el-table :data="template">
-                                    <el-table-column width="150" property="itemname"
-                                                     label="InspectName"></el-table-column>
-                                    <el-table-column width="150" property="deptname"
-                                                     label="Department"></el-table-column>
-                                    <el-table-column width="100" property="price" label="Price"></el-table-column>
-                                </el-table>
-                            </el-popover>
+                    <el-dropdown-menu slot="dropdown" style="width: 300px">
+                        <el-dropdown-item v-for="(item, index) in template"
+                                          :key="item.tempid">
                             <el-row type="flex" justify="space-between">
-                                <el-col :span="8"><i class="el-icon-arrow-left"></i> 狮子头</el-col>
+                                <el-col :span="12">{{item.tempname}}</el-col>
                                 <el-col :span="6">
-                                    <el-link :underline="false" icon="el-icon-circle-plus"></el-link>
-                                    <el-link :underline="false" icon="el-icon-delete-solid"></el-link>
+                                    <el-link :underline="false" icon="el-icon-circle-plus"
+                                             @click="useTemplate(index)"></el-link>
+                                    <el-link :underline="false" icon="el-icon-eleme"
+                                             @click="templateDetail(index)"></el-link>
                                 </el-col>
                             </el-row>
-                        </el-dropdown-item>
 
-                        <el-dropdown-item icon="el-icon-arrow-left">螺蛳粉</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-arrow-left">双皮奶</el-dropdown-item>
-                        <el-dropdown-item icon="el-icon-arrow-left">蚵仔煎</el-dropdown-item>
+                        </el-dropdown-item>
                     </el-dropdown-menu>
+
                 </el-dropdown>
+
             </el-col>
         </el-row>
     </el-card>
     <el-table
             ref="multipleTable"
-            :data="inspects"
+            :data="tests"
             style="width: 100%;margin-top: 10px"
             tooltip-effect="dark"
             @selection-change="handleSelectionChange"
     >
         <el-table-column
                 type="selection"
+                :selectable="selectable"
                 width="55">
         </el-table-column>
         <el-table-column
                 prop="itemname"
-                label="InspectName"
+                label="TestName"
                 width="180">
         </el-table-column>
         <el-table-column
@@ -87,10 +107,16 @@
                 label="Price"
                 width="150">
         </el-table-column>
+
         <el-table-column
-                prop="result"
                 label="Result"
                 width="110">
+            <template slot-scope="scope">
+                <el-button slot="reference" @click="showResult(scope.$index)"
+                           type="primary" size="small">result
+                </el-button>
+                </el-popover>
+            </template>
         </el-table-column>
     </el-table>
     <el-row type="flex" justify="space-around" style="margin-top: 20px">
@@ -102,51 +128,107 @@
         </el-col>
     </el-row>
 
+    <el-dialog
+            title="Template Details"
+            :visible.sync="detailDialogVisible"
+            width="65%">
+        <el-table :data="nonMedicList">
+            <el-table-column width="150" property="itemname"
+                             label="TestName"></el-table-column>
+            <el-table-column width="150" property="deptcode"
+                             label="Department"></el-table-column>
+            <el-table-column width="100" property="price" label="Price"></el-table-column>
+        </el-table>
+
+    </el-dialog>
+
+</div>
+
+<div id="addDialog">
+    <el-dialog
+            title="Add Test"
+            :visible.sync="dialogVisible"
+            width="65%">
+        <el-row :gutter="20">
+            <el-col :span="24">
+                <el-input v-model="itemcode" style="width:300px" placeholder="Enter PingYin Code"></el-input>
+                <el-button icon="el-icon-search" type="primary" @click="searchItem">search</el-button>
+            </el-col>
+        </el-row>
+        <el-table
+                ref="multipleTable"
+                :data="items"
+                style="width: 100%"
+                max-height="550"
+                @selection-change="handleSelectionChange"
+        >
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    fixed="left"
+                    prop="itemname"
+                    label="Item Name"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="size"
+                    label="Size"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="deptcode"
+                    label="Department Code"
+                    width="150">
+            </el-table-column>
+
+        </el-table>
+        <el-row :gutter="20" style="margin-top: 20px" type="flex" justify="space-around">
+            <el-col :span="8">
+                <el-button type="primary" @click="openConfirmDialog">Confirm</el-button>
+            </el-col>
+            <el-col :span="8">
+                <el-button @click="closeDialog">Cancel</el-button>
+            </el-col>
+        </el-row>
+
+    </el-dialog>
 </div>
 
 <script>
-    var inspect = new Vue({
-        el: '#inspection',
+    var test = new Vue({
+        el: '#test',
         data: {
-            inspects: [{
-                'itemname': '大抢救',
-                'deptname': '急救科',
-                'state': '开立',
-                'price': 900,
-                'result': '查看'
-            }, {
-                'itemname': '大抢救',
-                'deptname': '急救科',
-                'state': '开立',
-                'price': 900,
-                'result': '查看'
-            }, {
-                'itemname': '大抢救',
-                'deptname': '急救科',
-                'state': '开立',
-                'price': 900,
-                'result': '查看'
-            }, {
-                'itemname': '大抢救',
-                'deptname': '急救科',
-                'state': '开立',
-                'price': 900,
-                'result': '查看'
-            }, {
-                'itemname': '大抢救',
-                'deptname': '急救科',
-                'state': '开立',
-                'price': 900,
-                'result': '查看'
-            },],
+            tests: [],
             multipleSelection: [],
             template: [],
-            totalprice: ''
+            totalprice: 0,
+            uRid: 1,
 
+            openDisabled: true,
+            deleteDisabled: true,
+            revokeDisabled: true,
+            saveDisabled: true,
+
+
+            visible: false,
+            tempname: '',
+
+            nonMedicList: [],
+            detailDialogVisible: false,
 
         },
 
+        mounted: function () {
+            this.regid = parent.patient.regid;
+
+            this.loadTest();
+            this.loadTemplate();
+        },
+
         methods: {
+
 
             toggleSelection(rows) {
                 if (rows) {
@@ -156,11 +238,254 @@
                 } else {
                     this.$refs.multipleTable.clearSelection();
                 }
-            }
-            ,
+                this.saveDisabled = true;
+            },
+
+            selectable(row, index) {
+                if (this.multipleSelection.length >= 1) {
+                    if (row.state === this.multipleSelection[0].state) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                return true;
+            },
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
+                if (this.multipleSelection.length >= 1) {
+                    this.saveDisabled = false;
+
+                    switch (this.multipleSelection[0].state) {
+                        case 'Saved':
+                            this.deleteDisabled = false;
+                            this.openDisabled = false;
+                            break;
+                        case 'Opened':
+                            this.revokeDisabled = false;
+                            break;
+                    }
+                } else {
+                    this.saveDisabled = true;
+                }
+            },
+
+            loadTest() {
+                var params = new URLSearchParams();
+                params.append("regid", this.regid);
+                params.append("extype", "test");
+                var that = this;
+                axios.post('/outpatient/getExamByRegidAndType', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.tests = response.data;
+                        that.totalprice = 0;
+                        for (var i = 0; i < that.tests.length; i++) {
+                            if (that.tests[i].state !== 'Revoked')
+                                that.totalprice += that.tests[i].price;
+                        }
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            showResult(index) {
+                this.$notify({
+                    title: 'Result Detail',
+                    message: this.tests[index].result,
+                    offset: 100
+                });
+            },
+            openAddDialog() {
+                dialog.dialogVisible = true;
+            },
+
+            deleteItem() {
+                var that = this;
+                this.$confirm('Sure to delete ' + this.multipleSelection.length + ' ITEMS', 'Prompt', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/outpatient/deleteExamState', {
+                        items: this.multipleSelection,
+                    }).then(function () {
+                        that.loadTest();
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+
+                        });
+
+                    this.$message({
+                        type: 'success',
+                        message: 'Delete Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel Delete.'
+                    });
+                });
+
+            },
+
+            updateItemState(state) {
+                var that = this;
+                this.$confirm('Sure to update ' + this.multipleSelection.length + ' ITEMS', 'Prompt', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    axios.post('/outpatient/updateExamState', {
+                        items: this.multipleSelection,
+                        state: state + 'd',
+                    }).then(function () {
+                        that.loadTest();
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+
+                        });
+
+                    this.$message({
+                        type: 'success',
+                        message: state + ' Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel ' + state
+                    });
+                });
+
+
+            },
+
+            saveToTemplate() {
+                axios.post('/outpatient/saveExamToTemplate', {
+                    items: this.multipleSelection,
+                    tempname: this.tempname,
+                    temptype: 'test'
+                }).then(function () {
+                    that.loadTest();
+                })
+                    .catch(function (error) {
+                        console.log(error);
+
+                    });
+                this.visible = false;
+            },
+
+            loadTemplate() {
+                var that = this;
+                axios.post('/outpatient/getTemplateForExam', {
+                    temptype: "test"
+                }).then(function (response) {
+                    console.log(response.data);
+                    that.template = response.data;
+                })
+                    .catch(function (error) {
+                        console.log(error);
+
+                    });
+                this.visible = false;
+            },
+            useTemplate(index) {
+                console.log(index);
+                var that = this;
+                axios.post('/outpatient/addTemplateToExam', {
+                    tempid: this.template[index].tempid,
+                    extype: 'test',
+                    regid: this.regid,
+                    uRid: this.uRid,
+                }).then(function () {
+                    that.loadTest();
+                })
+                    .catch(function (error) {
+                        console.log(error);
+
+                    });
+            },
+            templateDetail(index) {
+                this.nonMedicList = this.template[index].nonMedicList;
+                this.detailDialogVisible = true;
+            },
+
+
+        }
+    });
+
+    var dialog = new Vue({
+        el: '#addDialog',
+        data() {
+            return {
+
+                dialogVisible: false,
+                itemcode: '',
+                items: [],
+                multipleSelection: []
+
+            }
+        },
+        methods: {
+            searchItem: function () {
+                console.log("search" + this.itemcode);
+                var that = this;
+                axios.post('/outpatient/getNonMedicByPinyin', {itemcode: this.itemcode, nmedtype: 'test'})
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.items = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+            },
+            openConfirmDialog: function () {
+
+                this.$confirm('Sure to add?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    console.log("add!!!!!!");
+
+                    axios.post('/outpatient/addItemToExam', {
+                        regid: test.regid,
+                        extype: 'test',
+                        uRid: test.uRid,
+                        addList: this.multipleSelection
+                    }).then(function () {
+                        test.loadTest();
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+
+                    this.dialogVisible = false;
+                    this.$message({
+                        type: 'success',
+                        message: 'Add Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel Addition.'
+                    });
+                });
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(this.multipleSelection);
+            },
+
+            closeDialog() {
+                this.dialogVisible = false;
             }
         }
     })

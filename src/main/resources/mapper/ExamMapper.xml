@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.hismedicalsystem.model.mapper.ExamMapper">
+    <select id="getExamByRegidAndType" resultType="Exam">
+        select *
+        from exam e join non_medic n on e.itemcode = n.itemcode
+        join dept d on d.deptcode = n.deptcode
+        where regid = #{regid} and extype = #{extype}
+    </select>
+
+    <insert id="addItemToExam"  useGeneratedKeys="true" keyProperty="exid">
+        insert into exam(uRid, regid, extype, state, itemcode) values
+        <foreach item="item" collection="addList" separator=",">
+            (#{uRid}, #{regid}, #{extype},'Saved', #{item.itemcode})
+        </foreach>
+    </insert>
+
+    <delete id="deleteExamState">
+        delete from his.exam where exid in
+        <foreach item="item" collection="items" separator="," open="(" close=")">
+            #{item.exid}
+        </foreach>
+    </delete>
+
+    <update id="updateExamState">
+
+        <foreach item="item" collection="items" separator=";">
+            update exam
+            <set>
+                state = #{state}
+            </set>
+            where exid = #{item.exid}
+        </foreach>
+
+    </update>
+
+    <insert id="saveExamToTemplate" useGeneratedKeys="true" keyProperty="tempid">
+        insert into template_all(tempname, temptype, createdate) values
+        (#{tempname}, #{temptype}, now())
+    </insert>
+
+    <select id="getTempidBack" resultType="Integer">
+        select tempid from his.template_all order by createdate desc limit 1
+    </select>
+
+    <select id="getItemCodeByExid" resultType="String">
+        select itemcode from exam where exid in
+        <foreach collection="list" item="item" open="(" close=")"
+                 separator=",">
+            #{item.exid}
+        </foreach>
+    </select>
+
+    <insert id="saveExamToTemplateRel" useGeneratedKeys="true" keyProperty="tempRelid">
+        insert into his.temprel(tempid, itemcode) values
+        <foreach item="item" collection="itemcodes" separator=",">
+            (#{tempid}, #{item})
+        </foreach>
+
+    </insert>
+
+    <select id="getItemCodeByTempid" resultType="String">
+        select itemcode from his.temprel where tempid = #{tempid}
+    </select>
+
+    <insert id="addTemplateToExam" useGeneratedKeys="true" keyProperty="exid">
+        insert into exam(urid, regid, extype, state, itemcode) values
+        <foreach item="item" collection="itemcodes" separator=",">
+            (#{uRid}, #{regid}, #{extype}, 'Opened', #{item})
+        </foreach>
+    </insert>
+</mapper>

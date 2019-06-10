@@ -57,4 +57,11 @@
         select price from non_medic where itemname = #{itemname}
     </select>
 
+    <select id="getNonMedicByPinyin" resultType="NonMedic">
+        select * from non_medic
+        where itemcode like CONCAT(#{itemcode},'%')
+        and nmedtype = #{nmedtype}
+    </select>
+
+
 </mapper>

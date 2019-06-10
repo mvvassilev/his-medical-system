@@ -14,6 +14,8 @@ public class FrontPage {
     private String examAdvice;
     private String disType;
     private String state;
+    private String examResult;
+    private String treatAdvice;
 
     private List<Disease> diseaseList;
 
@@ -111,5 +113,21 @@ public class FrontPage {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getExamResult() {
+        return examResult;
+    }
+
+    public void setExamResult(String examResult) {
+        this.examResult = examResult;
+    }
+
+    public String getTreatAdvice() {
+        return treatAdvice;
+    }
+
+    public void setTreatAdvice(String treatAdvice) {
+        this.treatAdvice = treatAdvice;
     }
 }

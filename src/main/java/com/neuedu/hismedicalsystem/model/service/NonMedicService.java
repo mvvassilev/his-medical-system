@@ -44,4 +44,8 @@ public class NonMedicService {
     public double getPrice(String itemname) {
         return nonMedicMapper.getPrice(itemname);
     }
+
+    public List<NonMedic> getNonMedicByPinyin(String itemcode, String nmedtype) {
+        return nonMedicMapper.getNonMedicByPinyin(itemcode, nmedtype);
+    }
 }

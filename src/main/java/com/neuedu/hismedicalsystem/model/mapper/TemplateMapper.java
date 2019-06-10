@@ -25,4 +25,6 @@ public interface TemplateMapper {
     public List<Medicine> getDetails(int tempid);
 
     public void delDetails(int tempRelid);
+
+    List<Template_all> getTemplateForExam(String temptype);
 }

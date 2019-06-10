@@ -60,4 +60,8 @@ public class TemplateService {
         return datasArray;
 
     }
+
+    public List<Template_all> getTemplateForExam(String temptype) {
+        return templateMapper.getTemplateForExam(temptype);
+    }
 }

@@ -19,11 +19,15 @@
                     <el-radio-button :label="false">Show</el-radio-button>
                     <el-radio-button :label="true">Hide</el-radio-button>
                 </el-radio-group>
-                <el-button style="margin-left: 20px" size="medium" icon="el-icon-refresh" @click="refreshList" type="success" plain round>Reload</el-button>
+                <el-button style="margin-left: 20px" size="medium" icon="el-icon-refresh" @click="loadPatientList"
+                           type="success" plain round>Reload
+                </el-button>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="10">
                 <el-button>Name: {{pname}}</el-button>
                 <el-button>ID: {{pid}}</el-button>
+                <el-button id="complete" icon="el-icon-s-claim" :type="buttonCType"
+                @click="complete" :disabled="buttonDisabled">{{buttonText}}</el-button>
             </el-col>
         </el-row>
     </el-card>
@@ -87,7 +91,7 @@
                 <el-row>
                     <el-col :span="24">
                         <iframe v-loading="loading" element-loading-text="不是..欸..卧槽!YES"
-                        name="myFrame" width="100%" height="100%" frameborder="no" v-bind:src="url"></iframe>
+                                name="myFrame" width="100%" height="100%" frameborder="no" v-bind:src="url"></iframe>
                     </el-col>
                 </el-row>
             </template>
@@ -121,21 +125,24 @@
                 url: '',
                 isCollapse: true,
                 activeName: 'homepageframe/frontpage.html',
+                buttonText:'Complete',
+                buttonDisabled:false,
+                buttonCType: 'primary',
 
                 active: 0,
 
-                deptcode:'CK',
+                deptcode: 'CK',
                 userid: 1,
 
-                pname:'',
-                pid:0,
-                regid:0,
+                pname: '',
+                pid: 0,
+                regid: 0,
 
                 myWait: [],
                 myDiagnosed: [],
                 deptWait: [],
                 deptDiagnosed: [],
-                loading:true
+                loading: true
             };
         },
         methods: {
@@ -151,12 +158,10 @@
                 console.log("navigateTo" + this.url)
 
             },
-            refreshList(){
-                this.loadPatientList();
-            },
+
             loadPatientList() {
                 var that = this;
-                axios.post('/outpatient/getPatientsOfUserToday', {'userid': this.userid, 'state':6})
+                axios.post('/outpatient/getPatientsOfUserToday', {'userid': this.userid, 'state': 6})
                     .then(function (response) {
                         console.log(response.data);
                         that.myWait = response.data;
@@ -164,7 +169,7 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-                axios.post('/outpatient/getDiagnosedPatientsOfUserToday', {'userid': this.userid, 'state':6})
+                axios.post('/outpatient/getDiagnosedPatientsOfUserToday', {'userid': this.userid, 'state': 6})
                     .then(function (response) {
                         console.log(response.data);
                         that.myDiagnosed = response.data;
@@ -172,7 +177,7 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-                    axios.post('/outpatient/getPatientsOfDeptToday', {'deptcode': this.deptcode, 'state':6})
+                axios.post('/outpatient/getPatientsOfDeptToday', {'deptcode': this.deptcode, 'state': 6})
                     .then(function (response) {
                         console.log(response.data);
                         that.deptWait = response.data;
@@ -180,7 +185,7 @@
                     .catch(function (error) {
                         console.log(error);
                     });
-                    axios.post('/outpatient/getDiagnosedPatientsOfDeptToday', {'deptcode': this.deptcode, 'state':6})
+                axios.post('/outpatient/getDiagnosedPatientsOfDeptToday', {'deptcode': this.deptcode, 'state': 6})
                     .then(function (response) {
                         console.log(response.data);
                         that.deptDiagnosed = response.data;
@@ -190,28 +195,28 @@
                     });
 
             },
-            handleSelect(key, value){
+            handleSelect(key, value) {
                 var select = key.toString().split("-");
-                if(select[0] === "1" && select[1] === "1"){
-                    this.pid = this.myWait[parseInt(select[2])-1].pid;
-                    this.pname = this.myWait[parseInt(select[2])-1].pname;
-                    this.regid = this.myWait[parseInt(select[2])-1].regid;
-                    this.switchStep(this.myWait[parseInt(select[2])-1].state);
-                }else if(select[0] === "1" && select[1] === "2"){
-                    this.pid = this.myDiagnosed[parseInt(select[2])-1].pid;
-                    this.pname = this.myDiagnosed[parseInt(select[2])-1].pname;
-                    this.regid = this.myDiagnosed[parseInt(select[2])-1].regid;
-                    this.switchStep(this.myDiagnosed[parseInt(select[2])-1].state);
-                }else if(select[0] === "2" && select[1] === "1"){
-                    this.pid = this.deptWait[parseInt(select[2])-1].pid;
-                    this.pname = this.deptWait[parseInt(select[2])-1].pname;
-                    this.regid = this.deptWait[parseInt(select[2])-1].regid;
-                    this.switchStep(this.deptWait[parseInt(select[2])-1].state);
-                }else if(select[0] === "2" && select[1] === "2"){
-                    this.pid = this.deptDiagnosed[parseInt(select[2])-1].pid;
-                    this.pname = this.deptDiagnosed[parseInt(select[2])-1].pname;
-                    this.regid = this.deptDiagnosed[parseInt(select[2])-1].regid;
-                    this.switchStep(this.deptDiagnosed[parseInt(select[2])-1].state);
+                if (select[0] === "1" && select[1] === "1") {
+                    this.pid = this.myWait[parseInt(select[2]) - 1].pid;
+                    this.pname = this.myWait[parseInt(select[2]) - 1].pname;
+                    this.regid = this.myWait[parseInt(select[2]) - 1].regid;
+                    this.switchStep(this.myWait[parseInt(select[2]) - 1].state);
+                } else if (select[0] === "1" && select[1] === "2") {
+                    this.pid = this.myDiagnosed[parseInt(select[2]) - 1].pid;
+                    this.pname = this.myDiagnosed[parseInt(select[2]) - 1].pname;
+                    this.regid = this.myDiagnosed[parseInt(select[2]) - 1].regid;
+                    this.switchStep(this.myDiagnosed[parseInt(select[2]) - 1].state);
+                } else if (select[0] === "2" && select[1] === "1") {
+                    this.pid = this.deptWait[parseInt(select[2]) - 1].pid;
+                    this.pname = this.deptWait[parseInt(select[2]) - 1].pname;
+                    this.regid = this.deptWait[parseInt(select[2]) - 1].regid;
+                    this.switchStep(this.deptWait[parseInt(select[2]) - 1].state);
+                } else if (select[0] === "2" && select[1] === "2") {
+                    this.pid = this.deptDiagnosed[parseInt(select[2]) - 1].pid;
+                    this.pname = this.deptDiagnosed[parseInt(select[2]) - 1].pname;
+                    this.regid = this.deptDiagnosed[parseInt(select[2]) - 1].regid;
+                    this.switchStep(this.deptDiagnosed[parseInt(select[2]) - 1].state);
                 }
 
                 this.url = 'homepageframe/frontpage.html'
@@ -220,8 +225,34 @@
 
             },
 
-            switchStep(state){
+            switchStep(state) {
                 this.active = parseInt(state);
+                console.log("switch step: " + state );
+                if(parseInt(state) === 6){
+                    this.buttonText = 'Completed';
+                    this.buttonDisabled = true;
+                    this.buttonCType = 'success';
+                }else{
+                    this.buttonText = 'Complete';
+                    this.buttonDisabled = false;
+                    this.buttonCType = 'primary';
+                }
+
+            },
+
+            complete() {
+                var that = this;
+                axios.post('/outpatient/updatePatientState', {'regid': this.regid, 'state': 6})
+                .then(function() {
+                  that.loadPatientList();
+                  that.switchStep(6);
+                  that.url = 'homepageframe/frontpage.html'
+                  myFrame.window.refreshPage();
+                })
+
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         }
     });

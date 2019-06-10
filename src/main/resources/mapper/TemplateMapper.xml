@@ -68,4 +68,25 @@
     <delete id="delDetails">
         delete from temprel where tempRelid=#{tempRelid}
     </delete>
+
+    <select id="getTemplateForExam" resultMap="_template">
+        select * from his.template_all t join his.temprel tr on t.tempid = tr.tempid
+        join his.non_medic n on n.itemcode = tr.itemcode
+        join his.dept d on d.deptcode = n.deptcode
+        where t.temptype = #{temptype}
+    </select>
+
+    <resultMap id="_template" type="Template_all">
+        <id property="tempid" column="tempid" />
+        <result property="tempname" column="tempname"/>
+        <result property="temptype" column="temptype"/>
+        <result property="tempscope" column="tempscope"/>
+        <result property="createdate" column="createdate"/>
+        <collection property="nonMedicList" ofType="NonMedic">
+            <id property="itemcode" column="itemcode" />
+            <id property="itemname" column="itemname" />
+            <result property="deptcode" column="deptname"/>
+            <result property="price" column="price"/>
+        </collection>
+    </resultMap>
 </mapper>
