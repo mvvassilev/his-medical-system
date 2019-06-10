@@ -13,6 +13,7 @@
 <body>
 <div id="patentmed">
     <el-container>
+        <!--up operation-->
         <el-header>
             <el-card class="box-card">
                 <el-row type="flex" justify="space-between">
@@ -37,11 +38,13 @@
                 </el-row>
             </el-card>
         </el-header>
-        <el-container style="margin-top: 30px">
-            <el-aside width="250px">
 
+        <el-container style="margin-top: 30px">
+            <!--left prescription info-->
+            <el-aside width="250px">
                 <el-row>
                     <el-tag type="success" size="medium" effect="plain">Prescription</el-tag>
+                    <!--template dropdown-->
                     <el-dropdown trigger="click">
                         <el-button size="small" icon="el-icon-arrow-down" type="primary" style="margin-left: 30px"
                                    plain>
@@ -67,18 +70,19 @@
                                     </el-col>
                                 </el-row>
                             </el-dropdown-item>
-
                             <el-dropdown-item icon="el-icon-arrow-left">螺蛳粉</el-dropdown-item>
                             <el-dropdown-item icon="el-icon-arrow-left">双皮奶</el-dropdown-item>
                             <el-dropdown-item icon="el-icon-arrow-left">蚵仔煎</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                 </el-row>
+                            <!--prescription table-->
                 <el-table :data="prescription">
                     <el-table-column width="100" property="prename" label="Name"></el-table-column>
-                    <el-table-column width="100" property="prestate" label="State"></el-table-column>
+                    <el-table-column width="100" property="state" label="State"></el-table-column>
                 </el-table>
             </el-aside>
+                    <!--prescription details-->
             <el-main style="padding: 0">
                 <el-card class="box-card">
                     <el-row type="flex" justify="space-between">
@@ -93,6 +97,7 @@
                             </el-button>
                         </el-col>
                     </el-row>
+                    <!--details table-->
                     <el-table :data="medicine">
                         <el-table-column width="150" property="itemname" label="Name"></el-table-column>
                         <el-table-column width="100" property="size" label="Size"></el-table-column>
@@ -111,7 +116,7 @@
             </el-main>
         </el-container>
     </el-container>
-
+                    <!--add new prescription-->
     <el-dialog
             title="New Prescription"
             :visible.sync="newPreVisible"
@@ -123,13 +128,11 @@
         </el-row>
         <el-row type="flex" justify="space-between" style="margin-top: 20px">
             <el-button type="primary" @click="createConfirmDialog">Create</el-button>
-            <el-button @click="closeDialog">Cancel</el-button>
+            <el-button @click="newPreVisible=false">Cancel</el-button>
         </el-row>
-
     </el-dialog>
-
 </div>
-
+                        <!--add medicine-->
 <div id="addDialog">
     <el-dialog
             title="Add Medicine"
@@ -141,6 +144,7 @@
                 <el-button icon="el-icon-search" type="primary" @click="searchMedicine">search</el-button>
             </el-col>
         </el-row>
+        <!--medicine form-->
         <el-table :data="medicine"
                   style="width: 100%"
                   tooltip-effect="dark">
@@ -167,20 +171,16 @@
             </el-table-column>
         </el-table>
         <el-row :gutter="20" style="margin-top: 20px" type="flex" justify="space-around">
-
             <el-col :span="8">
-
                 <el-input-number style="width: 160px" @change="handleChange"
                                  size="medium" v-model="count">
                 </el-input-number>
-
             </el-col>
             <el-col :span="10">
                 <el-button type="primary" @click="openConfirmDialog">Confirm</el-button>
-                <el-button @click="closeDialog">Cancel</el-button>
+                <el-button @click="dialogVisible=false">Cancel</el-button>
             </el-col>
         </el-row>
-
     </el-dialog>
 </div>
 
@@ -191,6 +191,8 @@
             newPreVisible: false,
             newPreName: '',
 
+            prename:'',
+            state:'',
             prescription: [],
             template: [],
             medicine: [{
@@ -220,8 +222,29 @@
                 'count': 10
             }
             ],
-            totalprice: '233 元',
+            totalprice: '',
             count: 1,
+            uRid:1,
+            regid:'',
+        },
+        mounted: function(){
+            /*var params = new URLSearchParams();
+            params.append("uRid",this.uRid);
+            params.append("regid",parent.patient.regid);*/
+            //用上面方法会报错415，应该将数据重新组装成JSON
+            var that = this;
+            axios.post('/outpatient/getPre', {
+                uRid:this.uRid,
+                regid:parent.patient.regid,
+
+            })
+                .then(function (response) {
+                    console.log(response.data);
+                    that.prescription = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         methods: {
             addMedicineDialog() {
@@ -250,9 +273,6 @@
                         message: 'Cancel Addition.'
                     });
                 });
-            },
-            closeDialog() {
-                this.dialogVisible = false;
             },
         }
     });
@@ -297,9 +317,6 @@
                         message: 'Cancel Addition.'
                     });
                 });
-            },
-            closeDialog() {
-                this.dialogVisible = false;
             },
             handleChange(value) {
                 console.log(value);
