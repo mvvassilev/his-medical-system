@@ -19,6 +19,11 @@
         join fee f on f.feecode = b.feecode
     </sql>
 
+    <select id="getBills" resultType="Bill" >
+        <include refid="getBillsByPid"></include>
+        where pid = #{pid}
+    </select>
+
     <select id="getUnpaidBills" resultType="Bill" >
         <include refid="getBillsByPid"></include>
         where pid = #{pid}

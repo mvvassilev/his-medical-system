@@ -12,6 +12,7 @@ public interface BillMapper {
 
     List<Bill> getUnpaidBills(Bill bill);
     List<Bill> getUndoneBills(Bill bill);
+    List<Bill> getBills(Bill bill);
 
     void deleteBill(int billId);
 
