@@ -1,5 +1,6 @@
 package com.neuedu.hismedicalsystem.model.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.PatientMapper;
 import com.neuedu.hismedicalsystem.model.po.FrontPage;
 import com.neuedu.hismedicalsystem.model.po.Patient;
@@ -31,5 +32,13 @@ public class PatientService {
 
     public void updateHomepage(FrontPage frontPage) {
         patientMapper.updateHomepage(frontPage);
+    }
+
+    public Patient getPatientByPid(long pid) {
+        return patientMapper.getPatientByPid(pid);
+    }
+
+    public void updatePatientState(JSONObject object) {
+        patientMapper.updatePatientState(object);
     }
 }

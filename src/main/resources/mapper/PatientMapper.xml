@@ -64,7 +64,8 @@
     </select>
 
     <resultMap type="FrontPage" id="_frontpage">
-        <id property="cheifCP" column="cheifCP" />
+        <id property="hpid" column="hpid" />
+        <result property="cheifCP" column="cheifCP"/>
         <result property="curHis" column="curHis"/>
         <result property="allergicHis" column="allergicHis"/>
         <result property="caution" column="caution"/>
@@ -73,6 +74,8 @@
         <result property="pastHis" column="pastHis"/>
         <result property="phyExam" column="phyExam"/>
         <result property="situation" column="situation"/>
+        <result property="examResult" column="examResult"/>
+        <result property="treatAdvice" column="treatAdvice"/>
         <collection property="diseaseList" ofType="Disease">
             <id property="icdcode" column="icdcode" />
             <result property="discode" column="discode"/>
@@ -86,19 +89,42 @@
     </select>
 
     <update id="updateHomepage">
-        update homepage set cheifCP = #{cheifCP},
-                    curHis = #{curHis},
-                    pastHis = #{pastHis},
-                    allergicHis = #{allergicHis},
-                    situation = #{situation},
-                    caution = #{caution},
-                    phyExam = #{phyExam},
-                    examAdvice = #{examAdvice},
+        update homepage
+        <set>
+            <if test="cheifCP != null and cheifCP != ''">
+                cheifCP = #{cheifCP},
+            </if><if test="curHis != null and curHis != ''">
+                curHis = #{curHis},
+            </if><if test="pastHis != null and pastHis != ''">
+                pastHis = #{pastHis},
+            </if><if test="allergicHis != null and allergicHis != ''">
+                allergicHis = #{allergicHis},
+            </if><if test="situation != null and situation != ''">
+                situation = #{situation},
+            </if><if test="caution != null and caution != ''">
+                caution = #{caution},
+            </if><if test="phyExam != null and phyExam != ''">
+                phyExam = #{phyExam},
+            </if><if test="examAdvice != null and examAdvice != ''">
+                examAdvice = #{examAdvice},
+            </if><if test="examResult != null and examResult != ''">
+                examResult = #{examResult},
+            </if><if test="treatAdvice != null and treatAdvice != ''">
+                treatAdvice = #{treatAdvice},
+            </if>
                     disType = #{disType},
-                    state = #{state}
+                    state = #{state},
+        </set>
         where hpid = #{hpid}
     </update>
+    
+    <select id="getPatientByPid" resultType="Patient">
+        select * from his.patient where pid = #{pid};
+    </select>
 
+    <update id="updatePatientState">
+        update his.register set state = #{state} where regid = #{regid}
+    </update>
 
 
 </mapper>

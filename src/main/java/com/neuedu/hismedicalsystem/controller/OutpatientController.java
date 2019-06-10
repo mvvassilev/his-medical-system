@@ -10,6 +10,8 @@ import com.neuedu.hismedicalsystem.model.service.DisService;
 import com.neuedu.hismedicalsystem.model.service.PatientService;
 import com.neuedu.hismedicalsystem.model.service.PrescriptionService;
 import com.neuedu.hismedicalsystem.model.service.TemplateService;
+import com.neuedu.hismedicalsystem.model.po.*;
+import com.neuedu.hismedicalsystem.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,12 @@ public class OutpatientController {
      */
     @Autowired
     private TemplateService templateService;
+
+    @Autowired
+    private ExamService examService;
+
+    @Autowired
+    private NonMedicService nonMedicService;
 
     @RequestMapping("/temps")
     public List<Template_all> getTemp(@RequestBody Template_all condition) {return templateService.getTemp(condition);}
@@ -143,9 +151,8 @@ public class OutpatientController {
 
     @RequestMapping("/getPre")
     public List<Prescription> getPre(@RequestBody Prescription condition){return prescriptionService.getPre(condition);}
-
     @RequestMapping("/addPre")
-    public void addPre(int uRid, int regid, String pretype, String prename){
+    public void addPre(int uRid, int regid, String pretype, String prename) {
         prescriptionService.addPre(uRid, regid, pretype, prename);
     }
 
@@ -176,4 +183,74 @@ public class OutpatientController {
 
     @RequestMapping("/delMed")
     public void delMed(int preRelid){prescriptionService.delMed(preRelid);}
+
+    @RequestMapping("/getExamByRegidAndType")
+    public List<Exam> getExamByRegidAndType(int regid, String extype){
+        return examService.getExamByRegidAndType(regid, extype);
+    }
+
+    @RequestMapping("/getNonMedicByPinyin")
+    public List<NonMedic> getNonMedicByPinyin(@RequestBody JSONObject obj) {
+        String itemcode = obj.getString("itemcode");
+        String nmedtype = obj.getString("nmedtype");
+
+        return nonMedicService.getNonMedicByPinyin(itemcode, nmedtype);
+    }
+
+    @RequestMapping("/addItemToExam")
+    public void addItemToExam(@RequestBody JSONObject object){
+        examService.addItemToExam(object);
+    }
+
+    @RequestMapping("deleteExamState")
+    public void deleteExamState(@RequestBody JSONObject object){
+        examService.deleteExamState(object);
+    }
+
+    @RequestMapping("updateExamState")
+    public void updateExamState(@RequestBody JSONObject object){
+        examService.updateExamState(object);
+    }
+
+    @RequestMapping("/saveExamToTemplate")
+    public void saveExamToTemplate(@RequestBody JSONObject object){
+        examService.saveExamToTemplate(object);
+    }
+
+    @RequestMapping("/getTemplateForExam")
+    public List<Template_all> getTemplateForExam(@RequestBody JSONObject object){
+        String temptype = object.getString("temptype");
+        return templateService.getTemplateForExam(temptype);
+    }
+
+    @RequestMapping("/addTemplateToExam")
+    public void addTemplateToExam(@RequestBody JSONObject object){
+        examService.addTemplateToExam(object);
+    }
+
+    @RequestMapping("/getPatientByPid")
+    public Patient getPatientByPid(long pid){
+        return patientService.getPatientByPid(pid);
+    }
+
+    @RequestMapping("/updatePatientState")
+    public void updatePatientState(@RequestBody JSONObject object){
+        patientService.updatePatientState(object);
+    }
+
+    @RequestMapping("/getTemplateForPre")
+    public List<Template_all> getTemplateForPre(@RequestBody JSONObject object){
+        String temptype = object.getString("temptype");
+        return templateService.getTemplateForPre(temptype);
+    }
+
+    @RequestMapping("/addTemplateToPre")
+    public void addTemplateToPre(@RequestBody JSONObject object){
+        templateService.addTemplateToPre(object);
+    }
+
+    @RequestMapping("/savePreToTemplate")
+    public void savePreToTemplate(@RequestBody JSONObject object){
+        templateService.savePreToTemplate(object);
+    }
 }

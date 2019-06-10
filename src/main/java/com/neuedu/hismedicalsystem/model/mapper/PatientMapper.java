@@ -1,5 +1,6 @@
 package com.neuedu.hismedicalsystem.model.mapper;
 
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.FrontPage;
 import com.neuedu.hismedicalsystem.model.po.Patient;
 import org.apache.ibatis.annotations.Param;
@@ -26,4 +27,8 @@ public interface PatientMapper {
     int getHpidByRegid(int regid);
 
     void updateHomepage(FrontPage frontPage);
+
+    Patient getPatientByPid(long pid);
+
+    void updatePatientState(JSONObject object);
 }
