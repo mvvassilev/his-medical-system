@@ -13,11 +13,11 @@
 
     <style>
         .el-row {
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         
         .el-col {
-            border-radius: 4px;
+            border-radius: 2px;
         }
         
         .bg-purple {
@@ -37,109 +37,108 @@
         .row-bg {
             background-color: #f9fafc;
         }
-
     </style>
 
 </head>
 
 <body>
-<div id="dailyrecord">
+    <div id="dailyrecord">
 
-    <!-----      BUTTONS     ------>
-    <el-row :gutter="20">
-        <el-col :span="16">
-            <div class="grid-content"></div>
-        </el-col>
-        <el-col :span="3">
-            <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
-        </el-col>
-        <el-col :span="4">
-            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="createNewRecord">New Record</el-button>
-        </el-col>
-    </el-row>
+        <!-----      BUTTONS     ------>
+        <el-row :gutter="20">
+            <el-col :span="16">
+                <div class="grid-content"></div>
+            </el-col>
+            <el-col :span="3">
+                <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
+            </el-col>
+            <el-col :span="4">
+                <el-button icon="el-icon-circle-plus-outline" type="primary" @click="createNewRecord">New Record</el-button>
+            </el-col>
+        </el-row>
 
-    <!-----------     Record header       ---------->
-    <el-row :gutter="20">
-        <el-col :span="3">
-            <div class="grid-content bg-purple">
-                <p>Time frame</p>
-            </div>
-        </el-col>
-        <el-col :span="15">
-            <div class="grid-content bg-purple-light">
-                <p id="tfr"></p>
-            </div>
-        </el-col>
-    </el-row>
-    <el-row :gutter="20">
-        <el-col :span="3">
-            <div class="grid-content bg-purple">
-                <p>User</p>
-            </div>
-        </el-col>
-        <el-col :span="6">
-            <div class="grid-content bg-purple-light">
-                <p id="unm"></p>
-            </div>
-        </el-col>
-        <el-col :span="3">
-            <div class="grid-content bg-purple">
-                <p>ID</p>
-            </div>
-        </el-col>
-        <el-col :span="6">
-            <div class="grid-content bg-purple-light">
-                <p id="uid"></p>
-            </div>
-        </el-col>
-    </el-row>
+        <!-----------     Record header       ---------->
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>Time frame</p>
+                </div>
+            </el-col>
+            <el-col :span="15">
+                <div class="grid-content bg-purple-light">
+                    <p id="tfr"></p>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>User</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="unm"></p>
+                </div>
+            </el-col>
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>ID</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="uid"></p>
+                </div>
+            </el-col>
+        </el-row>
 
-    <!-----         TABLE for the Items content         ------>
-    <el-table :data="recepits" style="left: 13%;width: 37%; height: fit-content">
-        <el-table-column prop="feecode" label="Item" width="200"></el-table-column>
-        <el-table-column prop="totalprice" label="Amount" width="210"></el-table-column>
-    </el-table>
+        <!-----         TABLE for the Items content         ------>
+        <el-table :data="recepits" style="left: 13%;width: 37%; height: fit-content">
+            <el-table-column prop="feecode" label="Item" width="200"></el-table-column>
+            <el-table-column prop="totalprice" label="Amount" width="210"></el-table-column>
+        </el-table>
 
-    <!-----      TOTAL and Record details (DATE and Record ID)      ------>
-    <el-row :gutter="20">
-        <el-col :span="3">
-            <div class="grid-content"></div>
-        </el-col>
-        <el-col :span="3">
-            <div class="grid-content bg-purple">
-                <p>TOTAL</p>
-            </div>
-        </el-col>
-        <el-col :span="6">
-            <div class="grid-content bg-purple-light">
-                <p id="ttl"></p>
-            </div>
-        </el-col>
-    </el-row>
-    <el-row :gutter="20">
-        <el-col :span="3">
-            <div class="grid-content bg-purple">
-                <p>Date</p>
-            </div>
-        </el-col>
-        <el-col :span="6">
-            <div class="grid-content bg-purple-light">
-                <p id="dte"></p>
-            </div>
-        </el-col>
-        <el-col :span="3">
-            <div class="grid-content bg-purple">
-                <p>Record ID</p>
-            </div>
-        </el-col>
-        <el-col :span="6">
-            <div class="grid-content bg-purple-light">
-                <p id="rid"></p>
-            </div>
-        </el-col>
-    </el-row>
+        <!-----      TOTAL and Record details (DATE and Record ID)      ------>
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content"></div>
+            </el-col>
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>TOTAL</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="ttl"></p>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>Date</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="dte"></p>
+                </div>
+            </el-col>
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>Record ID</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="rid"></p>
+                </div>
+            </el-col>
+        </el-row>
 
-</div>
+    </div>
 </body>
 
 
@@ -201,7 +200,6 @@
             }
         }
     })
-
 </script>
 
 </html>

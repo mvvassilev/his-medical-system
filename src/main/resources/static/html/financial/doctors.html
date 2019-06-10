@@ -14,49 +14,47 @@
 </head>
 
 <body>
-<div id="doctors">
-    <el-row :gutter="30">
-        <el-col :span="12" :gutter="10">
-            <el-date-picker v-model="datevalue" value-format="yyyy-MM-dd" type="daterange" align="right" unlink-panels
-                            range-separator="To" start-placeholder="Start Date" end-placeholder="End Date"
-                            :picker-options="pickerOptions"></el-date-picker>
-            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
-        </el-col>
-        <el-col :span="12" :gutter="10">
-            <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
-        </el-col>
-    </el-row>
+    <div id="doctors">
+        <el-row :gutter="30">
+            <el-col :span="12" :gutter="10">
+                <el-date-picker v-model="datevalue" value-format="yyyy-MM-dd" type="daterange" align="right" unlink-panels range-separator="To" start-placeholder="Start Date" end-placeholder="End Date" :picker-options="pickerOptions"></el-date-picker>
+                <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+            </el-col>
+            <el-col :span="12" :gutter="10">
+                <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
+            </el-col>
+        </el-row>
 
-    <el-table :data="docs" style="width: 100%; height: fit-content;">
-        <el-table-column prop="username" label="Dr." width="50"></el-table-column>
-        <el-table-column prop="patientsamount" label="看诊人次" width="40"></el-table-column>
-        <el-table-column prop="receiptamount" label="发票数量" width="40"></el-table-column>
-        <el-table-column prop="feecode1" label="超声材料费" width="40"></el-table-column>
-        <el-table-column prop="feecode2" label="超声检查费" width="40"></el-table-column>
-        <el-table-column prop="feecode3" label="CT材料费" width="40"></el-table-column>
-        <el-table-column prop="feecode4" label="CT检查费" width="40"></el-table-column>
-        <el-table-column prop="feecode5" label="处置材料费" width="40"></el-table-column>
-        <el-table-column prop="feecode6" label="处置费" width="50"></el-table-column>
-        <el-table-column prop="feecode7" label="放射材料费" width="50"></el-table-column>
-        <el-table-column prop="feecode8" label="放射检查费" width="50"></el-table-column>
-        <el-table-column prop="feecode9" label="挂号费" width="50"></el-table-column>
-        <el-table-column prop="feecode10" label="检验材料费" width="50"></el-table-column>
-        <el-table-column prop="feecode11" label="检验费" width="50"></el-table-column>
-        <el-table-column prop="feecode12" label="MRI材料费" width="50"></el-table-column>
-        <el-table-column prop="feecode13" label="MRI检查费" width="50"></el-table-column>
-        <el-table-column prop="feecode14" label="麻醉费" width="50"></el-table-column>
-        <el-table-column prop="feecode15" label="门诊手术费" width="50"></el-table-column>
-        <el-table-column prop="feecode16" label="麻醉药费" width="50"></el-table-column>
-        <el-table-column prop="feecode17" label="其他" width="50"></el-table-column>
-        <el-table-column prop="feecode18" label="西药费" width="50"></el-table-column>
-        <el-table-column prop="feecode19" label="中成药费" width="50"></el-table-column>
-        <el-table-column prop="feecode20" label="中草药费" width="50"></el-table-column>
-        <el-table-column prop="feecode21" label="诊疗费" width="50"></el-table-column>
-    </el-table>
+        <el-table :data="docs" style="width: 100%; height: fit-content;">
+            <el-table-column prop="username" label="Dr." width="50"></el-table-column>
+            <el-table-column prop="patientsamount" label="看诊人次" width="40"></el-table-column>
+            <el-table-column prop="receiptamount" label="发票数量" width="40"></el-table-column>
+            <el-table-column prop="feecode1" label="超声材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode2" label="超声检查费" width="40"></el-table-column>
+            <el-table-column prop="feecode3" label="CT材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode4" label="CT检查费" width="40"></el-table-column>
+            <el-table-column prop="feecode5" label="处置材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode6" label="处置费" width="50"></el-table-column>
+            <el-table-column prop="feecode7" label="放射材料费" width="50"></el-table-column>
+            <el-table-column prop="feecode8" label="放射检查费" width="50"></el-table-column>
+            <el-table-column prop="feecode9" label="挂号费" width="50"></el-table-column>
+            <el-table-column prop="feecode10" label="检验材料费" width="50"></el-table-column>
+            <el-table-column prop="feecode11" label="检验费" width="50"></el-table-column>
+            <el-table-column prop="feecode12" label="MRI材料费" width="50"></el-table-column>
+            <el-table-column prop="feecode13" label="MRI检查费" width="50"></el-table-column>
+            <el-table-column prop="feecode14" label="麻醉费" width="50"></el-table-column>
+            <el-table-column prop="feecode15" label="门诊手术费" width="50"></el-table-column>
+            <el-table-column prop="feecode16" label="麻醉药费" width="50"></el-table-column>
+            <el-table-column prop="feecode17" label="其他" width="50"></el-table-column>
+            <el-table-column prop="feecode18" label="西药费" width="50"></el-table-column>
+            <el-table-column prop="feecode19" label="中成药费" width="50"></el-table-column>
+            <el-table-column prop="feecode20" label="中草药费" width="50"></el-table-column>
+            <el-table-column prop="feecode21" label="诊疗费" width="50"></el-table-column>
+        </el-table>
 
-    <!-------         CHART           -------->
-    <canvas id="deptschart"></canvas>
-</div>
+        <!-------         CHART           -------->
+        <canvas id="deptschart"></canvas>
+    </div>
 </body>
 
 
@@ -103,6 +101,16 @@
             search: function() {
                 var that = this;
                 console.log("Search called")
+                axios.post('/management/users', {
+
+                    })
+                    .then(function(response) {
+                        that.users = response.data;
+                        console.log(that.users);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
                 axios.post('/management/users', {
 
                     })
