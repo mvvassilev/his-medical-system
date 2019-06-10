@@ -64,7 +64,8 @@
     </select>
 
     <resultMap type="FrontPage" id="_frontpage">
-        <id property="cheifCP" column="cheifCP" />
+        <id property="hpid" column="hpid" />
+        <result property="cheifCP" column="cheifCP"/>
         <result property="curHis" column="curHis"/>
         <result property="allergicHis" column="allergicHis"/>
         <result property="caution" column="caution"/>
