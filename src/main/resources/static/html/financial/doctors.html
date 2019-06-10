@@ -10,11 +10,52 @@
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
 <body>
 <div id="doctors">
+    <el-row :gutter="30">
+        <el-col :span="12" :gutter="10">
+            <el-date-picker v-model="datevalue" value-format="yyyy-MM-dd" type="daterange" align="right" unlink-panels
+                            range-separator="To" start-placeholder="Start Date" end-placeholder="End Date"
+                            :picker-options="pickerOptions"></el-date-picker>
+            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+        </el-col>
+        <el-col :span="12" :gutter="10">
+            <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
+        </el-col>
+    </el-row>
 
+    <el-table :data="docs" style="width: 100%; height: fit-content;">
+        <el-table-column prop="username" label="Dr." width="50"></el-table-column>
+        <el-table-column prop="patientsamount" label="看诊人次" width="40"></el-table-column>
+        <el-table-column prop="receiptamount" label="发票数量" width="40"></el-table-column>
+        <el-table-column prop="feecode1" label="超声材料费" width="40"></el-table-column>
+        <el-table-column prop="feecode2" label="超声检查费" width="40"></el-table-column>
+        <el-table-column prop="feecode3" label="CT材料费" width="40"></el-table-column>
+        <el-table-column prop="feecode4" label="CT检查费" width="40"></el-table-column>
+        <el-table-column prop="feecode5" label="处置材料费" width="40"></el-table-column>
+        <el-table-column prop="feecode6" label="处置费" width="50"></el-table-column>
+        <el-table-column prop="feecode7" label="放射材料费" width="50"></el-table-column>
+        <el-table-column prop="feecode8" label="放射检查费" width="50"></el-table-column>
+        <el-table-column prop="feecode9" label="挂号费" width="50"></el-table-column>
+        <el-table-column prop="feecode10" label="检验材料费" width="50"></el-table-column>
+        <el-table-column prop="feecode11" label="检验费" width="50"></el-table-column>
+        <el-table-column prop="feecode12" label="MRI材料费" width="50"></el-table-column>
+        <el-table-column prop="feecode13" label="MRI检查费" width="50"></el-table-column>
+        <el-table-column prop="feecode14" label="麻醉费" width="50"></el-table-column>
+        <el-table-column prop="feecode15" label="门诊手术费" width="50"></el-table-column>
+        <el-table-column prop="feecode16" label="麻醉药费" width="50"></el-table-column>
+        <el-table-column prop="feecode17" label="其他" width="50"></el-table-column>
+        <el-table-column prop="feecode18" label="西药费" width="50"></el-table-column>
+        <el-table-column prop="feecode19" label="中成药费" width="50"></el-table-column>
+        <el-table-column prop="feecode20" label="中草药费" width="50"></el-table-column>
+        <el-table-column prop="feecode21" label="诊疗费" width="50"></el-table-column>
+    </el-table>
+
+    <!-------         CHART           -------->
+    <canvas id="deptschart"></canvas>
 </div>
 </body>
 
@@ -23,18 +64,80 @@
     var app = new Vue({
         el: '#doctors',
         data: {
-
-        },
-
-        mounted: function() {
-
+            username: "",
+            datevalue: "",
+            patientsamount: "",
+            receiptamount: "",
+            feecode1: "",
+            feecode2: "",
+            feecode3: "",
+            feecode4: "",
+            feecode5: "",
+            feecode6: "",
+            feecode7: "",
+            feecode8: "",
+            feecode9: "",
+            feecode10: "",
+            feecode11: "",
+            feecode12: "",
+            feecode13: "",
+            feecode14: "",
+            feecode15: "",
+            feecode16: "",
+            feecode17: "",
+            feecode18: "",
+            feecode19: "",
+            feecode20: "",
+            feecode21: "",
+            docs: [],
+            users: [],
+            docsttl: []
         },
 
         methods: {
+            //------------        PRINT RECORD         ----------//
+            print: function() {
+                window.print();
+            },
 
+            search: function() {
+                var that = this;
+                console.log("Search called")
+                axios.post('/management/users', {
+
+                    })
+                    .then(function(response) {
+                        that.users = response.data;
+                        console.log(that.users);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            }
         }
-    })
+    });
 
+    var ctx = document.getElementById('deptschart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+
+        data: {
+            labels: ['看诊人次', '发票数量', '超声材料费', '超声检查费', 'CT材料费',
+                'CT检查费', '处置材料费', '处置费', '放射材料费', '放射检查费',
+                '挂号费', '检验材料费', '检验费', 'MRI材料费', 'MRI检查费', '麻醉费',
+                '门诊手术费', '麻醉药费', '其他', '西药费', '中成药费', '中草药费', '诊疗费'
+            ],
+            datasets: [{
+                label: 'Doctors record',
+                backgroundColor: 'rgb(64, 158, 255)',
+                borderColor: 'rgb(64, 158, 255)',
+                data: [3, 10, 5, 2, 24, 30, 38, 15, 2, 12, 16, 3, 13, 5, 2, 18, 26, 32, 15, 2, 12, 16, 22]
+                    //data: docsttl
+            }]
+        },
+
+        options: {}
+    });
 </script>
 
 </html>
