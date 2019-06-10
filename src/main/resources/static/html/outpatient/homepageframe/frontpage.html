@@ -50,15 +50,16 @@
                     <el-row type="flex" justify="space-between" glutter="20">
                         <el-col :span="8">
                             <el-form-item prop="disType">
-                                <el-select v-model="form.disType" placeholder="Select Diagnosis Type">
+                                <el-select v-bind:disabled="isDisabledSelect" v-model="form.disType"
+                                           placeholder="Select Diagnosis Type">
                                     <el-option label="West" value="west"></el-option>
                                     <el-option label="East" value="east"></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span="6">
-                            <el-button icon="el-icon-circle-plus-outline" type="primary"
-                                       @click="addDiseaseDialog('form')">Add New Disease
+                            <el-button id="addDis" icon="el-icon-circle-plus-outline" type="primary"
+                                       @click="addDiseaseDialog('form')" v-bind:disabled="isDisabled">Add New Disease
                             </el-button>
                         </el-col>
                     </el-row>
@@ -67,6 +68,7 @@
                                 :data="form.diseaseList"
                                 style="width: 100%; margin-top: 20px"
                                 size="mini"
+                                max-height="170"
                         >
                             <el-table-column
                                     prop="icdcode"
@@ -84,7 +86,7 @@
                                     width="150">
                                 <template slot-scope="scope">
                                     <el-button
-                                            @click.native.prevent="deleteRow(scope.$index, disease)"
+                                            @click.native.prevent="deleteRow(scope.$index, scope.row)"
                                             type="primary"
                                             size="small">
                                         delete
@@ -108,7 +110,7 @@
         </el-tooltip>
         <el-form-item>
             <el-button icon="el-icon-circle-check" type="primary" @click="onSubmit">Submit</el-button>
-            <el-button icon="el-icon-document" type="primary" @click="">Save</el-button>
+            <el-button icon="el-icon-document" type="primary" @click="onSave">Save</el-button>
             <el-button icon="el-icon-refresh" @click="resetForm('form')">Reset</el-button>
         </el-form-item>
     </el-form>
@@ -131,10 +133,15 @@
                 :data="diseases"
                 style="width: 100%"
                 tooltip-effect="dark"
-                max-height="550">
+                max-height="550"
+                @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
             <el-table-column
                     fixed="left"
-                    prop="ICD"
+                    prop="icdcode"
                     label="ICD Code"
                     width="150">
             </el-table-column>
@@ -148,6 +155,7 @@
                     label="Disease Category"
                     width="150">
             </el-table-column>
+
         </el-table>
         <el-row :gutter="20" style="margin-top: 20px" type="flex" justify="space-around">
             <el-col :span="8">
@@ -163,6 +171,14 @@
 
 </body>
 <script>
+
+    function refreshPage() {
+        frontpage.regid = parent.patient.regid;
+        console.log("Now diagnosing: " + frontpage.regid);
+
+        frontpage.loadFrontPage();
+    }
+
     var frontpage = new Vue({
         el: '#frontpage',
         data() {
@@ -186,6 +202,7 @@
                     examAdvice: '',
                     disType: '',
                     diseaseList: [],
+                    state: ''
                 },
 
                 rules: {
@@ -196,12 +213,14 @@
                 pid: null,
                 hpid: null,
                 regid: null,
+                isDisabled: false,
+                isDisabledSelect: false,
             }
         },
 
         mounted: function () {
             this.regid = parent.patient.regid;
-            console.log("Now diagnosing: " + this.pid);
+            console.log("Now diagnosing: " + this.regid);
 
             this.loadFrontPage();
 
@@ -210,13 +229,33 @@
         methods: {
             onSubmit() {
                 console.log('submit!');
+                this.form.state = '初诊提交';
+                axios.post('/outpatient/updateHomepage', {
+                    regid: this.regid,
+                    homepage: this.form,
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
                 this.form.disType = '';
             },
-            deleteRow(index, rows) {
-                rows.splice(index, 1);
+            deleteRow(index, row) {
+
+                var params = new URLSearchParams();
+                params.append("regid", this.regid);
+                params.append("icdcode", row.icdcode);
+                console.log(params);
+                axios.post('/outpatient/deleteDiseaseFromDiag', params)
+                    .then(function (response) {
+                        console.log("退出这个舞台");
+                        refreshPage();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             addDiseaseDialog(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -237,13 +276,36 @@
                     .then(function (response) {
                         console.log(response.data);
                         that.form = response.data;
+                        if (that.form.diseaseList.length >= 5) {
+                            console.log("把嘴给我闭上");
+                            that.isDisabled = true;
+                        } else {
+                            that.isDisabled = false;
+                        }
+
+                        /*if (that.form.diseaseList.length >= 1){
+                            that.isDisabledSelect = true;
+                        }else{
+                            that.isDisabledSelect = false;
+                        }*/
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+            onSave() {
+                this.form.state = '初诊暂存';
+                axios.post('/outpatient/updateHomepage', {
+                    regid: this.regid,
+                    homepage: this.form,
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
             }
+
         }
-    })
+    });
 
     var dialog = new Vue({
         el: '#addDialog',
@@ -254,19 +316,43 @@
                 discode: '',
                 diseases: [],
                 type: '',
+                multipleSelection: []
             }
         },
         methods: {
             searchDiseases: function () {
-                console.log("search");
+                console.log("search" + this.discode);
+                var that = this;
+                axios.post('/outpatient/getDiseasesByPinyin', {discode: this.discode})
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.diseases = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
             },
             openConfirmDialog: function () {
+
                 this.$confirm('Sure to add?', 'Notice', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
                     console.log("add!!!!!!");
+
+                    axios.post('/outpatient/addDiseaseToDiag', {
+                        regid: frontpage.regid,
+                        addList: this.multipleSelection
+                    }).then(function () {
+                        frontpage.loadFrontPage();
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+
                     this.dialogVisible = false;
                     this.$message({
                         type: 'success',
@@ -279,6 +365,12 @@
                     });
                 });
             },
+
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(this.multipleSelection);
+            },
+
             closeDialog() {
                 this.dialogVisible = false;
             }
