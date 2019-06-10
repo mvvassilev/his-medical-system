@@ -48,10 +48,10 @@
                                 </el-row>
                             </div>
                             <el-button slot="reference" size="small" icon="el-icon-edit-outline" type="primary"
-                                       @click="" round>Save
+                                       :disabled="currentStates" round>Save
                             </el-button>
                         </el-popover>
-                        <el-button size="small" icon="el-icon-refresh" type="primary" @click="" round>Refresh
+                        <el-button size="small" icon="el-icon-refresh" type="primary" @click="refreshPre" round>Refresh
                         </el-button>
                     </el-col>
                 </el-row>
@@ -236,6 +236,7 @@
             currentStateo: false,
             currentStater: false,
             currentStatea: true,
+            currentStates: false,
             prescription: [],
             template: [],
             medicine: [],
@@ -275,21 +276,25 @@
                         this.currentStateo = true;
                         this.currentStater = false;
                         this.currentStatea = true;
+                        this.currentStates = false;
                     } else if (judgestate === 'Revoked' || judgestate === 'Executed') {
                         this.currentStated = true;
                         this.currentStateo = true;
                         this.currentStater = true;
                         this.currentStatea = true;
+                        this.currentStates = false;
                     } else if (judgestate === 'Saved') {
                         this.currentStated = false;
                         this.currentStateo = false;
                         this.currentStater = true;
                         this.currentStatea = false;
+                        this.currentStates = true;
                     } else {
                         this.currentStated = false;
                         this.currentStateo = false;
                         this.currentStater = false;
                         this.currentStatea = true;
+                        this.currentStates = true;
                     }
                 }
             },
