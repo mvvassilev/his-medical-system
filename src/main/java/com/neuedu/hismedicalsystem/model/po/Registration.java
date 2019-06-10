@@ -11,9 +11,36 @@ public class Registration {
     private String username;
     private String deptname;
     private String itemcode;
+    private String regLevel;
     private Date date;
     private int shiftid;
     private int state;
+    private String strState;
+    private  double price;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getStrState() {
+        return strState;
+    }
+
+    public void setStrState(String strState) {
+        this.strState = strState;
+    }
+
+    public String getRegLevel() {
+        return regLevel;
+    }
+
+    public void setRegLevel(String regLevel) {
+        this.regLevel = regLevel;
+    }
 
     public int getRegid() {
         return regid;
@@ -116,6 +143,7 @@ public class Registration {
                 ", itemcode='" + itemcode + '\'' +
                 ", date=" + date +
                 ", shiftid=" + shiftid +
+                ", state=" + state +
                 '}';
     }
 }

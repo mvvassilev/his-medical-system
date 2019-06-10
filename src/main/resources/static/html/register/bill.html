@@ -1,4 +1,4 @@
-<html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>HIS System</title>
@@ -13,218 +13,608 @@
 </head>
 
 <body>
-<div id="bill">
+<div id="cancel">
 
-    <el-col :span="24">
-        <el-row>
-            <el-input style="padding: 3%; width: 30%" placeholder=" Enter Patient ID" v-model="pid"
-                      size="large"></el-input>
-            <el-button icon="el-icon-search" type="primary" @click="searchPatient">Search</el-button>
-            <el-select v-model="paytype" placeholder="Method" style="width: 10%; left: 25%">
-                <el-option v-for="item in paytypes" :key="item" :label="item" :value="item">
-                </el-option>
-            </el-select>
-            <el-button style="position: relative; left: 27%" icon="el-icon-coin" type="primary"
-                       @click="showConfirmPayDialogForm">Pay
-            </el-button>
-        </el-row>
-        <el-row>
-            <el-form :inline="true" class="demo-form-inline">
-                <el-input id="name" style="width: 24vw; pointer-events: none; padding: 1%"
-                          placeholder="Name: "></el-input>
-                <el-input id="age" style="width: 15vw; pointer-events: none; padding: 1%"
-                          placeholder="Age: "></el-input>
-                <el-input id="bdate" style="width: 22vw; pointer-events: none; padding: 1%"
-                          placeholder="Birth date:"></el-input>
-                <el-input id="gender" style="width: 22vw; pointer-events: none; padding: 1%"
-                          placeholder="Gender:"></el-input>
-                <el-input id="address" style="width: 42vw; pointer-events: none; padding: 1%"
-                          placeholder="Address:"></el-input>
-                <el-input id="billcat" style="width: 45vw; pointer-events: none; padding: 1%"
-                          placeholder="Billing category: "></el-input>
-            </el-form>
-        </el-row>
-    </el-col>
+    <el-row>
+        <el-card class="el-card__body">
+            <el-row type="flex" justify="space-between" align="middle">
+                <el-col :span="8">
+                    <div style="padding-left:10px; font-weight: bold; font-size: larger">Billing</div>
+                </el-col>
+                <el-col :span="10">
+                    <el-input placeholder="Enter Patient ID" v-model="searchingPid" class="input-with-select">
+                        <el-button @click="tryCompletePInfo" slot="append" icon="el-icon-search"></el-button>
+                    </el-input>
+                </el-col>
+            </el-row>
+        </el-card>
+    </el-row>
 
-    <el-table ref="billstable" :data="bills" style="width: 90%; padding-left: 5%" @selection-change="addToPayment">
-        <el-table-column type="selection" width="70"></el-table-column>
-        <el-table-column prop="billid" label="ID" width="140"></el-table-column>
-        <el-table-column prop="itemcode" label="Item code" width="140"></el-table-column>
-        <el-table-column prop="billdate" label="Date" width="140"></el-table-column>
-        <el-table-column prop="totalprice" label="Price" width="140"></el-table-column>
-        <el-table-column prop="feecode" label="Fee code" width="140"></el-table-column>
-    </el-table>
+    <el-row :gutter="10" style="margin-top: 5px;">
+        <el-col :span="18">
+            <!--      Table      -->
+            <el-row>
+                <el-card class="box-card" style="min-height: 280px; max-height: 900px;">
+                    <div slot="header" class="clearfix">
+                        <span style="font-weight: bold">Billing Items</span>
+                        <div style="float: right;  position:relative; top:-8px;">
+                            <el-select v-model="confirmType" placeholder="Select Operation Type" @change="changeConfirmType()">
+                                <el-option
+                                        v-for="item in operationList"
+                                        :key="item"
+                                        :label="item"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <el-table
+                            ref="multipleTable"
+                            size="small"
+                            :data="tableData"
+                            tooltip-effect="dark"
+                            style="width: 100%"
+                            @selection-change="handleSelectionChange"
+                            :default-sort = "{prop: 'billdate', order: 'descending'}">
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+                        <el-table-column prop="billid" label="ID" width="80"></el-table-column>
+                        <el-table-column prop="itemname" label="Item Name" width="140"></el-table-column>
+                        <el-table-column prop="billdate" label="Date" width="140" sortable></el-table-column>
+                        <el-table-column prop="totalprice" label="Price" width="140"></el-table-column>
+                        <el-table-column prop="feename" label="Fee Name" width="140"></el-table-column>
+                        <el-table-column prop="paid" label="Paid" width="140" :formatter="paidFormatter"></el-table-column>
+                        <el-table-column type="expand">
+                            <template slot-scope="props">
+                                <el-form label-position="right" class="demo-table-expand">
+                                    <el-form-item label="Billing Category">
+                                        <span>{{ props.row.billcat }}</span>
+                                    </el-form-item>
+                                    <el-form-item label="Count">
+                                        <span>{{ props.row.count }}</span>
+                                    </el-form-item>
+                                    <el-form-item label="Is Done">
+                                        <span>{{ props.row.done }}</span>
+                                    </el-form-item>
+                                    <el-form-item label="Is Printed">
+                                        <span>{{ props.row.print }}</span>
+                                    </el-form-item>
+                                </el-form>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+            </el-row>
+
+            <!--   Payment Info    -->
+            <el-row style="margin-top: 5px;">
+                <el-card class="box-card">
+                    <el-collapse accordion v-model="activeName">
+                        <el-collapse-item name="1">
+                            <template slot="title" class="el-collapse-item__header focusing">
+                                Payment & Confirmation
+                            </template>
+                            <el-row style="margin-top: 20px" type="flex" justify="space-between">
+                                <el-col :span="16">
+                                    <div v-for="bill in multipleSelection">
+                                        <entry-line :bill="bill"></entry-line>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                            <div>
+                                <el-divider></el-divider>
+                            </div>
+                            <el-row type="flex" justify="space-between">
+                                <el-col :span="16">
+                                    <el-row style="margin-left: 20px; font-size: medium" type="flex" justify="space-between">
+                                        <el-col v-if="confirmType==='Charge'" :span="6">
+                                            Total Price
+                                        </el-col>
+                                        <el-col v-if="confirmType==='Refund'" :span="6">
+                                            Refund Amount
+                                        </el-col>
+                                        <el-col :span="8">
+
+                                        </el-col>
+                                        <el-col v-if="confirmType==='Charge'" :span="6">
+                                            {{totalPrice}}元
+                                        </el-col>
+                                        <el-col v-if="confirmType==='Refund'" :span="6">
+                                            - {{totalPrice}}元
+                                        </el-col>
+                                    </el-row>
+                                </el-col>
+                                <el-col :span="8">
+                                    <el-row style="margin-right: 30px;" type="flex" justify="end">
+                                        <el-button v-if="confirmType==='Charge'" round type="danger" size="small" @click="chargeDialogVisible = true">
+                                            Confirm {{confirmType}}
+                                        </el-button>
+                                        <el-button v-if="confirmType==='Refund'" round type="warning" size="small" @click="refundDialogVisible = true">
+                                            Confirm {{confirmType}}
+                                        </el-button>
+                                    </el-row>
+                                </el-col>
+                            </el-row>
+
+                        </el-collapse-item>
+                    </el-collapse>
+                </el-card>
+            </el-row>
+
+        </el-col>
+        <el-col :span="6">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="font-weight: bold">Patient Information</span>
+                </div>
+                <div style="padding: 15px;">
+                    <patient-info-line property="ID" :val="patientInfo.pid"></patient-info-line>
+                    <patient-info-line property="Name" :val="patientInfo.pname"></patient-info-line>
+                    <patient-info-line property="Gender" :val="patientInfo.pgender"></patient-info-line>
+                    <patient-info-line property="Age" :val="patientInfo.page"></patient-info-line>
+                    <patient-info-line property="Birth Date" :val="patientInfo.pbirth"></patient-info-line>
+                    <patient-info-line property="Address" :val="patientInfo.paddress"></patient-info-line>
+                </div>
+            </el-card>
+        </el-col>
+    </el-row>
+
+    <!--    Delete Dialogue -->
+    <el-dialog
+            title="Confirm Cancelling"
+            :visible.sync="refundDialogVisible"
+            width="30%"
+    >
+        <span>Are you sure to give refund for these items?</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteDialogVisible = false">No</el-button>
+            <el-button type="primary" @click="onConfirm">Yes</el-button>
+        </span>
+    </el-dialog>
 
     <!-------------    CONFIRM PAYMENT POP-UP    ------------>
-    <el-dialog style="left: 190px" title="Confirm payment" :visible.sync="confirmPayFormVisible">
-        <el-table :data="payments" style="top: -15px;height: fit-content;width: 100%; padding-left: 5%">
-            <el-table-column prop="itemname" label="Item" width="220"></el-table-column>
-            <el-table-column prop="price" label="Price" width="220"></el-table-column>
-        </el-table>
-        <el-col>
-            <el-input id="ttl" size="small" v-model="totalfee" style="pointer-events: none; padding: 1%"
-                      placeholder="Total: "></el-input>
-            <el-input size="small" style="padding: 1%" v-model="receivedpayment" placeholder="Received"></el-input>
-            <el-input id="chg" size="small" v-model="change" style="pointer-events: none; padding: 1%"
-                      placeholder="Change: "></el-input>
-        </el-col>
+    <el-dialog title="Confirm payment" :visible.sync="chargeDialogVisible">
+        <el-row type="flex" justify="center">
+            <el-col :span="18">
+                <el-select size="small" style="padding: 1%" v-model="paymentMethod"
+                           placeholder="Select payment method.">
+                    <el-option
+                            v-for="item in paymentMethods"
+                            :key="item.value"
+                            :label="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
+
+                <el-row type="flex" align="center">
+                    <el-col :span="6" ><div style="padding: 8px">Total Price:</div></el-col>
+                    <el-col :span="3"><el-input size="small" v-model="totalPrice" style="pointer-events: none; padding: 1%"></el-input></el-col>
+                    <el-col :span="3"><div style="padding: 8px">元</div></el-col>
+                </el-row>
+
+                <el-row type="flex" align="center">
+                    <el-col :span="6" ><div style="padding: 8px">Received:</div></el-col>
+                    <el-col :span="3"><el-input size="small" style="padding: 1%" v-model="receivedpayment" @blur="blurReceived"></el-input></el-col>
+                    <el-col :span="3"><div style="padding: 8px">元</div></el-col>
+                </el-row>
+
+                <el-row type="flex" align="center">
+                    <el-col :span="6"><div style="padding: 8px">Changed:</div></el-col>
+                    <el-col :span="3"><el-input size="small" v-model="change" style="pointer-events: none; padding: 1%"></el-input></el-col>
+                    <el-col :span="3"><div style="padding: 8px">元</div></el-col>
+                </el-row>
+            </el-col>
+        </el-row>
+
         <div slot="footer" class="dialog-footer">
-            <el-button type="primary" icon="el-icon-coin" @click="onConfirmPay">Confirm</el-button>
+            <el-button type="primary" style="margin-top: 10px;" icon="el-icon-coin" @click="onConfirm">Confirm</el-button>
         </div>
+
     </el-dialog>
-    <el-dialog style="left: 240px; width: 500px" title="Confirm payment" :visible.sync="confirmWeChatFormVisible">
-        <img style="left: 35px; width: 190px; height: auto;" src="../../img/wechat-qr.jpg"/>
-    </el-dialog>
-    <el-dialog style="left: 240px; width: 500px" title="Confirm payment" :visible.sync="confirmAlipayFormVisible">
-        <img style="left: 35px; width: 190px; height: auto;" src="../../img/alipay-qr.jpg"/>
-    </el-dialog>
-    <el-dialog style="left: 240px" title="Oops" :visible.sync="confirmErrFormVisible">
-        <h4>Please, select a payment method...</h4>
-    </el-dialog>
+
 </div>
 </body>
 
-
 <script>
-    var app = new Vue({
-        el: '#bill',
-        data: {
-            pid: "",
-            receivedpayment: "",
-            confirmPayFormVisible: false,
-            confirmWeChatFormVisible: false,
-            confirmAlipayFormVisible: false,
-            confirmErrFormVisible: false,
-            dialogpatientname: "",
-            dialogpatientid: "",
-            pname: "",
-            date: "",
-            aorp: "",
-            deptname: "",
-            registrationLevel: "",
-            state: "",
-            confirmFormIndex: "",
-            confirmObject: "",
-            totalfee: "",
-            change: "",
-            itemname: "",
-            price: "",
-            att: "",
-            paytype: "",
+    Vue.component('patient-info-line', {
+        props: ['property','val'],
+        template: `
+            <el-row
+                    type="flex"
+                    align="center"
+                    :gutter="20"
+                    style="font-weight: bold;
+                           margin-top: 15px">
+                <el-col style="padding-left:5px; font-size: small" :span="8">
+                    <div style="margin-top:8px;">
+                        {{property}}:
+                    </div>
+                </el-col>
+                <el-col :span="16">
+                    <el-tag v-if="val!=null" class="el-tag">{{val}}</el-tag>
+                </el-col>
+            </el-row>
+        `
+    })
 
-            payments: [],
-            bills: [],
-            registrations: [],
-            billstable: [],
-            paytypes: ["WeChat", "Alipay", "Cash"],
+    Vue.component('entry-line', {
+        props: ['bill'],
+        template: `
+            <el-row style="margin-left: 20px; font-size: medium" type="flex" justify="space-between">
+                <el-col :span="6">
+                    {{bill.feename}}
+                </el-col>
+                <el-col :span="8">
+                    {{bill.totalprice}}元  x  {{bill.count}}
+                </el-col>
+                <el-col :span="6">
+                    {{bill.totalprice * bill.count}}元
+                </el-col>
+            </el-row>
+        `
+    })
+
+    var app = new Vue({
+        el: '#cancel',
+        data: {
+            tableData: [
+                {
+                    billcat: "自费",
+                    billdate: "2019-06-06",
+                    billid: 0,
+                    count: 1,
+                    done: true,
+                    feecode: "GHF",
+                    feename: "挂号费",
+                    itemcode: "PTH",
+                    itemname: "普通号",
+                    paid: true,
+                    pid: 3,
+                    print: false,
+                    totalprice: 6,
+                },
+                {
+                    billcat: "自费",
+                    billdate: "2019-06-06",
+                    billid: 0,
+                    count: 1,
+                    done: true,
+                    feecode: "GHF",
+                    feename: "挂号费",
+                    itemcode: "PTH",
+                    itemname: "普通号",
+                    paid: true,
+                    pid: 3,
+                    print: false,
+                    totalprice: 9,
+                },
+                {
+                    billcat: "自费",
+                    billdate: "2019-06-06",
+                    billid: 0,
+                    count: 1,
+                    done: true,
+                    feecode: "GHF",
+                    feename: "挂号费",
+                    itemcode: "PTH",
+                    itemname: "普通号",
+                    paid: true,
+                    pid: 3,
+                    print: false,
+                    totalprice: 9,
+                }
+            ],
+            multipleSelection: [],
+            totalPrice: 0,
+
+            searchingPid: "",
+            patientInfo: {
+                pid: null,
+                pname: null,
+                page: null,
+                pbirth: null,
+                paddress: null,
+                pgender: null,
+            },
+
+            condition : {
+                billcat: "",
+                billdate: "",
+                billid: null,
+                count: null,
+                done: null,
+                feecode: "",
+                feename: "",
+                itemcode: "",
+                itemname: "",
+                paid: null,
+                pid: null,
+                print: null,
+                totalprice: null,
+            },
+
+            //TODO
+            chargeDialogVisible: false,
+            refundDialogVisible: false,
+            activeName: '',
+
+            confirmType: 'Charge',
+            operationList:["Charge","Refund","Query"],
+
+            paymentMethod:"",
+            paymentMethods:["现金","微信","支付宝"],
+            change: 0,
+            receivedpayment: 0,
         },
 
         mounted: function() {
-            console.log("refreshed")
+            this.condition.pid = 3;
+            this.patientInfo.pid = 3;
+            this.condition.paid = false;
             var that = this;
-
-            axios.post('/registration/getRegistrations', {})
-                .then(function(response) {
+            axios({
+                url: '/charge/getUnpaidBills',
+                method: 'post',
+                contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                data: {condition: this.condition},
+            })
+                .then(function (response) {
+                    console.log("success getBillsByPid");
                     console.log(response.data);
-                    that.patients = response.data;
+                    that.tableData = response.data;
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.log(error);
                 });
+
         },
 
         methods: {
-            refresh: function() {
-                console.log("refresh!!!")
-                this.currentPage = 1;
+            tryCompletePInfo: function () {
+                console.log("Complete PInfo")
                 var that = this;
-                that.patients = [];
-                axios.post('/registration/patients', {})
-                    .then(function(response) {
+                axios({
+                    url: '/registration/tryCompletePatientInfo',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {id: that.searchingPid},
+                })
+                    .then(function (response) {
+                        console.log("success complete pinfo");
                         console.log(response.data);
-                        that.patients = response.data;
+                        if (response.data.exists == "Yes") {
+                            that.patientInfo = response.data.patient;
+                            that.patientInfo.pgender = that.patientInfo.pgender?"Male":"Female";
+                            that.patientExists = true;
+                            that.$message({
+                                message: 'Successfully retrieved patient info',
+                                type: 'success'
+                            });
+                            that.getBillsByPid();
+                        } else {
+                            that.$message('Did not find patient with the ID');
+                        }
                     })
-                    .catch(function(error) {
+                    .catch(function (error) {
                         console.log(error);
                     });
             },
 
-            showConfirmPayDialogForm: function(index, row) {
-                if (this.paytype == "WeChat") {
-                    this.confirmWeChatFormVisible = true;
-                } else if (this.paytype == "Alipay") {
-                    this.confirmAlipayFormVisible = true;
-                } else if (this.paytype == "Cash") {
-                    this.confirmPayFormVisible = true;
-                } else {
-                    this.confirmErrFormVisible = true;
-                }
-                this.confirmFormIndex = index;
-                this.confirmObject = row;
+//---------------------Get Bills-----------------------
 
-
-                this.dialogitem = row.pname;
-                this.dialogprice = row.feecode;
-            },
-
-            onConfirmPay: function() {
-                var params = new URLSearchParams();
-                params.append('pid', this.confirmObject);
-                axios.post('/registration/getRegistrationPrice', params)
-                    .then(function(response) {
-
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-                this.confirmPayFormVisible = false;
-                this.refresh();
-            },
-
-            searchPatient: function() {
-                //get data from database
-                let that = this;
-                console.log("Search")
-                axios.post('/registration/tryCompletePatientInfo', {
-                        pid: that.pid
-                    })
-                    .then(function(response) {
-                        that.patient = response.data;
-                        console.log(that.users);
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-
-                //config Strings
-                let nameString = `Name: ${that.pname}`;
-                let ageString = `Age: ${that.page}`;
-                let bdateString = `Birth date: ${that.pbirth}`;
-                let genderString = `Gender: ${that.pgender}`;
-                let addressString = `Address: ${that.paddress}`;
-                let billcatString = `Billing category: ${that.billcat}`;
-
-                document.getElementById("name").setAttribute("placeholder", nameString);
-                document.getElementById("age").setAttribute("placeholder", ageString);
-                document.getElementById("bdate").setAttribute("placeholder", bdateString);
-                document.getElementById("gender").setAttribute("placeholder", genderString);
-                document.getElementById("address").setAttribute("placeholder", addressString);
-                document.getElementById("billcat").setAttribute("placeholder", billcatString);
-            },
-            toggleSelection(rows) {
-                if (rows) {
-                    rows.forEach(row => {
-                        this.$refs.billstable.toggleRowSelection(row);
-                    });
-                } else {
-                    this.$refs.billstable.clearSelection();
+            getBillsByPid(){
+                this.condition.pid = this.patientInfo.pid;
+                if(this.confirmType == "Charge") {
+                    console.log("getBillsByPid->Charge")
+                    this.condition.paid = false;
+                    this.getUnpaidBills();
+                }else if(this.confirmType == "Refund"){
+                    this.condition.done = false;
+                    this.getUndoneBills();
+                }else if(this.confirmType == "Query"){
+                    this.getBills();
                 }
             },
-            addToPayment(val) {
-                this.billstable = val;
+                getBills(){
+                    var that = this;
+                    axios({
+                        url: '/charge/getBills',
+                        method: 'post',
+                        contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                        data: {condition: this.condition},
+                    })
+                        .then(function (response) {
+                            console.log("success get BillsByPid");
+                            console.log(response.data);
+                            that.tableData = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+
+                getUnpaidBills(){
+                    var that = this;
+                    axios({
+                        url: '/charge/getUnpaidBills',
+                        method: 'post',
+                        contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                        data: {condition: this.condition},
+                    })
+                        .then(function (response) {
+                            console.log("success get Unpaid BillsByPid");
+                            console.log(response.data);
+                            that.tableData = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+
+                getUndoneBills(){
+                    var that = this;
+                    axios({
+                        url: '/charge/getUndoneBills',
+                        method: 'post',
+                        contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                        data: {condition: this.condition},
+                    })
+                        .then(function (response) {
+                            console.log("success get Undone BillsByPid");
+                            console.log(response.data);
+                            that.tableData = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+
+//---------------------Confirm-----------------------
+            changeConfirmType(){
+                console.log("changeConfirmType")
+                console.log(this.confirmType )
+                this.getBillsByPid()
+
+                //清空已选
+
+            },
+
+
+            onConfirm(){
+                if(this.confirmType=="Charge"){
+                    this.submitCharge()
+                    this.chargeDialogVisible = false;
+                }
+                else if(this.confirmType=="Refund"){
+                    this.submitRefund();
+                    this.refundDialogVisible = false;
+                }
+                this.activeName = '';
+                this.$message({
+                    message: 'Successfully achieved!',
+                    type: 'success'
+                });
+            },
+
+                submitCharge(){
+                    console.log("submitCharge")
+                    var that = this;
+                    axios({
+                        url: '/charge/changeStatesToPaid',
+                        method: 'post',
+                        contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                        data: that.multipleSelection,
+                    })
+                    .then(function (response) {
+                        console.log("success changeStatesToPaid");
+                        console.log(response.data);
+                        that.getBillsByPid();
+                        console.log("Refreshed")
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                },
+
+                submitRefund(){
+                    console.log("submitRefund")
+                    var that = this;
+                    axios({
+                        url: '/charge/refundBill',
+                        method: 'post',
+                        contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                        data: that.multipleSelection,
+                    })
+                        .then(function (response) {
+                            console.log("success deleted all undone");
+                            console.log(response.data);
+                            that.getBillsByPid();
+                            console.log("Refreshed")
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                },
+
+
+
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                this.activeName = '1';
+                console.log("Handle Selection Change");
+                this.calculateTotalPrice();
+                console.log(this.multipleSelection);
+            },
+
+            blurReceived(){
+                console.log("Blur Recieved")
+                this.change = this.receivedpayment - this.totalPrice;
+            },
+
+            /**
+             * Helper
+             * */
+            calculateTotalPrice(){
+                var i = 0;
+                this.totalPrice = 0;
+                for(i = 0; i < this.multipleSelection.length; i++){
+                    this.totalPrice += this.multipleSelection[i].count * this.multipleSelection[i].totalprice;
+                }
+            }
+            ,
+            paidFormatter(row){
+                if(row.paid)
+                    return "Yes"
+                else
+                    return "No"
+            },
+
+            printFormatter(row){
+                if(row.print)
+                    return "Yes"
+                else
+                    return "No"
             }
         }
     })
 </script>
 
+<style>
+    body{
+        font-family: Helvetica, sans-serif;
+    }
+    .el-card__body{
+        padding: 5px;
+    }
+    .el-tag{
+        background-color:#ecf5ff;
+        border-color:#d9ecff;
+        display:inline-block;
+        padding:0 10px;
+        line-height:30px;
+        height: auto;
+        font-size:12px;
+        color:#409EFF;
+        border-width:1px;
+        border-style:solid;
+        border-radius:4px;
+        box-sizing:border-box;
+        white-space: pre-line;
+    }
+    .el-table .used-row {
+        background: #8492a6;
+    }
+
+    .el-collapse-item__header {
+
+        margin-top: 0;
+        font-size: medium;
+        font-weight: bold;
+        margin-left: 20px;
+    }
+
+
+</style>
 </html>

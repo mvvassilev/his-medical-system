@@ -12,7 +12,8 @@ public class User {
     private boolean shiftOrNot;
     private List<Dept> depts;
 
-//    public User(int userid, String username, String pwd, String realname, String usercat, String position, boolean shiftOrNot, List<Dept> depts) {
+
+    //    public User(int userid, String username, String pwd, String realname, String usercat, String position, boolean shiftOrNot, List<Dept> depts) {
 //        this.userid = userid;
 //        this.username = username;
 //        this.pwd = pwd;
@@ -107,6 +108,7 @@ public class User {
                 ", usercat='" + usercat + '\'' +
                 ", position='" + position + '\'' +
                 ", shiftOrNot=" + shiftOrNot +
+                ", depts=" + depts +
                 '}';
     }
 }

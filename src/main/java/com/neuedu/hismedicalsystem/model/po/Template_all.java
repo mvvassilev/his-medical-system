@@ -10,6 +10,9 @@ public class Template_all {
     private String tempscope;
     private Date createdate;
 
+    private List<NonMedic> nonMedicList;
+    private List<Medicine> medicineList;
+
     public int getTempid() {
         return tempid;
     }
@@ -48,5 +51,21 @@ public class Template_all {
 
     public void setCreatedate(Date createdate) {
         this.createdate = createdate;
+    }
+
+    public List<NonMedic> getNonMedicList() {
+        return nonMedicList;
+    }
+
+    public void setNonMedicList(List<NonMedic> nonMedicList) {
+        this.nonMedicList = nonMedicList;
+    }
+
+    public List<Medicine> getMedicineList() {
+        return medicineList;
+    }
+
+    public void setMedicineList(List<Medicine> medicineList) {
+        this.medicineList = medicineList;
     }
 }

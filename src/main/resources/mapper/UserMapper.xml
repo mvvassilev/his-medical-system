@@ -5,7 +5,9 @@
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.UserMapper">
 
     <select id="getUsers" resultMap="_user">
-        select * from ((userrdept ud join user u on u.userid = ud.userid)join dept d on d.deptcode = ud.deptcode)
+        select * from
+        ((userrdept ud join user u on u.userid = ud.userid)
+        join dept d on d.deptcode = ud.deptcode)
         <where>
             <if test="userid != null and userid!='' ">
                 and u.userid = #{userid}
@@ -42,6 +44,7 @@
         <result property="shiftOrNot" column="shiftOrNot"/>
         <collection property="depts" ofType="Dept">
             <id property="deptcode" column="deptcode" />
+            <result property="uRid" column="uRid" />
             <result property="deptname" column="deptname"/>
             <result property="deptcat" column="deptcat"/>
             <result property="deptclass" column="deptclass"/>

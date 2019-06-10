@@ -91,7 +91,20 @@
             users: [],
             docsttl: []
         },
+        mounted: function(){
+            var that = this;
+            console.log("Search called")
+            axios.post('/financial/getReceiptInfoForDoctor', {
 
+            })
+            .then(function(response) {
+                that.docs = response.data;
+                console.log(that.docs);
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+        },
         methods: {
             //------------        PRINT RECORD         ----------//
             print: function() {

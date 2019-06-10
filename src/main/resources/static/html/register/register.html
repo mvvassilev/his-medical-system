@@ -17,7 +17,7 @@
 
         <el-row>
             <el-card class="box-card">
-                <div style="font-weight: bold; font-size: larger">Register information</div>
+                <div style="font-weight: bold; font-size: larger">Registration</div>
             </el-card>
         </el-row>
         <el-row :gutter="10" style="margin-top: 10px;">
@@ -172,13 +172,12 @@
     var app = new Vue({
         el: '#register',
         data: {
-            //TODO: Change to Custom
             patientInfo: {
                 pid: "",
-                pname: "Birk",
-                page: "21",
+                pname: "",
+                page: "",
                 pbirth: "",
-                paddress: "FK",
+                paddress: "",
                 pgender: true,
             },
             patientExists: false,
@@ -335,6 +334,9 @@
             },
 
             showPaymentDialogForm: function(row){
+                that.$message({
+                    message: 'Picked',
+                });
                 this.selectedShift = row;
                 console.log("selectedShift")
                 console.log(this.selectedShift)
@@ -390,6 +392,13 @@
                             message: 'Successfully retrieved patient info',
                             type: 'success'
                         });
+                        if(!response.data.lastRegFinished){
+                            that.$confirm('The patient is still being treated. No registration available.', 'Attention', {
+                                confirmButtonText: 'Confirm',
+                                type: 'warning',
+                                customClass: 'messageBox-prompt'
+                            })
+                        }
                     }
                     else{
                         that.$message('Did not find patient with the ID');
@@ -398,9 +407,9 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-            }
+            },
 
-            ,test:function () {
+            test:function () {
                 console.log("Test!!!")
                 this.shifts = [];
             }
@@ -418,6 +427,10 @@
     .hintFont{
         margin-top: 20px;
         margin-bottom: 10px;
+    }
+    .messageBox-prompt{
+        position: relative;
+        top: -400px;
     }
 </style>
 </html>

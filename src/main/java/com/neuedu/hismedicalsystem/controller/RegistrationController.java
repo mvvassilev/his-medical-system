@@ -1,5 +1,6 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.NonMedic;
 import com.neuedu.hismedicalsystem.model.po.Patient;
@@ -100,11 +101,12 @@ public class RegistrationController {
         return price;
     }
 
-    @RequestMapping("/getRegistrations")
-    public List<Registration> getRegistrations() {
-        List<Registration> rList = registrationService.getRegistrationsByPid(2);
+    @RequestMapping("/getCancellableRegistrationsByPid")
+    public List<Registration> getRegistrations(@RequestBody JSONObject obj) {
+        int id = obj.getInteger("id");
+        List<Registration> rList = registrationService.getCancellableRegistrationsByPid(id);
         System.out.println("rList = " + rList);
-        return registrationService.getRegistrationsByPid(2);
+        return registrationService.getCancellableRegistrationsByPid(id);
     }
     
     @RequestMapping("/tryCompletePatientInfo")
@@ -115,6 +117,17 @@ public class RegistrationController {
 //        return registrationService.getPatientInfo(p.getPid());
 
         return registrationService.getPatientInfo(id);
+    }
+
+    @RequestMapping("/deleteRegs")
+    public JSONObject deleteRegs(@RequestBody JSONArray array){
+        List<Registration> regs = JSONObject.parseArray(array.toJSONString(), Registration.class);
+        System.out.println("regs = " + regs);
+        registrationService.deleteRegs(regs);
+
+        JSONObject result = new JSONObject();
+        result.put("success",true);
+        return result;
     }
 
     @RequestMapping("/test")
