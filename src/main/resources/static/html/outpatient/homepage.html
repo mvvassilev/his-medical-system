@@ -78,14 +78,14 @@
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <!-- Patient Home Page -->
-                    <el-tab-pane label="FrontPage" name="homepageframe/frontpage.html"></el-tab-pane>
-                    <el-tab-pane label="Examination" name="homepageframe/examination.html"></el-tab-pane>
-                    <el-tab-pane label="Inspection" name="homepageframe/inspection.html"></el-tab-pane>
-                    <el-tab-pane label="DiagConfirm" name="homepageframe/diagconfirm.html"></el-tab-pane>
-                    <el-tab-pane label="Treatment" name="homepageframe/treatment.html"></el-tab-pane>
-                    <el-tab-pane label="Patent-med" name="homepageframe/patentmed.html"></el-tab-pane>
-                    <el-tab-pane label="Herbal" name="homepageframe/herbal.html"></el-tab-pane>
-                    <el-tab-pane label="BillQuery" name="homepageframe/billquery.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled" label="FrontPage" name="homepageframe/frontpage.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled" label="Examination" name="homepageframe/examination.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled" label="Inspection" name="homepageframe/inspection.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled" label="DiagConfirm" name="homepageframe/diagconfirm.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled" label="Treatment" name="homepageframe/treatment.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled" label="Patent-med" name="homepageframe/patentmed.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled" label="Herbal" name="homepageframe/herbal.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled" label="BillQuery" name="homepageframe/billquery.html"></el-tab-pane>
                 </el-tabs>
                 <el-row>
                     <el-col :span="24">
@@ -141,7 +141,8 @@
                 myDiagnosed: [],
                 deptWait: [],
                 deptDiagnosed: [],
-                loading: true
+                loading: true,
+                tabDisabled:true,
             };
         },
         methods: {
@@ -218,7 +219,9 @@
                     this.switchStep(this.deptDiagnosed[parseInt(select[2]) - 1].state);
                 }
 
-                this.url = 'homepageframe/frontpage.html'
+                this.url = 'homepageframe/frontpage.html';
+                this.activeName = 'homepageframe/frontpage.html';
+                this.tabDisabled = false;
                 myFrame.window.refreshPage();
 
 
