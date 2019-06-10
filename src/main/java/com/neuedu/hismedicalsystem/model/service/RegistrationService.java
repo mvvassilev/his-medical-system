@@ -104,13 +104,14 @@ public class RegistrationService {
         if(patientMapper.countPatientOfId(id)==1){
             p = patientMapper.getPatientById(id);
             int regSize= registrationMapper.getRegistrationsByPid(id).size();
-            Registration reg = registrationMapper.getRegistrationsByPid(id).get(regSize-1);
-            System.out.println("reg = " + reg);
-            if(reg.getState()==6)
-                result.put("lastRegFinished",true);
-            else
-                result.put("lastRegFinished",false);
-
+            if(regSize >= 1){
+                Registration reg = registrationMapper.getRegistrationsByPid(id).get(regSize-1);
+                System.out.println("reg = " + reg);
+                if(reg.getState()==6)
+                    result.put("lastRegFinished",true);
+                else
+                    result.put("lastRegFinished",false);
+            }
             result.put("patient",(JSONObject) JSON.toJSON(p));
             result.put("exists","Yes");
         }
@@ -123,8 +124,14 @@ public class RegistrationService {
         return result;
     }
 
-    public List<Registration> getRegistrationsByPid(int id){
-        return registrationMapper.getRegistrationsByPid(id);
+    public List<Registration> getCancellableRegistrationsByPid(int id){
+        return registrationMapper.getCancellableRegistrationsByPid(id);
+    }
+
+    public void deleteRegs(List<Registration> regs){
+        for(Registration reg : regs){
+            registrationMapper.delReg(reg.getRegid());
+        }
     }
 
 }

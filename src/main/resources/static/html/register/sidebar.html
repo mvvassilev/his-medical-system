@@ -27,13 +27,13 @@
             <el-menu-item index="3" v-on:click="navigateTo('register.html')">
                 <span>Register</span>
             </el-menu-item>
-            <el-menu-item index="4" v-on:click="navigateTo('non-medical.html')">
+            <el-menu-item index="4" v-on:click="navigateTo('bill.html')">
                 <span>Bill</span>
             </el-menu-item>
             <el-menu-item index="5" v-on:click="navigateTo('shift.html')">
                 <span>Daily Record</span>
             </el-menu-item>
-            <el-menu-item index="6" v-on:click="navigateTo('items-management.html')">
+            <el-menu-item index="6" v-on:click="navigateTo('cancel-register.html')">
                 <span>Cancel Registration</span>
             </el-menu-item>
         </el-menu>
@@ -49,7 +49,7 @@
         data: function() {
             return {
                 url_sidebar: "",
-                url: "items-management.html",
+                url: "bill.html",
                 activeIndex: '1',
                 activeIndex2: '1'
             };

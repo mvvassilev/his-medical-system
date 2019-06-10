@@ -10,10 +10,30 @@ public class Bill {
     private Date billdate;
     private boolean isPaid;
     private String itemcode;
+    private String itemname;
+
     private boolean isPrint;
     private String feecode;
+    private String feename;
+
     private boolean isDone;
     private String billcat;
+
+    public String getItemname() {
+        return itemname;
+    }
+
+    public void setItemname(String itemname) {
+        this.itemname = itemname;
+    }
+
+    public String getFeename() {
+        return feename;
+    }
+
+    public void setFeename(String feename) {
+        this.feename = feename;
+    }
 
     public int getBillid() {
         return billid;

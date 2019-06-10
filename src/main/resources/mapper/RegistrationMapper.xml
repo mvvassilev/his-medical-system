@@ -14,7 +14,6 @@
         (#{newRecord}, #{order}, #{pid}, #{uRid}, #{itemcode}, now(), #{shiftid}, 1)
     </insert>
 
-
     <select id="getCurrentOrder" resultType="Integer">
         SELECT MAX(r.order) FROM register r where shiftid = #{shiftid}
     </select>
@@ -23,12 +22,32 @@
         SELECT count(*) FROM register where shiftid = #{shiftid}
     </select>
 
-    <select id="getRegistrationsByPid" resultType="Registration">
-        select regid, newRecord , `order`, pid, itemcode, date, shiftid, u.username, d.deptname, r.state
+    <sql id="getRegistrations">
+        select regid, newRecord , `order`, pid, r.itemcode as itemcode, nm.itemname as regLevel, date, shiftid,
+        u.username, d.deptname, r.state as state, con.constname as strState, nm.price as price
         from
         (((userrdept ud join user u on u.userid = ud.userid)
         join dept d on d.deptcode = ud.deptcode)
         join register r on r.uRid = ud.uRid)
+        join non_medic nm on nm.itemcode = r.itemcode
+        join constant con on con.constcode = r.state
+    </sql>
+
+    <select id="getRegistrationsByPid" resultType="Registration">
+        <include refid="getRegistrations"></include>
         where pid = #{pid}
     </select>
+
+    <select id="getCancellableRegistrationsByPid" resultType="Registration">
+        <include refid="getRegistrations"></include>
+        where pid = #{pid}
+        and r.state = 1
+    </select>
+
+
+
+    <delete id="delReg">
+        delete from register where regid=#{regid}
+    </delete>
+
 </mapper>
