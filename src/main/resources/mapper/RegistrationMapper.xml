@@ -22,6 +22,10 @@
         SELECT count(*) FROM register where shiftid = #{shiftid}
     </select>
 
+    <select id="countRegsForDoc" resultType="Integer">
+        SELECT count(*) FROM register where shiftid = #{shiftid}
+    </select>
+
     <sql id="getRegistrations">
         select regid, newRecord , `order`, pid, r.itemcode as itemcode, nm.itemname as regLevel, date, shiftid,
         u.username, d.deptname, r.state as state, con.constname as strState, nm.price as price

@@ -1,10 +1,20 @@
 package com.neuedu.hismedicalsystem.model.po;
 
 public class Dept {
+    private int uRid;
     private String deptcode;
     private String deptname;
     private String deptcat;
     private String deptclass;
+
+
+    public int getuRid() {
+        return uRid;
+    }
+
+    public void setuRid(int uRid) {
+        this.uRid = uRid;
+    }
 
     public String getDeptcode() {
         return deptcode;

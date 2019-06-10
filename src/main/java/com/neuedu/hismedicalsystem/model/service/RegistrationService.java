@@ -133,5 +133,4 @@ public class RegistrationService {
             registrationMapper.delReg(reg.getRegid());
         }
     }
-
 }

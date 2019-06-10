@@ -1,8 +1,10 @@
 package com.neuedu.hismedicalsystem.model.mapper;
 
+import java.util.Date;
+import java.util.List;
+
 import com.neuedu.hismedicalsystem.model.po.Bill;
 
-import java.util.List;
 
 public interface BillMapper {
 

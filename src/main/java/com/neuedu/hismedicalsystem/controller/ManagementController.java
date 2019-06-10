@@ -20,7 +20,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/management")
 public class ManagementController {
-
     /**
      * constant
      */
