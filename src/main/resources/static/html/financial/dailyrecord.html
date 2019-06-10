@@ -1,0 +1,205 @@
+<html>
+
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <style>
+        .el-row {
+            margin-bottom: 1px;
+        }
+        
+        .el-col {
+            border-radius: 2px;
+        }
+        
+        .bg-purple {
+            background: #859fbe;
+        }
+        
+        .bg-purple-light {
+            background: #eff2f8;
+        }
+        
+        .grid-content {
+            text-align: center;
+            border-radius: 4px;
+            min-height: 36px;
+        }
+        
+        .row-bg {
+            background-color: #f9fafc;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="dailyrecord">
+
+        <!-----      BUTTONS     ------>
+        <el-row :gutter="20">
+            <el-col :span="16">
+                <div class="grid-content"></div>
+            </el-col>
+            <el-col :span="3">
+                <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
+            </el-col>
+            <el-col :span="4">
+                <el-button icon="el-icon-circle-plus-outline" type="primary" @click="createNewRecord">New Record</el-button>
+            </el-col>
+        </el-row>
+
+        <!-----------     Record header       ---------->
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>Time frame</p>
+                </div>
+            </el-col>
+            <el-col :span="15">
+                <div class="grid-content bg-purple-light">
+                    <p id="tfr"></p>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>User</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="unm"></p>
+                </div>
+            </el-col>
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>ID</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="uid"></p>
+                </div>
+            </el-col>
+        </el-row>
+
+        <!-----         TABLE for the Items content         ------>
+        <el-table :data="recepits" style="left: 13%;width: 37%; height: fit-content">
+            <el-table-column prop="feecode" label="Item" width="200"></el-table-column>
+            <el-table-column prop="totalprice" label="Amount" width="210"></el-table-column>
+        </el-table>
+
+        <!-----      TOTAL and Record details (DATE and Record ID)      ------>
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content"></div>
+            </el-col>
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>TOTAL</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="ttl"></p>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row :gutter="20">
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>Date</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="dte"></p>
+                </div>
+            </el-col>
+            <el-col :span="3">
+                <div class="grid-content bg-purple">
+                    <p>Record ID</p>
+                </div>
+            </el-col>
+            <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                    <p id="rid"></p>
+                </div>
+            </el-col>
+        </el-row>
+
+    </div>
+</body>
+
+
+<script>
+    var app = new Vue({
+        el: '#dailyrecord',
+        data: {
+            feecode: "",
+            totalprice: "",
+            receipts: [],
+        },
+
+        mounted: function() {
+
+        },
+
+        methods: {
+            //------------        PRINT RECORD         ----------//
+            print: function() {
+                window.print();
+            },
+
+            //-------------    CREATE NEW RECORD    ------------//
+            createNewRecord: function() {
+                //get the data
+                let tfr = "timeframe";
+                let unm = "username";
+                let uid = "userid";
+                let dte = "currentdate";
+                let rid = "receiptid";
+
+                var that = this;
+                console.log("Search called")
+                axios.post('/registration/getReceipts', {
+                        //TODO: get the last date there was a daily record
+                        // and pass it together with current date
+                    })
+                    .then(function(response) {
+                        that.receipts = response.data;
+                        console.log(that.receipts.feecode, that.receipts.totalprice);
+                        document.getElementById("ttl").innerHTML = ttl;
+                        let total;
+                        for (total in receipts) {
+                            total += that.receipts.totalprice;
+                        }
+                        ttl = total.toString;
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+
+                //set the fields in the record field
+                document.getElementById("tfr").innerHTML = tfr;
+                document.getElementById("unm").innerHTML = unm;
+                document.getElementById("uid").innerHTML = uid;
+                document.getElementById("dte").innerHTML = dte;
+                document.getElementById("rid").innerHTML = rid;
+                document.getElementById("ttl").innerHTML = ttl;
+            }
+        }
+    })
+</script>
+
+</html>
