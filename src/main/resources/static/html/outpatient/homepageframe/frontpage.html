@@ -109,7 +109,8 @@
             </el-form-item>
         </el-tooltip>
         <el-form-item>
-            <el-button icon="el-icon-circle-check" type="primary" @click="onSubmit">Submit</el-button>
+            <el-button icon="el-icon-circle-check" type="primary" @click="onSubmit"
+                       :type="buttonCType" :disabled="buttonDisabled">{{buttonText}}</el-button>
             <el-button icon="el-icon-document" type="primary" @click="onSave">Save</el-button>
             <el-button icon="el-icon-refresh" @click="resetForm('form')">Reset</el-button>
         </el-form-item>
@@ -215,6 +216,10 @@
                 regid: null,
                 isDisabled: false,
                 isDisabledSelect: false,
+
+                buttonText: 'Submit',
+                buttonDisabled: false,
+                buttonCType: 'primary',
             }
         },
 
@@ -230,13 +235,31 @@
             onSubmit() {
                 console.log('submit!');
                 this.form.state = '初诊提交';
+                var that = this;
                 axios.post('/outpatient/updateHomepage', {
                     regid: this.regid,
                     homepage: this.form,
                 })
                     .catch(function (error) {
                         console.log(error);
-                    })
+                    });
+
+                axios.post('/outpatient/updatePatientState', {
+                    state: 2,
+                    regid: this.regid,
+
+                }).then(function() {
+                    parent.patient.loadPatientList();
+                    parent.patient.switchStep(2);
+                    that.loadFrontPage();
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
+
+
+
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
@@ -288,6 +311,16 @@
                         }else{
                             that.isDisabledSelect = false;
                         }*/
+                        console.log("Parent Active = " + parent.patient.active)
+                        if (parseInt(parent.patient.active )>= 2) {
+                            that.buttonText = 'Submitted';
+                            that.buttonDisabled = true;
+                            that.buttonCType = 'success';
+                        } else {
+                            that.buttonText = 'Submit';
+                            that.buttonDisabled = false;
+                            that.buttonCType = 'primary';
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);

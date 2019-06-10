@@ -2,6 +2,7 @@ package com.neuedu.hismedicalsystem.model.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.TemplateMapper;
 import com.neuedu.hismedicalsystem.model.po.Medicine;
 import com.neuedu.hismedicalsystem.model.po.NonMedic;
@@ -58,6 +59,40 @@ public class TemplateService {
 
         }
         return datasArray;
+
+    }
+
+    public List<Template_all> getTemplateForExam(String temptype) {
+        return templateMapper.getTemplateForExam(temptype);
+    }
+
+    public List<Template_all> getTemplateForPre(String temptype) {
+        return templateMapper.getTemplateForPre(temptype);
+    }
+
+    public void addTemplateToPre(JSONObject object) {
+        List<Medicine> medicineList = templateMapper.getTemplateForPreByTempid(object.getInteger("tempid"));
+
+        object.put("medicineList", medicineList);
+
+        templateMapper.addTemplateToPre(object);
+
+        int preid = templateMapper.getPreidBack();
+
+        object.put("preid", preid);
+
+        templateMapper.addTemplateToPreRel(object);
+
+    }
+
+    public void savePreToTemplate(JSONObject object) {
+        templateMapper.savePreToTemplate(object);
+        int tempid = templateMapper.getTempidBack();
+
+
+        List<Medicine> itemcodes = templateMapper.getItemCodeByPreid(object.getString("preid"));
+
+        templateMapper.savePreToTemplateRel(itemcodes, tempid);
 
     }
 }

@@ -14,24 +14,26 @@
 <body>
 <div id="diagnosis">
     <el-form ref="form" :model="form" :rules="rules" label-width="20px" class="demo-ruleForm">
-        <el-tooltip class="item" effect="dark" content="Patient ID" placement="right">
-            <el-form-item prop="pid">
-                <el-input type="textarea" v-model="form.pid" placeholder="Patient ID"></el-input>
-            </el-form-item>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="Patient Name" placement="right">
-            <el-form-item prop="pname">
-                <el-input type="textarea" v-model="form.pname" placeholder="Patient Name"></el-input>
-            </el-form-item>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="Patient Gender" placement="right">
-            <el-form-item prop="pgender">
-                <el-input type="textarea" v-model="form.pgender" placeholder="Patient Gender"></el-input>
-            </el-form-item>
-        </el-tooltip>
+        <el-row type="flex" justify="space-between">
+            <el-tooltip class="item" effect="dark" content="Patient ID" placement="right">
+                <el-form-item prop="pid">
+                    <el-input :disabled="true" v-model="pid"></el-input>
+                </el-form-item>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="Patient Name" placement="right">
+                <el-form-item prop="pname">
+                    <el-input :disabled="true" v-model="pname"></el-input>
+                </el-form-item>
+            </el-tooltip>
+            <el-tooltip class="item" effect="dark" content="Patient Gender" placement="right">
+                <el-form-item prop="pgender">
+                    <el-input :disabled="true" v-model="pgender"></el-input>
+                </el-form-item>
+            </el-tooltip>
+        </el-row>
         <el-tooltip class="item" effect="dark" content="Exam Result" placement="right">
-            <el-form-item prop="examresult">
-                <el-input type="textarea" v-model="form.examresult" placeholder="Exam Result"></el-input>
+            <el-form-item prop="examResult">
+                <el-input type="textarea" v-model="form.examResult" placeholder="Exam Result"></el-input>
             </el-form-item>
         </el-tooltip>
 
@@ -48,24 +50,25 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="6">
-                            <el-button icon="el-icon-circle-plus-outline" type="primary"
-                                       @click="addDiseaseDialog('form')">Add New Disease
+                            <el-button id="addDis" icon="el-icon-circle-plus-outline" type="primary"
+                                       @click="addDiseaseDialog('form')" v-bind:disabled="isDisabled">Add New Disease
                             </el-button>
                         </el-col>
                     </el-row>
                     <template>
                         <el-table
-                                :data="disease"
+                                :data="form.diseaseList"
                                 style="width: 100%; margin-top: 20px"
                                 size="mini"
+                                max-height="170"
                         >
                             <el-table-column
-                                    prop="ICD"
+                                    prop="icdcode"
                                     label="ICD CODE"
                                     width="300">
                             </el-table-column>
                             <el-table-column
-                                    prop="name"
+                                    prop="disname"
                                     label="NAME"
                                     width="250">
                             </el-table-column>
@@ -75,7 +78,7 @@
                                     width="150">
                                 <template slot-scope="scope">
                                     <el-button
-                                            @click.native.prevent="deleteRow(scope.$index, disease)"
+                                            @click.native.prevent="deleteRow(scope.$index, scope.row)"
                                             type="primary"
                                             size="small">
                                         delete
@@ -94,8 +97,9 @@
         </el-tooltip>
 
         <el-form-item>
-            <el-button icon="el-icon-circle-check" type="primary" @click="onSubmit">Submit</el-button>
-            <el-button icon="el-icon-document" type="primary" @click="">Save</el-button>
+            <el-button icon="el-icon-circle-check" type="primary" @click="onSubmit"
+                       :type="buttonCType" :disabled="buttonDisabled">{{buttonText}}</el-button>
+            <el-button icon="el-icon-document" type="primary" @click="onSave">Save</el-button>
             <el-button icon="el-icon-refresh" @click="resetForm('form')">Reset</el-button>
         </el-form-item>
     </el-form>
@@ -117,10 +121,15 @@
                 :data="diseases"
                 style="width: 100%"
                 tooltip-effect="dark"
-                max-height="550">
+                max-height="550"
+                @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
             <el-table-column
                     fixed="left"
-                    prop="ICD"
+                    prop="icdcode"
                     label="ICD Code"
                     width="150">
             </el-table-column>
@@ -134,6 +143,7 @@
                     label="Disease Category"
                     width="150">
             </el-table-column>
+
         </el-table>
         <el-row :gutter="20" style="margin-top: 20px" type="flex" justify="space-around">
             <el-col :span="8">
@@ -161,11 +171,13 @@
                 }
             };
             return {
+                regid: 0,
+                pid: 0,
+                pname: '',
+                pgender: '',
                 form: {
-                    pid: '',
-                    pname: '',
-                    pgender: '',
-                    examresult: '',
+
+                    examResult: '',
                     disType: '',
                     treatAdvice: '',
                 },
@@ -175,18 +187,67 @@
                         {validator: validateDisType, trigger: 'blur'}
                     ]
                 },
+                isDisabled: false,
+
+                buttonText: 'Submit',
+                buttonDisabled: false,
+                buttonCType: 'primary',
             }
         },
+
+        mounted: function () {
+            this.regid = parent.patient.regid;
+            this.pid = parent.patient.pid;
+            console.log("Now diagnosing: " + this.regid);
+
+            this.loadBasicInfo();
+
+            this.loadFrontPage();
+        },
+
         methods: {
             onSubmit() {
                 console.log('submit!');
+                this.form.state = '确诊提交';
+                var that = this;
+                axios.post('/outpatient/updateHomepage', {
+                    regid: this.regid,
+                    homepage: this.form,
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+                axios.post('/outpatient/updatePatientState', {
+                    state: 4,
+                    regid: this.regid,
+
+                }).then(function () {
+                    parent.patient.loadPatientList();
+                    parent.patient.switchStep(4);
+                    that.loadFrontPage();
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
                 this.form.disType = '';
             },
-            deleteRow(index, rows) {
-                rows.splice(index, 1);
+            deleteRow(index, row) {
+                var that = this;
+                var params = new URLSearchParams();
+                params.append("regid", this.regid);
+                params.append("icdcode", row.icdcode);
+                console.log(params);
+                axios.post('/outpatient/deleteDiseaseFromDiag', params)
+                    .then(function (response) {
+                        console.log("退出这个舞台");
+                        that.loadFrontPage();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             addDiseaseDialog(formName) {
                 this.$refs[formName].validate((valid) => {
@@ -198,9 +259,74 @@
                         return false;
                     }
                 });
-            }
+            },
+            loadBasicInfo() {
+                var that = this;
+                var params = new URLSearchParams();
+                params.append("pid", this.pid);
+                axios.post('/outpatient/getPatientByPid', params)
+                    .then(function (response) {
+                        that.pname = response.data.pname;
+                        if (response.data.pgender === 1) {
+                            that.pgender = 'Male'
+                        } else {
+                            that.pgender = 'Female'
+                        }
+                    }).catch(function (error) {
+                    console.log(error);
+                });
+            },
+
+            loadFrontPage() {
+                var params = new URLSearchParams();
+                params.append("regid", this.regid);
+                var that = this;
+                axios.post('/outpatient/getFrontPageByRegid', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.form = response.data;
+                        if (that.form.diseaseList.length >= 5) {
+                            console.log("把嘴给我闭上");
+                            that.isDisabled = true;
+                        } else {
+                            that.isDisabled = false;
+                        }
+
+                        /*if (that.form.diseaseList.length >= 1){
+                            that.isDisabledSelect = true;
+                        }else{
+                            that.isDisabledSelect = false;
+                        }*/
+
+                        console.log("Parent Active = " + parent.patient.active)
+                        if (parseInt(parent.patient.active) >= 4) {
+                            that.buttonText = 'Submitted';
+                            that.buttonDisabled = true;
+                            that.buttonCType = 'success';
+                        } else {
+                            that.buttonText = 'Submit';
+                            that.buttonDisabled = false;
+                            that.buttonCType = 'primary';
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            onSave() {
+                this.form.state = '确诊暂存';
+                axios.post('/outpatient/updateHomepage', {
+                    regid: this.regid,
+                    homepage: this.form,
+                })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            },
+
+
         }
-    })
+    });
 
     var dialog = new Vue({
         el: '#addDialog',
@@ -211,19 +337,43 @@
                 discode: '',
                 diseases: [],
                 type: '',
+                multipleSelection: []
             }
         },
         methods: {
             searchDiseases: function () {
-                console.log("search");
+                console.log("search" + this.discode);
+                var that = this;
+                axios.post('/outpatient/getDiseasesByPinyin', {discode: this.discode})
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.diseases = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+
             },
             openConfirmDialog: function () {
+
                 this.$confirm('Sure to add?', 'Notice', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
                     console.log("add!!!!!!");
+
+                    axios.post('/outpatient/addDiseaseToDiag', {
+                        regid: diagnosis.regid,
+                        addList: this.multipleSelection
+                    }).then(function () {
+                        diagnosis.loadFrontPage();
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+
                     this.dialogVisible = false;
                     this.$message({
                         type: 'success',
@@ -236,6 +386,12 @@
                     });
                 });
             },
+
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(this.multipleSelection);
+            },
+
             closeDialog() {
                 this.dialogVisible = false;
             }
