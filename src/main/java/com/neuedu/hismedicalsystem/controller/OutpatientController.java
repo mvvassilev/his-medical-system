@@ -143,4 +143,37 @@ public class OutpatientController {
 
     @RequestMapping("/getPre")
     public List<Prescription> getPre(@RequestBody Prescription condition){return prescriptionService.getPre(condition);}
+
+    @RequestMapping("/addPre")
+    public void addPre(int uRid, int regid, String pretype, String prename){
+        prescriptionService.addPre(uRid, regid, pretype, prename);
+    }
+
+    @RequestMapping("/delPre")
+    public void delPre(int preid){
+        prescriptionService.delPre(preid);
+    }
+
+    @RequestMapping("/changeState")
+    public void changeState(String state, int preid){
+        prescriptionService.changeState(state,preid);
+    }
+
+    @RequestMapping("/getItem")
+    public List<Medicine> getItem(int preid){
+        return prescriptionService.getItem(preid);
+    }
+
+    @RequestMapping("/getMed")
+    public List<Medicine> getMed(String itemcode){
+        return prescriptionService.getMed(itemcode);
+    }
+
+    @RequestMapping("/addMed")
+    public void addMed(int preid,String itemcode, int count){
+        prescriptionService.addMed(preid, itemcode, count);
+    }
+
+    @RequestMapping("/delMed")
+    public void delMed(int preRelid){prescriptionService.delMed(preRelid);}
 }

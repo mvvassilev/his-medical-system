@@ -5,7 +5,40 @@
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.PrescriptionMapper">
 
     <select id="getPre" resultType="Prescription">
-        select prename,state from prescription
+        select preid,prename,state from prescription
         where uRid = #{uRid} and regid = #{regid}
     </select>
+
+    <insert id="addPre">
+        insert into prescription(uRid, regid, pretype, state, prename)
+        values (#{uRid},#{regid},#{pretype},'Saved',#{prename})
+    </insert>
+
+    <delete id="delPre">
+        delete from prescription where preid=#{preid}
+    </delete>
+
+    <update id="changeState">
+        update prescription set state=#{state}
+        where preid=#{preid}
+    </update>
+
+    <select id="getItem" resultType="Medicine">
+        select itemname, size, price,count,preRelid
+        from medicine m join prerel pr on m.itemcode=pr.itemcode
+        where preid = #{preid}
+    </select>
+
+    <select id="getMed" resultType="Medicine">
+        select itemname,size,price from medicine where itemcode=#{itemcode}
+    </select>
+
+    <insert id="addMed">
+        insert into prerel(preid, itemcode,count)
+        values(#{preid},#{itemcode},#{count})
+    </insert>
+
+    <delete id="delMed">
+        delete from prerel where preRelid=#{preRelid}
+    </delete>
 </mapper>

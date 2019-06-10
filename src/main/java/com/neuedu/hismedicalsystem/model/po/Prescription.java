@@ -6,6 +6,15 @@ public class Prescription {
     private String pretype;
     private String state;
     private String prename;
+    private int preid;
+
+    public int getPreid() {
+        return preid;
+    }
+
+    public void setPreid(int preid) {
+        this.preid = preid;
+    }
 
     public int getuRid() {
         return uRid;
