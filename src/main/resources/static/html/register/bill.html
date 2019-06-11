@@ -352,11 +352,19 @@
             paymentMethods:["现金","微信","支付宝"],
             change: 0,
             receivedpayment: 0,
+
+            receiptInfo : {
+                items : [],
+                paymentMethod: "",
+                patientInfo: "",
+                date: "",
+                recid: ""
+            }
         },
 
         mounted: function() {
-            this.condition.pid = 3;
-            this.patientInfo.pid = 3;
+            this.condition.pid = 20165048;
+            this.patientInfo.pid = 20165048;
             this.condition.paid = false;
             var that = this;
             axios({
@@ -422,6 +430,7 @@
                     this.getBills();
                 }
             },
+
                 getBills(){
                     var that = this;
                     axios({
@@ -489,18 +498,20 @@
 
             onConfirm(){
                 if(this.confirmType=="Charge"){
-                    this.submitCharge()
-                    this.chargeDialogVisible = false;
+                    // this.submitCharge()
+                    // this.chargeDialogVisible = false;
                 }
                 else if(this.confirmType=="Refund"){
-                    this.submitRefund();
-                    this.refundDialogVisible = false;
+                    // this.submitRefund();
+                    // this.refundDialogVisible = false;
                 }
+                this.logReceipt();
                 this.activeName = '';
                 this.$message({
                     message: 'Successfully achieved!',
                     type: 'success'
                 });
+
             },
 
                 submitCharge(){
@@ -543,9 +554,40 @@
                         });
                 },
 //---------------------Preview Receipt----------------
+            logReceipt(){
+                var that = this;
+                axios({
+                    url: '/charge/logReceipt',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:{
+                        patientInfo: that.patientInfo,
+                        bills: that.multipleSelection,
+                        confirmType: that.confirmType,
+                        //TODO: Add chargerID 管理员here
+                        chargerid: 1
+                    }
+                })
+                    .then(function (response) {
+                        console.log("success logReceipt");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
             onPreviewReceipt(){
-                var items = JSON.stringify(this.multipleSelection);
-                localStorage.setItem("items",items);
+                this.receiptInfo = {
+                    items : [],
+                    paymentMethod: this.paymentMethod,
+                    patientInfo: this.patientInfo,
+                    date: "2019-02-03",
+                    recid: "15241634"
+                }
+
+                this.receiptInfo.items = JSON.stringify(this.multipleSelection);
+                localStorage.setItem("receiptInfo",receiptInfo);
+
             },
 
             handleSelectionChange(val) {

@@ -3,7 +3,9 @@ package com.neuedu.hismedicalsystem.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.po.Bill;
+import com.neuedu.hismedicalsystem.model.po.Patient;
 import com.neuedu.hismedicalsystem.model.service.BillService;
+import com.neuedu.hismedicalsystem.model.service.ReceiptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +18,9 @@ import java.util.List;
 public class ChargeController {
     @Autowired
     BillService billService;
+
+    @Autowired
+    ReceiptService receiptService;
 
     @RequestMapping("/getUnpaidBills")
     public List<Bill> getUnpaidBills(@RequestBody JSONObject obj){
@@ -64,6 +69,14 @@ public class ChargeController {
         for(Bill bill : bills){
             billService.refundBill(bill.getBillid());
         }
+        JSONObject result = new JSONObject();
+        result.put("success",true);
+        return result;
+    }
+
+    @RequestMapping("logReceipt")
+    public JSONObject logReceipt(@RequestBody JSONObject obj){
+        receiptService.logReceipt(obj);
         JSONObject result = new JSONObject();
         result.put("success",true);
         return result;

@@ -2,11 +2,10 @@ package com.neuedu.hismedicalsystem.model.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.ReceiptMapper;
 import com.neuedu.hismedicalsystem.model.mapper.UserMapper;
-import com.neuedu.hismedicalsystem.model.po.Dept;
-import com.neuedu.hismedicalsystem.model.po.Financial;
-import com.neuedu.hismedicalsystem.model.po.User;
+import com.neuedu.hismedicalsystem.model.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -74,6 +73,36 @@ public class ReceiptService {
 //        for(Financial f : fList){
 //            System.out.print(f.getFeecode13()+" ");
 //        }
-    }   
-    
+    }
+
+    public void logReceipt(JSONObject obj){
+        Patient patientInfo = (Patient) JSONObject.toJavaObject(obj.getJSONObject("patientInfo"), Patient.class);
+        JSONArray array = obj.getJSONArray("bills");
+        List<Bill> bills = JSONObject.parseArray(array.toJSONString(), Bill.class);
+        String confirmType = obj.getString("confirmType");
+        long chargerid = obj.getLong("chargerid");
+        insertNewReceipt(bills,chargerid,patientInfo,confirmType);
+    }
+
+    private void insertNewReceipt(List<Bill> bills, long chargerid, Patient patientInfo, String confirmType){
+        Receipt receipt = new Receipt();
+        receipt.setRecstate("未打印");
+        receipt.setChargerid(chargerid);
+        receipt.setTotalprice(getPrintedTotalPrice(bills, confirmType));
+        receipt.setPid(patientInfo.getPid());
+
+    }
+
+    private double getPrintedTotalPrice(List<Bill> bills, String confirmType){
+        double value = 0;
+        for(Bill b : bills){
+            double add = b.getTotalprice();
+            if(confirmType.equals("Refund")){
+                if( add > 0 )
+                    add = -add;
+            }
+            value += add;
+        }
+        return value;
+    }
 }

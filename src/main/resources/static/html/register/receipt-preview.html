@@ -114,14 +114,18 @@
                 <td colspan="2">
                     <table>
                         <tr>
+
                             <td style="font-size: 35px" class="title">
                                 NEU Hospital Invoice
                             </td>
 
                             <td>
-                                Invoice #: 123<br>
-                                Created: January 1, 2015<br>
-                                Name: Toothless Birk
+                                <img style="height: 82px;
+                                            width: auto;
+                                            position: relative;
+                                            top: -11px; "
+                                     src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560258751942&di=f5ac3416e124f9590f2feac3d656e79f&imgtype=0&src=http%3A%2F%2Fs1.sinaimg.cn%2Fmw690%2F004lDxWVgy6NQeMRTaM90%26690">
+
                             </td>
                         </tr>
                     </table>
@@ -133,15 +137,15 @@
                     <table>
                         <tr>
                             <td>
-                                Sparksuite, Inc.<br>
-                                12345 Sunny Road<br>
-                                Sunnyville, CA 12345
+                                Shenyang<br>
+                                Hunnan District Xinxiu St.<br>
+                                2# NEU Education
                             </td>
 
                             <td>
-                                Acme Corp.<br>
-                                John Doe<br>
-                                john@example.com
+                                Invoice #: 123<br>
+                                Created: January 1, 2015<br>
+                                Name: {{receiptInfo.patientInfo.pname}}
                             </td>
                         </tr>
                     </table>
@@ -152,19 +156,14 @@
                 <td>
                     Payment Method
                 </td>
-
                 <td>
-                    Check #
+
                 </td>
             </tr>
 
             <tr class="details">
                 <td>
                     Check
-                </td>
-
-                <td>
-                    1000
                 </td>
             </tr>
 
@@ -178,41 +177,21 @@
                 </td>
             </tr>
 
-            <tr class="item">
-                <td>
-                    Website design
-                </td>
-
-                <td>
-                    $300.00
-                </td>
+            <tr v-for="(item, index) in tableData" v-if="index != tableData.length - 1" class="item">
+                <td>{{item.feename}} x {{item.count}}</td>
+                <td>{{item.totalprice}}元</td>
             </tr>
 
-            <tr class="item">
-                <td>
-                    Hosting (3 months)
-                </td>
-
-                <td>
-                    $75.00
-                </td>
-            </tr>
-
-            <tr class="item last">
-                <td>
-                    Domain name (1 year)
-                </td>
-
-                <td>
-                    $10.00
-                </td>
+            <tr v-for="(item, index) in tableData" v-if="index == tableData.length - 1" class="item last">
+                <td>{{item.feename}} x {{item.count}}</td>
+                <td>{{item.totalprice}}元</td>
             </tr>
 
             <tr class="total">
                 <td></td>
 
                 <td>
-                    Total: $385.00
+                    Total: {{sumPrice}}元
                 </td>
             </tr>
         </table>
@@ -225,11 +204,63 @@
     var app = new Vue({
         el: '#preview',
         data: {
-
+            tableData: [
+                {
+                    billcat: "自费",
+                    billdate: "2019-06-06",
+                    billid: 0,
+                    count: 1,
+                    done: true,
+                    feecode: "GHF",
+                    feename: "CT检查费",
+                    itemcode: "PTH",
+                    itemname: "普通号",
+                    paid: false,
+                    pid: 3,
+                    print: false,
+                    totalprice: 6,
+                },
+                {
+                    billcat: "自费",
+                    billdate: "2019-06-06",
+                    billid: 0,
+                    count: 1,
+                    done: true,
+                    feecode: "GHF",
+                    feename: "挂号费",
+                    itemcode: "PTH",
+                    itemname: "普通号",
+                    paid: true,
+                    pid: 3,
+                    print: false,
+                    totalprice: 9,
+                },
+                {
+                    billcat: "自费",
+                    billdate: "2019-06-06",
+                    billid: 0,
+                    count: 1,
+                    done: true,
+                    feecode: "GHF",
+                    feename: "脑震荡费",
+                    itemcode: "PTH",
+                    itemname: "普通号",
+                    paid: true,
+                    pid: 3,
+                    print: false,
+                    totalprice: 9,
+                }
+            ],
+            sumPrice : 0,
+            receiptInfo : {}
         },
 
         mounted: function() {
-            console.log(localStorage.getItem("items"))
+            this.receiptInfo = localStorage.getItem("receiptInfo")
+            this.tableData = receiptInfo.items;
+            for ( i of this.tableData){
+                this.sumPrice += i.totalprice;
+            }
         },
 
         methods: {
