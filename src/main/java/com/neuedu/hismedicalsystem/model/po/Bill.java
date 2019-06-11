@@ -30,6 +30,33 @@ public class Bill {
 
     private String realname;
     private String prename;
+    private String treatcat;
+    private int treatid;
+    private int recid;
+
+    public String getTreatcat() {
+        return treatcat;
+    }
+
+    public void setTreatcat(String treatcat) {
+        this.treatcat = treatcat;
+    }
+
+    public int getTreatid() {
+        return treatid;
+    }
+
+    public void setTreatid(int treatid) {
+        this.treatid = treatid;
+    }
+
+    public int getRecid() {
+        return recid;
+    }
+
+    public void setRecid(int recid) {
+        this.recid = recid;
+    }
 
     public String getRealname() {
         return realname;

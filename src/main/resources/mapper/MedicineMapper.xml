@@ -59,7 +59,22 @@
             <if test="pid!=''">
                 and pid =#{pid}
             </if>
-            and isPaid=1 and isDone=1 and treatcat='prescription' and totalprice>0
+            and isPaid=1 and isDone=1 and treatcat='prescription' and totalprice>0 and count&lt;&gt;0
         </where>
     </select>
+
+    <select id="getReturnMed" resultType="Bill">
+        select * from bill
+        where billid=#{billid}
+    </select>
+
+    <insert id="returnMed" parameterType="Bill">
+        insert into bill(totalprice, pid, count, itemcode, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid,recid)
+        values (#{totalprice},#{pid},#{count},#{itemcode},#{billdate},#{isPaid},#{treatcat},#{isPrint},#{feecode},#{isDone},#{billcat},#{treatid},#{recid})
+    </insert>
+
+    <update id="changeCount">
+        update bill set count=count-#{count}
+        where billid=#{billid}
+    </update>
 </mapper>

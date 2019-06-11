@@ -43,4 +43,13 @@ public class MedService {
 
     @Transactional
     public List<Bill> getReturnBill(int pid){return medMapper.getReturnBill(pid);}
+
+    @Transactional
+    public Bill getReturnMed(int billid){return medMapper.getReturnMed(billid);}
+
+    @Transactional
+    public void returnMed(Bill tempbill){medMapper.returnMed(tempbill);}
+
+    @Transactional
+    public void changeCount(int count,int billid){medMapper.changeCount(count,billid);}
 }

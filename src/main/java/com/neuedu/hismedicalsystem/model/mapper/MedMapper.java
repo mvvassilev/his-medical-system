@@ -21,5 +21,9 @@ public interface MedMapper {
 
     public List<Bill> getReturnBill(@Param("pid") int pid);
 
-    public void returnMed(Medicine medicine);
+    public Bill getReturnMed(int billid);
+
+    public void returnMed(Bill tempbill);
+
+    public void changeCount(int count,int billid);
 }

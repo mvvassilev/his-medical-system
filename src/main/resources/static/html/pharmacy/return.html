@@ -100,16 +100,18 @@
                     });
             },
             returnMed: function () {
-                console.log("return success");
-                /*var that= this;
-                this.$confirm('Are you sure you want to return all this?', 'Note', {
+                var that= this;
+                var params = new URLSearchParams();
+                params.append("count", this.num);
+                params.append("billid", this.currentRow.billid);
+                this.$confirm('Are you sure you want to return this?', 'Note', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
                     type: 'warning'
                 }).then(() => {
-                    axios.post("/pharmacy/returnMed", )
+                    axios.post("/pharmacy/returnMed", params)
                         .then(function (response) {
-
+                            that.getReturnBill();
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -123,7 +125,7 @@
                         type: 'info',
                         message: 'Cancel!'
                     });
-                });*/
+                });
             },
             handleChange(value) {
                 // console.log(value);
@@ -136,10 +138,12 @@
             },
             handleCurrentChange(val) {
                 this.currentRow = val;
-                console.log(val);
+                // console.log(val);
                 this.disabledState=false;
                 this.num=1;
-                this.count=val.count;
+                if(val){
+                    this.count=val.count;
+                }
             },
         }
     })
