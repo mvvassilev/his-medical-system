@@ -17,23 +17,31 @@
         from bill b
         join non_medic nm on nm.itemcode = b.itemcode
         join fee f on f.feecode = b.feecode
-        where pid = #{id}
     </sql>
 
-    <select id="getBillsWithCondition" resultType="Bill">
+    <select id="getBills" resultType="Bill" >
         <include refid="getBillsByPid"></include>
-        <where>
-            <if test="isPaid != null and isPaid!='' ">
-                and  b.isPaid = #{isPaid}
-            </if>
-            <if test="isDone != null and isDone!='' ">
-                and  b.isDone = #{isDone}
-            </if>
-        </where>
+        where pid = #{pid}
+    </select>
+
+    <select id="getUnpaidBills" resultType="Bill" >
+        <include refid="getBillsByPid"></include>
+        where pid = #{pid}
+        and  isPaid = #{isPaid}
+    </select>
+
+    <select id="getUndoneBills" resultType="Bill" >
+        <include refid="getBillsByPid"></include>
+        where pid = #{pid}
+        and  isDone = #{isDone}
     </select>
 
     <update id="changeStateToPaid">
         update bill set isPaid = true
         where billid = #{billId}
     </update>
+
+    <delete id="deleteBill">
+        delete from bill where billid = #{billId}
+    </delete>
 </mapper>

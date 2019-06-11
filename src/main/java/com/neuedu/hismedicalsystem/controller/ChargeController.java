@@ -17,13 +17,32 @@ public class ChargeController {
     @Autowired
     BillService billService;
 
-    @RequestMapping("/getBillsWithCondition")
-    public List<Bill> getBillsWithCondition(@RequestBody JSONObject obj){
+    @RequestMapping("/getUnpaidBills")
+    public List<Bill> getUnpaidBills(@RequestBody JSONObject obj){
+        System.out.println("obj.toString() = " + obj.toString());
         Bill condition = (Bill)JSONObject.toJavaObject(obj.getJSONObject("condition"), Bill.class);
         System.out.println("getBillsWithCondition = " + condition);
-        List<Bill> l = billService.getBillsWithCondition(condition);
+        List<Bill> l = billService.getUnpaidBills(condition);
         System.out.println("list = " + l);
-        return billService.getBillsWithCondition(condition);
+        return billService.getUnpaidBills(condition);
+    }
+
+    @RequestMapping("/getUndoneBills")
+    public List<Bill> getUndoneBills(@RequestBody JSONObject obj){
+        Bill condition = (Bill)JSONObject.toJavaObject(obj.getJSONObject("condition"), Bill.class);
+        System.out.println("getBillsWithCondition = " + condition);
+        List<Bill> l = billService.getUndoneBills(condition);
+        System.out.println("list = " + l);
+        return billService.getUndoneBills(condition);
+    }
+
+    @RequestMapping("/getBills")
+    public List<Bill> getBills(@RequestBody JSONObject obj){
+        Bill condition = (Bill)JSONObject.toJavaObject(obj.getJSONObject("condition"), Bill.class);
+        System.out.println("getBillsWithCondition = " + condition);
+        List<Bill> l = billService.getBills(condition);
+        System.out.println("list = " + l);
+        return billService.getBills(condition);
     }
 
     @RequestMapping("/changeStatesToPaid")
@@ -34,6 +53,17 @@ public class ChargeController {
             billService.changeStateToPaid(bill.getBillid());
         }
 
+        JSONObject result = new JSONObject();
+        result.put("success",true);
+        return result;
+    }
+
+    @RequestMapping("/refundBill")
+    public JSONObject refundBill(@RequestBody JSONArray array){
+        List<Bill> bills = JSONObject.parseArray(array.toJSONString(), Bill.class);
+        for(Bill bill : bills){
+            billService.refundBill(bill.getBillid());
+        }
         JSONObject result = new JSONObject();
         result.put("success",true);
         return result;

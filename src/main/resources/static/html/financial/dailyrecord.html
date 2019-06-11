@@ -12,16 +12,14 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <style>
-        .el-row {
-            margin-bottom: 1px;
-        }
-        
         .el-col {
+            margin: 0px;
             border-radius: 2px;
+            border: solid 1px rgb(202, 201, 201);
         }
         
-        .bg-purple {
-            background: #859fbe;
+        .bg-white {
+            background: white;
         }
         
         .bg-purple-light {
@@ -29,6 +27,7 @@
         }
         
         .grid-content {
+            padding: 1px;
             text-align: center;
             border-radius: 4px;
             min-height: 36px;
@@ -36,6 +35,33 @@
         
         .row-bg {
             background-color: #f9fafc;
+        }
+        
+        .gray-areas {
+            margin-top: 7px;
+            margin-bottom: 7px;
+        }
+        
+        .text-div {
+            top: 10vh;
+            left: 68vw;
+            position: absolute;
+            width: 24vw;
+            height: fit-content;
+            display: block;
+            word-break: normal;
+            word-wrap: normal;
+        }
+        
+        #text {
+            font-family: Helvetica, sans-serif;
+            line-height: 190%
+        }
+        
+        #stp {
+            padding-left: 15%;
+            height: 15%;
+            width: auto;
         }
     </style>
 
@@ -46,98 +72,118 @@
 
         <!-----      BUTTONS     ------>
         <el-row :gutter="20">
-            <el-col :span="16">
-                <div class="grid-content"></div>
+            <el-col :span="16" style="border: none">
+                <div class="grid-content">
+                    <el-card class="box-card">
+                        <div style="font-weight: bold; font-size: larger">Daily record</div>
+                    </el-card>
+                </div>
             </el-col>
-            <el-col :span="3">
+            <el-col :span="3" style="border: none">
                 <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="4" style="border: none">
                 <el-button icon="el-icon-circle-plus-outline" type="primary" @click="createNewRecord">New Record</el-button>
             </el-col>
         </el-row>
 
         <!-----------     Record header       ---------->
-        <el-row :gutter="20">
-            <el-col :span="3">
-                <div class="grid-content bg-purple">
-                    <p>Time frame</p>
-                </div>
-            </el-col>
-            <el-col :span="15">
-                <div class="grid-content bg-purple-light">
-                    <p id="tfr"></p>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="3">
-                <div class="grid-content bg-purple">
-                    <p>User</p>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div class="grid-content bg-purple-light">
-                    <p id="unm"></p>
-                </div>
-            </el-col>
-            <el-col :span="3">
-                <div class="grid-content bg-purple">
-                    <p>ID</p>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div class="grid-content bg-purple-light">
-                    <p id="uid"></p>
-                </div>
-            </el-col>
-        </el-row>
+        <el-card class="box-card" style="width: 65vw">
+            <el-row :gutter="20">
+                <el-col :span="5">
+                    <div class="grid-content bg-white">
+                        <p>Time frame</p>
+                    </div>
+                </el-col>
+                <el-col :span="19">
+                    <div class="grid-content bg-purple-light gray-areas">
+                        <p id="tfr"></p>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="5">
+                    <div class="grid-content bg-white">
+                        <p>User</p>
+                    </div>
+                </el-col>
+                <el-col :span="10">
+                    <div class="grid-content bg-purple-light gray-areas">
+                        <p id="unm"></p>
+                    </div>
+                </el-col>
+                <el-col :span="2">
+                    <div class="grid-content bg-white">
+                        <p>ID</p>
+                    </div>
+                </el-col>
+                <el-col :span="7">
+                    <div class="grid-content bg-purple-light gray-areas">
+                        <p id="uid"></p>
+                    </div>
+                </el-col>
+            </el-row>
 
-        <!-----         TABLE for the Items content         ------>
-        <el-table :data="recepits" style="left: 13%;width: 37%; height: fit-content">
-            <el-table-column prop="feecode" label="Item" width="200"></el-table-column>
-            <el-table-column prop="totalprice" label="Amount" width="210"></el-table-column>
-        </el-table>
+            <el-row :gutter="20">
+                <el-col :span="5" style="border: none">
+                    <div class="grid-content"></div>
+                </el-col>
+                <!-----         TABLE for the Items content         ------>
+                <el-col :span="10">
+                    <el-table :data="recepits" style="width: 100%; height: fit-content">
+                        <el-table-column prop="feecode" label="Item" width="140"></el-table-column>
+                        <el-table-column prop="totalprice" label="Amount" width="140"></el-table-column>
+                    </el-table>
+                </el-col>
 
-        <!-----      TOTAL and Record details (DATE and Record ID)      ------>
-        <el-row :gutter="20">
-            <el-col :span="3">
-                <div class="grid-content"></div>
-            </el-col>
-            <el-col :span="3">
-                <div class="grid-content bg-purple">
-                    <p>TOTAL</p>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div class="grid-content bg-purple-light">
-                    <p id="ttl"></p>
-                </div>
-            </el-col>
-        </el-row>
-        <el-row :gutter="20">
-            <el-col :span="3">
-                <div class="grid-content bg-purple">
-                    <p>Date</p>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div class="grid-content bg-purple-light">
-                    <p id="dte"></p>
-                </div>
-            </el-col>
-            <el-col :span="3">
-                <div class="grid-content bg-purple">
-                    <p>Record ID</p>
-                </div>
-            </el-col>
-            <el-col :span="6">
-                <div class="grid-content bg-purple-light">
-                    <p id="rid"></p>
-                </div>
-            </el-col>
-        </el-row>
+                <!--------    STAMP   --------->
+                <el-col :span="9" style="border: none"><img src="../../img/stamp.jpg" id="stp" /></el-col>
+            </el-row>
 
+            <!-----      TOTAL and Record details (DATE and Record ID)      ------>
+            <el-row :gutter="20">
+                <el-col :span="5" style="border: none">
+                    <div class="grid-content"></div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-white">
+                        <p>TOTAL</p>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="grid-content bg-purple-light gray-areas">
+                        <p id="ttl"></p>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row :gutter="20">
+                <el-col :span="5">
+                    <div class="grid-content bg-white">
+                        <p>Date</p>
+                    </div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-purple-light gray-areas">
+                        <p id="dte"></p>
+                    </div>
+                </el-col>
+                <el-col :span="2">
+                    <div class="grid-content bg-white">
+                        <p>#</p>
+                    </div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-purple-light gray-areas">
+                        <p id="rid"></p>
+                    </div>
+                </el-col>
+            </el-row>
+        </el-card>
+
+        <!------       Confirmation text       ------>
+        <div class="text-div">
+            <p id="text"></p>
+        </div>
     </div>
 </body>
 
@@ -191,12 +237,21 @@
                     });
 
                 //set the fields in the record field
+                document.getElementById("tfr").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("tfr").innerHTML = tfr;
+                document.getElementById("unm").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("unm").innerHTML = unm;
+                document.getElementById("uid").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("uid").innerHTML = uid;
+                document.getElementById("dte").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("dte").innerHTML = dte;
+                document.getElementById("rid").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("rid").innerHTML = rid;
+                document.getElementById("ttl").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("ttl").innerHTML = ttl;
+                document.getElementById("text").innerHTML = `The following record is being provided by user {username} and issed by the 
+                                                            financial management department of the HIS hospital information system. For
+                                                            more information, please contact the financial managment department directly!`;
             }
         }
     })

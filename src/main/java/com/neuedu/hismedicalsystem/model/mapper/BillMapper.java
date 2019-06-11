@@ -10,7 +10,11 @@ public interface BillMapper {
 
     void insertBill(Bill bill);
 
-    List<Bill> getBillsWithCondition(Bill bill);
+    List<Bill> getUnpaidBills(Bill bill);
+    List<Bill> getUndoneBills(Bill bill);
+    List<Bill> getBills(Bill bill);
+
+    void deleteBill(int billId);
 
     void changeStateToPaid(int billId);
 }
