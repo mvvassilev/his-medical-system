@@ -11,60 +11,45 @@
         (#{totalprice}, #{pid}, #{count}, now(), #{isPaid}, #{itemcode}, #{isPrint}, #{feecode}, #{isDone}, #{billcat})
     </insert>
 
-    <sql id="getBillsByPid">
+    <sql id="getNonMedicBillsByPid">
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        nm.itemname as itemname, f.feename as feename
+        from bill b
+        join non_medic nm on nm.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
+        where pid = #{pid}
+    </sql>
 
-
+    <sql id="getMedicBillsByPid">
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        m.itemname as itemname, f.feename as feename
+        from bill b
+        join medicine m on m.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
+        where pid = #{pid}
     </sql>
 
     <select id="getBills" resultType="Bill" >
-        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
-        nm.itemname as itemname, f.feename as feename
-        from bill b
-        join non_medic nm on nm.itemcode = b.itemcode
-        join fee f on f.feecode = b.feecode
-        where pid = #{pid}
+        <include refid="getNonMedicBillsByPid"></include>
         union
-        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
-        m.itemname as itemname, f.feename as feename
-        from bill b
-        join medicine m on m.itemcode = b.itemcode
-        join fee f on f.feecode = b.feecode
-        where pid = #{pid}
+        <include refid="getMedicBillsByPid"></include>
     </select>
 
     <select id="getUnpaidBills" resultType="Bill" >
-        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
-        nm.itemname as itemname, f.feename as feename
-        from bill b
-        join non_medic nm on nm.itemcode = b.itemcode
-        join fee f on f.feecode = b.feecode
-        where pid = #{pid}
+        <include refid="getNonMedicBillsByPid"></include>
         and  isPaid = #{isPaid}
+        and totalprice>0
         union
-        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
-        m.itemname as itemname, f.feename as feename
-        from bill b
-        join medicine m on m.itemcode = b.itemcode
-        join fee f on f.feecode = b.feecode
-        where pid = #{pid}
+        <include refid="getMedicBillsByPid"></include>
         and  isPaid = #{isPaid}
+        and totalprice>0
     </select>
 
     <select id="getUndoneBills" resultType="Bill" >
-        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
-        nm.itemname as itemname, f.feename as feename
-        from bill b
-        join non_medic nm on nm.itemcode = b.itemcode
-        join fee f on f.feecode = b.feecode
-        where pid = #{pid}
+        <include refid="getNonMedicBillsByPid"></include>
         and  isDone = #{isDone}
         union
-        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
-        m.itemname as itemname, f.feename as feename
-        from bill b
-        join medicine m on m.itemcode = b.itemcode
-        join fee f on f.feecode = b.feecode
-        where pid = #{pid}
+        <include refid="getMedicBillsByPid"></include>
         and  isDone = #{isDone}
     </select>
 
@@ -76,4 +61,9 @@
     <delete id="deleteBill">
         delete from bill where billid = #{billId}
     </delete>
+
+    <update id="changeStateToDone">
+        update bill set isDone = true
+        where billid = #{billId}
+    </update>
 </mapper>

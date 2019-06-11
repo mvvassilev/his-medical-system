@@ -29,6 +29,11 @@ public class BillService {
     }
 
     public void refundBill(int billId){
-        billMapper.deleteBill(billId);
+        //Set isDone for negative bill to 'true'
+        billMapper.changeStateToPaid(billId);
+        //Set isPaid for negative bill to 'true
+        billMapper.changeStateToDone(billId);
+        //Print 冲红发票
+        //Print 剩余项目的发票
     }
 }

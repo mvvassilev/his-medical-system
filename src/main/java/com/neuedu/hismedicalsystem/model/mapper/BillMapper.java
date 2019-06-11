@@ -17,4 +17,5 @@ public interface BillMapper {
     void deleteBill(int billId);
 
     void changeStateToPaid(int billId);
+    void changeStateToDone(int billId);
 }
