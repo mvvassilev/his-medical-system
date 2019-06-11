@@ -6,30 +6,34 @@
 
     <insert id="insertBill">
         insert into bill
-        (totalprice, pid, count, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat)
+        (totalprice, pid, count, billdate, isPaid, itemcode, isPrint, feecode, isDone, billcat)
         values
         (#{totalprice}, #{pid}, #{count}, now(), #{isPaid}, #{itemcode}, #{isPrint}, #{feecode}, #{isDone}, #{billcat})
     </insert>
 
     <sql id="getBillsByPid">
-        select billid, totalprice, pid, count, billdate, isPaid, b.treatcat, isPrint, b.feecode, isDone, billcat,
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
         nm.itemname as itemname, f.feename as feename
         from bill b
-        join non_medic nm on nm.itemcode = b.treatcat
+        join non_medic nm on nm.itemcode = b.itemcode
         join fee f on f.feecode = b.feecode
-        where pid = #{id}
     </sql>
 
-    <select id="getBillsWithCondition" resultType="Bill">
+    <select id="getBills" resultType="Bill" >
         <include refid="getBillsByPid"></include>
-        <where>
-            <if test="isPaid != null and isPaid!='' ">
-                and  b.isPaid = #{isPaid}
-            </if>
-            <if test="isDone != null and isDone!='' ">
-                and  b.isDone = #{isDone}
-            </if>
-        </where>
+        where pid = #{pid}
+    </select>
+
+    <select id="getUnpaidBills" resultType="Bill" >
+        <include refid="getBillsByPid"></include>
+        where pid = #{pid}
+        and  isPaid = #{isPaid}
+    </select>
+
+    <select id="getUndoneBills" resultType="Bill" >
+        <include refid="getBillsByPid"></include>
+        where pid = #{pid}
+        and  isDone = #{isDone}
     </select>
 
     <update id="changeStateToPaid">
@@ -37,16 +41,22 @@
         where billid = #{billId}
     </update>
 
+    <delete id="deleteBill">
+        delete from bill where billid = #{billId}
+    </delete>
+
     <!--  ADD BILLING OF OUTPATIENT PART  -->
     <insert id="addExamToBill" useGeneratedKeys="true" keyProperty="billid">
-        insert into his.bill(totalprice, pid, count, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid) values
+        insert into his.bill(totalprice, pid, count, itemcode, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid) values
         <foreach item="item" collection="items" separator=",">
-            (#{item.price}, #{pid}, 1, now(), 0, 'exam', 0, #{item.feecode}, 0, #{billcat}, #{item.exid})
+            (#{item.price}, #{pid}, 1, #{item.itemcode}, now(), 0, 'exam', 0, #{item.feecode}, 0, #{billcat}, #{item.exid})
         </foreach>
     </insert>
 
     <insert id="addPreToBill" useGeneratedKeys="true" keyProperty="billid">
-        insert into his.bill(totalprice, pid, count, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid) values
-        (#{price}, #{pid}, 1, now(), 0, 'prescription', 0, #{feecode}, 0, #{billcat}, #{preid})
+        insert into his.bill(totalprice, pid, count, itemcode, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid) values
+        <foreach item="item" collection="medicineList" separator=",">
+            (#{item.price}, #{pid}, #{item.count}, #{item.itemcode}, now(), 0, 'prescription', 0, #{feecode}, 0, #{billcat}, #{preid})
+        </foreach>
     </insert>
 </mapper>

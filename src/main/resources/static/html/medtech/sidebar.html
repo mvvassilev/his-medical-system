@@ -18,11 +18,14 @@
     <el-col :span="3">
         <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                   style="height: 100vh">
-            <el-menu-item index="1" v-on:click="navigateTo('homepage.html')">
-                <span>Homepage</span>
+            <el-menu-item index="1" v-on:click="navigateTo('exam.html')">
+                <span>Examination</span>
             </el-menu-item>
-            <el-menu-item index="2" v-on:click="navigateTo('template.html')">
-                <span>Template Management</span>
+            <el-menu-item index="2" v-on:click="navigateTo('test.html')">
+                <span>Test</span>
+            </el-menu-item>
+            <el-menu-item index="3" v-on:click="navigateTo('test.html')">
+                <span>Test</span>
             </el-menu-item>
         </el-menu>
     </el-col>

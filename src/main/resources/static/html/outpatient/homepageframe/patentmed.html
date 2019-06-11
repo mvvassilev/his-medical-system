@@ -228,7 +228,7 @@
             preid: '',
             uRid: 1,
             regid: 0,
-            pretype: "成药",
+            pretype: "西药",
             prename: "",
             state: "",
             currentRow: {},
@@ -258,6 +258,7 @@
             axios.post('/outpatient/getPre', {
                 uRid: this.uRid,
                 regid: parent.patient.regid,
+
             })
                 .then(function (response) {
                     console.log(response.data);
@@ -393,7 +394,6 @@
                                     feecode: 'XYF',
                                     pid: that.pid,
                                     regid: that.regid,
-                                    price: that.totalprice,
                                 })
                                     .catch(function (error) {
                                         console.log(error);

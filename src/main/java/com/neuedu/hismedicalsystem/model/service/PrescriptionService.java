@@ -16,6 +16,8 @@ public class PrescriptionService {
 
     public List<Prescription> getPre(Prescription condition){ return prescriptionMapper.getPre(condition);}
 
+    public List<Prescription> getPreH(Prescription condition){ return prescriptionMapper.getPreH(condition);}
+
     @Transactional
     public void addPre(int uRid, int regid, String pretype, String prename){
         prescriptionMapper.addPre(uRid, regid, pretype, prename);

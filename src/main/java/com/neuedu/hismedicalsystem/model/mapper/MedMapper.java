@@ -12,4 +12,6 @@ public interface MedMapper {
     void addMed(Medicine medicine);
 
     void updateMed(Medicine medicine);
+
+    List<Medicine> getItemCodeByPreid(Integer preid);
 }

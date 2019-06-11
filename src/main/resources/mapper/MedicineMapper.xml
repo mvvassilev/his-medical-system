@@ -26,4 +26,9 @@
         size=#{size},medcat=#{medcat}
         where itemcode = #{itemcode}
     </update>
+
+    <select id="getItemCodeByPreid" resultType="Medicine">
+        select * from his.prerel pr join his.medicine m on pr.itemcode = m.itemcode
+         where preid = #{preid}
+    </select>
 </mapper>

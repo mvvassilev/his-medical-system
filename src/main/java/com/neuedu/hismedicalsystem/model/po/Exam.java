@@ -11,6 +11,15 @@ public class Exam {
     private String deptname;
     private String result;
     private String feecode;
+    private String itemcode;
+
+    public String getItemcode() {
+        return itemcode;
+    }
+
+    public void setItemcode(String itemcode) {
+        this.itemcode = itemcode;
+    }
 
     public String getFeecode() {
         return feecode;

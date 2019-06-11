@@ -31,4 +31,7 @@ public class MedService {
     public void updateMed(Medicine medicine) {
         medMapper.updateMed(medicine);
     }
+
+    public List<Medicine> getItemCodeByPreid(Integer preid) { return medMapper.getItemCodeByPreid(preid);
+    }
 }
