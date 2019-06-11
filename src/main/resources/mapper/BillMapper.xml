@@ -59,4 +59,20 @@
             (#{item.price}, #{pid}, #{item.count}, #{item.itemcode}, now(), 0, 'prescription', 0, #{feecode}, 0, #{billcat}, #{preid})
         </foreach>
     </insert>
+
+    <select id="getURidByBillid" resultType="Integer">
+        select uRid from his.bill b
+        <if test="treatcat == 'exam'">
+        join his.exam e on b.treatid = e.exid</if>
+        <if test="treatcat == 'prescription'">
+        join his.prescription p on b.treatid = p.preid</if>
+        <if test="treatcat == 'register'">
+        join his.register r on b.treatid = r.regid</if>
+        where billid = #{billid}
+
+    </select>
+
+    <select id="getTreatcatByBillid" resultType="String">
+        select treatcat from his.bill where billid = #{billid}
+    </select>
 </mapper>
