@@ -257,4 +257,39 @@ public class OutpatientController {
     public void savePreToTemplate(@RequestBody JSONObject object){
         templateService.savePreToTemplate(object);
     }
+
+
+    /*
+    *
+    * Bill
+    *
+    * */
+
+    @Autowired
+    private BillService billService;
+
+    @Autowired
+    private MedService medService;
+
+    @RequestMapping("/addExamToBill")
+    public void addExamToBill(@RequestBody JSONObject object){
+        String billcat = patientService.getBillcatByRegid(object.getInteger("regid"));
+        object.put("billcat", billcat);
+        billService.addExamToBill(object);
+    }
+
+    @RequestMapping("/addPreToBill")
+    public void addPreToBill(@RequestBody JSONObject object){
+        String billcat = patientService.getBillcatByRegid(object.getInteger("regid"));
+        object.put("billcat", billcat);
+
+        List<Medicine> medicineList = medService.getItemCodeByPreid((object.getInteger("preid")));
+        for(int i = 0; i < medicineList.size(); i++){
+            medicineList.get(i).setPrice((medicineList.get(i).getCount()*medicineList.get(i).getPrice()));
+        }
+
+        object.put("medicineList", medicineList);
+
+        billService.addPreToBill(object);
+    }
 }

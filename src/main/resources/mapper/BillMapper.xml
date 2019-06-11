@@ -44,4 +44,19 @@
     <delete id="deleteBill">
         delete from bill where billid = #{billId}
     </delete>
+
+    <!--  ADD BILLING OF OUTPATIENT PART  -->
+    <insert id="addExamToBill" useGeneratedKeys="true" keyProperty="billid">
+        insert into his.bill(totalprice, pid, count, itemcode, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid) values
+        <foreach item="item" collection="items" separator=",">
+            (#{item.price}, #{pid}, 1, #{item.itemcode}, now(), 0, 'exam', 0, #{item.feecode}, 0, #{billcat}, #{item.exid})
+        </foreach>
+    </insert>
+
+    <insert id="addPreToBill" useGeneratedKeys="true" keyProperty="billid">
+        insert into his.bill(totalprice, pid, count, itemcode, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid) values
+        <foreach item="item" collection="medicineList" separator=",">
+            (#{item.price}, #{pid}, #{item.count}, #{item.itemcode}, now(), 0, 'prescription', 0, #{feecode}, 0, #{billcat}, #{preid})
+        </foreach>
+    </insert>
 </mapper>

@@ -33,6 +33,9 @@ public class MedService {
         medMapper.updateMed(medicine);
     }
 
+    public List<Medicine> getItemCodeByPreid(Integer preid) { return medMapper.getItemCodeByPreid(preid);
+    }
+
     @Transactional
     public List<Bill> getBill(int pid){return medMapper.getBill(pid);}
 

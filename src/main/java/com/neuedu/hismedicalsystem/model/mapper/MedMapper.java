@@ -15,6 +15,8 @@ public interface MedMapper {
 
     void updateMed(Medicine medicine);
 
+    List<Medicine> getItemCodeByPreid(Integer preid);
+
     public List<Bill> getBill(@Param("pid") int pid);
 
     public void sendMed(String[] id);

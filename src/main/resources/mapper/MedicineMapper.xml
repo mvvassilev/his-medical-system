@@ -27,6 +27,11 @@
         where itemcode = #{itemcode}
     </update>
 
+    <select id="getItemCodeByPreid" resultType="Medicine">
+        select * from his.prerel pr join his.medicine m on pr.itemcode = m.itemcode
+         where preid = #{preid}
+    </select>
+
     <select id="getBill" resultType="Bill">
         select m.itemname, b.count, u.realname, p.prename, b.billdate, b.billid
         from (((bill b join prescription p on b.treatid=p.preid)
