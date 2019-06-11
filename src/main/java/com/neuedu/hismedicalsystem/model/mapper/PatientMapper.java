@@ -31,4 +31,6 @@ public interface PatientMapper {
     Patient getPatientByPid(long pid);
 
     void updatePatientState(JSONObject object);
+
+    String getBillcatByRegid(Integer regid);
 }

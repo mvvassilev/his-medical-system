@@ -10,6 +10,15 @@ public class Exam {
     private String itemname;
     private String deptname;
     private String result;
+    private String feecode;
+
+    public String getFeecode() {
+        return feecode;
+    }
+
+    public void setFeecode(String feecode) {
+        this.feecode = feecode;
+    }
 
     public int getExid() {
         return exid;

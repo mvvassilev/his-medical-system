@@ -166,6 +166,7 @@
         >
             <el-table-column
                     type="selection"
+                    :selectable="selectable"
                     width="55">
             </el-table-column>
             <el-table-column
@@ -207,6 +208,7 @@
             template: [],
             totalprice: 0,
             uRid: 1,
+            pid: 0,
             saveDisabled: true,
             visible: false,
             tempname: '',
@@ -223,6 +225,7 @@
 
         mounted: function () {
             this.regid = parent.patient.regid;
+            this.pid = parent.patient.pid;
 
             this.loadExamination();
             this.loadTemplate();
@@ -346,6 +349,18 @@
                         state: state + 'd',
                     }).then(function () {
                         that.loadExamination();
+
+                        if (state === 'Opene') {
+                            axios.post('/outpatient/addExamToBill', {
+                                items: that.multipleSelection,
+                                pid: that.pid,
+                                regid: that.regid,
+                            })
+                                .catch(function (error) {
+                                    console.log(error);
+
+                                });
+                        }
                     })
                         .catch(function (error) {
                             console.log(error);

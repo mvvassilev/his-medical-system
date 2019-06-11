@@ -6,16 +6,16 @@
 
     <insert id="insertBill">
         insert into bill
-        (totalprice, pid, count, billdate, isPaid, itemcode, isPrint, feecode, isDone, billcat)
+        (totalprice, pid, count, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat)
         values
         (#{totalprice}, #{pid}, #{count}, now(), #{isPaid}, #{itemcode}, #{isPrint}, #{feecode}, #{isDone}, #{billcat})
     </insert>
 
     <sql id="getBillsByPid">
-        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        select billid, totalprice, pid, count, billdate, isPaid, b.treatcat, isPrint, b.feecode, isDone, billcat,
         nm.itemname as itemname, f.feename as feename
         from bill b
-        join non_medic nm on nm.itemcode = b.itemcode
+        join non_medic nm on nm.itemcode = b.treatcat
         join fee f on f.feecode = b.feecode
         where pid = #{id}
     </sql>
@@ -36,4 +36,17 @@
         update bill set isPaid = true
         where billid = #{billId}
     </update>
+
+    <!--  ADD BILLING OF OUTPATIENT PART  -->
+    <insert id="addExamToBill" useGeneratedKeys="true" keyProperty="billid">
+        insert into his.bill(totalprice, pid, count, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid) values
+        <foreach item="item" collection="items" separator=",">
+            (#{item.price}, #{pid}, 1, now(), 0, 'exam', 0, #{item.feecode}, 0, #{billcat}, #{item.exid})
+        </foreach>
+    </insert>
+
+    <insert id="addPreToBill" useGeneratedKeys="true" keyProperty="billid">
+        insert into his.bill(totalprice, pid, count, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid) values
+        (#{price}, #{pid}, 1, now(), 0, 'prescription', 0, #{feecode}, 0, #{billcat}, #{preid})
+    </insert>
 </mapper>
