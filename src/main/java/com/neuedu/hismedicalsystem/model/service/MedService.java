@@ -40,4 +40,7 @@ public class MedService {
     public void sendMed(String[] id) {
         medMapper.sendMed(id);
     }
+
+    @Transactional
+    public List<Bill> getReturnBill(int pid){return medMapper.getReturnBill(pid);}
 }

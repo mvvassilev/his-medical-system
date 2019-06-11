@@ -49,4 +49,19 @@
             #{ids}
         </foreach>
     </update>
+
+    <select id="getReturnBill" resultType="Bill">
+        select m.itemname, pr.count, u.realname, p.prename, b.billdate, b.billid
+        from ((((bill b join prescription p on b.treatid=p.preid)
+        join userrdept ur on p.uRid=ur.uRid)
+        join user u on ur.userid=u.userid)
+        join prerel pr on p.preid=pr.preid)
+        join medicine m on pr.itemcode=m.itemcode
+        <where>
+            <if test="pid!=''">
+                and pid =#{pid}
+            </if>
+            and isPaid=1 and isDone=1 and treatcat='prescription'
+        </where>
+    </select>
 </mapper>

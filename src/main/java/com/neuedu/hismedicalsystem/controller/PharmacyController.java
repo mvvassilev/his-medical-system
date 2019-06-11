@@ -59,4 +59,7 @@ public class PharmacyController {
         String[] id=ids.split(",");
         medService.sendMed(id);
     }
+
+    @RequestMapping("/getReturnBill")
+    public List<Bill> getReturnBill(int pid){ return medService.getReturnBill(pid);}
 }
