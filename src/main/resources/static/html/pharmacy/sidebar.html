@@ -18,7 +18,10 @@
     <el-col :span="3">
         <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                   style="height: 100vh">
-            <el-menu-item index="1" v-on:click="navigateTo('medicine.html')">
+            <el-menu-item index="1" v-on:click="navigateTo('send.html')">
+                <span>Send Medicine</span>
+            </el-menu-item>
+            <el-menu-item index="2" v-on:click="navigateTo('medicine.html')">
                 <span>Medicine</span>
             </el-menu-item>
         </el-menu>

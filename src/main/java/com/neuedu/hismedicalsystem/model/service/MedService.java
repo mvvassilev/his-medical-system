@@ -1,6 +1,7 @@
 package com.neuedu.hismedicalsystem.model.service;
 
 import com.neuedu.hismedicalsystem.model.mapper.MedMapper;
+import com.neuedu.hismedicalsystem.model.po.Bill;
 import com.neuedu.hismedicalsystem.model.po.Medicine;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +34,13 @@ public class MedService {
     }
 
     public List<Medicine> getItemCodeByPreid(Integer preid) { return medMapper.getItemCodeByPreid(preid);
+    }
+
+    @Transactional
+    public List<Bill> getBill(int pid){return medMapper.getBill(pid);}
+
+    @Transactional
+    public void sendMed(String[] id) {
+        medMapper.sendMed(id);
     }
 }
