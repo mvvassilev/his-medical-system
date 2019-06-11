@@ -3,6 +3,7 @@ package com.neuedu.hismedicalsystem.controller;
 import com.neuedu.hismedicalsystem.model.po.Bill;
 import com.neuedu.hismedicalsystem.model.po.Medicine;
 import com.neuedu.hismedicalsystem.model.service.MedService;
+import org.apache.tomcat.jni.BIOCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,5 +59,22 @@ public class PharmacyController {
         String ids = params.get("ids").toString();
         String[] id=ids.split(",");
         medService.sendMed(id);
+    }
+
+    @RequestMapping("/getReturnBill")
+    public List<Bill> getReturnBill(int pid){ return medService.getReturnBill(pid);}
+
+    private Bill getReturnMed(int billid){ return medService.getReturnMed(billid);}
+    @RequestMapping("/returnMed")
+    public void returnMed(int count, int billid){
+        Bill tempbill = getReturnMed(billid);
+        int tempcount=tempbill.getCount();
+        tempbill.setPaid(false);
+        tempbill.setDone(false);
+        tempbill.setCount(count);
+        double tempprice= (count*(tempbill.getTotalprice()/tempcount))*(-1);
+        tempbill.setTotalprice(tempprice);
+        medService.returnMed(tempbill);
+        medService.changeCount(count,billid);
     }
 }
