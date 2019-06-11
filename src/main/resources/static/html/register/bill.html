@@ -65,7 +65,10 @@
                         <el-table-column prop="billdate" label="Date" width="140" sortable></el-table-column>
                         <el-table-column prop="totalprice" label="Price" width="140"></el-table-column>
                         <el-table-column prop="feename" label="Fee Name" width="140"></el-table-column>
-                        <el-table-column prop="paid" label="Paid" width="140" :formatter="paidFormatter"></el-table-column>
+                        <el-table-column prop="paid" label="Paid" width="140" :formatter="paidFormatter"
+                                         :filters="[{ text: 'Yes', value: true }, { text: 'No', value: false }]"
+                                         :filter-method="filterTag"
+                                         filter-placement="bottom-end"></el-table-column>
                         <el-table-column type="expand">
                             <template slot-scope="props">
                                 <el-form label-position="right" class="demo-table-expand">
@@ -209,11 +212,13 @@
         </el-row>
 
         <div slot="footer" class="dialog-footer">
+            <el-button type="info" style="margin-top: 10px;" icon="el-icon-view" @click="onPreviewReceipt">
+                <a href="receipt-preview.html"  target="_blank">Preview Receipt</a>
+            </el-button>
             <el-button type="primary" style="margin-top: 10px;" icon="el-icon-coin" @click="onConfirm">Confirm</el-button>
         </div>
 
     </el-dialog>
-
 </div>
 </body>
 
@@ -247,7 +252,7 @@
                     {{bill.feename}}
                 </el-col>
                 <el-col :span="8">
-                    {{bill.totalprice}}元  x  {{bill.count}}
+
                 </el-col>
                 <el-col :span="6">
                     {{bill.totalprice * bill.count}}元
@@ -267,10 +272,10 @@
                     count: 1,
                     done: true,
                     feecode: "GHF",
-                    feename: "挂号费",
+                    feename: "CT检查费",
                     itemcode: "PTH",
                     itemname: "普通号",
-                    paid: true,
+                    paid: false,
                     pid: 3,
                     print: false,
                     totalprice: 6,
@@ -537,8 +542,11 @@
                             console.log(error);
                         });
                 },
-
-
+//---------------------Preview Receipt----------------
+            onPreviewReceipt(){
+                var items = JSON.stringify(this.multipleSelection);
+                localStorage.setItem("items",items);
+            },
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
@@ -562,8 +570,8 @@
                 for(i = 0; i < this.multipleSelection.length; i++){
                     this.totalPrice += this.multipleSelection[i].count * this.multipleSelection[i].totalprice;
                 }
-            }
-            ,
+            },
+
             paidFormatter(row){
                 if(row.paid)
                     return "Yes"
@@ -576,12 +584,25 @@
                     return "Yes"
                 else
                     return "No"
+            },
+
+//---------------------筛选-----------------------
+            filterTag(value, row) {
+                return row.paid === value;
+            },
+            filterHandler(value, row, column) {
+                const property = column['property'];
+                return row[property] === value;
             }
         }
     })
 </script>
 
 <style>
+    a{
+        text-decoration:none;
+        color: white;
+    }
     body{
         font-family: Helvetica, sans-serif;
     }

@@ -12,26 +12,58 @@
     </insert>
 
     <sql id="getBillsByPid">
+
+
+    </sql>
+
+    <select id="getBills" resultType="Bill" >
         select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
         nm.itemname as itemname, f.feename as feename
         from bill b
         join non_medic nm on nm.itemcode = b.itemcode
         join fee f on f.feecode = b.feecode
-    </sql>
-
-    <select id="getBills" resultType="Bill" >
-        <include refid="getBillsByPid"></include>
+        where pid = #{pid}
+        union
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        m.itemname as itemname, f.feename as feename
+        from bill b
+        join medicine m on m.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
         where pid = #{pid}
     </select>
 
     <select id="getUnpaidBills" resultType="Bill" >
-        <include refid="getBillsByPid"></include>
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        nm.itemname as itemname, f.feename as feename
+        from bill b
+        join non_medic nm on nm.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
+        where pid = #{pid}
+        and  isPaid = #{isPaid}
+        union
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        m.itemname as itemname, f.feename as feename
+        from bill b
+        join medicine m on m.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
         where pid = #{pid}
         and  isPaid = #{isPaid}
     </select>
 
     <select id="getUndoneBills" resultType="Bill" >
-        <include refid="getBillsByPid"></include>
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        nm.itemname as itemname, f.feename as feename
+        from bill b
+        join non_medic nm on nm.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
+        where pid = #{pid}
+        and  isDone = #{isDone}
+        union
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        m.itemname as itemname, f.feename as feename
+        from bill b
+        join medicine m on m.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
         where pid = #{pid}
         and  isDone = #{isDone}
     </select>
