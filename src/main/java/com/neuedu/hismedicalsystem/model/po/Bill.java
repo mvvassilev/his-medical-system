@@ -6,6 +6,15 @@ public class Bill {
     private int billid;
     private double totalprice;
     private int pid;
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
     private int count;
     private Date billdate;
     private boolean isPaid;
@@ -18,6 +27,25 @@ public class Bill {
 
     private boolean isDone;
     private String billcat;
+
+    private String realname;
+    private String prename;
+
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
+    public String getPrename() {
+        return prename;
+    }
+
+    public void setPrename(String prename) {
+        this.prename = prename;
+    }
 
     public String getItemname() {
         return itemname;
@@ -49,14 +77,6 @@ public class Bill {
 
     public void setTotalprice(double totalprice) {
         this.totalprice = totalprice;
-    }
-
-    public int getPid() {
-        return pid;
-    }
-
-    public void setPid(int pid) {
-        this.pid = pid;
     }
 
     public int getCount() {
