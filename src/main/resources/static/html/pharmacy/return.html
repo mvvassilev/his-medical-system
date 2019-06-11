@@ -75,7 +75,7 @@
         data: {
             pid:null,
             itemname: "",
-            count:10,
+            count:null,
             realname:"",
             prename:"",
             billdate:"",
@@ -131,12 +131,15 @@
             },
             setCurrent(row) {
                 this.$refs.singleTable.setCurrentRow(row);
+                this.disabledState=true;
+                this.count=null;
             },
             handleCurrentChange(val) {
                 this.currentRow = val;
-            },
-            isDisabled:function () {
-                this.disabledState = !!(this.currentRow = null);
+                console.log(val);
+                this.disabledState=false;
+                this.num=1;
+                this.count=val.count;
             },
         }
     })

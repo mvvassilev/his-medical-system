@@ -109,7 +109,7 @@
                 }).then(() => {
                     axios.post("/pharmacy/sendMed", {ids: ids})
                         .then(function (response) {
-
+                            that.toggleSelection();
                         })
                         .catch(function (error) {
                         console.log(error);

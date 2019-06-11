@@ -20,4 +20,6 @@ public interface MedMapper {
     public void sendMed(String[] id);
 
     public List<Bill> getReturnBill(@Param("pid") int pid);
+
+    public void returnMed(Medicine medicine);
 }
