@@ -110,6 +110,7 @@
                     axios.post("/pharmacy/sendMed", {ids: ids})
                         .then(function (response) {
                             that.toggleSelection();
+                            that.getBill();
                         })
                         .catch(function (error) {
                         console.log(error);
