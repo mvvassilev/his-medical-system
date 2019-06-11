@@ -254,14 +254,13 @@
 
             this.regid = parent.patient.regid;
             var that = this;
-            axios.post('/outpatient/getPre', {
+            axios.post('/outpatient/getPreH', {
                 uRid: this.uRid,
                 regid: parent.patient.regid,
             })
                 .then(function (response) {
                     console.log(response.data);
                     that.prescription = response.data;
-
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -303,7 +302,7 @@
             },
             refreshPre: function () {
                 var that = this;
-                axios.post('/outpatient/getPre', {
+                axios.post('/outpatient/getPreH', {
                     uRid: this.uRid,
                     regid: parent.patient.regid,
                 })
@@ -466,7 +465,7 @@
                 axios.post('/outpatient/savePreToTemplate', {
                     preid: this.currentRow.preid,
                     tempname: this.tempname,
-                    temptype: '西药'
+                    temptype: '中草药'
                 }).then(function () {
 
                     that.loadTemplate();
@@ -481,7 +480,7 @@
             loadTemplate() {
                 var that = this;
                 axios.post('/outpatient/getTemplateForPre', {
-                    temptype: "西药"
+                    temptype: "中草药"
                 }).then(function (response) {
                     console.log(response.data);
                     that.template = response.data;
@@ -498,7 +497,7 @@
                 axios.post('/outpatient/addTemplateToPre', {
                     tempid: this.template[index].tempid,
                     tempname: this.template[index].tempname,
-                    pretype: '西药',
+                    pretype: '中草药',
                     regid: this.regid,
                     uRid: this.uRid,
                 }).then(function () {
@@ -554,7 +553,7 @@
                 }).then(() => {
                     axios.post('/outpatient/addMed', params)
                         .then(function (response) {
-                            patentmed.refreshItem();
+                            herbal.refreshItem();
                         })
                         .catch(function (error) {
                             console.log(error);

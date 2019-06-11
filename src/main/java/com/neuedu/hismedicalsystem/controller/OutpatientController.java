@@ -151,6 +151,10 @@ public class OutpatientController {
 
     @RequestMapping("/getPre")
     public List<Prescription> getPre(@RequestBody Prescription condition){return prescriptionService.getPre(condition);}
+
+    @RequestMapping("/getPreH")
+    public List<Prescription> getPreH(@RequestBody Prescription condition){return prescriptionService.getPreH(condition);}
+
     @RequestMapping("/addPre")
     public void addPre(int uRid, int regid, String pretype, String prename) {
         prescriptionService.addPre(uRid, regid, pretype, prename);
