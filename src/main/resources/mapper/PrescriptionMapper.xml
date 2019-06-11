@@ -6,7 +6,7 @@
 
     <select id="getPre" resultType="Prescription">
         select preid,prename,state from prescription
-        where uRid = #{uRid} and regid = #{regid}
+        where uRid = #{uRid} and regid = #{regid} and pretype='西药'
     </select>
 
     <insert id="addPre">
