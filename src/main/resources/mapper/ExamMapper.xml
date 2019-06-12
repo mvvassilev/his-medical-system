@@ -61,14 +61,14 @@
 
     </insert>
 
-    <select id="getItemCodeByTempid" resultType="Medicine">
-        select * from his.temprel where tempid = #{tempid}
+    <select id="getItemCodeByTempid" resultType="String">
+        select itemcode from his.temprel where tempid = #{tempid}
     </select>
 
     <insert id="addTemplateToExam" useGeneratedKeys="true" keyProperty="exid">
         insert into exam(urid, regid, extype, state, itemcode) values
         <foreach item="item" collection="itemcodes" separator=",">
-            (#{uRid}, #{regid}, #{extype}, 'Opened', #{item})
+            (#{uRid}, #{regid}, #{extype}, 'Saved', #{item})
         </foreach>
     </insert>
 </mapper>

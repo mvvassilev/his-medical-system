@@ -279,7 +279,7 @@
                 })
                     .then(function (response) {
                         console.log("successful got shifts")
-                        that.shifts=[]
+                        that.shifts=[];
                         that.shifts = response.data;
                         console.log("refresh->that.shifts");
                         console.log(that.shifts);
@@ -334,7 +334,7 @@
             },
 
             showPaymentDialogForm: function(row){
-                that.$message({
+                this.$message({
                     message: 'Picked',
                 });
                 this.selectedShift = row;

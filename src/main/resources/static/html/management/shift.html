@@ -571,6 +571,7 @@
                           type: 'warning'
                         }).then(() => {
                             this.ruleSubmit();
+                            this.dialogVisible=false;
                           this.$message({
                             type: 'success',
                             message: 'Create Succeed!'
@@ -711,7 +712,8 @@
                           cancelButtonText: 'Cancel',
                           type: 'warning'
                         }).then(() => {
-                            this.arrangeShift()
+                            this.arrangeShift();
+                            this.dialogVisible=false;
                           this.$message({
                             type: 'success',
                             message: 'Arrange Succeed!'

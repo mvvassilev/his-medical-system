@@ -6,9 +6,9 @@
 
     <insert id="insertBill">
         insert into bill
-        (totalprice, pid, count, billdate, isPaid, itemcode, isPrint, feecode, isDone, billcat)
+        (totalprice, pid, count, billdate, isPaid, itemcode, isPrint, feecode, isDone, billcat,treatcat)
         values
-        (#{totalprice}, #{pid}, #{count}, now(), #{isPaid}, #{itemcode}, #{isPrint}, #{feecode}, #{isDone}, #{billcat})
+        (#{totalprice}, #{pid}, #{count}, now(), #{isPaid}, #{itemcode}, #{isPrint}, #{feecode}, #{isDone}, #{billcat},'register')
     </insert>
 
     <sql id="getNonMedicBillsByPid">
