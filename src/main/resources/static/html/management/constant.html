@@ -16,16 +16,16 @@
     <div id="constant">
         <el-row :gutter="20">
             <el-col :span="4">
-                <el-input type="text" v-model="constid" placeholder="ID"></el-input>
+                <el-input type="text" v-model="constid" placeholder="ID" clearable></el-input>
             </el-col>
             <el-col :span="4">
-                <el-input type="text" v-model="consttype" placeholder="Type"></el-input>
+                <el-input type="text" v-model="consttype" placeholder="Type" clearable></el-input>
             </el-col>
             <el-col :span="4">
-                <el-input type="text" v-model="constname" placeholder="Name"></el-input>
+                <el-input type="text" v-model="constname" placeholder="Name" clearable></el-input>
             </el-col>
             <el-col :span="4">
-                <el-input type="text" v-model="constcode" placeholder="Code"></el-input>
+                <el-input type="text" v-model="constcode" placeholder="Code" clearable></el-input>
             </el-col>
             <el-col :span="4">
                 <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
@@ -64,9 +64,9 @@
 
         <el-dialog :title="formTitle" :visible.sync="dialogFormVisible">
             <el-form :model="form">
-                <el-form-item label="ID" :label-width="formLabelWidth">
+                <!--<el-form-item v-if="methodType=='Add'" label="ID" :label-width="formLabelWidth">
                     <el-input v-model="form.constid" autocomplete="off"></el-input>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item label="Type" :label-width="formLabelWidth">
                     <el-input v-model="form.consttype" autocomplete="off"></el-input>
                 </el-form-item>
@@ -131,7 +131,7 @@
         },
 
         mounted: function(){
-                console.log("refresh!!!")
+                console.log("refresh!!!");
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/consts', {})
@@ -150,7 +150,7 @@
                 var that = this;
                 axios.post('/management/consts', {
                         constid: that.constid,
-                        consttype: that.constype,
+                        consttype: that.consttype,
                         constname: that.constname,
                         constcode: that.constcode,
                     })
@@ -181,6 +181,8 @@
                     })
                     .then(function(response) {
                         console.log(response.data);
+                        that.dialogFormVisible=false;
+                        that.refresh();
                         // that.consts=response.data;
                     })
                     .catch(function(error) {
@@ -196,8 +198,12 @@
                         consttype: that.form.consttype,
                         constname: that.form.constname,
                         constcode: that.form.constcode
-                    })
-                    .catch(function(error) {
+                    }).then(function(response) {
+                        console.log(response.data);
+                        that.dialogFormVisible=false;
+                        that.refresh();
+                        // that.consts=response.data;
+                    }).catch(function(error) {
                         console.log(error);
                     });
             },
@@ -219,12 +225,12 @@
                     constid: that.deletingObject.constid + ""
                 }).then(function(response) {
                     console.log(response.data);
+                    that.refresh();
                     // that.consts=response.data;
                 }).catch(function(error) {
                     console.log(error);
                 });
                 this.deleteDialogVisible = false;
-                this.refresh();
             },
 
             showDialogForm: function(method, index, row) {
@@ -246,7 +252,7 @@
                 this.updatingIndex = index;
                 this.updatingObject = row;
                 console.log("Method using " + this.methodType);
-                console.log("index " + index)
+                console.log("index " + index);
                 console.log("row ");
                 console.log(row)
             },

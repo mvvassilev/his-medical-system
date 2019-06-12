@@ -19,7 +19,7 @@
                 and pwd = #{pwd}
             </if>
             <if test="realname != null and realname!='' ">
-                and realname = #{username}
+                and realname = #{realname}
             </if>
             <if test="usercat != null and usercat!='' ">
                 and usercat = #{usercat}
