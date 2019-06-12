@@ -25,8 +25,12 @@
             </el-col>
         </el-row>
 
-        <el-table :data="docs" style="width: 100%; height: fit-content;">
-            <el-table-column prop="username" label="Dr." width="50"></el-table-column>
+        <el-table :data="docs" style="width: 100%; height: fit-content;" v-loading="loading">
+            <el-table-column prop="userid" type="expand" label="Dr." width="50">
+                <template slot-scope="props">
+                    <p>Doctor Name: {{ props.row.username }}</p>
+                  </template>
+            </el-table-column>
             <el-table-column prop="patientsamount" label="看诊人次" width="40"></el-table-column>
             <el-table-column prop="receiptamount" label="发票数量" width="40"></el-table-column>
             <el-table-column prop="feecode1" label="超声材料费" width="40"></el-table-column>
@@ -62,6 +66,8 @@
     var app = new Vue({
         el: '#doctors',
         data: {
+            loading: "",
+            userid: "",
             username: "",
             datevalue: "",
             patientsamount: "",
@@ -88,76 +94,81 @@
             feecode20: "",
             feecode21: "",
             docs: [],
-            users: [],
-            docsttl: []
+            users: []
         },
-        mounted: function(){
-            var that = this;
-            console.log("Search called")
-            axios.post('/financial/getReceiptInfoForDoctor', {
 
-            })
-            .then(function(response) {
-                that.docs = response.data;
-                console.log(that.docs);
-            })
-            .catch(function(error) {
-                console.log(error);
-            });
-        },
         methods: {
             //------------        PRINT RECORD         ----------//
             print: function() {
                 window.print();
             },
 
+            // ---------------     SEARCH      -----------------//
             search: function() {
                 var that = this;
                 console.log("Search called")
-                axios.post('/management/users', {
+                axios.post('/financial/getReceiptInfoForDoctor', {
 
-                    })
-                    .then(function(response) {
-                        that.users = response.data;
-                        console.log(that.users);
-                    })
-                    .catch(function(error) {
-                        console.log(error);
-                    });
-                axios.post('/management/users', {
+                })
 
-                    })
-                    .then(function(response) {
-                        that.users = response.data;
-                        console.log(that.users);
+                .then(function(response) {
+                        that.docs = response.data;
+                        console.log(that.docs);
+                        console.log(that.docsttl);
+
+                        //--------- CHART CREATION ---------//
+                        var docsttl = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+                        for (let i of response.data) {
+                            docsttl[0] += response.data[i].patientsamount;
+                            docsttl[1] += response.data[i].receiptamount;
+                            docsttl[2] += response.data[i].feecode1;
+                            docsttl[3] += response.data[i].feecode2;
+                            docsttl[4] += response.data[i].feecode3;
+                            docsttl[5] += response.data[i].feecode4;
+                            docsttl[6] += response.data[i].feecode5;
+                            docsttl[7] += response.data[i].feecode6;
+                            docsttl[8] += response.data[i].feecode7;
+                            docsttl[9] += response.data[i].feecode8;
+                            docsttl[10] += response.data[i].feecode9;
+                            docsttl[11] += response.data[i].feecode10;
+                            docsttl[12] += response.data[i].feecode11;
+                            docsttl[13] += response.data[i].feecode12;
+                            docsttl[14] += response.data[i].feecode13;
+                            docsttl[15] += response.data[i].feecode14;
+                            docsttl[16] += response.data[i].feecode15;
+                            docsttl[17] += response.data[i].feecode16;
+                            docsttl[18] += response.data[i].feecode17;
+                            docsttl[19] += response.data[i].feecode18;
+                            docsttl[20] += response.data[i].feecode19;
+                            docsttl[21] += response.data[i].feecode20;
+                            docsttl[22] += response.data[i].feecode21;
+                        }
+                        var ctx = document.getElementById('deptschart').getContext('2d');
+                        var chart = new Chart(ctx, {
+                            type: 'bar',
+
+                            data: {
+                                labels: ['看诊人次', '发票数量', '超声材料费', '超声检查费', 'CT材料费',
+                                    'CT检查费', '处置材料费', '处置费', '放射材料费', '放射检查费',
+                                    '挂号费', '检验材料费', '检验费', 'MRI材料费', 'MRI检查费', '麻醉费',
+                                    '门诊手术费', '麻醉药费', '其他', '西药费', '中成药费', '中草药费', '诊疗费'
+                                ],
+                                datasets: [{
+                                    label: 'Doctors record',
+                                    backgroundColor: 'rgb(64, 158, 255)',
+                                    borderColor: 'rgb(64, 158, 255)',
+                                    //docsttl is the total amount of recepits in each column
+                                    data: docsttl
+                                }]
+                            },
+                            options: {}
+                        });
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
             }
         }
-    });
-
-    var ctx = document.getElementById('deptschart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'bar',
-
-        data: {
-            labels: ['看诊人次', '发票数量', '超声材料费', '超声检查费', 'CT材料费',
-                'CT检查费', '处置材料费', '处置费', '放射材料费', '放射检查费',
-                '挂号费', '检验材料费', '检验费', 'MRI材料费', 'MRI检查费', '麻醉费',
-                '门诊手术费', '麻醉药费', '其他', '西药费', '中成药费', '中草药费', '诊疗费'
-            ],
-            datasets: [{
-                label: 'Doctors record',
-                backgroundColor: 'rgb(64, 158, 255)',
-                borderColor: 'rgb(64, 158, 255)',
-                data: [3, 10, 5, 2, 24, 30, 38, 15, 2, 12, 16, 3, 13, 5, 2, 18, 26, 32, 15, 2, 12, 16, 22]
-                    //data: docsttl
-            }]
-        },
-
-        options: {}
     });
 </script>
 

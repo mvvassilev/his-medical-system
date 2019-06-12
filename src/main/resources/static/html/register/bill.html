@@ -34,7 +34,7 @@
         <el-col :span="18">
             <!--      Table      -->
             <el-row>
-                <el-card class="box-card" style="min-height: 280px; max-height: 900px;">
+                <el-card class="box-card" style="min-height: 280px; max-height: 380px;">
                     <div slot="header" class="clearfix">
                         <span style="font-weight: bold">Billing Items</span>
                         <div style="float: right;  position:relative; top:-8px;">
@@ -54,15 +54,14 @@
                             :data="tableData"
                             tooltip-effect="dark"
                             style="width: 100%"
-                            @selection-change="handleSelectionChange"
-                            :default-sort = "{prop: 'billdate', order: 'descending'}">
+                            @selection-change="handleSelectionChange">
                         <el-table-column
                                 type="selection"
                                 width="55">
                         </el-table-column>
                         <el-table-column prop="billid" label="ID" width="80"></el-table-column>
                         <el-table-column prop="itemname" label="Item Name" width="140"></el-table-column>
-                        <el-table-column prop="billdate" label="Date" width="140" sortable></el-table-column>
+                        <el-table-column prop="billdate" label="Date" width="140"></el-table-column>
                         <el-table-column prop="totalprice" label="Price" width="140"></el-table-column>
                         <el-table-column prop="feename" label="Fee Name" width="140"></el-table-column>
                         <el-table-column prop="paid" label="Paid" width="140" :formatter="paidFormatter"></el-table-column>
@@ -413,27 +412,8 @@
                 }else if(this.confirmType == "Refund"){
                     this.condition.done = false;
                     this.getUndoneBills();
-                }else if(this.confirmType == "Query"){
-                    this.getBills();
                 }
             },
-                getBills(){
-                    var that = this;
-                    axios({
-                        url: '/charge/getBills',
-                        method: 'post',
-                        contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
-                        data: {condition: this.condition},
-                    })
-                        .then(function (response) {
-                            console.log("success get BillsByPid");
-                            console.log(response.data);
-                            that.tableData = response.data;
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                },
 
                 getUnpaidBills(){
                     var that = this;
@@ -478,7 +458,7 @@
                 this.getBillsByPid()
 
                 //清空已选
-
+                //重载表格
             },
 
 
