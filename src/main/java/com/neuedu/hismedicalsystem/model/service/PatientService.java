@@ -44,4 +44,18 @@ public class PatientService {
 
     public String getBillcatByRegid(Integer regid) { return patientMapper.getBillcatByRegid(regid);
     }
+
+
+    public List<Patient> loadExamPatients(JSONObject object) {
+        return patientMapper.loadExamPatients(object);
+    }
+
+    public Patient getPatientByExid(JSONObject object) {
+        return patientMapper.getPatientByExid(object);
+    }
+
+    public void addResults(JSONObject object) {
+        patientMapper.addResultsToHomepage(object);
+        patientMapper.addResultsToImage(object);
+    }
 }

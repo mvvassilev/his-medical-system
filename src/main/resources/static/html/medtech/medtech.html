@@ -153,13 +153,13 @@
             this.currentPage = 1;
             var that = this;
             axios.post('/management/nonmedics', {})
-            .then(function (response) {
-                console.log(response.data);
-                that.nonmedics = response.data;
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response.data);
+                    that.nonmedics = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
         methods: {
@@ -167,13 +167,13 @@
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/nonmedics', {
-                        itemcode: that.itemcode,
-                        feecode: that.feecode,
-                        deptcode: that.deptcode,
-                        itemname: that.itemname,
-                        size: that.size,
-                        price: that.price,
-                    })
+                    itemcode: that.itemcode,
+                    feecode: that.feecode,
+                    deptcode: that.deptcode,
+                    itemname: that.itemname,
+                    size: that.size,
+                    price: that.price,
+                })
                     .then(function(response) {
                         console.log(that.form.itemcode);
                         console.log(response.data);
@@ -188,13 +188,13 @@
                 this.currentPage = 1;
                 var that = this;
                 axios.post('/management/nonmedics', {
-                        itemcode: "",
-                        feecode: "",
-                        deptcode: "",
-                        itemname: "",
-                        size: "",
-                        price: "",
-                    })
+                    itemcode: "",
+                    feecode: "",
+                    deptcode: "",
+                    itemname: "",
+                    size: "",
+                    price: "",
+                })
                     .then(function(response) {
                         console.log(that.form.itemcode);
                         console.log(response.data);
@@ -218,13 +218,13 @@
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/addNonMedic', {
-                        itemcode: that.form.itemcode,
-                        feecode: that.form.feecode,
-                        deptcode: that.form.deptcode,
-                        itemname: that.form.itemname,
-                        size: that.form.size,
-                        price: that.form.price,
-                    })
+                    itemcode: that.form.itemcode,
+                    feecode: that.form.feecode,
+                    deptcode: that.form.deptcode,
+                    itemname: that.form.itemname,
+                    size: that.form.size,
+                    price: that.form.price,
+                })
                     .then(function(response) {
                         console.log(response.data);
                         // that.depts=response.data;
@@ -238,13 +238,13 @@
                 var that = this;
                 console.log(that.form);
                 axios.post('/management/updateNonMedic', {
-                        itemcode: that.form.itemcode,
-                        feecode: that.form.feecode,
-                        deptcode: that.form.deptcode,
-                        itemname: that.form.itemname,
-                        size: that.form.size,
-                        price: that.form.price,
-                    })
+                    itemcode: that.form.itemcode,
+                    feecode: that.form.feecode,
+                    deptcode: that.form.deptcode,
+                    itemname: that.form.itemname,
+                    size: that.form.size,
+                    price: that.form.price,
+                })
                     .catch(function(error) {
                         console.log(error);
                     });

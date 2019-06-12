@@ -18,4 +18,8 @@ public class FinancialController {
         return receiptService.getReceiptInfoForDoctor();
     }
 
+    @RequestMapping("/getReceiptInfoForDepartment")
+    public JSONArray getReceiptInfoForDepartment() {
+        return receiptService.getReceiptInfoForDepartment();
+    }
 }

@@ -14,49 +14,50 @@
 </head>
 
 <body>
-<div id="department">
-    <el-row :gutter="30">
-        <el-col :span="12" :gutter="10">
-            <el-date-picker v-model="datevalue" value-format="yyyy-MM-dd" type="daterange" align="right" unlink-panels
-                            range-separator="To" start-placeholder="Start Date" end-placeholder="End Date"
-                            :picker-options="pickerOptions"></el-date-picker>
-            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
-        </el-col>
-        <el-col :span="12" :gutter="10">
-            <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
-        </el-col>
-    </el-row>
+    <div id="department">
+        <el-row :gutter="30">
+            <el-col :span="12" :gutter="10">
+                <el-date-picker v-model="datevalue" value-format="yyyy-MM-dd" type="daterange" align="right" unlink-panels range-separator="To" start-placeholder="Start Date" end-placeholder="End Date" :picker-options="pickerOptions"></el-date-picker>
+                <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
+            </el-col>
+            <el-col :span="12" :gutter="10">
+                <el-button icon="el-icon-printer" type="primary" @click="print">Print</el-button>
+            </el-col>
+        </el-row>
 
-    <el-table :data="depts" style="width: 100%; height: fit-content;">
-        <el-table-column prop="deptname" label="Dep" width="50"></el-table-column>
-        <el-table-column prop="patientsamount" label="看诊人次" width="40"></el-table-column>
-        <el-table-column prop="receiptamount" label="发票数量" width="40"></el-table-column>
-        <el-table-column prop="feecode1" label="超声材料费" width="40"></el-table-column>
-        <el-table-column prop="feecode2" label="超声检查费" width="40"></el-table-column>
-        <el-table-column prop="feecode3" label="CT材料费" width="40"></el-table-column>
-        <el-table-column prop="feecode4" label="CT检查费" width="40"></el-table-column>
-        <el-table-column prop="feecode5" label="处置材料费" width="40"></el-table-column>
-        <el-table-column prop="feecode6" label="处置费" width="50"></el-table-column>
-        <el-table-column prop="feecode7" label="放射材料费" width="50"></el-table-column>
-        <el-table-column prop="feecode8" label="放射检查费" width="50"></el-table-column>
-        <el-table-column prop="feecode9" label="挂号费" width="50"></el-table-column>
-        <el-table-column prop="feecode10" label="检验材料费" width="50"></el-table-column>
-        <el-table-column prop="feecode11" label="检验费" width="50"></el-table-column>
-        <el-table-column prop="feecode12" label="MRI材料费" width="50"></el-table-column>
-        <el-table-column prop="feecode13" label="MRI检查费" width="50"></el-table-column>
-        <el-table-column prop="feecode14" label="麻醉费" width="50"></el-table-column>
-        <el-table-column prop="feecode15" label="门诊手术费" width="50"></el-table-column>
-        <el-table-column prop="feecode16" label="麻醉药费" width="50"></el-table-column>
-        <el-table-column prop="feecode17" label="其他" width="50"></el-table-column>
-        <el-table-column prop="feecode18" label="西药费" width="50"></el-table-column>
-        <el-table-column prop="feecode19" label="中成药费" width="50"></el-table-column>
-        <el-table-column prop="feecode20" label="中草药费" width="50"></el-table-column>
-        <el-table-column prop="feecode21" label="诊疗费" width="50"></el-table-column>
-    </el-table>
+        <el-table :data="depts" style="width: 100%; height: fit-content;">
+            <el-table-column prop="deptname" label="Department name" width="210"></el-table-column>
+            <el-table-column prop="patientsamount" label="看诊人次" width="40"></el-table-column>
+            <el-table-column prop="receiptamount" label="发票数量" width="40"></el-table-column>
+            <el-table-column prop="feecode1" label="超声材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode2" label="超声检查费" width="40"></el-table-column>
+            <el-table-column prop="feecode3" label="CT材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode4" label="CT检查费" width="40"></el-table-column>
+            <el-table-column prop="feecode5" label="处置材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode6" label="处置费" width="40"></el-table-column>
+            <el-table-column prop="feecode7" label="放射材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode8" label="放射检查费" width="40"></el-table-column>
+            <el-table-column prop="feecode9" label="挂号费" width="40"></el-table-column>
+            <el-table-column prop="feecode10" label="检验材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode11" label="检验费" width="40"></el-table-column>
+            <el-table-column prop="feecode12" label="MRI材料费" width="40"></el-table-column>
+            <el-table-column prop="feecode13" label="MRI检查费" width="40"></el-table-column>
+            <el-table-column prop="feecode14" label="麻醉费" width="40"></el-table-column>
+            <el-table-column prop="feecode15" label="门诊手术费" width="40"></el-table-column>
+            <el-table-column prop="feecode16" label="麻醉药费" width="40"></el-table-column>
+            <el-table-column prop="feecode17" label="其他" width="40"></el-table-column>
+            <el-table-column prop="feecode18" label="西药费" width="40"></el-table-column>
+            <el-table-column prop="feecode19" label="中成药费" width="40"></el-table-column>
+            <el-table-column prop="feecode20" label="中草药费" width="40"></el-table-column>
+            <el-table-column prop="feecode21" label="诊疗费" width="40"></el-table-column>
+        </el-table>
 
-    <!-------         CHART           -------->
-    <canvas id="deptschart"></canvas>
-</div>
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10, 20, 40]" :page-size="pagesize" :hide-on-single-page="value" layout="total, sizes, prev, pager, next, jumper" :total="depts.length">
+        </el-pagination>
+
+        <!-------         CHART           -------->
+        <canvas id="deptschart"></canvas>
+    </div>
 </body>
 
 
@@ -89,8 +90,12 @@
             feecode19: "",
             feecode20: "",
             feecode21: "",
-            depts: [],
-            deptsttl: [],
+
+            value: false,
+            currentPage: 1,
+            pagesize: 10,
+
+            depts: []
         },
 
         mounted: function() {
@@ -103,43 +108,72 @@
                 window.print();
             },
 
+            // ---------------     SEARCH      -----------------//
             search: function() {
                 var that = this;
                 console.log("Search called")
-                axios.post('/management/depts', {
+                axios.post('/financial/getReceiptInfoForDepartment', {
 
-                    })
-                    .then(function(response) {
-                        that.depts = response.data;
-                        console.log(that.depts);
+                })
+
+                .then(function(response) {
+                        that.docs = response.data;
+                        console.log(that.docs);
+
+                        //--------- CHART CREATION ---------//
+                        var deptsttl = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+                        for (let i of response.data) {
+                            console.log(i);
+                            deptsttl[0] += i.patientsamount;
+                            deptsttl[1] += i.receiptamount;
+                            deptsttl[2] += i.feecode1;
+                            deptsttl[3] += i.feecode2;
+                            deptsttl[4] += i.feecode3;
+                            deptsttl[5] += i.feecode4;
+                            deptsttl[6] += i.feecode5;
+                            deptsttl[7] += i.feecode6;
+                            deptsttl[8] += i.feecode7;
+                            deptsttl[9] += i.feecode8;
+                            deptsttl[10] += i.feecode9;
+                            deptsttl[11] += i.feecode10;
+                            deptsttl[12] += i.feecode11;
+                            deptsttl[13] += i.feecode12;
+                            deptsttl[14] += i.feecode13;
+                            deptsttl[15] += i.feecode14;
+                            deptsttl[16] += i.feecode15;
+                            deptsttl[17] += i.feecode16;
+                            deptsttl[18] += i.feecode17;
+                            deptsttl[19] += i.feecode18;
+                            deptsttl[20] += i.feecode19;
+                            deptsttl[21] += i.feecode20;
+                            deptsttl[22] += i.feecode21;
+                        }
+                        var ctx = document.getElementById('deptschart').getContext('2d');
+                        var chart = new Chart(ctx, {
+                            type: 'bar',
+
+                            data: {
+                                labels: ['看诊人次', '发票数量', '超声材料费', '超声检查费', 'CT材料费',
+                                    'CT检查费', '处置材料费', '处置费', '放射材料费', '放射检查费',
+                                    '挂号费', '检验材料费', '检验费', 'MRI材料费', 'MRI检查费', '麻醉费',
+                                    '门诊手术费', '麻醉药费', '其他', '西药费', '中成药费', '中草药费', '诊疗费'
+                                ],
+                                datasets: [{
+                                    label: 'Departments record',
+                                    backgroundColor: 'rgb(64, 158, 255)',
+                                    borderColor: 'rgb(64, 158, 255)',
+                                    //deptsttl is the total amount of recepits in each column
+                                    data: deptsttl
+                                }]
+                            },
+                            options: {}
+                        });
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
             }
         }
-    });
-
-    var ctx = document.getElementById('deptschart').getContext('2d');
-    var chart = new Chart(ctx, {
-        type: 'bar',
-
-        data: {
-            labels: ['看诊人次', '发票数量', '超声材料费', '超声检查费', 'CT材料费',
-                'CT检查费', '处置材料费', '处置费', '放射材料费', '放射检查费',
-                '挂号费', '检验材料费', '检验费', 'MRI材料费', 'MRI检查费', '麻醉费',
-                '门诊手术费', '麻醉药费', '其他', '西药费', '中成药费', '中草药费', '诊疗费'
-            ],
-            datasets: [{
-                label: 'Departments record',
-                backgroundColor: 'rgb(64, 158, 255)',
-                borderColor: 'rgb(64, 158, 255)',
-                data: [3, 10, 5, 2, 24, 30, 38, 15, 2, 12, 16, 3, 13, 20, 2, 18, 26, 32, 15, 2, 12, 16, 22]
-                    //data: deptsttl
-            }]
-        },
-
-        options: {}
     });
 </script>
 

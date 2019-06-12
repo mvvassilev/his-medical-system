@@ -135,9 +135,6 @@
                         <el-table-column prop="totalprice" label="Amount" width="140"></el-table-column>
                     </el-table>
                 </el-col>
-
-                <!--------    STAMP   --------->
-                <el-col :span="9" style="border: none"><img src="../../img/stamp.jpg" id="stp" /></el-col>
             </el-row>
 
             <!-----      TOTAL and Record details (DATE and Record ID)      ------>
@@ -155,6 +152,9 @@
                         <p id="ttl"></p>
                     </div>
                 </el-col>
+
+                <!--------    STAMP   --------->
+                <el-col :span="9" style="border: none"><img src="../../img/stamp.jpg" id="stp" /></el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="5">
@@ -225,6 +225,7 @@
                     .then(function(response) {
                         that.receipts = response.data;
                         console.log(that.receipts.feecode, that.receipts.totalprice);
+                        //calculate total (maybe in the sql statement)
                         document.getElementById("ttl").innerHTML = ttl;
                         let total;
                         for (total in receipts) {
