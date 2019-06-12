@@ -102,24 +102,24 @@
                     <el-row style="height: 50px" type="flex" justify="space-around">
                         <el-col :span="10">
                             <el-form-item label="ID">
-                                <el-input v-model="patientForm.pid"></el-input>
+                                <el-input :disabled="formDisable" v-model="patientForm.pid"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
                             <el-form-item label="Name">
-                                <el-input v-model="patientForm.pname"></el-input>
+                                <el-input :disabled="formDisable" v-model="patientForm.pname"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row style="height: 50px" type="flex" justify="space-around">
                         <el-col :span="10">
                             <el-form-item label="Age">
-                                <el-input v-model="patientForm.page"></el-input>
+                                <el-input :disabled="formDisable" v-model="patientForm.page"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="10">
                             <el-form-item label="Gender">
-                                <el-input v-model="patientForm.pgender"></el-input>
+                                <el-input :disabled="formDisable" v-model="patientForm.pgender"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -135,17 +135,17 @@
                     <el-row style="height: 50px" type="flex" justify="space-around">
                         <el-col :span="7">
                             <el-form-item label="Name">
-                                <el-input v-model="examForm.itemname"></el-input>
+                                <el-input :disabled="formDisable" v-model="examForm.itemname"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="7">
                             <el-form-item label="Price">
-                                <el-input v-model="examForm.price"></el-input>
+                                <el-input :disabled="formDisable" v-model="examForm.price"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="7">
                             <el-form-item label="State">
-                                <el-input v-model="examForm.state"></el-input>
+                                <el-input :disabled="formDisable" v-model="examForm.state"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -165,28 +165,33 @@
                                        :on-preview="handlePictureCardPreview"
                                        :before-upload="beforeUpload"
                                        :on-remove="handleRemove"
+                                       :on-change="onChange"
                                        :file-list="fileList"
                                        :before-remove="beforeRemove"
                                        :auto-upload="false"
                                        :limit="3"
                                        :on-exceed="handleExceed"
+                                       :disabled="formDisable"
                                        list-type="picture-card">
                                 <i style="margin-top: 60px" class="el-icon-plus"></i>
                             </el-upload>
                             <el-dialog :visible.sync="dialogVisible">
                                 <img width="100%" :src="dialogImageUrl" alt="">
                             </el-dialog>
-                            <el-input type="textarea" v-model="examForm.result" placeholder="Enter Description"
+                            <el-input :disabled="formDisable" type="textarea" v-model="examForm.result"
+                                      placeholder="Enter Description"
                                       maxlength="255"
                                       show-word-limit></el-input>
                         </el-card>
                         <el-row style="margin-top: 30px">
                             <el-col :span="4">
-                                <el-button icon="el-icon-document-checked" type="primary" @click="submitUpload">Submit
+                                <el-button :type="submitButtonType" :disabled="formDisable"
+                                           icon="el-icon-document-checked" @click="submitUpload">Submit
                                 </el-button>
                             </el-col>
                             <el-col :span="10">
-                                <el-button icon="el-icon-document-delete" type="primary" @click="" plain>Cancel
+                                <el-button :disabled="formDisable" icon="el-icon-document-delete" type="primary"
+                                           @click="" plain>Cancel
                                 </el-button>
                             </el-col>
                         </el-row>
@@ -250,15 +255,15 @@
                 currentRow: null,
 
 
-
                 fileList: [],
                 dialogImageUrl: '',
                 dialogVisible: false,
                 length: 0,
 
-                imgUrls: []
+                imgUrls: [],
 
-
+                formDisable: false,
+                submitButtonType: "primary"
             };
         },
         methods: {
@@ -274,6 +279,14 @@
                         response.data.pgender = 'Male';
                     } else {
                         response.data.pgender = 'Female';
+                    }
+
+                    if (that.currentRow.state === 'Executed') {
+                        that.formDisable = true;
+                        that.submitButtonType = 'success';
+                    } else {
+                        that.formDisable = false;
+                        that.submitButtonType = 'primary';
                     }
 
                     that.patientForm = response.data;
@@ -328,6 +341,9 @@
                 })
                     .then(function () {
                         that.loadPatientList('form');
+                        that.formDisable = true;
+                        that.submitButtonType = 'success';
+
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -336,11 +352,16 @@
 
             },
             handleRemove(file, fileList) {
+                this.length = fileList.length;
                 console.log(file, fileList);
             },
 
             beforeUpload(file) {
                 this.imgUrls.push(file.name)
+            },
+
+            onChange(file, fileList) {
+                this.length = fileList.length;
             },
 
             handlePictureCardPreview(file) {
