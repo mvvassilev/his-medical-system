@@ -2,6 +2,7 @@ package com.neuedu.hismedicalsystem.model.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.PatientMapper;
+import com.neuedu.hismedicalsystem.model.po.Bill;
 import com.neuedu.hismedicalsystem.model.po.FrontPage;
 import com.neuedu.hismedicalsystem.model.po.Patient;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,12 @@ public class PatientService {
 
     public String getHomePageStateByRegid(JSONObject object) {
         return patientMapper.getHomePageStateByRegid(object);
+    }
+
+    public void cancelExam(JSONObject object) {
+        Bill lastBill = patientMapper.getBillBack(object.getInteger("exid"));
+
+        patientMapper.addRevokeBill(lastBill);
+        patientMapper.updateExam(object.getInteger("exid"));
     }
 }
