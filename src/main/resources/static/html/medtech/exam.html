@@ -163,7 +163,8 @@
                                     </el-button>
                                 </el-col>
                                 <el-col :span="6">
-                                    <el-button icon="el-icon-picture-outline-round" type="primary" @click="ViewImages">View Uploaded Images
+                                    <el-button icon="el-icon-picture-outline-round" type="primary" @click="ViewImages">
+                                        View Uploaded Images
                                     </el-button>
                                 </el-col>
                             </el-row>
@@ -214,12 +215,12 @@
 
 <div id="imagePreview">
     <el-dialog title="Image Preview"
-                 :visible.sync="dialogVisible">
-    <div class="demo-image__lazy">
-      <el-image v-for="url in imgUrls" :key="url" :src="url" lazy></el-image>
-    </div>
+               :visible.sync="dialogVisible">
+        <div class="demo-image__lazy">
+            <el-image v-for="url in imgUrls" :key="url" :src="url" lazy></el-image>
+        </div>
 
-</el-dialog>
+    </el-dialog>
 </div>
 
 <script>
@@ -328,8 +329,8 @@
                 });
 
                 this.examForm = this.currentRow;
-                for(var i = 0; i < this.currentRow.imgUrls.length; i++ ){
-                    image.imgUrls.push( 'file:///D:/upload/'+this.currentRow.imgUrls[i]);
+                for (var i = 0; i < this.currentRow.imgUrls.length; i++) {
+                    image.imgUrls.push('file:///D:/upload/' + this.currentRow.imgUrls[i]);
                 }
 
 
@@ -393,17 +394,38 @@
             },
             cancelExecution() {
                 var that = this;
-                axios.post('/medtech/cancelExam', {
-                    'exid': this.currentRow.exid,
-                })
-                    .then(function () {
-                        that.loadPatientList('form');
-                        that.formDisable = true;
-
+                this.$confirm('Sure to Cancel?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    console.log('submit!');
+                    this.form.state = '初诊提交';
+                    var that = this;
+                    axios.post('/medtech/cancelExam', {
+                        'exid': this.currentRow.exid,
                     })
-                    .catch(function (error) {
-                        console.log(error);
+                        .then(function () {
+                            that.loadPatientList('form');
+                            that.formDisable = true;
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    this.$message({
+                        type: 'success',
+                        message: 'Cancel Succeed!'
                     });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Nothing happen.'
+                    });
+                });
+
+
             },
 
             submitUpload() {
@@ -450,7 +472,7 @@
                 return this.$confirm(`Sure To Remove ${file.name}?`);
             },
 
-            ViewImages(){
+            ViewImages() {
                 image.dialogVisible = true;
                 console.log(image.imgUrls);
             }
@@ -461,11 +483,11 @@
     var image = new Vue({
         el: '#imagePreview',
 
-        data(){
-            return{
-                dialogVisible:false,
+        data() {
+            return {
+                dialogVisible: false,
 
-                imgUrls:[]
+                imgUrls: []
             }
         }
     })

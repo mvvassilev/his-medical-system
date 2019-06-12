@@ -38,7 +38,7 @@ public class ShiftService {
         }
     }
 
-    public void deleteConflictShifts(Date startdate, Date enddate) {
-        shiftMapper.deleteConflictShifts(startdate, enddate);
+    public void deleteConflictShifts(int uRid, Date startdate, Date enddate) {
+        shiftMapper.deleteConflictShifts(uRid, startdate, enddate);
     }
 }
