@@ -29,11 +29,11 @@
                     </div>
                     <div style="margin-top: 10px;" class="hintFont">ID：</div>
                     <el-input placeholder="Patient ID" v-model="patientInfo.pid" size="medium" v-on:blur="tryCompletePInfo()"></el-input>
-                    <div class="hintFont">Name：</div>
+                    <div class="hintFont">Name:</div>
                     <el-input placeholder="Name" v-model="patientInfo.pname" size="medium"></el-input>
-                    <div class="hintFont">Age：</div>
+                    <div class="hintFont">Age:</div>
                     <el-input placeholder="Age" v-model="patientInfo.page" size="medium"></el-input>
-                    <div class="hintFont">Birth Date：</div>
+                    <div class="hintFont">Birth Date(optional):</div>
                     <el-date-picker v-model="patientInfo.pbirth" type="date"
                                     placeholder="Birth Date"
                                     size="medium">
@@ -205,7 +205,7 @@
         },
 
         mounted: function(){
-            console.log("refreshed")
+            console.log("refreshed");
             var that = this;
 
             axios({
@@ -216,7 +216,7 @@
             })
             .then(function (response) {
                 console.log("success getting shifts...");
-                console.log(response.data)
+                console.log(response.data);
                 that.shifts = response.data;
             })
             .catch(function (error) {
@@ -269,7 +269,7 @@
 
         methods: {
             refresh:function(){
-                console.log("Refresh!!!")
+                console.log("Refresh!!!");
                 var that = this;
                 axios({
                     url: '/registration/getDoctorsAvailable',
@@ -278,7 +278,7 @@
                     data:  this.screeningConditions,
                 })
                     .then(function (response) {
-                        console.log("successful got shifts")
+                        console.log("successful got shifts");
                         that.shifts=[];
                         that.shifts = response.data;
                         console.log("refresh->that.shifts");
@@ -295,7 +295,7 @@
             },
 
             onChangeScreeningConditions(){
-                console.log("onChangescreeningConditions")
+                console.log("onChangescreeningConditions");
                 console.log(this.screeningConditions);
                 var that = this;
                 axios({
@@ -305,7 +305,7 @@
                     data:  this.screeningConditions,
                 })
                 .then(function (response) {
-                    console.log("successful got shifts")
+                    console.log("successful got shifts");
                     that.shifts = response.data;
                 })
                 .catch(function (error) {
@@ -338,18 +338,18 @@
                     message: 'Picked',
                 });
                 this.selectedShift = row;
-                console.log("selectedShift")
-                console.log(this.selectedShift)
-                console.log("showPaymentDialogForm")
+                console.log("selectedShift");
+                console.log(this.selectedShift);
+                console.log("showPaymentDialogForm");
                 this.activeName = '1';
                 this.calculatePayment();
-                console.log("this.selectedShift = row;")
+                console.log("this.selectedShift = row;");
                 console.log(this.selectedShift);
             },
 
             onConfirm: function() {
-                console.log("onConfirm")
-                console.log(this.patientInfo)
+                console.log("onConfirm");
+                console.log(this.patientInfo);
                 var that = this;
                 axios({
                     url: '/registration/submitRegistration',
@@ -380,7 +380,7 @@
             },
 
             tryCompletePInfo:function () {
-                console.log("Blur")
+                console.log("Blur");
                 var that = this;
                 axios({
                     url: '/registration/tryCompletePatientInfo',
@@ -391,7 +391,7 @@
                 .then(function (response) {
                     console.log("success complete pinfo");
                     console.log(response.data);
-                    if(response.data.exists=="Yes"){
+                    if(response.data.exists==="Yes"){
                         that.patientInfo = response.data.patient;
                         that.patientExists = true;
                         that.$message({
@@ -403,7 +403,7 @@
                                 confirmButtonText: 'Confirm',
                                 type: 'warning',
                                 customClass: 'messageBox-prompt'
-                            })
+                            });
                             that.clearPInfo();
                         }
                     }
@@ -417,7 +417,7 @@
             },
 
             test:function () {
-                console.log("Test!!!")
+                console.log("Test!!!");
                 this.shifts = [];
             }
         }
