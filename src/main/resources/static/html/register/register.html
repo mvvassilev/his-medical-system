@@ -365,6 +365,8 @@
                 })
                 .then(function (response) {
                     console.log("success register");
+                    console.log("Inserted Bill")
+                    console.log(response.data);
                     that.$notify({
                         title: 'Success',
                         message: 'Successfully registered.',
@@ -372,6 +374,7 @@
                     });
                     that.activeName = "";
                     that.refresh();
+
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -382,6 +385,7 @@
             tryCompletePInfo:function () {
                 console.log("Blur")
                 var that = this;
+                that.patientExists = false;
                 axios({
                     url: '/registration/tryCompletePatientInfo',
                     method: 'post',
@@ -415,11 +419,33 @@
                     console.log(error);
                 });
             },
-
-            test:function () {
-                console.log("Test!!!")
-                this.shifts = [];
-            }
+//------------------Receipt--------------------------------
+            logReceipt(){
+                var that = this;
+                // that.onPreviewReceipt();
+                var patient = {pid:""};
+                patient.pid = that.patientInfo.pid;
+                axios({
+                    url: '/charge/logReceipt',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:{
+                        patientInfo: patient,
+                        bills: [],
+                        confirmType: "Charge",
+                        //TODO: Add chargerID 管理员here
+                        chargerid: 1
+                    }
+                })
+                    .then(function (response) {
+                        console.log("success logReceipt");
+                        that.receiptInfo.recid = response.data.recid;
+                        console.log(that.receiptInfo.recid)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
         }
 
 
