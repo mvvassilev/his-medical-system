@@ -53,21 +53,25 @@
             <el-card>
                 <el-row glutter="20">
                     <el-input placeholder="Enter Patient ID" v-model="pid" class="input-with-select">
-                        <el-button slot="append" icon="el-icon-search" @click=""></el-button>
+                        <el-button slot="append" icon="el-icon-search" @click="searchPatient('form')"></el-button>
                     </el-input>
                 </el-row>
 
                 <el-table
                         :data="patients"
                         style="width: 100%"
+                        :row-style="rowStyle"
                 >
                     <el-table-column type="expand">
                         <template slot-scope="props">
                             <el-table
                                     :data="props.row.examList"
-                                    style="width: 100%"
+                                    style="width: 100%; font-family: 'Microsoft YaHei';"
                                     highlight-current-row
-                                    @current-change="handleCurrentChange">
+                                    @current-change="handleCurrentChange"
+                                    :show-header="false"
+                                    :row-style="rowStyleDetail"
+                            >
                                 <el-table-column
                                         prop="itemname"
                                         width="150">
@@ -153,9 +157,16 @@
                     <el-row style="margin-left: 40px; margin-top: 20px">
                         <el-card style="background-color: #f0f6fd">
                             <el-row style="margin-bottom: 20px" type="flex" justify="space-between">
-                                <el-button icon="el-icon-circle-plus-outline" type="primary">Result ( {{length}} / 3 )
-                                </el-button>
-
+                                <el-col :span="6">
+                                    <el-button icon="el-icon-circle-plus-outline" type="primary">Result ( {{length}} / 3
+                                        )
+                                    </el-button>
+                                </el-col>
+                                <el-col :span="6">
+                                    <el-button icon="el-icon-picture-outline-round" type="primary" @click="ViewImages">
+                                        View Uploaded Images
+                                    </el-button>
+                                </el-col>
                             </el-row>
                             <el-upload style="margin-bottom: 30px"
                                        class="upload-demo"
@@ -191,7 +202,7 @@
                             </el-col>
                             <el-col :span="10">
                                 <el-button :disabled="formDisable" icon="el-icon-document-delete" type="primary"
-                                           @click="" plain>Cancel
+                                           @click="cancelExecution" plain>Cancel
                                 </el-button>
                             </el-col>
                         </el-row>
@@ -200,6 +211,16 @@
             </el-card>
         </el-col>
     </el-row>
+</div>
+
+<div id="imagePreview">
+    <el-dialog title="Image Preview"
+               :visible.sync="dialogVisible">
+        <div class="demo-image__lazy">
+            <el-image v-for="url in imgUrls" :key="url" :src="url" lazy></el-image>
+        </div>
+
+    </el-dialog>
 </div>
 
 <script>
@@ -267,6 +288,15 @@
             };
         },
         methods: {
+
+            rowStyle() {
+                return 'background-color:#f0f6fd;'
+            },
+
+            rowStyleDetail() {
+                return 'font-size:13px'
+            },
+
             handleCurrentChange(val) {
                 this.currentRow = val;
                 var that = this;
@@ -290,11 +320,19 @@
                     }
 
                     that.patientForm = response.data;
+                    that.$refs.upload.clearFiles();
+                    that.length = 0;
+                    console.log(that.fileList);
+
                 }).catch(function (error) {
                     console.log(error);
                 });
 
                 this.examForm = this.currentRow;
+                for (var i = 0; i < this.currentRow.imgUrls.length; i++) {
+                    image.imgUrls.push('file:///D:/upload/' + this.currentRow.imgUrls[i]);
+                }
+
 
                 console.log(this.currentRow)
             },
@@ -331,6 +369,65 @@
                      });*/
 
             },
+            searchPatient(formName) {
+                var that = this;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+
+                        axios.post('/medtech/loadExamPatients', {
+                            'extype': this.form.extype,
+                            'pid': this.pid,
+                        })
+                            .then(function (response) {
+                                console.log(response.data);
+                                that.patients = response.data;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+                    } else {
+                        console.log('Error Submit!!');
+                        return false;
+                    }
+                });
+            },
+            cancelExecution() {
+                var that = this;
+                this.$confirm('Sure to Cancel?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    console.log('submit!');
+                    this.form.state = '初诊提交';
+                    var that = this;
+                    axios.post('/medtech/cancelExam', {
+                        'exid': this.currentRow.exid,
+                    })
+                        .then(function () {
+                            that.loadPatientList('form');
+                            that.formDisable = true;
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    this.$message({
+                        type: 'success',
+                        message: 'Cancel Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Nothing happen.'
+                    });
+                });
+
+
+            },
+
             submitUpload() {
                 this.$refs.upload.submit();
                 var that = this;
@@ -373,10 +470,27 @@
             },
             beforeRemove(file, fileList) {
                 return this.$confirm(`Sure To Remove ${file.name}?`);
+            },
+
+            ViewImages() {
+                image.dialogVisible = true;
+                console.log(image.imgUrls);
             }
 
         }
     });
+
+    var image = new Vue({
+        el: '#imagePreview',
+
+        data() {
+            return {
+                dialogVisible: false,
+
+                imgUrls: []
+            }
+        }
+    })
 
 </script>
 </body>

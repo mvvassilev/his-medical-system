@@ -70,9 +70,11 @@
     <select id="getUndoneBills" resultType="Bill" >
         <include refid="getNonMedicBillsByPid"></include>
         and  isDone = #{isDone}
+        and totalprice &lt;0
         union
         <include refid="getMedicBillsByPid"></include>
         and  isDone = #{isDone}
+        and totalprice &lt;0
     </select>
 
     <update id="changeStateToPaid">

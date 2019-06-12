@@ -143,10 +143,11 @@
     <select id="loadExamPatients" resultMap="_patient">
         select * from his.bill b join his.exam e on b.treatid = e.exid
         join his.patient p on b.pid = p.pid join his.non_medic n on n.itemcode = b.itemcode
+        left join examImgs ei on ei.exid = e.exid
         <where>
-            extype = #{extype} and treatcat = 'exam' and isPaid = 1
+            extype = #{extype} and treatcat = 'exam' and isPaid = 1 and e.state != 'Revoked'
             <if test="pid != null">
-                and pid = #{pid}
+                and b.pid = #{pid}
             </if>
 
         </where>
@@ -164,6 +165,9 @@
             <result property="price" column="price"/>
             <result property="state" column="state"/>
             <result property="result" column="result"/>
+            <collection property="imgUrls" ofType="String">
+                <result property="imgUrl" column="url"/>
+            </collection>
         </collection>
     </resultMap>
 
@@ -188,4 +192,17 @@
     <select id="getHomePageStateByRegid" resultType="String">
         select state from his.homepage where regid = #{regid};
     </select>
+
+    <select id="getBillBack" resultType="Bill">
+        select * from his.bill where treatcat = 'exam' and treatid = #{exid};
+    </select>
+
+    <insert id="addRevokeBill" useGeneratedKeys="true" keyProperty="billid" >
+        insert into his.bill(totalprice, pid, count, itemcode, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid, recid)
+        values (-#{totalprice}, #{pid}, 1, #{itemcode}, now(), 0, #{treatcat}, 0, #{feecode}, 0, #{billcat}, #{treatid}, #{recid})
+    </insert>
+
+    <update id="updateExam">
+        update exam set his.exam.state = 'Revoked' where his.exam.exid = #{exid}
+    </update>
 </mapper>

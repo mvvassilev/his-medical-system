@@ -46,9 +46,10 @@ public class MedTechCotroller {
     public void upload(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
 
         //获取文件在服务器的储存位置
-        String path = request.getSession().getServletContext().getRealPath("/upload");
+        //String path = request.getSession().getServletContext().getRealPath("/upload");
+        String path = "d://upload/";
         File filePath = new File(path);
-        System.out.println("文件的保存路径：" + path);
+        //System.out.println("文件的保存路径：" + path);
         if (!filePath.exists() && !filePath.isDirectory()) {
             System.out.println("目录不存在，创建目录:" + filePath);
             filePath.mkdir();
@@ -75,5 +76,10 @@ public class MedTechCotroller {
     @RequestMapping("/addResults")
     public void addResults(@RequestBody JSONObject object){
         patientService.addResults(object);
+    }
+
+    @RequestMapping("/cancelExam")
+    public void cancelExam(@RequestBody JSONObject object){
+        patientService.cancelExam(object);
     }
 }

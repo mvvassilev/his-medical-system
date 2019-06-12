@@ -54,6 +54,9 @@
     <delete id="deleteConflictShifts">
         delete from shift
         where <![CDATA[ dutydate >= #{startdate} and dutydate <= #{enddate}]]>
+        <if test="uRid != null">
+            and his.shift.uRid = #{uRid}
+        </if>
     </delete>
 
 

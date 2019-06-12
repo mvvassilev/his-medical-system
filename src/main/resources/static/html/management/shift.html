@@ -600,6 +600,7 @@
             ration: '',
             opid: '',
             reglevel: '',
+            patchURid:null,
 
 
         },
@@ -695,7 +696,8 @@
                     data: {
                         startdate: this.ruledate[0],
                         enddate: this.ruledate[1],
-                        shifts: params
+                        shifts: params,
+
                     }
                     , // 以json字符串方式传递
                     success: function (data) {
