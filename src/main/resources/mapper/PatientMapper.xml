@@ -184,4 +184,8 @@
             (#{item}, #{exid})
         </foreach>
     </insert>
+
+    <select id="getHomePageStateByRegid" resultType="String">
+        select state from his.homepage where regid = #{regid};
+    </select>
 </mapper>

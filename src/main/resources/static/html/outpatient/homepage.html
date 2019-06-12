@@ -27,7 +27,7 @@
                 <el-button>Name: {{pname}}</el-button>
                 <el-button>ID: {{pid}}</el-button>
                 <el-button id="complete" icon="el-icon-s-claim" :type="buttonCType"
-                @click="complete" :disabled="buttonDisabled">{{buttonText}}</el-button>
+                           @click="complete" :disabled="buttonDisabled">{{buttonText}}</el-button>
             </el-col>
         </el-row>
     </el-card>
@@ -78,14 +78,21 @@
             <template>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <!-- Patient Home Page -->
-                    <el-tab-pane :disabled="tabDisabled" label="FrontPage" name="homepageframe/frontpage.html"></el-tab-pane>
-                    <el-tab-pane :disabled="tabDisabled" label="Examination" name="homepageframe/examination.html"></el-tab-pane>
-                    <el-tab-pane :disabled="tabDisabled" label="Inspection" name="homepageframe/inspection.html"></el-tab-pane>
-                    <el-tab-pane :disabled="tabDisabled" label="DiagConfirm" name="homepageframe/diagconfirm.html"></el-tab-pane>
-                    <el-tab-pane :disabled="tabDisabled" label="Treatment" name="homepageframe/treatment.html"></el-tab-pane>
-                    <el-tab-pane :disabled="tabDisabled" label="Patent-med" name="homepageframe/patentmed.html"></el-tab-pane>
-                    <el-tab-pane :disabled="tabDisabled" label="Herbal" name="homepageframe/herbal.html"></el-tab-pane>
-                    <el-tab-pane :disabled="tabDisabled" label="BillQuery" name="homepageframe/billquery.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled1" label="FrontPage"
+                                 name="homepageframe/frontpage.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled2" label="Examination"
+                                 name="homepageframe/examination.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled2" label="Inspection"
+                                 name="homepageframe/inspection.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled2" label="DiagConfirm"
+                                 name="homepageframe/diagconfirm.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled3" label="Treatment"
+                                 name="homepageframe/treatment.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled3" label="Patent-med"
+                                 name="homepageframe/patentmed.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled3" label="Herbal" name="homepageframe/herbal.html"></el-tab-pane>
+                    <el-tab-pane :disabled="tabDisabled3" label="BillQuery"
+                                 name="homepageframe/billquery.html"></el-tab-pane>
                 </el-tabs>
                 <el-row>
                     <el-col :span="24">
@@ -124,8 +131,8 @@
                 url: '',
                 isCollapse: true,
                 activeName: 'homepageframe/frontpage.html',
-                buttonText:'Complete',
-                buttonDisabled:false,
+                buttonText: 'Complete',
+                buttonDisabled: false,
                 buttonCType: 'primary',
 
                 active: 0,
@@ -142,7 +149,9 @@
                 deptWait: [],
                 deptDiagnosed: [],
                 loading: true,
-                tabDisabled:true,
+                tabDisabled1: true,
+                tabDisabled2: true,
+                tabDisabled3: true,
             };
         },
         methods: {
@@ -195,6 +204,44 @@
                     });
 
             },
+            resetActiveTab() {
+
+                var that = this;
+                axios.post('/outpatient/getHomePageStateByRegid', {
+                    'regid': this.regid,
+                })
+                    .then(function (response) {
+                        switch (response.data) {
+                            case '初诊提交':
+                                that.tabDisabled1 = false;
+                                that.tabDisabled2 = false;
+                                that.tabDisabled3 = true;
+                                break;
+                            case '确诊暂存':
+                                that.tabDisabled1 = false;
+                                that.tabDisabled2 = false;
+                                that.tabDisabled3 = true;
+                                break;
+                            case '确诊提交':
+                                that.tabDisabled1 = false;
+                                that.tabDisabled2 = false;
+                                that.tabDisabled3 = false;
+                                break;
+                            default:
+                                that.tabDisabled1 = false;
+                                that.tabDisabled2 = true;
+                                that.tabDisabled3 = true;
+                                break;
+
+                        }
+
+                    })
+
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
             handleSelect(key, value) {
                 var select = key.toString().split("-");
                 if (select[0] === "1" && select[1] === "1") {
@@ -220,21 +267,21 @@
                 }
 
                 this.url = 'homepageframe/frontpage.html';
-                this.activeName = 'homepageframe/frontpage.html';
-                this.tabDisabled = false;
                 myFrame.window.refreshPage();
 
+                this.resetActiveTab();
+                this.activeName = 'homepageframe/frontpage.html';
 
             },
 
             switchStep(state) {
                 this.active = parseInt(state);
-                console.log("switch step: " + state );
-                if(parseInt(state) === 6){
+                console.log("switch step: " + state);
+                if (parseInt(state) === 6) {
                     this.buttonText = 'Completed';
                     this.buttonDisabled = true;
                     this.buttonCType = 'success';
-                }else{
+                } else {
                     this.buttonText = 'Complete';
                     this.buttonDisabled = false;
                     this.buttonCType = 'primary';
@@ -245,12 +292,12 @@
             complete() {
                 var that = this;
                 axios.post('/outpatient/updatePatientState', {'regid': this.regid, 'state': 6})
-                .then(function() {
-                  that.loadPatientList();
-                  that.switchStep(6);
-                  that.url = 'homepageframe/frontpage.html'
-                  myFrame.window.refreshPage();
-                })
+                    .then(function () {
+                        that.loadPatientList();
+                        that.switchStep(6);
+                        that.url = 'homepageframe/frontpage.html'
+                        myFrame.window.refreshPage();
+                    })
 
                     .catch(function (error) {
                         console.log(error);
