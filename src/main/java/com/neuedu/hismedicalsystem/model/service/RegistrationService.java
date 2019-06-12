@@ -88,20 +88,6 @@ public class RegistrationService {
         patientMapper.insertHomepage(register.getRegid());
     }
 
-    //TODO:DELETE TEST
-    public void test(){
-        Registration register = new Registration();
-        register.setShiftid(1);
-        register.setOrder(2);
-        register.setPid(2394);
-        register.setuRid(234);
-        register.setItemcode("testing");
-        register.setNewRecord(true);
-
-        int regid = registrationMapper.addRegister(register);
-        System.out.println("regid = " + register.getRegid());
-    }
-
     public JSONObject getPatientInfo(int id) {
         Patient p;
         JSONObject result = new JSONObject();

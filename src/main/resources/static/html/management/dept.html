@@ -17,22 +17,22 @@
 
     <el-row :gutter="20">
         <el-col :span="4">
-            <el-input type="text" v-model="deptcode" placeholder="Code"></el-input>
+            <el-input type="text" v-model="deptcode" placeholder="Code" clearable></el-input>
         </el-col>
         <el-col :span="4">
-            <el-input type="text" v-model="deptclass" placeholder="Class"></el-input>
+            <el-input type="text" v-model="deptclass" placeholder="Class" clearable></el-input>
         </el-col>
         <el-col :span="4">
-            <el-input type="text" v-model="deptname" placeholder="Name"></el-input>
+            <el-input type="text" v-model="deptname" placeholder="Name" clearable></el-input>
         </el-col>
         <el-col :span="4">
-            <el-input type="text" v-model="deptcat" placeholder="Category"></el-input>
+            <el-input type="text" v-model="deptcat" placeholder="Category" clearable></el-input>
         </el-col>
         <el-col :span="4">
             <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
         <el-col :span="4">
-            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add
             </el-button>
         </el-col>
     </el-row>
@@ -232,6 +232,7 @@
                     })
                     .then(function(response) {
                         console.log(response.data);
+                        that.refresh();
                         // that.depts=response.data;
                     })
                     .catch(function(error) {
@@ -247,7 +248,11 @@
                         deptclass: that.form.deptclass,
                         deptname: that.form.deptname,
                         deptcat: that.form.deptcat
-                    })
+                    }).then(function(response) {
+                    console.log(response.data);
+                    that.refresh();
+                    // that.depts=response.data;
+                })
                     .catch(function(error) {
                         console.log(error);
                     });
@@ -260,6 +265,7 @@
             },
 
             onSubmitDelete: function() {
+                var that = this;
                 var params = new URLSearchParams();
                 params.append('deptcode', this.deletingObject.deptcode);
                 axios.post('/management/delDept', params)
@@ -269,12 +275,14 @@
                         console.log(response.deptcode);
                         that.deptcode = row.deptcode;
                         that.deptcode = response.deptcode;*/
-                    })
+                    }).then(function(response) {
+                        that.refresh();
+                    // that.depts=response.data;
+                })
                     .catch(function(error) {
                         console.log(error);
                     });
                 this.deleteDialogVisible = false;
-                this.refresh();
             },
 
 

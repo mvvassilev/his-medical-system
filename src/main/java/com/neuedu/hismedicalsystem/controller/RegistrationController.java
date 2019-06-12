@@ -129,8 +129,5 @@ public class RegistrationController {
         return result;
     }
 
-    @RequestMapping("/test")
-    public void test(@RequestBody JSONObject obj) {
-        registrationService.test();
-    }
+
 }
