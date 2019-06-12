@@ -103,6 +103,16 @@
         },
 
         methods: {
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
+            },
+
             //------------        PRINT RECORD         ----------//
             print: function() {
                 window.print();
