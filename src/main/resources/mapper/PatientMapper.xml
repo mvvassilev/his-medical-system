@@ -64,7 +64,7 @@
     </select>
 
     <resultMap type="FrontPage" id="_frontpage">
-        <id property="hpid" column="hpid" />
+        <id property="hpid" column="hpid"/>
         <result property="cheifCP" column="cheifCP"/>
         <result property="curHis" column="curHis"/>
         <result property="allergicHis" column="allergicHis"/>
@@ -77,7 +77,7 @@
         <result property="examResult" column="examResult"/>
         <result property="treatAdvice" column="treatAdvice"/>
         <collection property="diseaseList" ofType="Disease">
-            <id property="icdcode" column="icdcode" />
+            <id property="icdcode" column="icdcode"/>
             <result property="discode" column="discode"/>
             <result property="disname" column="disname"/>
             <result property="discat" column="discat"/>
@@ -93,31 +93,40 @@
         <set>
             <if test="cheifCP != null and cheifCP != ''">
                 cheifCP = #{cheifCP},
-            </if><if test="curHis != null and curHis != ''">
+            </if>
+            <if test="curHis != null and curHis != ''">
                 curHis = #{curHis},
-            </if><if test="pastHis != null and pastHis != ''">
+            </if>
+            <if test="pastHis != null and pastHis != ''">
                 pastHis = #{pastHis},
-            </if><if test="allergicHis != null and allergicHis != ''">
+            </if>
+            <if test="allergicHis != null and allergicHis != ''">
                 allergicHis = #{allergicHis},
-            </if><if test="situation != null and situation != ''">
+            </if>
+            <if test="situation != null and situation != ''">
                 situation = #{situation},
-            </if><if test="caution != null and caution != ''">
+            </if>
+            <if test="caution != null and caution != ''">
                 caution = #{caution},
-            </if><if test="phyExam != null and phyExam != ''">
+            </if>
+            <if test="phyExam != null and phyExam != ''">
                 phyExam = #{phyExam},
-            </if><if test="examAdvice != null and examAdvice != ''">
+            </if>
+            <if test="examAdvice != null and examAdvice != ''">
                 examAdvice = #{examAdvice},
-            </if><if test="examResult != null and examResult != ''">
+            </if>
+            <if test="examResult != null and examResult != ''">
                 examResult = #{examResult},
-            </if><if test="treatAdvice != null and treatAdvice != ''">
+            </if>
+            <if test="treatAdvice != null and treatAdvice != ''">
                 treatAdvice = #{treatAdvice},
             </if>
-                    disType = #{disType},
-                    state = #{state},
+            disType = #{disType},
+            state = #{state},
         </set>
         where hpid = #{hpid}
     </update>
-    
+
     <select id="getPatientByPid" resultType="Patient">
         select * from his.patient where pid = #{pid};
     </select>
@@ -131,4 +140,48 @@
         select billcat from his.bill where treatcat = 'register' and treatid = #{regid}
     </select>
 
+    <select id="loadExamPatients" resultMap="_patient">
+        select * from his.bill b join his.exam e on b.treatid = e.exid
+        join his.patient p on b.pid = p.pid join his.non_medic n on n.itemcode = b.itemcode
+        <where>
+            extype = #{extype} and treatcat = 'exam' and isPaid = 1
+            <if test="pid != null">
+                and pid = #{pid}
+            </if>
+
+        </where>
+    </select>
+
+    <resultMap id="_patient" type="Patient">
+        <id property="pid" column="pid"/>
+        <result property="page" column="page"/>
+        <result property="pgender" column="pgender"/>
+        <result property="pname" column="pname"/>
+        <collection property="examList" ofType="Exam">
+            <id property="exid" column="exid"/>
+            <result property="itemcode" column="e.itemcode"/>
+            <result property="itemname" column="itemname"/>
+            <result property="price" column="price"/>
+            <result property="state" column="state"/>
+            <result property="result" column="result"/>
+        </collection>
+    </resultMap>
+
+    <select id="getPatientByExid" resultType="Patient">
+        select * from his.patient p join his.bill b on p.pid = b.pid
+        join exam e on e.exid = b.treatid
+        where exid = #{exid} and treatcat = 'exam'
+    </select>
+
+    <update id="addResultsToHomepage">
+        update his.bill set his.bill.isDone = 1 where treatcat = 'exam' and treatid = #{exid};
+        update his.exam set his.exam.state = 'Executed', result = #{result} where his.exam.exid = #{exid};
+    </update>
+    
+    <insert id="addResultsToImage" useGeneratedKeys="true" keyProperty="imgid">
+        insert into examImgs (url, exid) values
+        <foreach item="item" collection="imgUrls" separator=",">
+            (#{item}, #{exid})
+        </foreach>
+    </insert>
 </mapper>

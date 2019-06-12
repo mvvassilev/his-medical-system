@@ -14,6 +14,19 @@
     .el-form-item {
         margin-bottom: -10px;
     }
+
+    .el-table__expanded-cell[class*=cell] {
+        padding: 0px;
+    }
+
+    .el-table__header-wrapper {
+        height: 10px;
+    }
+
+    .image {
+        width: 100%;
+        display: block;
+    }
 </style>
 <div id="patient">
     <el-card shadow="always" style="margin-bottom: 10px;">
@@ -24,11 +37,11 @@
                         <el-select v-model="form.extype" style="width: 220px" placeholder="Select Medical Technique">
                             <el-option label="Examination" value="examination"></el-option>
                             <el-option label="Test" value="test"></el-option>
-                            <el-option label="Treatment" value="treatment"></el-option>
+                            <el-option label="Disposal" value="disposal"></el-option>
                         </el-select>
                         <el-button style="margin-left: 20px" size="medium" icon="el-icon-refresh"
                                    @click="loadPatientList('form')"
-                                   type="warning" plain round>Reload
+                                   type="primary" plain round>Reload
                         </el-button>
                     </el-form-item>
                 </el-form>
@@ -46,45 +59,32 @@
 
                 <el-table
                         :data="patients"
-                        style="width: 100%">
+                        style="width: 100%"
+                >
                     <el-table-column type="expand">
                         <template slot-scope="props">
-                            <el-form label-position="left" inline class="demo-table-expand">
-                                <el-form-item label="商品名称">
-                                    <span>{{ props.row.name }}</span>
-                                </el-form-item>
-                                <el-form-item label="所属店铺">
-                                    <span>{{ props.row.shop }}</span>
-                                </el-form-item>
-                                <el-form-item label="商品 ID">
-                                    <span>{{ props.row.id }}</span>
-                                </el-form-item>
-                                <el-form-item label="店铺 ID">
-                                    <span>{{ props.row.shopId }}</span>
-                                </el-form-item>
-                                <el-form-item label="商品分类">
-                                    <span>{{ props.row.category }}</span>
-                                </el-form-item>
-                                <el-form-item label="店铺地址">
-                                    <span>{{ props.row.address }}</span>
-                                </el-form-item>
-                                <el-form-item label="商品描述">
-                                    <span>{{ props.row.desc }}</span>
-                                </el-form-item>
-                            </el-form>
+                            <el-table
+                                    :data="props.row.examList"
+                                    style="width: 100%"
+                                    highlight-current-row
+                                    @current-change="handleCurrentChange">
+                                <el-table-column
+                                        prop="itemname"
+                                        width="150">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="state"
+                                        width="115">
+                                </el-table-column>
+
+                            </el-table>
                         </template>
                     </el-table-column>
                     <el-table-column
-                            label="商品 ID"
-                            prop="id">
+                            prop="pid">
                     </el-table-column>
                     <el-table-column
-                            label="商品名称"
-                            prop="name">
-                    </el-table-column>
-                    <el-table-column
-                            label="描述"
-                            prop="desc">
+                            prop="pname">
                     </el-table-column>
                 </el-table>
 
@@ -93,6 +93,110 @@
         <el-col :span="18">
             <el-card>
 
+                <el-form :label-position="labelPosition" label-width="80px" :model="patientForm">
+                    <el-row style="height: 50px">
+                        <el-tag type="primary" style="margin-left: 50px" size="medium" effect="plain">Patient
+                            Information
+                        </el-tag>
+                    </el-row>
+                    <el-row style="height: 50px" type="flex" justify="space-around">
+                        <el-col :span="10">
+                            <el-form-item label="ID">
+                                <el-input :disabled="formDisable" v-model="patientForm.pid"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item label="Name">
+                                <el-input :disabled="formDisable" v-model="patientForm.pname"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row style="height: 50px" type="flex" justify="space-around">
+                        <el-col :span="10">
+                            <el-form-item label="Age">
+                                <el-input :disabled="formDisable" v-model="patientForm.page"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="10">
+                            <el-form-item label="Gender">
+                                <el-input :disabled="formDisable" v-model="patientForm.pgender"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </el-form>
+
+                <el-divider><i class="el-icon-mobile-phone"></i></el-divider>
+                <el-form :label-position="labelPosition" label-width="80px" :model="examForm">
+                    <el-row style="height: 50px">
+                        <el-tag type="primary" style="margin-left: 50px" size="medium" effect="plain">Med-Tech
+                            Information
+                        </el-tag>
+                    </el-row>
+                    <el-row style="height: 50px" type="flex" justify="space-around">
+                        <el-col :span="7">
+                            <el-form-item label="Name">
+                                <el-input :disabled="formDisable" v-model="examForm.itemname"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="7">
+                            <el-form-item label="Price">
+                                <el-input :disabled="formDisable" v-model="examForm.price"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="7">
+                            <el-form-item label="State">
+                                <el-input :disabled="formDisable" v-model="examForm.state"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+
+                    <el-row style="margin-left: 40px; margin-top: 20px">
+                        <el-card style="background-color: #f0f6fd">
+                            <el-row style="margin-bottom: 20px" type="flex" justify="space-between">
+                                <el-button icon="el-icon-circle-plus-outline" type="primary">Result ( {{length}} / 3 )
+                                </el-button>
+
+                            </el-row>
+                            <el-upload style="margin-bottom: 30px"
+                                       class="upload-demo"
+                                       ref="upload"
+                                       name="picture"
+                                       action="/medtech/upload"
+                                       :on-preview="handlePictureCardPreview"
+                                       :before-upload="beforeUpload"
+                                       :on-remove="handleRemove"
+                                       :on-change="onChange"
+                                       :file-list="fileList"
+                                       :before-remove="beforeRemove"
+                                       :auto-upload="false"
+                                       :limit="3"
+                                       :on-exceed="handleExceed"
+                                       :disabled="formDisable"
+                                       list-type="picture-card">
+                                <i style="margin-top: 60px" class="el-icon-plus"></i>
+                            </el-upload>
+                            <el-dialog :visible.sync="dialogVisible">
+                                <img width="100%" :src="dialogImageUrl" alt="">
+                            </el-dialog>
+                            <el-input :disabled="formDisable" type="textarea" v-model="examForm.result"
+                                      placeholder="Enter Description"
+                                      maxlength="255"
+                                      show-word-limit></el-input>
+                        </el-card>
+                        <el-row style="margin-top: 30px">
+                            <el-col :span="4">
+                                <el-button :type="submitButtonType" :disabled="formDisable"
+                                           icon="el-icon-document-checked" @click="submitUpload">Submit
+                                </el-button>
+                            </el-col>
+                            <el-col :span="10">
+                                <el-button :disabled="formDisable" icon="el-icon-document-delete" type="primary"
+                                           @click="" plain>Cancel
+                                </el-button>
+                            </el-col>
+                        </el-row>
+                    </el-row>
+                </el-form>
             </el-card>
         </el-col>
     </el-row>
@@ -130,46 +234,86 @@
                 pid: null,
                 regid: null,
 
-                patients: [{
-                    id: '12987122',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
-                }, {
-                    id: '12987123',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
-                }, {
-                    id: '12987125',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
-                }, {
-                    id: '12987126',
-                    name: '好滋好味鸡蛋仔',
-                    category: '江浙小吃、小吃零食',
-                    desc: '荷兰优质淡奶，奶香浓而不腻',
-                    address: '上海市普陀区真北路',
-                    shop: '王小虎夫妻店',
-                    shopId: '10333'
-                }]
+                labelPosition: 'right',
+                patientForm: {
+                    pid: '',
+                    pname: '',
+                    page: '',
+                    pgender: ''
+                },
+
+                examForm: {
+                    exid: '',
+                    itemname: '',
+                    price: null,
+                    state: 'Opened',
+                    result: '',
+
+                },
+
+                patients: [],
+                currentRow: null,
+
+
+                fileList: [],
+                dialogImageUrl: '',
+                dialogVisible: false,
+                length: 0,
+
+                imgUrls: [],
+
+                formDisable: false,
+                submitButtonType: "primary"
             };
         },
         methods: {
+            handleCurrentChange(val) {
+                this.currentRow = val;
+                var that = this;
+                axios.post('/medtech/getPatientByExid', {
+                    'exid': this.currentRow.exid,
+                }).then(function (response) {
+                    console.log(response.data);
+
+                    if (response.data.pgender) {
+                        response.data.pgender = 'Male';
+                    } else {
+                        response.data.pgender = 'Female';
+                    }
+
+                    if (that.currentRow.state === 'Executed') {
+                        that.formDisable = true;
+                        that.submitButtonType = 'success';
+                    } else {
+                        that.formDisable = false;
+                        that.submitButtonType = 'primary';
+                    }
+
+                    that.patientForm = response.data;
+                }).catch(function (error) {
+                    console.log(error);
+                });
+
+                this.examForm = this.currentRow;
+
+                console.log(this.currentRow)
+            },
+
             loadPatientList(formName) {
+                var that = this;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         console.log("wo tm load bao!");
+                        axios.post('/medtech/loadExamPatients', {
+                            'extype': this.form.extype,
+                        })
+                            .then(function (response) {
+                                console.log(response.data);
+                                that.patients = response.data;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
 
                     } else {
                         console.log('Error Submit!!');
@@ -187,27 +331,49 @@
                      });*/
 
             },
-            handleSelect(key, value) {
-                /* var select = key.toString().split("-");
-                 if (select[0] === "1" && select[1] === "1") {
-                     this.pid = this.myWait[parseInt(select[2]) - 1].pid;
-                     this.pname = this.myWait[parseInt(select[2]) - 1].pname;
-                     this.regid = this.myWait[parseInt(select[2]) - 1].regid;
-                 } else if (select[0] === "1" && select[1] === "2") {
-                     this.pid = this.myDiagnosed[parseInt(select[2]) - 1].pid;
-                     this.pname = this.myDiagnosed[parseInt(select[2]) - 1].pname;
-                     this.regid = this.myDiagnosed[parseInt(select[2]) - 1].regid;
-                 } else if (select[0] === "2" && select[1] === "1") {
-                     this.pid = this.deptWait[parseInt(select[2]) - 1].pid;
-                     this.pname = this.deptWait[parseInt(select[2]) - 1].pname;
-                     this.regid = this.deptWait[parseInt(select[2]) - 1].regid;
-                 } else if (select[0] === "2" && select[1] === "2") {
-                     this.pid = this.deptDiagnosed[parseInt(select[2]) - 1].pid;
-                     this.pname = this.deptDiagnosed[parseInt(select[2]) - 1].pname;
-                     this.regid = this.deptDiagnosed[parseInt(select[2]) - 1].regid;
-                 }*/
+            submitUpload() {
+                this.$refs.upload.submit();
+                var that = this;
+                axios.post('/medtech/addResults', {
+                    'exid': this.currentRow.exid,
+                    'imgUrls': this.imgUrls,
+                    'result': this.examForm.result,
+                })
+                    .then(function () {
+                        that.loadPatientList('form');
+                        that.formDisable = true;
+                        that.submitButtonType = 'success';
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                console.log(this.imgUrls)
 
             },
+            handleRemove(file, fileList) {
+                this.length = fileList.length;
+                console.log(file, fileList);
+            },
+
+            beforeUpload(file) {
+                this.imgUrls.push(file.name)
+            },
+
+            onChange(file, fileList) {
+                this.length = fileList.length;
+            },
+
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            },
+            handleExceed(files, fileList) {
+                this.$message.warning('Limit Exceed');
+            },
+            beforeRemove(file, fileList) {
+                return this.$confirm(`Sure To Remove ${file.name}?`);
+            }
 
         }
     });

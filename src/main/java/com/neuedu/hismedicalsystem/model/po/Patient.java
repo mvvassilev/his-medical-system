@@ -1,6 +1,7 @@
 package com.neuedu.hismedicalsystem.model.po;
 
 import java.sql.Date;
+import java.util.List;
 
 public class Patient {
     private int pid;
@@ -11,6 +12,8 @@ public class Patient {
     private String paddress;
     private String state;
     private int regid;
+
+    private List<Exam> examList;
 
     public Patient(int pid, String pname, boolean pgender, int page, Date pbirth, String paddress) {
         this.pid = pid;
@@ -96,6 +99,14 @@ public class Patient {
 
     public void setRegid(int regid) {
         this.regid = regid;
+    }
+
+    public List<Exam> getExamList() {
+        return examList;
+    }
+
+    public void setExamList(List<Exam> examList) {
+        this.examList = examList;
     }
 
     @Override
