@@ -39,7 +39,7 @@ public class RegistrationService {
     }
 
     //add a new registration to the bill table
-    public void addRegistrationBill(Patient patient, NonMedic registration, boolean newrecord, String billcat) {
+    public Bill addRegistrationBill(Patient patient, NonMedic registration, boolean newrecord, String billcat) {
         Bill bill = new Bill();
         double price = registration.getPrice();
         double newrecordPrice = 1;
@@ -55,6 +55,9 @@ public class RegistrationService {
         bill.setDone(true);
         bill.setBillcat(billcat);
         billMapper.insertBill(bill);
+
+        return bill;
+
     }
 
     public void registerToShift(Patient patient, NonMedic registrationType, boolean newrecord, Shift shift) {

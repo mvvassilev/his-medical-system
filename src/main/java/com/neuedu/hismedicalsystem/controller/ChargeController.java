@@ -96,7 +96,4 @@ public class ChargeController {
     {
         return receiptService.getBillsByRecid(obj);
     }
-
-
-
 }

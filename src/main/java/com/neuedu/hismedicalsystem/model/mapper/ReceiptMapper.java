@@ -17,7 +17,7 @@ public interface ReceiptMapper {
     void addRec(Receipt receipt);
     List<Receipt> getRecsByPid(long pid);
 
-    List<Receipt> getReceiptByRecid(int recid);
+    Receipt getReceiptByRecid(int recid);
 
     double sumFeeCodePriceForDept(@Param("uRid") int uRid, @Param("feecode") String feecode);
 }
