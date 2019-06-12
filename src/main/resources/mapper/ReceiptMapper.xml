@@ -13,12 +13,27 @@
         and feecode = "GHF"
     </select>
 
+    <select id="countRegsForDepartment" resultType="Integer">
+        select count(*) from receipt
+        where uRid = #{uRid}
+        and feecode = "GHF"
+    </select>
+
     <select id="countReceiptsForDoctor" resultType="Integer">
         select count(*) from receipt
         where uRid = #{uRid}
     </select>
 
+    <select id="countReceiptsForDepartment" resultType="Integer">
+        select count(*) from receipt
+        where uRid = #{uRid}
+    </select>
+
     <select id="sumFeeCodePriceForDoc" resultType="Double">
+        select IFNULL(SUM(totalprice), 0.0) from receipt where uRid = #{uRid} and feecode = #{feecode}
+    </select>
+
+    <select id="sumFeeCodePriceForDept" resultType="Double">
         select IFNULL(SUM(totalprice), 0.0) from receipt where uRid = #{uRid} and feecode = #{feecode}
     </select>
 </mapper>
