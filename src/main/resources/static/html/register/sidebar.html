@@ -33,11 +33,26 @@
         </el-menu>
     </el-col>
     <el-col :span="21">
-        <iframe  height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url" style="overflow: hidden"></iframe>
+        <iframe  height="1200" id="win" name="win" onload="Javascript:SetWinHeight(this)"
+                 frameborder="0" width="100%" scrolling="no" v-bind:src="url" style="overflow: hidden"></iframe>
     </el-col>
 </div>
 </body>
 <script>
+    function SetWinHeight(obj)
+    {
+        var win=obj;
+        if (document.getElementById)
+        {
+            if (win && !window.opera)
+            {
+                if (win.contentDocument && win.contentDocument.body.offsetHeight)
+                    win.height = win.contentDocument.body.offsetHeight;
+                else if(win.Document && win.Document.body.scrollHeight)
+                    win.height = win.Document.body.scrollHeight;
+            }
+        }
+    }
     var app = new Vue({
         el: '#sidebar',
         data: function() {
