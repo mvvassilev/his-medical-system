@@ -17,13 +17,13 @@
 <body>
 <div id="topbar">
     <el-row style="height: 100px">
-        <el-col :span="3">
+        <el-col :span="4">
             <el-image
                     style="width: 100%  ; height: 100%"
                     src="../img/logo.jpg"
                     ></el-image>
         </el-col>
-        <el-col :span="21">
+        <el-col :span="20">
             <el-menu style="margin-top: 10px" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-menu-item id="mng" index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management
                 </el-menu-item>

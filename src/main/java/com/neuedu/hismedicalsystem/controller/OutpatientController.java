@@ -176,8 +176,8 @@ public class OutpatientController {
     }
 
     @RequestMapping("/getMed")
-    public List<Medicine> getMed(String itemcode){
-        return prescriptionService.getMed(itemcode);
+    public List<Medicine> getMed(String itemcode, String pretype){
+        return prescriptionService.getMed(itemcode,pretype);
     }
 
     @RequestMapping("/addMed")
@@ -259,8 +259,7 @@ public class OutpatientController {
     }
 
 
-    /*
-    *
+    /**
     * Bill
     *
     * */

@@ -18,7 +18,7 @@ public interface PrescriptionMapper {
 
     public List<Medicine> getItem(int preid);
 
-    public List<Medicine> getMed(String itemcode);
+    public List<Medicine> getMed(@Param("itemcode") String itemcode,@Param("pretype") String pretype);
 
     public void addMed(@Param("preid") int preid, @Param("itemcode") String itemcode, @Param("count") int count);
 
