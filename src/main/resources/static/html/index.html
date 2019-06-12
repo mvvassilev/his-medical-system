@@ -21,26 +21,45 @@
             <el-image
                     style="width: 100%  ; height: 100%"
                     src="../img/logo.jpg"
-                    ></el-image>
+            ></el-image>
         </el-col>
         <el-col :span="16">
-            <el-menu style="margin-top: 10px" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu style="margin-top: 10px" :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                     @select="handleSelect">
                 <el-menu-item id="mng" index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management
                 </el-menu-item>
-                <el-menu-item id="reg" index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register & Payment
+                <el-menu-item id="reg" index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register &
+                    Payment
                 </el-menu-item>
-                <el-menu-item id="outp" index="3" v-on:click="navigateSidebarTo('outpatient/sidebar.html')">Outpatient Doctor
+                <el-menu-item id="outp" index="3" v-on:click="navigateSidebarTo('outpatient/sidebar.html')">Outpatient
+                    Doctor
                 </el-menu-item>
-                <el-menu-item id="medt" index="4" v-on:click="navigateSidebarTo('medtech/sidebar.html')">Medical Treatment
+                <el-menu-item id="medt" index="4" v-on:click="navigateSidebarTo('medtech/sidebar.html')">Medical
+                    Treatment
                 </el-menu-item>
-                <el-menu-item id="phar" index="5" v-on:click="navigateSidebarTo('pharmacy/sidebar.html')">Pharmacy Management
+                <el-menu-item id="phar" index="5" v-on:click="navigateSidebarTo('pharmacy/sidebar.html')">Pharmacy
+                    Management
                 </el-menu-item>
-                <el-menu-item id="fin" index="6" v-on:click="navigateSidebarTo('financial/sidebar.html')">Financial Management
+                <el-menu-item id="fin" index="6" v-on:click="navigateSidebarTo('financial/sidebar.html')">Financial
+                    Management
                 </el-menu-item>
             </el-menu>
         </el-col>
         <el-col :span="4">
+            <el-card>
+                <el-row type="flex" justify="space-around">
+                    <el-col :span="10">
+                        <el-tag style="font-family: 'Microsoft Sans Serif';" type="primary">
+                            {{this.usercat}}:{{this.username}}
+                        </el-tag>
+                    </el-col>
+                    <el-col :span="6">
+                        <i style="padding: 8px" class="el-icon-s-custom"></i>
+                    </el-col>
+                </el-row>
+            </el-card>
 
+            </span>
         </el-col>
     </el-row>
 </div>
@@ -64,7 +83,8 @@
     </el-dialog>
     <div class="line"></div>
     <el-row :span="24">
-        <iframe  height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url_sidebar" style="overflow: hidden"></iframe>
+        <iframe height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url_sidebar"
+                style="overflow: hidden"></iframe>
     </el-row>
 </div>
 </body>
@@ -72,17 +92,17 @@
 <script>
     var app = new Vue({
         el: '#app',
-        data: function() {
+        data: function () {
             var validateUserName = (rule, value, callback) => {
                 function checkUserName(value) {
                     var params = new URLSearchParams();
                     params.append("username", value);
                     axios.post('/management/checkUserName', params)
-                        .then(function(response) {
+                        .then(function (response) {
                             console.log(response.data);
                             check = response.data;
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             console.log(error);
                         });
                 }
@@ -113,7 +133,8 @@
             return {
                 url_sidebar: "",
                 loginDialogVisible: true,
-                usercat:'',
+                usercat: '',
+                username: '',
 
                 ruleForm: {
                     username: '',
@@ -133,8 +154,10 @@
 
         },
         methods: {
-            handleSelect(key, keypath) {},
-            handleOpen(key, keypath) {},
+            handleSelect(key, keypath) {
+            },
+            handleOpen(key, keypath) {
+            },
             navigateSidebarTo(url_sidebar) {
                 console.log('called in app');
                 this.url_sidebar = url_sidebar;
@@ -148,7 +171,7 @@
                         params.append("username", that.ruleForm.username);
                         params.append("password", that.ruleForm.password);
                         axios.post('/management/checkLogin', params)
-                            .then(function(response) {
+                            .then(function (response) {
                                 if (response.data.check) {
                                     let mng = document.getElementById("mng");
                                     let reg = document.getElementById("reg");
@@ -158,7 +181,7 @@
                                     let fin = document.getElementById("fin");
 
                                     /*"usercat" defines what kind of user entered the page
-                                        
+
                                         manager - all privilages
                                         charger - only register tab
                                         门诊医生 - only outpatient doctor tab
@@ -167,6 +190,8 @@
                                         financial - only financial tab
                                     */
                                     this.usercat = response.data.loginUser.usercat;
+                                    topbar.username = response.data.loginUser.username;
+                                    topbar.usercat = response.data.loginUser.usercat;
                                     console.log(response.data.loginUser)
 
                                     if (this.usercat === "医院管理员") {
@@ -236,7 +261,7 @@
                                     alert('Wrong Password.');
                                 }
                             })
-                            .catch(function(error) {
+                            .catch(function (error) {
                                 console.log(error);
                             });
 
@@ -253,14 +278,18 @@
     });
     var topbar = new Vue({
         el: '#topbar',
-        data: function() {
+        data: function () {
             return {
+                usercat: '',
+                username: '',
                 activeIndex: '1',
             };
         },
         methods: {
-            handleSelect(key, keypath) {},
-            handleOpen(key, keypath) {},
+            handleSelect(key, keypath) {
+            },
+            handleOpen(key, keypath) {
+            },
             navigateSidebarTo(url) {
                 console.log('called in topbar');
                 app.navigateSidebarTo(url);
