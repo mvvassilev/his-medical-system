@@ -35,8 +35,6 @@ public class BillService {
         billMapper.changeStateToPaid(billId);
         //Set isPaid for negative bill to 'true
         billMapper.changeStateToDone(billId);
-        //Print 冲红发票
-        //Print 剩余项目的发票
     }
 
     public void addExamToBill(JSONObject object) { billMapper.addExamToBill(object);
