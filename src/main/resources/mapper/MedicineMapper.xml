@@ -26,4 +26,60 @@
         size=#{size},medcat=#{medcat}
         where itemcode = #{itemcode}
     </update>
+
+    <select id="getItemCodeByPreid" resultType="Medicine">
+        select * from his.prerel pr join his.medicine m on pr.itemcode = m.itemcode
+         where preid = #{preid}
+    </select>
+
+    <select id="getBill" resultType="Bill">
+        select m.itemname, b.count, u.realname, p.prename, b.billdate, b.billid
+        from (((bill b join prescription p on b.treatid=p.preid)
+        join userrdept ur on p.uRid=ur.uRid)
+        join user u on ur.userid=u.userid)
+        join medicine m on b.itemcode=m.itemcode
+        <where>
+            <if test="pid!=''">
+                and pid =#{pid}
+            </if>
+            and isPaid=1 and isDone=0 and treatcat='prescription' and totalprice>0
+        </where>
+    </select>
+
+    <update id="sendMed" parameterType="String">
+        update bill set isDone =1
+        where billid in
+        <foreach item="ids" collection="array" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+    </update>
+
+    <select id="getReturnBill" resultType="Bill">
+        select m.itemname, b.count, u.realname, p.prename, b.billdate, b.billid
+        from (((bill b join prescription p on b.treatid=p.preid)
+        join userrdept ur on p.uRid=ur.uRid)
+        join user u on ur.userid=u.userid)
+        join medicine m on b.itemcode=m.itemcode
+        <where>
+            <if test="pid!=''">
+                and pid =#{pid}
+            </if>
+            and isPaid=1 and isDone=1 and treatcat='prescription' and totalprice>0 and count&lt;&gt;0
+        </where>
+    </select>
+
+    <select id="getReturnMed" resultType="Bill">
+        select * from bill
+        where billid=#{billid}
+    </select>
+
+    <insert id="returnMed" parameterType="Bill">
+        insert into bill(totalprice, pid, count, itemcode, billdate, isPaid, treatcat, isPrint, feecode, isDone, billcat, treatid,recid)
+        values (#{totalprice},#{pid},#{count},#{itemcode},#{billdate},#{isPaid},#{treatcat},#{isPrint},#{feecode},#{isDone},#{billcat},#{treatid},#{recid})
+    </insert>
+
+    <update id="changeCount">
+        update bill set count=count-#{count}
+        where billid=#{billid}
+    </update>
 </mapper>

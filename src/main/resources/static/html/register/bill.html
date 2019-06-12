@@ -102,7 +102,7 @@
                             <el-row style="margin-top: 20px" type="flex" justify="space-between">
                                 <el-col :span="16">
                                     <div v-for="bill in multipleSelection">
-                                        <entry-line :bill="bill"></entry-line>
+                                        <entry-line :bill="bill" :confirmType="confirmType"></entry-line>
                                     </div>
                                 </el-col>
                             </el-row>
@@ -121,11 +121,8 @@
                                         <el-col :span="8">
 
                                         </el-col>
-                                        <el-col v-if="confirmType==='Charge'" :span="6">
+                                        <el-col :span="6">
                                             {{totalPrice}}元
-                                        </el-col>
-                                        <el-col v-if="confirmType==='Refund'" :span="6">
-                                            - {{totalPrice}}元
                                         </el-col>
                                     </el-row>
                                 </el-col>
@@ -173,7 +170,9 @@
         <span>Are you sure to give refund for these items?</span>
         <span slot="footer" class="dialog-footer">
             <el-button @click="deleteDialogVisible = false">No</el-button>
-            <el-button type="primary" @click="onConfirm">Yes</el-button>
+            <a href="receipt-preview.html"  target="_blank">
+                <el-button type="primary" @click="onConfirm">Yes</el-button>
+            </a>
         </span>
     </el-dialog>
 
@@ -212,10 +211,14 @@
         </el-row>
 
         <div slot="footer" class="dialog-footer">
-            <el-button type="info" style="margin-top: 10px;" icon="el-icon-view" @click="onPreviewReceipt">
-                <a href="receipt-preview.html"  target="_blank">Preview Receipt</a>
-            </el-button>
-            <el-button type="primary" style="margin-top: 10px;" icon="el-icon-coin" @click="onConfirm">Confirm</el-button>
+            <a href="receipt-preview.html"  target="_blank">
+                <el-button type="info" style="margin-top: 10px;" icon="el-icon-view" @click="onPreviewReceipt">
+                    Preview Receipt
+                </el-button>
+            </a>
+            <a href="receipt-preview.html"  target="_blank">
+                <el-button type="primary" style="margin-top: 10px;" icon="el-icon-coin" @click="onConfirm">Confirm</el-button>
+            </a>
         </div>
 
     </el-dialog>
@@ -245,7 +248,7 @@
     })
 
     Vue.component('entry-line', {
-        props: ['bill'],
+        props: ['bill','confirmType'],
         template: `
             <el-row style="margin-left: 20px; font-size: medium" type="flex" justify="space-between">
                 <el-col :span="6">
@@ -254,8 +257,11 @@
                 <el-col :span="8">
 
                 </el-col>
-                <el-col :span="6">
-                    {{bill.totalprice * bill.count}}元
+                <el-col v-if="confirmType === 'Refund'" :span="6">
+                    {{bill.totalprice}} 元
+                </el-col>
+                <el-col v-else :span="6">
+                    {{bill.totalprice}} 元
                 </el-col>
             </el-row>
         `
@@ -265,51 +271,51 @@
         el: '#cancel',
         data: {
             tableData: [
-                {
-                    billcat: "自费",
-                    billdate: "2019-06-06",
-                    billid: 0,
-                    count: 1,
-                    done: true,
-                    feecode: "GHF",
-                    feename: "CT检查费",
-                    itemcode: "PTH",
-                    itemname: "普通号",
-                    paid: false,
-                    pid: 3,
-                    print: false,
-                    totalprice: 6,
-                },
-                {
-                    billcat: "自费",
-                    billdate: "2019-06-06",
-                    billid: 0,
-                    count: 1,
-                    done: true,
-                    feecode: "GHF",
-                    feename: "挂号费",
-                    itemcode: "PTH",
-                    itemname: "普通号",
-                    paid: true,
-                    pid: 3,
-                    print: false,
-                    totalprice: 9,
-                },
-                {
-                    billcat: "自费",
-                    billdate: "2019-06-06",
-                    billid: 0,
-                    count: 1,
-                    done: true,
-                    feecode: "GHF",
-                    feename: "挂号费",
-                    itemcode: "PTH",
-                    itemname: "普通号",
-                    paid: true,
-                    pid: 3,
-                    print: false,
-                    totalprice: 9,
-                }
+                // {
+                //     billcat: "自费",
+                //     billdate: "2019-06-06",
+                //     billid: 0,
+                //     count: 1,
+                //     done: true,
+                //     feecode: "GHF",
+                //     feename: "CT检查费",
+                //     itemcode: "PTH",
+                //     itemname: "普通号",
+                //     paid: false,
+                //     pid: 3,
+                //     print: false,
+                //     totalprice: 6,
+                // },
+                // {
+                //     billcat: "自费",
+                //     billdate: "2019-06-06",
+                //     billid: 0,
+                //     count: 1,
+                //     done: true,
+                //     feecode: "GHF",
+                //     feename: "挂号费",
+                //     itemcode: "PTH",
+                //     itemname: "普通号",
+                //     paid: true,
+                //     pid: 3,
+                //     print: false,
+                //     totalprice: 9,
+                // },
+                // {
+                //     billcat: "自费",
+                //     billdate: "2019-06-06",
+                //     billid: 0,
+                //     count: 1,
+                //     done: true,
+                //     feecode: "GHF",
+                //     feename: "挂号费",
+                //     itemcode: "PTH",
+                //     itemname: "普通号",
+                //     paid: true,
+                //     pid: 3,
+                //     print: false,
+                //     totalprice: 9,
+                // }
             ],
             multipleSelection: [],
             totalPrice: 0,
@@ -358,29 +364,31 @@
                 paymentMethod: "",
                 patientInfo: "",
                 date: "",
+                recid: "",
+                totalPrice:"",
                 recid: ""
             }
         },
 
         mounted: function() {
-            this.condition.pid = 20165048;
-            this.patientInfo.pid = 20165048;
-            this.condition.paid = false;
-            var that = this;
-            axios({
-                url: '/charge/getUnpaidBills',
-                method: 'post',
-                contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
-                data: {condition: this.condition},
-            })
-                .then(function (response) {
-                    console.log("success getBillsByPid");
-                    console.log(response.data);
-                    that.tableData = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            // this.condition.pid = 20165048;
+            // this.patientInfo.pid = 20165048;
+            // this.condition.paid = false;
+            // var that = this;
+            // axios({
+            //     url: '/charge/getUnpaidBills',
+            //     method: 'post',
+            //     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+            //     data: {condition: this.condition},
+            // })
+            //     .then(function (response) {
+            //         console.log("success getBillsByPid");
+            //         console.log(response.data);
+            //         that.tableData = response.data;
+            //     })
+            //     .catch(function (error) {
+            //         console.log(error);
+            //     });
 
         },
 
@@ -556,12 +564,15 @@
 //---------------------Preview Receipt----------------
             logReceipt(){
                 var that = this;
+                that.onPreviewReceipt();
+                var patient = {pid:""};
+                patient.pid = that.patientInfo.pid;
                 axios({
                     url: '/charge/logReceipt',
                     method: 'post',
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
                     data:{
-                        patientInfo: that.patientInfo,
+                        patientInfo: patient,
                         bills: that.multipleSelection,
                         confirmType: that.confirmType,
                         //TODO: Add chargerID 管理员here
@@ -570,6 +581,8 @@
                 })
                     .then(function (response) {
                         console.log("success logReceipt");
+                        that.receiptInfo.recid = response.data.recid;
+                        console.log(that.receiptInfo.recid)
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -577,17 +590,15 @@
             },
 
             onPreviewReceipt(){
-                this.receiptInfo = {
-                    items : [],
-                    paymentMethod: this.paymentMethod,
-                    patientInfo: this.patientInfo,
-                    date: "2019-02-03",
-                    recid: "15241634"
-                }
-
-                this.receiptInfo.items = JSON.stringify(this.multipleSelection);
-                localStorage.setItem("receiptInfo",receiptInfo);
-
+                this.receiptInfo.items =this.multipleSelection;
+                this.receiptInfo.paymentMethod = this.paymentMethod;
+                this.receiptInfo.patientInfo = this.patientInfo;
+                var myDate = new Date();
+                this.receiptInfo.date = myDate.toLocaleDateString();
+                //Receipt ID TODO: get from backend
+                this.receiptInfo.recid = 12534;
+                this.receiptInfo.totalPrice = this.totalPrice;
+                localStorage.setItem("receiptInfo",JSON.stringify(this.receiptInfo));
             },
 
             handleSelectionChange(val) {
@@ -607,11 +618,23 @@
              * Helper
              * */
             calculateTotalPrice(){
-                var i = 0;
-                this.totalPrice = 0;
-                for(i = 0; i < this.multipleSelection.length; i++){
-                    this.totalPrice += this.multipleSelection[i].count * this.multipleSelection[i].totalprice;
-                }
+                var that = this;
+                axios({
+                    url: '/charge/getPrintedTotalPrice',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:{
+                        bills: that.multipleSelection,
+                        confirmType: that.confirmType,
+                    }
+                })
+                    .then(function (response) {
+                        console.log("success calculateTotalPrice");
+                        that.totalPrice = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
 
             paidFormatter(row){

@@ -165,12 +165,12 @@ public class HisMedicalSystemApplicationTests {
 	}
 
 	@Test
-	public void testLogReceipt(){
-		try {
+	public void testKEVIN() {
 
-			String jsonStr = "{\"state\":\"已挂号\",\"deptcode\":\"CK\"}";
+		try {
+			String jsonStr = "{\"billid\":2}";
 			JSONObject jsonObject = JSONObject.parseObject(jsonStr);
-			String responseString = mockMvc.perform(post("/financial/testAPI").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
+			String responseString = mockMvc.perform(post("/charge/getURidByBillid").contentType(MediaType.APPLICATION_JSON).content(jsonStr)).andDo(print())
 					.andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 			after(responseString);
 		} catch (Exception e) {
@@ -184,5 +184,7 @@ public class HisMedicalSystemApplicationTests {
 		// 判断接口返回json中success字段是否为true
 		Assert.assertTrue(resultObj.getBooleanValue("success"));
 	}
+
+
 
 }

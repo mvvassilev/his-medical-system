@@ -18,10 +18,7 @@
     <el-col :span="3">
         <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                  style="height: 100vh">
-            <el-menu-item index="1" v-on:click="navigateTo('constant.html')">
-                <span>Patient</span>
-            </el-menu-item>
-            <el-menu-item index="2" v-on:click="navigateTo('dept.html')">
+            <el-menu-item index="2" v-on:click="navigateTo('receipt.html')">
                 <span>Receipt</span>
             </el-menu-item>
             <el-menu-item index="3" v-on:click="navigateTo('register.html')">
@@ -29,9 +26,6 @@
             </el-menu-item>
             <el-menu-item index="4" v-on:click="navigateTo('bill.html')">
                 <span>Bill</span>
-            </el-menu-item>
-            <el-menu-item index="5" v-on:click="navigateTo('shift.html')">
-                <span>Daily Record</span>
             </el-menu-item>
             <el-menu-item index="6" v-on:click="navigateTo('cancel-register.html')">
                 <span>Cancel Registration</span>
@@ -49,7 +43,7 @@
         data: function() {
             return {
                 url_sidebar: "",
-                url: "bill.html",
+                url: "receipt.html",
                 activeIndex: '1',
                 activeIndex2: '1'
             };

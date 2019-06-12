@@ -3,19 +3,39 @@ package com.neuedu.hismedicalsystem.model.po;
 import java.sql.Date;
 
 public class Receipt {
-    private long recid;
+    private int recid;
     private String recstate;
     private Date date;
     private int uRid;
-    private long chargerid;
+    private int chargerid;
     private double totalprice;
     private long pid;
+    private String pname;
+    //Deprecated
+    private String feecode;
 
-    public long getRecid() {
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+
+
+    public String getFeecode() {
+        return feecode;
+    }
+
+    public void setFeecode(String feecode) {
+        this.feecode = feecode;
+    }
+
+    public int getRecid() {
         return recid;
     }
 
-    public void setRecid(long recid) {
+    public void setRecid(int recid) {
         this.recid = recid;
     }
 
@@ -43,11 +63,11 @@ public class Receipt {
         this.uRid = uRid;
     }
 
-    public long getChargerid() {
+    public int getChargerid() {
         return chargerid;
     }
 
-    public void setChargerid(long chargerid) {
+    public void setChargerid(int chargerid) {
         this.chargerid = chargerid;
     }
 

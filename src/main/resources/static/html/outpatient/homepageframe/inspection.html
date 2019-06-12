@@ -18,12 +18,15 @@
                 <el-button size="small" icon="el-icon-circle-plus-outline" type="primary" @click="openAddDialog" round>
                     Add
                 </el-button>
-                <el-button v-bind:disabled="deleteDisabled" size="small" icon="el-icon-remove-outline" type="primary" @click="deleteItem" round>Delete
+                <el-button v-bind:disabled="deleteDisabled" size="small" icon="el-icon-remove-outline" type="primary"
+                           @click="deleteItem" round>Delete
                 </el-button>
-                <el-button v-bind:disabled="openDisabled" size="small" icon="el-icon-circle-check" type="primary" @click="updateItemState('Opene')"
+                <el-button v-bind:disabled="openDisabled" size="small" icon="el-icon-circle-check" type="primary"
+                           @click="updateItemState('Opene')"
                            round>Open
                 </el-button>
-                <el-button v-bind:disabled="revokeDisabled" size="small" icon="el-icon-delete" type="primary" @click="updateItemState('Revoke')" round>
+                <el-button v-bind:disabled="revokeDisabled" size="small" icon="el-icon-delete" type="primary"
+                           @click="updateItemState('Revoke')" round>
                     Revoke
                 </el-button>
                 <el-popover
@@ -222,6 +225,7 @@
 
         mounted: function () {
             this.regid = parent.patient.regid;
+            this.pid = parent.patient.pid;
 
             this.loadTest();
             this.loadTemplate();
@@ -345,6 +349,17 @@
                         state: state + 'd',
                     }).then(function () {
                         that.loadTest();
+                        if (state === 'Opene') {
+                            axios.post('/outpatient/addExamToBill', {
+                                items: that.multipleSelection,
+                                pid: that.pid,
+                                regid: that.regid,
+                            })
+                                .catch(function (error) {
+                                    console.log(error);
+
+                                });
+                        }
                     })
                         .catch(function (error) {
                             console.log(error);

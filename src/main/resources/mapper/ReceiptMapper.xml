@@ -21,6 +21,26 @@
     <select id="sumFeeCodePriceForDoc" resultType="Double">
         select IFNULL(SUM(totalprice), 0.0) from receipt where uRid = #{uRid} and feecode = #{feecode}
     </select>
+
+    <insert id="addRec">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="recid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into receipt (recstate, `date`, uRid, feecode, chargerid, totalprice, pid)
+        values (#{recstate}, now(), #{uRid}, #{feecode}, #{chargerid}, #{totalprice}, #{pid})
+    </insert>
+
+    <select id="getRecsByPid" resultType="Receipt">
+        select * from receipt where pid = #{pid}
+    </select>
+
+    <select id="getReceiptByRecid" resultType="Receipt">
+        select recid, recstate, `date`, uRid, feecode, chargerid, totalprice, p.pid, p.pname
+        from receipt r
+        join patient p on r.pid = p.pid
+        where recid = #{recid}
+    </select>
+
 </mapper>
 
 

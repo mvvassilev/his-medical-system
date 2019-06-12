@@ -127,4 +127,8 @@
     </update>
 
 
+    <select id="getBillcatByRegid" resultType="String">
+        select billcat from his.bill where treatcat = 'register' and treatid = #{regid}
+    </select>
+
 </mapper>

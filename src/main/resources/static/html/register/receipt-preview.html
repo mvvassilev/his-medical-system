@@ -4,12 +4,12 @@
     <title>Receipt Preview</title>
     <meta charset="UTF-8">
     <!-- import CSS -->
-<!--    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <!-- import Vue before Element -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!--    &lt;!&ndash; import JavaScript &ndash;&gt;-->
-<!--    <script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
-<!--    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style>
         .invoice-box {
             max-width: 800px;
@@ -114,7 +114,6 @@
                 <td colspan="2">
                     <table>
                         <tr>
-
                             <td style="font-size: 35px" class="title">
                                 NEU Hospital Invoice
                             </td>
@@ -143,29 +142,29 @@
                             </td>
 
                             <td>
-                                Invoice #: 123<br>
-                                Created: January 1, 2015<br>
-                                Name: {{receiptInfo.patientInfo.pname}}
+                                Invoice #: {{receiptInfo.recid}}<br>
+                                Created: {{receiptInfo.date}}<br>
+                                Name: {{receiptInfo.pname}}
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
 
-            <tr class="heading">
-                <td>
-                    Payment Method
-                </td>
-                <td>
+<!--            <tr class="heading">-->
+<!--                <td>-->
+<!--                    Payment Method-->
+<!--                </td>-->
+<!--                <td>-->
+<!--                    {{receiptInfo.paymentMethod}}-->
+<!--                </td>-->
+<!--            </tr>-->
 
-                </td>
-            </tr>
-
-            <tr class="details">
-                <td>
-                    Check
-                </td>
-            </tr>
+<!--            <tr class="details">-->
+<!--                <td>-->
+<!--                    {{receiptInfo.patientInfo.paymentMethod}}-->
+<!--                </td>-->
+<!--            </tr>-->
 
             <tr class="heading">
                 <td>
@@ -191,7 +190,7 @@
                 <td></td>
 
                 <td>
-                    Total: {{sumPrice}}元
+                    Total: {{receiptInfo.totalPrice}}元
                 </td>
             </tr>
         </table>
@@ -204,63 +203,50 @@
     var app = new Vue({
         el: '#preview',
         data: {
-            tableData: [
-                {
-                    billcat: "自费",
-                    billdate: "2019-06-06",
-                    billid: 0,
-                    count: 1,
-                    done: true,
-                    feecode: "GHF",
-                    feename: "CT检查费",
-                    itemcode: "PTH",
-                    itemname: "普通号",
-                    paid: false,
-                    pid: 3,
-                    print: false,
-                    totalprice: 6,
-                },
-                {
-                    billcat: "自费",
-                    billdate: "2019-06-06",
-                    billid: 0,
-                    count: 1,
-                    done: true,
-                    feecode: "GHF",
-                    feename: "挂号费",
-                    itemcode: "PTH",
-                    itemname: "普通号",
-                    paid: true,
-                    pid: 3,
-                    print: false,
-                    totalprice: 9,
-                },
-                {
-                    billcat: "自费",
-                    billdate: "2019-06-06",
-                    billid: 0,
-                    count: 1,
-                    done: true,
-                    feecode: "GHF",
-                    feename: "脑震荡费",
-                    itemcode: "PTH",
-                    itemname: "普通号",
-                    paid: true,
-                    pid: 3,
-                    print: false,
-                    totalprice: 9,
-                }
-            ],
+            tableData: [],
             sumPrice : 0,
-            receiptInfo : {}
+            receiptInfo : {
+                pname: "",
+                recid:"",
+                date:""
+            },
         },
 
         mounted: function() {
-            this.receiptInfo = localStorage.getItem("receiptInfo")
-            this.tableData = receiptInfo.items;
-            for ( i of this.tableData){
-                this.sumPrice += i.totalprice;
-            }
+            // this.receiptInfo = JSON.parse(localStorage.getItem("receiptInfo"))
+            console.log(this.receiptInfo);
+            var searchURL = window.location.search;
+            searchURL = searchURL.substring(1, searchURL.length);
+            var recid = searchURL.split("&")[0].split("=")[1];
+            console.log("recid "+recid)
+            var that = this;
+
+            axios({
+                url: '/charge/getReceiptByRecid',
+                method: 'post',
+                contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                data: {recid: recid},
+            }).then(function (response) {
+                console.log("getReceiptByRecid");
+                console.log(response.data)
+                that.receiptInfo = response.data;
+                console.log("that.receiptInfo")
+                console.log(that.receiptInfo);
+
+            }).catch(function (error) {console.log(error);});
+
+            axios({
+                url: '/charge/getBillsByRecid',
+                method: 'post',
+                contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                data: {recid: recid},
+            }).then(function (response) {
+                console.log("getBillsByRecid");
+                console.log(response.data)
+                that.tableData = response.data;
+                console.log("tableData")
+                console.log(that.tableData)
+            }).catch(function (error) {console.log(error);});
         },
 
         methods: {

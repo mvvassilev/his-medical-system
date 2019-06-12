@@ -1,5 +1,7 @@
 package com.neuedu.hismedicalsystem.model.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.neuedu.hismedicalsystem.model.mapper.BillMapper;
 import com.neuedu.hismedicalsystem.model.po.Bill;
 import org.springframework.stereotype.Service;
@@ -36,4 +38,11 @@ public class BillService {
         //Print 冲红发票
         //Print 剩余项目的发票
     }
+
+    public void addExamToBill(JSONObject object) { billMapper.addExamToBill(object);
+    }
+
+    public void addPreToBill(JSONObject object) { billMapper.addPreToBill(object);
+    }
+
 }
