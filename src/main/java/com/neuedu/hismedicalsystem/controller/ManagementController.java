@@ -286,7 +286,8 @@ public class ManagementController {
             Date enddate = obj.getDate("enddate");
             JSONArray params = obj.getJSONArray("shifts");
 
-            shiftService.deleteConflictShifts(startdate,enddate);
+
+
 
             List<Shift> insertShifts = new ArrayList<>();
 
@@ -311,7 +312,9 @@ public class ManagementController {
                 tempShift.setuRid(uRid);
 
                 insertShifts.add(tempShift);
+                shiftService.deleteConflictShifts(uRid, startdate,enddate);
             }
+
 
             shiftService.insertShift(insertShifts);
         } catch (JSONException e) {
