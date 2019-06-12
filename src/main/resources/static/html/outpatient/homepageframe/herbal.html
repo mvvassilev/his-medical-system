@@ -305,6 +305,7 @@
             addMedicineDialog() {
                 dialog.itemcode='';
                 dialog.medicine=[];
+                dialog.number=1;
                 dialog.dialogVisible = true;
             },
             refreshPre: function () {
@@ -559,7 +560,7 @@
             }
         },
         methods: {
-            searchMedicine: function (itemcode) {
+            searchMedicine: function () {
                 var params = new URLSearchParams();
                 params.append("itemcode", this.itemcode);
                 params.append("pretype",this.pretype);
