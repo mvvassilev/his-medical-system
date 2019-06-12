@@ -17,13 +17,13 @@
 <body>
 <div id="topbar">
     <el-row :gutter="10">
-        <el-col :span="2">
+        <el-col :span="4">
             <el-image
-                    style="width: 90px; height: 90px"
+                    style="width: 300px; height: 90px"
                     src="../img/logo.jpg"
-                    :fit="fit"></el-image>
+                    ></el-image>
         </el-col>
-        <el-col :span="22">
+        <el-col :span="20">
             <el-menu style="margin-top: 10px" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-menu-item id="mng" index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management
                 </el-menu-item>
@@ -251,7 +251,6 @@
         data: function() {
             return {
                 activeIndex: '1',
-                fit:'cover',
             };
         },
         methods: {
