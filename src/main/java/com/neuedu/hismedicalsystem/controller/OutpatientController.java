@@ -13,6 +13,7 @@ import com.neuedu.hismedicalsystem.model.service.TemplateService;
 import com.neuedu.hismedicalsystem.model.po.*;
 import com.neuedu.hismedicalsystem.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -113,6 +114,11 @@ public class OutpatientController {
         patientService.updateHomepage(frontPage);
     }
 
+    @RequestMapping("/getHomePageStateByRegid")
+    public String getHomePageStateByRegid(@RequestBody JSONObject object){
+        return patientService.getHomePageStateByRegid(object);
+    }
+
     /**
      * disease
      */
@@ -176,8 +182,8 @@ public class OutpatientController {
     }
 
     @RequestMapping("/getMed")
-    public List<Medicine> getMed(String itemcode){
-        return prescriptionService.getMed(itemcode);
+    public List<Medicine> getMed(String itemcode, String pretype){
+        return prescriptionService.getMed(itemcode,pretype);
     }
 
     @RequestMapping("/addMed")
@@ -259,8 +265,7 @@ public class OutpatientController {
     }
 
 
-    /*
-    *
+    /**
     * Bill
     *
     * */

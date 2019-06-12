@@ -58,4 +58,8 @@ public class PatientService {
         patientMapper.addResultsToHomepage(object);
         patientMapper.addResultsToImage(object);
     }
+
+    public String getHomePageStateByRegid(JSONObject object) {
+        return patientMapper.getHomePageStateByRegid(object);
+    }
 }
