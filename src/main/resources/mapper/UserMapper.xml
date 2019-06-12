@@ -102,6 +102,10 @@
     <select id="checkLogin" resultType="Integer">
         select count(*) from user where username = #{username} and pwd = #{password};
     </select>
+
+    <select id="getUserid" resultType="User">
+        select * from user where username = #{username} and pwd = #{password};
+    </select>
 </mapper>
 
 

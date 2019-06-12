@@ -23,7 +23,7 @@
                     src="../img/logo.jpg"
                     ></el-image>
         </el-col>
-        <el-col :span="20">
+        <el-col :span="16">
             <el-menu style="margin-top: 10px" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
                 <el-menu-item id="mng" index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management
                 </el-menu-item>
@@ -39,26 +39,29 @@
                 </el-menu-item>
             </el-menu>
         </el-col>
+        <el-col :span="4">
+
+        </el-col>
     </el-row>
 </div>
 <div id="app" style="text-align: center">
-<!--    <el-dialog :visible.sync="loginDialogVisible" style="text-align: center; width: 70%; left: 20%">-->
-<!--        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"-->
-<!--                 style="margin-left: auto;margin-right: auto;margin-top: 50px">-->
-<!--            <el-form-item prop="username">-->
-<!--                <el-input v-model="ruleForm.username" style="width:70%" autocomplete="off"-->
-<!--                          placeholder="User Name"></el-input>-->
-<!--            </el-form-item>-->
-<!--            <el-form-item prop="password">-->
-<!--                <el-input type="password" style="width: 70%" v-model="ruleForm.password" autocomplete="off"-->
-<!--                          placeholder="Password"></el-input>-->
-<!--            </el-form-item>-->
-<!--            <el-form-item>-->
-<!--                <el-button icon="el-icon-user" type="primary" @click="submitForm('ruleForm')">Login</el-button>-->
-<!--                <el-button @click="resetForm('ruleForm')">Reset</el-button>-->
-<!--            </el-form-item>-->
-<!--        </el-form>-->
-<!--    </el-dialog>-->
+    <el-dialog :visible.sync="loginDialogVisible" style="text-align: center; width: 70%; left: 20%">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+                 style="margin-left: auto;margin-right: auto;margin-top: 50px">
+            <el-form-item prop="username">
+                <el-input v-model="ruleForm.username" style="width:70%" autocomplete="off"
+                          placeholder="User Name"></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+                <el-input type="password" style="width: 70%" v-model="ruleForm.password" autocomplete="off"
+                          placeholder="Password"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button icon="el-icon-user" type="primary" @click="submitForm('ruleForm')">Login</el-button>
+                <el-button @click="resetForm('ruleForm')">Reset</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
     <div class="line"></div>
     <el-row :span="24">
         <iframe  height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url_sidebar" style="overflow: hidden"></iframe>
@@ -70,25 +73,6 @@
     var app = new Vue({
         el: '#app',
         data: function() {
-            return {
-                url_sidebar: "",
-                loginDialogVisible: true,
-
-                ruleForm: {
-                    username: '',
-                    password: '',
-                },
-                rules: {
-                    username: [{
-                        validator: validateUserName,
-                        trigger: 'blur'
-                    }],
-                    password: [
-                        /* {validator: validatePassword, trigger: 'blur'}*/
-                    ]
-                },
-                existUserName: [],
-            };
             var validateUserName = (rule, value, callback) => {
                 function checkUserName(value) {
                     var params = new URLSearchParams();
@@ -116,26 +100,46 @@
                     } else {
                         callback(new Error('No Such User!'));
                     }
-                }, 3000);
+                }, 1000);
             };
-            /*var validatePassword = (rule, value, callback) => {
+            var validatePassword = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('Please Password'));
                 } else {
                     callback();
                 }
-            };*/
+            };
+
+            return {
+                url_sidebar: "",
+                loginDialogVisible: true,
+                usercat:'',
+
+                ruleForm: {
+                    username: '',
+                    password: '',
+                },
+                rules: {
+                    username: [{
+                        validator: validateUserName,
+                        trigger: 'blur'
+                    }],
+                    password: [
+                        {validator: validatePassword, trigger: 'blur'}
+                    ]
+                },
+                existUserName: [],
+            };
+
         },
         methods: {
             handleSelect(key, keypath) {},
             handleOpen(key, keypath) {},
             navigateSidebarTo(url_sidebar) {
-                console.log('called in app')
+                console.log('called in app');
                 this.url_sidebar = url_sidebar;
             },
-            setUsertype(usertype) {
-                this.usertype = usertype;
-            },
+
             submitForm(formName) {
                 var that = this;
                 that.$refs[formName].validate((valid) => {
@@ -145,7 +149,7 @@
                         params.append("password", that.ruleForm.password);
                         axios.post('/management/checkLogin', params)
                             .then(function(response) {
-                                if (response.data) {
+                                if (response.data.check) {
                                     let mng = document.getElementById("mng");
                                     let reg = document.getElementById("reg");
                                     let outp = document.getElementById("outp");
@@ -153,20 +157,21 @@
                                     let phar = document.getElementById("phar");
                                     let fin = document.getElementById("fin");
 
-                                    /*"usertype" defines what kind of user entered the page
+                                    /*"usercat" defines what kind of user entered the page
                                         
                                         manager - all privilages
                                         charger - only register tab
-                                        outpatientdoctor - only outpatient doctor tab
+                                        门诊医生 - only outpatient doctor tab
                                         medical - only medical tab
                                         pharmacy - only pharmacy tab
                                         financial - only financial tab
                                     */
-                                    var usertype = "manager";
+                                    this.usercat = response.data.loginUser.usercat;
+                                    console.log(response.data.loginUser)
 
-                                    if (usertype === "manager") {
+                                    if (this.usercat === "医院管理员") {
                                         //all privilages
-                                    } else if (usertype === "charger") {
+                                    } else if (this.usercat === "挂号收费员") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         outp.setAttribute("class", "el-menu-item is-disabled");
@@ -177,7 +182,7 @@
                                         phar.setAttribute("style", "pointer-events: none");
                                         fin.setAttribute("class", "el-menu-item is-disabled");
                                         fin.setAttribute("style", "pointer-events: none");
-                                    } else if (usertype === "outpatientdoctor") {
+                                    } else if (this.usercat === "门诊医生") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         reg.setAttribute("class", "el-menu-item is-disabled");
@@ -188,7 +193,7 @@
                                         phar.setAttribute("style", "pointer-events: none");
                                         fin.setAttribute("class", "el-menu-item is-disabled");
                                         fin.setAttribute("style", "pointer-events: none");
-                                    } else if (usertype == "medical") {
+                                    } else if (this.usercat == "医技医生") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         reg.setAttribute("class", "el-menu-item is-disabled");
@@ -199,7 +204,7 @@
                                         phar.setAttribute("style", "pointer-events: none");
                                         fin.setAttribute("class", "el-menu-item is-disabled");
                                         fin.setAttribute("style", "pointer-events: none");
-                                    } else if (usertype === "pharmacy") {
+                                    } else if (this.usercat === "药房管理员") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         reg.setAttribute("class", "el-menu-item is-disabled");
@@ -210,7 +215,7 @@
                                         medt.setAttribute("style", "pointer-events: none");
                                         fin.setAttribute("class", "el-menu-item is-disabled");
                                         fin.setAttribute("style", "pointer-events: none");
-                                    } else if (usertype === "financial") {
+                                    } else if (this.usercat === "财务管理员") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         reg.setAttribute("class", "el-menu-item is-disabled");

@@ -1,5 +1,6 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
@@ -398,12 +399,17 @@ public class ManagementController {
     }
 
     @RequestMapping("checkLogin")
-    public boolean checkLogin(String username, String password){
+    public JSONObject checkLogin(String username, String password){
+        JSONObject object = new JSONObject();
         int exist = userService.checkLogin(username, password);
         if(exist == 0){
-            return false;
+            object.put("check", false);
         }else{
-            return true;
+            object.put("check", true);
+            User loginUser = userService.getUserid(username, password);
+            object.put("loginUser", loginUser);
         }
+
+        return object;
     }
 }

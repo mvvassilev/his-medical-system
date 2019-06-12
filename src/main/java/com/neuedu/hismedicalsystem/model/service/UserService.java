@@ -98,4 +98,8 @@ public class UserService {
             System.out.println();
         }
     }
+
+    public User getUserid(String username, String password) {
+        return userMapper.getUserid(username, password);
+    }
 }
