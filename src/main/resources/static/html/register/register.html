@@ -344,7 +344,7 @@
                 this.activeName = '1';
                 this.calculatePayment();
                 console.log("this.selectedShift = row;")
-                console.log(this.selectedShift)
+                console.log(this.selectedShift);
             },
 
             onConfirm: function() {
@@ -365,6 +365,12 @@
                 })
                 .then(function (response) {
                     console.log("success register");
+                    that.$notify({
+                        title: 'Success',
+                        message: 'Successfully registered.',
+                        type: 'success'
+                    });
+                    that.activeName = "";
                     that.refresh();
                 })
                 .catch(function (error) {
@@ -398,6 +404,7 @@
                                 type: 'warning',
                                 customClass: 'messageBox-prompt'
                             })
+                            that.clearPInfo();
                         }
                     }
                     else{

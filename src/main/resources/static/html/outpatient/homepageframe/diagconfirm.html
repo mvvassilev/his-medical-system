@@ -207,28 +207,47 @@
 
         methods: {
             onSubmit() {
-                console.log('submit!');
-                this.form.state = '确诊提交';
-                var that = this;
-                axios.post('/outpatient/updateHomepage', {
-                    regid: this.regid,
-                    homepage: this.form,
-                })
-                    .catch(function (error) {
-                        console.log(error);
+                this.$confirm('Sure to save?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    console.log('submit!');
+                    this.form.state = '确诊提交';
+                    var that = this;
+                    axios.post('/outpatient/updateHomepage', {
+                        regid: this.regid,
+                        homepage: this.form,
                     })
-                axios.post('/outpatient/updatePatientState', {
-                    state: 4,
-                    regid: this.regid,
+                        .catch(function (error) {
+                            console.log(error);
+                        });
 
-                }).then(function () {
-                    parent.patient.loadPatientList();
-                    parent.patient.switchStep(4);
-                    that.loadFrontPage();
-                })
-                    .catch(function (error) {
-                        console.log(error);
+                    axios.post('/outpatient/updatePatientState', {
+                        state: 4,
+                        regid: this.regid,
+
+                    }).then(function () {
+                        parent.patient.loadPatientList();
+                        parent.patient.switchStep(4);
+                        parent.patient.resetActiveTab();
+                        that.loadFrontPage();
                     })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+
+                    this.$message({
+                        type: 'success',
+                        message: 'Submit Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Submit Save.'
+                    });
+                });
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
@@ -243,7 +262,7 @@
                 axios.post('/outpatient/deleteDiseaseFromDiag', params)
                     .then(function (response) {
                         console.log("退出这个舞台");
-                        that.loadFrontPage();
+                        that.loadPartPage();
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -254,6 +273,8 @@
                     if (valid) {
                         console.log("wo tm add bao!");
                         dialog.dialogVisible = true;
+                        dialog.discode = '';
+                        dialog.diseases = null;
                     } else {
                         console.log('Error Submit!!');
                         return false;
@@ -276,7 +297,25 @@
                     console.log(error);
                 });
             },
-
+            loadPartPage() {
+                var params = new URLSearchParams();
+                params.append("regid", this.regid);
+                var that = this;
+                axios.post('/outpatient/getFrontPageByRegid', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.form.diseaseList = response.data.diseaseList;
+                        if (that.form.diseaseList.length >= 5) {
+                            console.log("把嘴给我闭上");
+                            that.isDisabled = true;
+                        } else {
+                            that.isDisabled = false;
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
             loadFrontPage() {
                 var params = new URLSearchParams();
                 params.append("regid", this.regid);
@@ -314,16 +353,31 @@
                     });
             },
             onSave() {
-                this.form.state = '确诊暂存';
-                axios.post('/outpatient/updateHomepage', {
-                    regid: this.regid,
-                    homepage: this.form,
-                })
-                    .catch(function (error) {
-                        console.log(error);
+                this.$confirm('Sure to save?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    this.form.state = '确诊暂存';
+                    axios.post('/outpatient/updateHomepage', {
+                        regid: this.regid,
+                        homepage: this.form,
                     })
-            },
+                        .catch(function (error) {
+                            console.log(error);
+                        });
 
+                    this.$message({
+                        type: 'success',
+                        message: 'Save Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel Save.'
+                    });
+                });
+            }
 
         }
     });
@@ -367,7 +421,7 @@
                         regid: diagnosis.regid,
                         addList: this.multipleSelection
                     }).then(function () {
-                        diagnosis.loadFrontPage();
+                        diagnosis.loadPartPage();
                     })
                         .catch(function (error) {
                             console.log(error);

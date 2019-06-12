@@ -208,6 +208,7 @@
             template: [],
             totalprice: 0,
             uRid: 1,
+            pid:0,
 
             openDisabled: true,
             deleteDisabled: true,
@@ -261,17 +262,24 @@
                 if (this.multipleSelection.length >= 1) {
                     this.saveDisabled = false;
 
+
                     switch (this.multipleSelection[0].state) {
                         case 'Saved':
                             this.deleteDisabled = false;
                             this.openDisabled = false;
+                            this.revokeDisabled = true;
                             break;
                         case 'Opened':
                             this.revokeDisabled = false;
+                            this.deleteDisabled = true;
+                            this.openDisabled = true;
                             break;
                     }
                 } else {
                     this.saveDisabled = true;
+                    this.revokeDisabled = true;
+                    this.deleteDisabled = true;
+                    this.openDisabled = true;
                 }
             },
 
@@ -387,6 +395,7 @@
                     temptype: 'test'
                 }).then(function () {
                     that.loadTest();
+                    that.loadTemplate();
                 })
                     .catch(function (error) {
                         console.log(error);

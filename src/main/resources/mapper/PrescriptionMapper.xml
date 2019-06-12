@@ -35,7 +35,7 @@
     </select>
 
     <select id="getMed" resultType="Medicine">
-        select itemname,size,price from medicine where itemcode=#{itemcode}
+        select itemcode,itemname,size,price from medicine where itemcode like CONCAT(#{itemcode},'%') and medcat=#{pretype}
     </select>
 
     <insert id="addMed">

@@ -33,7 +33,7 @@ public class PrescriptionService {
     public List<Medicine> getItem(int preid){return prescriptionMapper.getItem(preid);}
 
     @Transactional
-    public List<Medicine> getMed(String itemcode){return prescriptionMapper.getMed(itemcode);}
+    public List<Medicine> getMed(String itemcode,String pretype){return prescriptionMapper.getMed(itemcode,pretype);}
 
     @Transactional
     public void addMed(int preid,String itemcode, int count){prescriptionMapper.addMed(preid, itemcode, count);}

@@ -42,4 +42,6 @@ public interface PatientMapper {
     void addResultsToHomepage(JSONObject object);
 
     void addResultsToImage(JSONObject object);
+
+    String getHomePageStateByRegid(JSONObject object);
 }

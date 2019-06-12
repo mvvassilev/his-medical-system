@@ -92,7 +92,7 @@
             </el-row>
 
             <!--   Payment Info    -->
-            <el-row style="margin-top: 5px;">
+            <el-row v-if="confirmType!=='Query'" style="margin-top: 5px;">
                 <el-card class="box-card">
                     <el-collapse accordion v-model="activeName">
                         <el-collapse-item name="1">
@@ -170,9 +170,9 @@
         <span>Are you sure to give refund for these items?</span>
         <span slot="footer" class="dialog-footer">
             <el-button @click="deleteDialogVisible = false">No</el-button>
-            <a href="receipt-preview.html"  target="_blank">
+<!--            <a href="receipt-preview.html"  target="_blank">-->
                 <el-button type="primary" @click="onConfirm">Yes</el-button>
-            </a>
+<!--            </a>-->
         </span>
     </el-dialog>
 
@@ -216,9 +216,7 @@
                     Preview Receipt
                 </el-button>
             </a>
-            <a href="receipt-preview.html"  target="_blank">
-                <el-button type="primary" style="margin-top: 10px;" icon="el-icon-coin" @click="onConfirm">Confirm</el-button>
-            </a>
+            <el-button type="primary" style="margin-top: 10px;" icon="el-icon-coin" @click="onConfirm">Confirm</el-button>
         </div>
 
     </el-dialog>
@@ -271,51 +269,7 @@
         el: '#cancel',
         data: {
             tableData: [
-                // {
-                //     billcat: "自费",
-                //     billdate: "2019-06-06",
-                //     billid: 0,
-                //     count: 1,
-                //     done: true,
-                //     feecode: "GHF",
-                //     feename: "CT检查费",
-                //     itemcode: "PTH",
-                //     itemname: "普通号",
-                //     paid: false,
-                //     pid: 3,
-                //     print: false,
-                //     totalprice: 6,
-                // },
-                // {
-                //     billcat: "自费",
-                //     billdate: "2019-06-06",
-                //     billid: 0,
-                //     count: 1,
-                //     done: true,
-                //     feecode: "GHF",
-                //     feename: "挂号费",
-                //     itemcode: "PTH",
-                //     itemname: "普通号",
-                //     paid: true,
-                //     pid: 3,
-                //     print: false,
-                //     totalprice: 9,
-                // },
-                // {
-                //     billcat: "自费",
-                //     billdate: "2019-06-06",
-                //     billid: 0,
-                //     count: 1,
-                //     done: true,
-                //     feecode: "GHF",
-                //     feename: "挂号费",
-                //     itemcode: "PTH",
-                //     itemname: "普通号",
-                //     paid: true,
-                //     pid: 3,
-                //     print: false,
-                //     totalprice: 9,
-                // }
+
             ],
             multipleSelection: [],
             totalPrice: 0,
@@ -506,12 +460,12 @@
 
             onConfirm(){
                 if(this.confirmType=="Charge"){
-                    // this.submitCharge()
-                    // this.chargeDialogVisible = false;
+                    this.submitCharge()
+                    this.chargeDialogVisible = false;
                 }
                 else if(this.confirmType=="Refund"){
-                    // this.submitRefund();
-                    // this.refundDialogVisible = false;
+                    this.submitRefund();
+                    this.refundDialogVisible = false;
                 }
                 this.logReceipt();
                 this.activeName = '';
@@ -564,7 +518,7 @@
 //---------------------Preview Receipt----------------
             logReceipt(){
                 var that = this;
-                that.onPreviewReceipt();
+                // that.onPreviewReceipt();
                 var patient = {pid:""};
                 patient.pid = that.patientInfo.pid;
                 axios({

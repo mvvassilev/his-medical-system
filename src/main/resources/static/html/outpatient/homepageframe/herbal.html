@@ -121,7 +121,7 @@
                         <el-table-column
                                 fixed="right"
                                 label="Operation"
-                                width="100">
+                                width="150">
                             <span slot-scope="scope">
                                 <el-button icon="el-icon-remove-outline" size="medium" type="text"
                                            @click="delMed(scope.$index, scope.row)">Delete</el-button>
@@ -177,13 +177,17 @@
         <el-row :gutter="20">
             <el-col :span="24">
                 <el-input v-model="itemcode" style="width:300px" placeholder="Enter PingYin Code"></el-input>
-                <el-button icon="el-icon-search" type="primary" @click="searchMedicine(itemcode)">search</el-button>
+                <el-button icon="el-icon-search" type="primary" @click="searchMedicine()">search</el-button>
             </el-col>
         </el-row>
         <!--medicine form-->
         <el-table :data="medicine"
                   style="width: 100%"
-                  tooltip-effect="dark">
+                  tooltip-effect="dark"
+                  max-height="600"
+                  ref="singleTable"
+                  highlight-current-row
+                  @current-change="handleCurrentChange">
             <el-table-column
                     fixed="left"
                     prop="itemname"
@@ -299,6 +303,8 @@
                 }
             },
             addMedicineDialog() {
+                dialog.itemcode='';
+                dialog.medicine=[];
                 dialog.dialogVisible = true;
             },
             refreshPre: function () {
@@ -417,6 +423,8 @@
             handleCurrentChange(val) {
                 this.currentRow = val;
                 dialog.preid = val.preid;
+                dialog.tempobject=val;
+                // console.log(val);
                 var judgestate = val.state;
                 this.stateTrans(judgestate);
                 var that = this;
@@ -426,15 +434,19 @@
                 axios.post('/outpatient/getItem', params)
                     .then(function (response) {
                         that.medicine = response.data;
-                        for (var i = 0; i < that.medicine.length; i++) {
-                            that.totalprice += (that.medicine[i].price) * (that.medicine[i].count);
-                            // console.log(i+":"+that.totalprice);
-                        }
-                        that.totalprice = parseFloat(that.totalprice).toFixed(2);
+                        that.caculate();
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
+            },
+            caculate:function(){
+                this.totalprice=0;
+                for (var i = 0; i < this.medicine.length; i++) {
+                    this.totalprice += (this.medicine[i].price) * (this.medicine[i].count);
+                    // console.log(i+":"+this.totalprice);
+                }
+                this.totalprice = parseFloat(this.totalprice).toFixed(2);
             },
             delMed: function (index, row) {
                 var that = this;
@@ -470,6 +482,7 @@
                     .then(function (response) {
                         // console.log(response.data);
                         that.medicine = response.data;
+                        that.caculate();
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -538,14 +551,18 @@
                 dialogVisible: false,
                 itemcode: '',
                 preid: '',
+                pretype: "中草药",
                 medicine: [],
                 number: 1,
+                tempobject:{},
+                currentRow: null,
             }
         },
         methods: {
             searchMedicine: function (itemcode) {
                 var params = new URLSearchParams();
                 params.append("itemcode", this.itemcode);
+                params.append("pretype",this.pretype);
                 var that = this;
                 axios.post('/outpatient/getMed', params)
                     .then(function (response) {
@@ -559,7 +576,7 @@
             openConfirmDialog: function () {
                 var params = new URLSearchParams();
                 params.append("preid", this.preid);
-                params.append("itemcode", this.itemcode);
+                params.append("itemcode", this.currentRow.itemcode);
                 params.append("count", this.number);
                 var that = this;
                 this.$confirm('Sure to add?', 'Notice', {
@@ -588,6 +605,10 @@
             },
             handleChange(value) {
                 this.number = value;
+            },
+            handleCurrentChange(val) {
+                this.currentRow = val;
+                // console.log(this.currentRow);
             },
         }
     })

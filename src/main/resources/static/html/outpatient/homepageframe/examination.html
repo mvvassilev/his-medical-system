@@ -87,6 +87,7 @@
     >
         <el-table-column
                 type="selection"
+                :selectable="selectable"
                 width="55">
         </el-table-column>
         <el-table-column
@@ -166,7 +167,7 @@
         >
             <el-table-column
                     type="selection"
-                    :selectable="selectable"
+
                     width="55">
             </el-table-column>
             <el-table-column
@@ -267,13 +268,19 @@
                         case 'Saved':
                             this.deleteDisabled = false;
                             this.openDisabled = false;
+                            this.revokeDisabled = true;
                             break;
                         case 'Opened':
                             this.revokeDisabled = false;
+                            this.deleteDisabled = true;
+                            this.openDisabled = true;
                             break;
                     }
                 } else {
                     this.saveDisabled = true;
+                    this.revokeDisabled = true;
+                    this.deleteDisabled = true;
+                    this.openDisabled = true;
                 }
             },
 
@@ -389,6 +396,7 @@
                     temptype: 'examination'
                 }).then(function () {
                     that.loadExamination();
+                    that.loadTemplate();
                 })
                     .catch(function (error) {
                         console.log(error);
