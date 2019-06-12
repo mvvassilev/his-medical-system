@@ -155,7 +155,7 @@ public class ReceiptService {
         int recid = obj.getInteger("recid");
         return billMapper.getBillsByRecid(recid);
     }
-    }
+
 
     public JSONArray getReceiptInfoForDepartment() {
         User doctorCon = new User();
