@@ -152,7 +152,11 @@
                 <div style="padding: 15px;">
                     <patient-info-line property="ID" :val="patientInfo.pid"></patient-info-line>
                     <patient-info-line property="Name" :val="patientInfo.pname"></patient-info-line>
-                    <patient-info-line property="Gender" :val="patientInfo.pgender?'Male':'Female' "></patient-info-line>
+                    <patient-info-line property="Gender"
+                                       :val="typeof patientInfo.pgender=='null'?''
+                                        :patientInfo.pgender?'Male':'Female' ">
+
+                    </patient-info-line>
                     <patient-info-line property="Age" :val="patientInfo.page"></patient-info-line>
                     <patient-info-line property="Birth Date" :val="patientInfo.pbirth"></patient-info-line>
                     <patient-info-line property="Address" :val="patientInfo.paddress"></patient-info-line>

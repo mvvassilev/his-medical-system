@@ -42,6 +42,15 @@ public class ChargeController {
         return billService.getUndoneBills(condition);
     }
 
+    @RequestMapping("/getBills")
+    public List<Bill> getBills(@RequestBody JSONObject obj){
+        Bill condition = (Bill)JSONObject.toJavaObject(obj.getJSONObject("condition"), Bill.class);
+        System.out.println("getBillsWithCondition = " + condition);
+        List<Bill> l = billService.getBills(condition);
+        System.out.println("list = " + l);
+        return billService.getBills(condition);
+    }
+
     @RequestMapping("/changeStatesToPaid")
     public JSONObject changeStatesToPaid(@RequestBody JSONArray array){
         List<Bill> bills = JSONObject.parseArray(array.toJSONString(), Bill.class);
