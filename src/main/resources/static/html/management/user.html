@@ -347,6 +347,7 @@
             onSubmitAdd: function(){
                 console.log("onSubmitAdd")
                 console.log(this.users);
+                var that=this;
                 axios({
                     url: '/management/addUser',
                     method: 'post',
@@ -354,6 +355,7 @@
                     data:  this.form,
                     success: function(data) {
                         console.log("success...");
+                        that.refresh();
                     },
                     error: function(data) {
                         console.log("error...");
