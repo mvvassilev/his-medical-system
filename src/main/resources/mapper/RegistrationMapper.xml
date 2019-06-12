@@ -40,6 +40,7 @@
     <select id="getRegistrationsByPid" resultType="Registration">
         <include refid="getRegistrations"></include>
         where pid = #{pid}
+        order by regid desc
     </select>
 
     <select id="getCancellableRegistrationsByPid" resultType="Registration">
@@ -47,8 +48,6 @@
         where pid = #{pid}
         and r.state = 1
     </select>
-
-
 
     <delete id="delReg">
         delete from register where regid=#{regid}
