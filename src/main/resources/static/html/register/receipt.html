@@ -144,7 +144,7 @@
             multipleSelection: [],
             totalPrice: 0,
 
-            searchingPid: "",
+            searchingPid: "20165048",
             patientInfo: {
                 pid: null,
                 pname: null,
@@ -219,6 +219,30 @@
             tryCompletePInfo: function () {
                 console.log("Complete PInfo")
                 var that = this;
+                axios({
+                    url: '/registration/tryCompletePatientInfo',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {id: that.searchingPid},
+                })
+                    .then(function (response) {
+                        console.log("success complete pinfo");
+                        console.log(response.data);
+                        if (response.data.exists == "Yes") {
+                            that.patientInfo = response.data.patient;
+                            that.patientExists = true;
+                            that.$message({
+                                message: 'Successfully retrieved patient info',
+                                type: 'success'
+                            });
+                            that.getReceipts();
+                        } else {
+                            that.$message('Did not find patient with the ID');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
 
 //---------------------Get Receipts-----------------------

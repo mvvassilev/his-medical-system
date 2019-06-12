@@ -274,7 +274,7 @@
             multipleSelection: [],
             totalPrice: 0,
 
-            searchingPid: "20165048",
+            searchingPid: "",
             patientInfo: {
                 pid: null,
                 pname: null,
@@ -458,11 +458,11 @@
 
             onConfirm(){
                 if(this.confirmType=="Charge"){
-                    // this.submitCharge()
+                    this.submitCharge()
                     this.chargeDialogVisible = false;
                 }
                 else if(this.confirmType=="Refund"){
-                    // this.submitRefund();
+                    this.submitRefund();
                     this.refundDialogVisible = false;
                 }
                 this.logReceipt();
@@ -545,7 +545,6 @@
                 this.receiptInfo.patientInfo = this.patientInfo;
                 var myDate = new Date();
                 this.receiptInfo.date = myDate.toLocaleDateString();
-                //Receipt ID TODO: get from backend
                 this.receiptInfo.recid = 12534;
                 this.receiptInfo.totalPrice = this.totalPrice;
                 localStorage.setItem("receiptInfo",JSON.stringify(this.receiptInfo));
