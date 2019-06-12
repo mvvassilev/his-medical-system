@@ -33,6 +33,7 @@ public class RegistrationService {
 
     //For registering a new patient
     public void insertPatient(Patient patient) {
+        System.out.println("insertPatient = " + patient);
         patient.setState("已挂号");
         patientMapper.insertPatient(patient);
     }
@@ -105,7 +106,7 @@ public class RegistrationService {
             p = patientMapper.getPatientById(id);
             int regSize= registrationMapper.getRegistrationsByPid(id).size();
             if(regSize >= 1){
-                Registration reg = registrationMapper.getRegistrationsByPid(id).get(regSize-1);
+                Registration reg = registrationMapper.getRegistrationsByPid(id).get(0);
                 System.out.println("reg = " + reg);
                 if(reg.getState()==6)
                     result.put("lastRegFinished",true);
