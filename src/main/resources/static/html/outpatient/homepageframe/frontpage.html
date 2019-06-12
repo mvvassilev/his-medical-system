@@ -232,31 +232,47 @@
 
         methods: {
             onSubmit() {
-                console.log('submit!');
-                this.form.state = '初诊提交';
-                var that = this;
-                axios.post('/outpatient/updateHomepage', {
-                    regid: this.regid,
-                    homepage: this.form,
-                })
-                    .catch(function (error) {
-                        console.log(error);
+                this.$confirm('Sure to save?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    console.log('submit!');
+                    this.form.state = '初诊提交';
+                    var that = this;
+                    axios.post('/outpatient/updateHomepage', {
+                        regid: this.regid,
+                        homepage: this.form,
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    axios.post('/outpatient/updatePatientState', {
+                        state: 2,
+                        regid: this.regid,
+
+                    }).then(function () {
+                        parent.patient.loadPatientList();
+                        parent.patient.switchStep(2);
+                        parent.patient.resetActiveTab();
+                        that.loadFrontPage();
+                    })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+
+                    this.$message({
+                        type: 'success',
+                        message: 'Submit Succeed!'
                     });
-
-                axios.post('/outpatient/updatePatientState', {
-                    state: 2,
-                    regid: this.regid,
-
-                }).then(function() {
-                    parent.patient.loadPatientList();
-                    parent.patient.switchStep(2);
-                    that.loadFrontPage();
-                })
-                    .catch(function (error) {
-                        console.log(error);
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Submit Save.'
                     });
-
-
+                });
 
 
             },
@@ -265,7 +281,7 @@
                 this.form.disType = '';
             },
             deleteRow(index, row) {
-
+                var that = this;
                 var params = new URLSearchParams();
                 params.append("regid", this.regid);
                 params.append("icdcode", row.icdcode);
@@ -273,7 +289,7 @@
                 axios.post('/outpatient/deleteDiseaseFromDiag', params)
                     .then(function (response) {
                         console.log("退出这个舞台");
-                        refreshPage();
+                        that.loadPartPage();
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -284,6 +300,8 @@
                     if (valid) {
                         console.log("wo tm add bao!");
                         dialog.dialogVisible = true;
+                        dialog.discode = '';
+                        dialog.diseases = null;
                     } else {
                         console.log('Error Submit!!');
                         return false;
@@ -311,7 +329,7 @@
                             that.isDisabledSelect = false;
                         }*/
                         console.log("Parent Active = " + parent.patient.active)
-                        if (parseInt(parent.patient.active )>= 2) {
+                        if (parseInt(parent.patient.active) >= 2) {
                             that.buttonText = 'Submitted';
                             that.buttonDisabled = true;
                             that.buttonCType = 'success';
@@ -325,15 +343,51 @@
                         console.log(error);
                     });
             },
-            onSave() {
-                this.form.state = '初诊暂存';
-                axios.post('/outpatient/updateHomepage', {
-                    regid: this.regid,
-                    homepage: this.form,
-                })
+            loadPartPage() {
+                var params = new URLSearchParams();
+                params.append("regid", this.regid);
+                var that = this;
+                axios.post('/outpatient/getFrontPageByRegid', params)
+                    .then(function (response) {
+                        console.log(response.data);
+                        that.form.diseaseList = response.data.diseaseList;
+                        if (that.form.diseaseList.length >= 5) {
+                            console.log("把嘴给我闭上");
+                            that.isDisabled = true;
+                        } else {
+                            that.isDisabled = false;
+                        }
+                    })
                     .catch(function (error) {
                         console.log(error);
+                    });
+            },
+            onSave() {
+                this.$confirm('Sure to save?', 'Notice', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning'
+                }).then(() => {
+                    this.form.state = '初诊暂存';
+                    axios.post('/outpatient/updateHomepage', {
+                        regid: this.regid,
+                        homepage: this.form,
                     })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    this.$message({
+                        type: 'success',
+                        message: 'Save Succeed!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: 'Cancel Save.'
+                    });
+                });
+
             }
 
         }
@@ -378,7 +432,7 @@
                         regid: frontpage.regid,
                         addList: this.multipleSelection
                     }).then(function () {
-                        frontpage.loadFrontPage();
+                        frontpage.loadPartPage();
                     })
                         .catch(function (error) {
                             console.log(error);
