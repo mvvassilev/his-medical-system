@@ -16,22 +16,22 @@
 <div id="user">
     <el-row :gutter="20">
         <el-col :span="4">
-            <el-input type="text" v-model="userid" placeholder="ID"></el-input>
+            <el-input type="text" v-model="userid" placeholder="ID" clearable></el-input>
         </el-col>
         <el-col :span="4">
-            <el-input type="text" v-model="username" placeholder="User"></el-input>
+            <el-input type="text" v-model="username" placeholder="User" clearable></el-input>
         </el-col>
         <el-col :span="4">
-            <el-input type="text" v-model="realname" placeholder="Name"></el-input>
+            <el-input type="text" v-model="realname" placeholder="Name" clearable></el-input>
         </el-col>
         <el-col :span="4">
-            <el-input type="text" v-model="usercat" placeholder="Category"></el-input>
+            <el-input type="text" v-model="usercat" placeholder="Category" clearable></el-input>
         </el-col>
         <el-col :span="4">
             <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
         <el-col :span="4">
-            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Entry
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add
             </el-button>
         </el-col>
     </el-row>
@@ -246,7 +246,7 @@
         },
 
         mounted: function(){
-            console.log("refresh!!!")
+            console.log("refresh!!!");
             this.currentPage = 1;
             var that = this;
             axios.post('/management/users', {})
@@ -263,7 +263,7 @@
 
             search: function () {
                 var that = this;
-                console.log("Search")
+                console.log("Search");
                 console.log(this.userid);
                 axios.post('/management/users', {
                     userid: that.userid,
@@ -285,10 +285,10 @@
 
 
             refresh:function(){
-                console.log("refresh!!!")
+                console.log("refresh!!!");
                 this.currentPage = 1;
                 var that = this;
-                that.users = []
+                that.users = [];
                 axios.post('/management/users', {
                     userid: "",
                     username: "",
@@ -322,7 +322,7 @@
                         position: row.position,
                         shiftOrNot: row.shiftOrNot,
                         selectdepts: []
-                    }
+                    };
                     for(i=0; i<row.depts.length;i++)
                         this.form.selectdepts.push(row.depts[i].deptcode);
                 }
@@ -338,8 +338,8 @@
                     this.onSubmitAdd();
                 if(this.methodType=="Update")
                     this.onSubmitUpdate();
-                console.log("onSubmit->Form Content")
-                console.log(this.form)
+                console.log("onSubmit->Form Content");
+                console.log(this.form);
                 this.dialogFormVisible = false;
                 this.refresh();
             },
@@ -355,10 +355,12 @@
                     data:  this.form,
                     success: function(data) {
                         console.log("success...");
-                        that.refresh();
                     },
                     error: function(data) {
                         console.log("error...");
+                    },
+                    then:function () {
+                        that.refresh();
                     }
                 });
             },
@@ -373,6 +375,7 @@
                     data:  this.form,
                     success: function(data) {
                         console.log("success...");
+                        that.refresh();
                     },
                     error: function(data) {
                         console.log("error...");
@@ -387,6 +390,7 @@
             },
 
             onSubmitDelete: function(){
+                var that =this;
                 var params = new URLSearchParams();
                 params.append('userid', this.deletingObject.userid);
                 axios.post('/management/deleteUser', params)
@@ -396,12 +400,13 @@
                         console.log(response.deptcode);
                         that.deptcode = row.deptcode;
                         that.deptcode = response.deptcode;*/
-                    })
+                    }).then(function(response) {
+                    that.refresh();
+                })
                     .catch(function (error) {
                         console.log(error);
                     });
                 this.deleteDialogVisible = false;
-                this.refresh();
             },
 
 
@@ -431,7 +436,7 @@
             },
 
             deptFormatter(row){
-                deptStr = ""
+                deptStr = "";
                 for(i = 0; i < row.depts.length; i++){
                     if(i==0)
                         deptStr += row.depts[i].deptname
