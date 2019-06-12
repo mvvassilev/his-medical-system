@@ -201,7 +201,12 @@
             depts: [], //Drop down for departments
             registrationLevels:[], //Drop down for registrationLevels
             //shifts in the table
-            shifts:[]
+            shifts:[],
+
+            insertedBill: [],
+            receiptInfo:{
+                recid:""
+            }
         },
 
         mounted: function(){
@@ -367,19 +372,20 @@
                     console.log("success register");
                     console.log("Inserted Bill")
                     console.log(response.data);
+                    that.insertedBill = response.data;
                     that.$notify({
                         title: 'Success',
                         message: 'Successfully registered.',
                         type: 'success'
                     });
+                    that.logReceipt();
                     that.activeName = "";
+                    this.clearPInfo();
                     that.refresh();
-
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-                this.clearPInfo();
             },
 
             tryCompletePInfo:function () {
@@ -422,16 +428,13 @@
 //------------------Receipt--------------------------------
             logReceipt(){
                 var that = this;
-                // that.onPreviewReceipt();
-                var patient = {pid:""};
-                patient.pid = that.patientInfo.pid;
                 axios({
                     url: '/charge/logReceipt',
                     method: 'post',
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
                     data:{
-                        patientInfo: patient,
-                        bills: [],
+                        patientInfo: that.patientInfo,
+                        bills: that.insertedBill,
                         confirmType: "Charge",
                         //TODO: Add chargerID 管理员here
                         chargerid: 1
@@ -440,16 +443,14 @@
                     .then(function (response) {
                         console.log("success logReceipt");
                         that.receiptInfo.recid = response.data.recid;
-                        console.log(that.receiptInfo.recid)
+                        console.log(that.receiptInfo.recid);
+                        window.open("receipt-preview.html?"+"recid="+that.receiptInfo.recid);
                     })
                     .catch(function (error) {
                         console.log(error);
                     });
             },
         }
-
-
-
     })
 </script>
 
