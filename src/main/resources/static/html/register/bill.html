@@ -152,7 +152,11 @@
                 <div style="padding: 15px;">
                     <patient-info-line property="ID" :val="patientInfo.pid"></patient-info-line>
                     <patient-info-line property="Name" :val="patientInfo.pname"></patient-info-line>
-                    <patient-info-line property="Gender" :val="patientInfo.pgender"></patient-info-line>
+                    <patient-info-line property="Gender"
+                                       :val="typeof patientInfo.pgender=='null'?''
+                                        :patientInfo.pgender?'Male':'Female' ">
+
+                    </patient-info-line>
                     <patient-info-line property="Age" :val="patientInfo.page"></patient-info-line>
                     <patient-info-line property="Birth Date" :val="patientInfo.pbirth"></patient-info-line>
                     <patient-info-line property="Address" :val="patientInfo.paddress"></patient-info-line>
@@ -300,7 +304,6 @@
                 totalprice: null,
             },
 
-            //TODO
             chargeDialogVisible: false,
             refundDialogVisible: false,
             activeName: '',
@@ -361,7 +364,6 @@
                         console.log(response.data);
                         if (response.data.exists == "Yes") {
                             that.patientInfo = response.data.patient;
-                            that.patientInfo.pgender = that.patientInfo.pgender?"Male":"Female";
                             that.patientExists = true;
                             that.$message({
                                 message: 'Successfully retrieved patient info',
@@ -518,25 +520,23 @@
 //---------------------Preview Receipt----------------
             logReceipt(){
                 var that = this;
-                // that.onPreviewReceipt();
-                var patient = {pid:""};
-                patient.pid = that.patientInfo.pid;
                 axios({
                     url: '/charge/logReceipt',
                     method: 'post',
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
                     data:{
-                        patientInfo: patient,
+                        patientInfo: that.patientInfo,
                         bills: that.multipleSelection,
-                        confirmType: that.confirmType,
+                        confirmType: "Refund",
                         //TODO: Add chargerID 管理员here
                         chargerid: 1
                     }
                 })
                     .then(function (response) {
-                        console.log("success logReceipt");
+                        console.log("success Refund->logReceipt");
                         that.receiptInfo.recid = response.data.recid;
-                        console.log(that.receiptInfo.recid)
+                        console.log(that.receiptInfo.recid);
+                        window.open("receipt-preview.html?"+"recid="+that.receiptInfo.recid);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -549,7 +549,6 @@
                 this.receiptInfo.patientInfo = this.patientInfo;
                 var myDate = new Date();
                 this.receiptInfo.date = myDate.toLocaleDateString();
-                //Receipt ID TODO: get from backend
                 this.receiptInfo.recid = 12534;
                 this.receiptInfo.totalPrice = this.totalPrice;
                 localStorage.setItem("receiptInfo",JSON.stringify(this.receiptInfo));

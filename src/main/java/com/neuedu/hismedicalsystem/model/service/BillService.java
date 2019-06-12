@@ -22,6 +22,10 @@ public class BillService {
         return billMapper.getUndoneBills(bill);
     }
 
+    public List<Bill> getBills(Bill bill){
+        return billMapper.getBills(bill);
+    }
+
     public void changeStateToPaid(int billId){
         billMapper.changeStateToPaid(billId);
     }
