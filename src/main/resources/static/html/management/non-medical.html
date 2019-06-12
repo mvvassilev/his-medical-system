@@ -41,15 +41,15 @@
 
     <template>
         <el-table :data="nonmedics.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
-            <el-table-column prop="itemcode" label="Code" width="180">
+            <el-table-column prop="itemcode" label="Code" width="380">
             </el-table-column>
-            <el-table-column prop="feecode" label="Feecode" width="180">
+            <el-table-column prop="feecode" label="Feecode" width="100">
             </el-table-column>
             <el-table-column prop="deptcode" label="Department Code" width="180">
             </el-table-column>
-            <el-table-column prop="itemname" label="Name">
+            <el-table-column prop="itemname" label="Name" width="440">
             </el-table-column>
-            <el-table-column prop="size" label="Size">
+            <el-table-column prop="size" label="Size" width="180">
             </el-table-column>
             <el-table-column prop="price" label="Price">
             </el-table-column>

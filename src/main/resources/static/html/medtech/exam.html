@@ -1,0 +1,217 @@
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <title>HIS System</title>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- import Vue before Element -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<style>
+    .el-form-item {
+        margin-bottom: -10px;
+    }
+</style>
+<div id="patient">
+    <el-card shadow="always" style="margin-bottom: 10px;">
+        <el-row type="flex" justify="space-between">
+            <el-col :span="10">
+                <el-form ref="form" :model="form" :rules="rules" label-width="20px" class="demo-ruleForm">
+                    <el-form-item prop="extype">
+                        <el-select v-model="form.extype" style="width: 220px" placeholder="Select Medical Technique">
+                            <el-option label="Examination" value="examination"></el-option>
+                            <el-option label="Test" value="test"></el-option>
+                            <el-option label="Treatment" value="treatment"></el-option>
+                        </el-select>
+                        <el-button style="margin-left: 20px" size="medium" icon="el-icon-refresh"
+                                   @click="loadPatientList('form')"
+                                   type="warning" plain round>Reload
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </el-col>
+        </el-row>
+    </el-card>
+    <el-row :gutter="20" flex="type" justify="space-between">
+        <el-col :span="6">
+            <el-card>
+                <el-row glutter="20">
+                    <el-input placeholder="Enter Patient ID" v-model="pid" class="input-with-select">
+                        <el-button slot="append" icon="el-icon-search" @click=""></el-button>
+                    </el-input>
+                </el-row>
+
+                <el-table
+                        :data="patients"
+                        style="width: 100%">
+                    <el-table-column type="expand">
+                        <template slot-scope="props">
+                            <el-form label-position="left" inline class="demo-table-expand">
+                                <el-form-item label="商品名称">
+                                    <span>{{ props.row.name }}</span>
+                                </el-form-item>
+                                <el-form-item label="所属店铺">
+                                    <span>{{ props.row.shop }}</span>
+                                </el-form-item>
+                                <el-form-item label="商品 ID">
+                                    <span>{{ props.row.id }}</span>
+                                </el-form-item>
+                                <el-form-item label="店铺 ID">
+                                    <span>{{ props.row.shopId }}</span>
+                                </el-form-item>
+                                <el-form-item label="商品分类">
+                                    <span>{{ props.row.category }}</span>
+                                </el-form-item>
+                                <el-form-item label="店铺地址">
+                                    <span>{{ props.row.address }}</span>
+                                </el-form-item>
+                                <el-form-item label="商品描述">
+                                    <span>{{ props.row.desc }}</span>
+                                </el-form-item>
+                            </el-form>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            label="商品 ID"
+                            prop="id">
+                    </el-table-column>
+                    <el-table-column
+                            label="商品名称"
+                            prop="name">
+                    </el-table-column>
+                    <el-table-column
+                            label="描述"
+                            prop="desc">
+                    </el-table-column>
+                </el-table>
+
+            </el-card>
+        </el-col>
+        <el-col :span="18">
+            <el-card>
+
+            </el-card>
+        </el-col>
+    </el-row>
+</div>
+
+<script>
+    var patient = new Vue({
+        el: '#patient',
+
+        data() {
+            var validateDisType = (form, value, callback) => {
+
+                if (value === '') {
+                    return callback(new Error('Please Select Type!'));
+                } else {
+                    callback();
+                }
+            };
+
+            return {
+                deptcode: 'CK',
+                userid: 1,
+
+                form: {
+                    extype: ''
+                },
+
+                rules: {
+                    extype: [
+                        {validator: validateDisType, trigger: 'blur'}
+                    ]
+                },
+
+                pname: '',
+                pid: null,
+                regid: null,
+
+                patients: [{
+                    id: '12987122',
+                    name: '好滋好味鸡蛋仔',
+                    category: '江浙小吃、小吃零食',
+                    desc: '荷兰优质淡奶，奶香浓而不腻',
+                    address: '上海市普陀区真北路',
+                    shop: '王小虎夫妻店',
+                    shopId: '10333'
+                }, {
+                    id: '12987123',
+                    name: '好滋好味鸡蛋仔',
+                    category: '江浙小吃、小吃零食',
+                    desc: '荷兰优质淡奶，奶香浓而不腻',
+                    address: '上海市普陀区真北路',
+                    shop: '王小虎夫妻店',
+                    shopId: '10333'
+                }, {
+                    id: '12987125',
+                    name: '好滋好味鸡蛋仔',
+                    category: '江浙小吃、小吃零食',
+                    desc: '荷兰优质淡奶，奶香浓而不腻',
+                    address: '上海市普陀区真北路',
+                    shop: '王小虎夫妻店',
+                    shopId: '10333'
+                }, {
+                    id: '12987126',
+                    name: '好滋好味鸡蛋仔',
+                    category: '江浙小吃、小吃零食',
+                    desc: '荷兰优质淡奶，奶香浓而不腻',
+                    address: '上海市普陀区真北路',
+                    shop: '王小虎夫妻店',
+                    shopId: '10333'
+                }]
+            };
+        },
+        methods: {
+            loadPatientList(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        console.log("wo tm load bao!");
+
+                    } else {
+                        console.log('Error Submit!!');
+                        return false;
+                    }
+                });
+                /* var that = this;
+                 axios.post('/outpatient/getPatientsOfUserToday', {'userid': this.userid, 'state': 6})
+                     .then(function (response) {
+                         console.log(response.data);
+                         that.myWait = response.data;
+                     })
+                     .catch(function (error) {
+                         console.log(error);
+                     });*/
+
+            },
+            handleSelect(key, value) {
+                /* var select = key.toString().split("-");
+                 if (select[0] === "1" && select[1] === "1") {
+                     this.pid = this.myWait[parseInt(select[2]) - 1].pid;
+                     this.pname = this.myWait[parseInt(select[2]) - 1].pname;
+                     this.regid = this.myWait[parseInt(select[2]) - 1].regid;
+                 } else if (select[0] === "1" && select[1] === "2") {
+                     this.pid = this.myDiagnosed[parseInt(select[2]) - 1].pid;
+                     this.pname = this.myDiagnosed[parseInt(select[2]) - 1].pname;
+                     this.regid = this.myDiagnosed[parseInt(select[2]) - 1].regid;
+                 } else if (select[0] === "2" && select[1] === "1") {
+                     this.pid = this.deptWait[parseInt(select[2]) - 1].pid;
+                     this.pname = this.deptWait[parseInt(select[2]) - 1].pname;
+                     this.regid = this.deptWait[parseInt(select[2]) - 1].regid;
+                 } else if (select[0] === "2" && select[1] === "2") {
+                     this.pid = this.deptDiagnosed[parseInt(select[2]) - 1].pid;
+                     this.pname = this.deptDiagnosed[parseInt(select[2]) - 1].pname;
+                     this.regid = this.deptDiagnosed[parseInt(select[2]) - 1].regid;
+                 }*/
+
+            },
+
+        }
+    });
+
+</script>
+</body>
+</html>

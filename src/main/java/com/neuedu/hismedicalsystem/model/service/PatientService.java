@@ -41,4 +41,7 @@ public class PatientService {
     public void updatePatientState(JSONObject object) {
         patientMapper.updatePatientState(object);
     }
+
+    public String getBillcatByRegid(Integer regid) { return patientMapper.getBillcatByRegid(regid);
+    }
 }

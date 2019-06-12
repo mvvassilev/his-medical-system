@@ -23,5 +23,7 @@ public interface PrescriptionMapper {
     public void addMed(@Param("preid") int preid, @Param("itemcode") String itemcode, @Param("count") int count);
 
     public void delMed(int preRelid);
+
+    public List<Prescription> getPreH(Prescription condition);
 }
 

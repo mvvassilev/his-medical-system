@@ -10,6 +10,24 @@ public class Exam {
     private String itemname;
     private String deptname;
     private String result;
+    private String feecode;
+    private String itemcode;
+
+    public String getItemcode() {
+        return itemcode;
+    }
+
+    public void setItemcode(String itemcode) {
+        this.itemcode = itemcode;
+    }
+
+    public String getFeecode() {
+        return feecode;
+    }
+
+    public void setFeecode(String feecode) {
+        this.feecode = feecode;
+    }
 
     public int getExid() {
         return exid;

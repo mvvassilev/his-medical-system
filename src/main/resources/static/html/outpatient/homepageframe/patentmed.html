@@ -223,7 +223,7 @@
             newPreVisible: false,
             visible: false,
 
-            totalprice:'',
+            totalprice: '',
             number: 1,
             preid: '',
             uRid: 1,
@@ -253,11 +253,11 @@
             //用上面方法会报错415，应该将数据重新组装成JSON
 
             this.regid = parent.patient.regid;
+            this.pid = parent.patient.pid;
             var that = this;
             axios.post('/outpatient/getPre', {
                 uRid: this.uRid,
                 regid: parent.patient.regid,
-
             })
                 .then(function (response) {
                     console.log(response.data);
@@ -386,6 +386,20 @@
                     axios.post('/outpatient/changeState', params)
                         .then(function (response) {
                             that.refreshPre();
+
+                            if (pickstate === 'Opened') {
+                                axios.post('/outpatient/addPreToBill', {
+                                    preid: that.currentRow.preid,
+                                    feecode: 'XYF',
+                                    pid: that.pid,
+                                    regid: that.regid,
+                                })
+                                    .catch(function (error) {
+                                        console.log(error);
+
+                                    });
+                            }
+
                         }).catch(function (error) {
                         console.log(error);
                     });
@@ -406,13 +420,13 @@
                 var judgestate = val.state;
                 this.stateTrans(judgestate);
                 var that = this;
-                this.totalprice=0;
+                this.totalprice = 0;
                 var params = new URLSearchParams();
                 params.append("preid", val.preid);
                 axios.post('/outpatient/getItem', params)
                     .then(function (response) {
                         that.medicine = response.data;
-                        for(var i=0;i<that.medicine.length;i++){
+                        for (var i = 0; i < that.medicine.length; i++) {
                             that.totalprice += (that.medicine[i].price) * (that.medicine[i].count);
                             // console.log(i+":"+that.totalprice);
                         }

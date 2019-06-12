@@ -151,6 +151,10 @@ public class OutpatientController {
 
     @RequestMapping("/getPre")
     public List<Prescription> getPre(@RequestBody Prescription condition){return prescriptionService.getPre(condition);}
+
+    @RequestMapping("/getPreH")
+    public List<Prescription> getPreH(@RequestBody Prescription condition){return prescriptionService.getPreH(condition);}
+
     @RequestMapping("/addPre")
     public void addPre(int uRid, int regid, String pretype, String prename) {
         prescriptionService.addPre(uRid, regid, pretype, prename);
@@ -252,5 +256,40 @@ public class OutpatientController {
     @RequestMapping("/savePreToTemplate")
     public void savePreToTemplate(@RequestBody JSONObject object){
         templateService.savePreToTemplate(object);
+    }
+
+
+    /*
+    *
+    * Bill
+    *
+    * */
+
+    @Autowired
+    private BillService billService;
+
+    @Autowired
+    private MedService medService;
+
+    @RequestMapping("/addExamToBill")
+    public void addExamToBill(@RequestBody JSONObject object){
+        String billcat = patientService.getBillcatByRegid(object.getInteger("regid"));
+        object.put("billcat", billcat);
+        billService.addExamToBill(object);
+    }
+
+    @RequestMapping("/addPreToBill")
+    public void addPreToBill(@RequestBody JSONObject object){
+        String billcat = patientService.getBillcatByRegid(object.getInteger("regid"));
+        object.put("billcat", billcat);
+
+        List<Medicine> medicineList = medService.getItemCodeByPreid((object.getInteger("preid")));
+        for(int i = 0; i < medicineList.size(); i++){
+            medicineList.get(i).setPrice((medicineList.get(i).getCount()*medicineList.get(i).getPrice()));
+        }
+
+        object.put("medicineList", medicineList);
+
+        billService.addPreToBill(object);
     }
 }

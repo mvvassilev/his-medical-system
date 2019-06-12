@@ -59,4 +59,9 @@ public class ChargeController {
         result.put("success",true);
         return result;
     }
+
+    @RequestMapping("/getURidByBillid")
+    public int getURidByBillid(@RequestBody JSONObject object){
+        return billService.getURidByBillid(object);
+    }
 }

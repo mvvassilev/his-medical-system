@@ -122,40 +122,6 @@ public class ManagementController {
     }
 
     /**
-     * medicine
-     */
-    @Autowired
-    private MedService medService;
-
-    @RequestMapping("/addMed")
-    public String addMed(@RequestBody Medicine medicine) {
-        System.out.println(medicine.getItemcode());
-        try {
-            medService.addMed(medicine);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "{\"result\":false}";
-        }
-        return "{\"result\":true}";
-    }
-
-    @RequestMapping("/delMed")
-    public void delMed(String itemcode) {
-        medService.delMed(itemcode);
-    }
-
-    @RequestMapping("/updateMed")
-    public void updateMed(@RequestBody Medicine condition) {
-        medService.updateMed(condition);
-    }
-
-    @RequestMapping("/med")
-    public List<Medicine> getMed(@RequestBody Medicine condition) {
-        return medService.getMed(condition);
-    }
-
-
-    /**
      * non-medical
      */
     @Autowired

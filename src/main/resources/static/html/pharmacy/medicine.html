@@ -19,10 +19,10 @@
             <el-input type="text" v-model="itemcode" placeholder="Medicine Code" clearable></el-input>
         </el-col>
         <el-col :span="8">
-            <el-button icon="el-icon-search" @click="search"></el-button>
+            <el-button icon="el-icon-search" type="primary" @click="search">Search</el-button>
         </el-col>
         <el-col :span="8">
-            <el-button type="text" @click="showDialogForm('Add')">Add New Entry</el-button>
+            <el-button icon="el-icon-circle-plus-outline" type="primary" @click="showDialogForm('Add')">Add New Medicine</el-button>
         </el-col>
     </el-row>
 
@@ -30,13 +30,7 @@
     <el-table
             :data="medicine.slice((currentPage-1)*pagesize,currentPage*pagesize)"
             style="width: 100%"
-            @selection-change="handleSelectionChange"
-            ref="multipleTable"
             tooltip-effect="dark">
-        <el-table-column
-                type="selection"
-                width="55">
-        </el-table-column>
         <el-table-column
                 prop="itemcode"
                 label="Medicine Code"
@@ -55,12 +49,12 @@
         <el-table-column
                 prop="unit"
                 label="Unit"
-                width="180">
+                width="100">
         </el-table-column>
         <el-table-column
                 prop="price"
                 label="Price"
-                width="180">
+                width="100">
         </el-table-column>
         <el-table-column
                 prop="medtype"
@@ -81,13 +75,13 @@
         </el-table-column>
     </el-table>
 
-    <div style="margin-top: 20px">
+    <!--<div style="margin-top: 20px">
         <el-button :disabled="this.multipleSelection.length === 0" @click="toggleSelection()">Cancel Selection
         </el-button>
         <el-button type="danger" icon="delete" :disabled="this.multipleSelection.length === 0"
                    @click="">delete all
-        </el-button><!--delAllMed(multipleSelection)-->
-    </div>
+        </el-button>&lt;!&ndash;delAllMed(multipleSelection)&ndash;&gt;
+    </div>-->
 
     <el-pagination
             @size-change="handleSizeChange"
@@ -171,7 +165,7 @@
 
             value: false,
             currentPage: 1, //初始页
-            pagesize: 20,    //    每页的数据
+            pagesize: 10,    //    每页的数据
 
             deleteDialogVisible: false,//控制弹出删除窗口
             deletingIndex: -1,
@@ -200,7 +194,7 @@
             console.log("refresh!!!")
             this.currentPage = 1;
             var that = this;
-            axios.post('/management/med', {})
+            axios.post('/pharmacy/med', {})
             .then(function (response) {
                 console.log(response.data);
                 that.medicine = response.data;
@@ -214,7 +208,7 @@
             search: function () {
                 this.currentPage = 1;
                 var that = this;
-                axios.post('/management/med', {
+                axios.post('/pharmacy/med', {
                     itemcode: that.itemcode,
                     itemname: that.itemname,
                     size: that.size,
@@ -235,7 +229,7 @@
             refresh: function () {
                 this.currentPage = 1;
                 var that = this;
-                axios.post('/management/med', {
+                axios.post('/pharmacy/med', {
                     itemcode: "",
                     itemname: "",
                     size: "",
@@ -265,7 +259,7 @@
             onSubmitAdd: function(){
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/addMed', {
+                axios.post('/pharmacy/addMed', {
                     itemcode: that.form.itemcode,
                     itemname: that.form.itemname,
                     size: that.form.size,
@@ -286,7 +280,7 @@
             onSubmitUpdate: function () {
                 var that = this;
                 console.log(that.form);
-                axios.post('/management/updateMed', {
+                axios.post('/pharmacy/updateMed', {
                     itemcode: that.form.itemcode,
                     itemname: that.form.itemname,
                     size: that.form.size,
@@ -309,7 +303,7 @@
             delMed: function () {
                 var params = new URLSearchParams();
                 params.append('itemcode', this.deletingObject.itemcode);
-                axios.post('/management/delMed', params)
+                axios.post('/pharmacy/delMed', params)
                     .then(function (response) {
 
                     })
@@ -352,7 +346,7 @@
                 this.updatingIndex = index;
                 this.updatingObject = row;
             },
-            toggleSelection(rows) {
+            /*toggleSelection(rows) {
                 if (rows) {
                     rows.forEach(row => {
                         this.$refs.multipleTable.toggleRowSelection(row);
@@ -364,7 +358,7 @@
 
             handleSelectionChange(val) {
                 this.multipleSelection = val;
-            },
+            },*/
             handleSizeChange: function(pagesize) {
                 this.pagesize = pagesize;
                 console.log(pagesize);
