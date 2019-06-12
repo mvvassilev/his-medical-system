@@ -92,6 +92,7 @@ public class ReceiptService {
         System.out.println("logReceipt->bills = " + bills);
         String confirmType = obj.getString("confirmType");
         int chargerid = obj.getInteger("chargerid");
+
         int recid = insertNewReceipt(bills,chargerid,patientInfo,confirmType);
         updateRecIdForBills(bills,recid);
         return recid;
