@@ -233,7 +233,7 @@
                 console.log("that.receiptInfo")
                 console.log(that.receiptInfo);
 
-            }).catch(function (error) {console.log(error);});
+        }).catch(function (error) {console.log(error);});
 
             axios({
                 url: '/charge/getBillsByRecid',
@@ -263,8 +263,6 @@
                         console.log(error);
                     });
             }).catch(function (error) {console.log(error);});
-
-
         },
 
         methods: {
