@@ -4,7 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.neuedu.hismedicalsystem.model.mapper.BillMapper">
 
+
     <insert id="insertBill">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="billid">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
         insert into bill
         (totalprice, pid, count, billdate, isPaid, itemcode, isPrint, feecode, isDone, billcat,treatcat)
         values
@@ -66,9 +70,11 @@
     <select id="getUndoneBills" resultType="Bill" >
         <include refid="getNonMedicBillsByPid"></include>
         and  isDone = #{isDone}
+        and totalprice &lt;0
         union
         <include refid="getMedicBillsByPid"></include>
         and  isDone = #{isDone}
+        and totalprice &lt;0
     </select>
 
     <update id="changeStateToPaid">

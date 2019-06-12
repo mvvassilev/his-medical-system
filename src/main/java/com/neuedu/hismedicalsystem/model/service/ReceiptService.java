@@ -85,11 +85,15 @@ public class ReceiptService {
     }
 
     public int logReceipt(JSONObject obj){
+        System.out.println("logReceipt->obj.toString() = " + obj.toString());
         Patient patientInfo = (Patient) JSONObject.toJavaObject(obj.getJSONObject("patientInfo"), Patient.class);
+        System.out.println("logReceipt->patientInfo = " + patientInfo);
         JSONArray array = obj.getJSONArray("bills");
         List<Bill> bills = JSONObject.parseArray(array.toJSONString(), Bill.class);
+        System.out.println("logReceipt->bills = " + bills);
         String confirmType = obj.getString("confirmType");
         int chargerid = obj.getInteger("chargerid");
+
         int recid = insertNewReceipt(bills,chargerid,patientInfo,confirmType);
         updateRecIdForBills(bills,recid);
         return recid;
@@ -106,7 +110,9 @@ public class ReceiptService {
         receipt.setRecstate("未打印");
 
         Bill firstBill = bills.get(0);
+
         int billid = firstBill.getBillid();
+
         receipt.setuRid(billid);
 
         receipt.setChargerid(chargerid);
@@ -149,7 +155,9 @@ public class ReceiptService {
 
     public Receipt getReceiptByRecid(JSONObject obj) {
         int recid = obj.getInteger("recid");
-        return receiptMapper.getReceiptByRecid(recid).get(0);
+        Receipt receipt = receiptMapper.getReceiptByRecid(recid);
+        System.out.println("getReceiptByRecid->receipt = " + receipt);
+        return receipt;
     }
 
     public List<Bill> getBillsByRecid(JSONObject obj){

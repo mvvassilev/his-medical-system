@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style>
         .invoice-box {
-            max-width: 800px;
+            /*max-width: 800px;*/
             margin: auto;
             padding: 30px;
             border: 1px solid #eee;
@@ -108,7 +108,7 @@
 <body>
 
 <div id="preview">
-    <div class="invoice-box">
+    <div class="invoice-box" style="width: 1000px; height: auto">
         <table cellpadding="0" cellspacing="0">
             <tr class="top">
                 <td colspan="2">
@@ -151,20 +151,20 @@
                 </td>
             </tr>
 
-<!--            <tr class="heading">-->
-<!--                <td>-->
-<!--                    Payment Method-->
-<!--                </td>-->
-<!--                <td>-->
-<!--                    {{receiptInfo.paymentMethod}}-->
-<!--                </td>-->
-<!--            </tr>-->
+            <!--            <tr class="heading">-->
+            <!--                <td>-->
+            <!--                    Payment Method-->
+            <!--                </td>-->
+            <!--                <td>-->
+            <!--                    {{receiptInfo.paymentMethod}}-->
+            <!--                </td>-->
+            <!--            </tr>-->
 
-<!--            <tr class="details">-->
-<!--                <td>-->
-<!--                    {{receiptInfo.patientInfo.paymentMethod}}-->
-<!--                </td>-->
-<!--            </tr>-->
+            <!--            <tr class="details">-->
+            <!--                <td>-->
+            <!--                    {{receiptInfo.patientInfo.paymentMethod}}-->
+            <!--                </td>-->
+            <!--            </tr>-->
 
             <tr class="heading">
                 <td>
@@ -190,11 +190,108 @@
                 <td></td>
 
                 <td>
-                    Total: {{receiptInfo.totalPrice}}元
+                    Total: {{totalPrice}}元
                 </td>
             </tr>
         </table>
     </div>
+    <el-dialog
+            title="Preview Receipt"
+            :visible.sync="dialogVisible"
+            width="85%"
+            :before-close="handleClose">
+        <div class="invoice-box">
+            <table cellpadding="0" cellspacing="0">
+                <tr class="top">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td style="font-size: 35px" class="title">
+                                    NEU Hospital Invoice
+                                </td>
+
+                                <td>
+                                    <img style="height: 82px;
+                                            width: auto;
+                                            position: relative;
+                                            top: -11px; "
+                                         src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1560258751942&di=f5ac3416e124f9590f2feac3d656e79f&imgtype=0&src=http%3A%2F%2Fs1.sinaimg.cn%2Fmw690%2F004lDxWVgy6NQeMRTaM90%26690">
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <tr class="information">
+                    <td colspan="2">
+                        <table>
+                            <tr>
+                                <td>
+                                    Shenyang<br>
+                                    Hunnan District Xinxiu St.<br>
+                                    2# NEU Education
+                                </td>
+
+                                <td>
+                                    Invoice #: {{receiptInfo.recid}}<br>
+                                    Created: {{receiptInfo.date}}<br>
+                                    Name: {{receiptInfo.pname}}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!--            <tr class="heading">-->
+                <!--                <td>-->
+                <!--                    Payment Method-->
+                <!--                </td>-->
+                <!--                <td>-->
+                <!--                    {{receiptInfo.paymentMethod}}-->
+                <!--                </td>-->
+                <!--            </tr>-->
+
+                <!--            <tr class="details">-->
+                <!--                <td>-->
+                <!--                    {{receiptInfo.patientInfo.paymentMethod}}-->
+                <!--                </td>-->
+                <!--            </tr>-->
+
+                <tr class="heading">
+                    <td>
+                        Item
+                    </td>
+
+                    <td>
+                        Price
+                    </td>
+                </tr>
+
+                <tr v-for="(item, index) in tableData" v-if="index != tableData.length - 1" class="item">
+                    <td>{{item.feename}} x {{item.count}}</td>
+                    <td>{{item.totalprice}}元</td>
+                </tr>
+
+                <tr v-for="(item, index) in tableData" v-if="index == tableData.length - 1" class="item last">
+                    <td>{{item.feename}} x {{item.count}}</td>
+                    <td>{{item.totalprice}}元</td>
+                </tr>
+
+                <tr class="total">
+                    <td></td>
+
+                    <td>
+                        Total: {{totalPrice}}元
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">Cancel</el-button>
+            <el-button type="primary" @click="onPrint">Print</el-button>
+        </span>
+    </el-dialog>
 </div>
 
 </body>
@@ -203,8 +300,9 @@
     var app = new Vue({
         el: '#preview',
         data: {
+            dialogVisible: true,
             tableData: [],
-            sumPrice : 0,
+            totalPrice : 0,
             receiptInfo : {
                 pname: "",
                 recid:"",
@@ -233,7 +331,7 @@
                 console.log("that.receiptInfo")
                 console.log(that.receiptInfo);
 
-            }).catch(function (error) {console.log(error);});
+        }).catch(function (error) {console.log(error);});
 
             axios({
                 url: '/charge/getBillsByRecid',
@@ -246,11 +344,35 @@
                 that.tableData = response.data;
                 console.log("tableData")
                 console.log(that.tableData)
+                axios({
+                    url: '/charge/getPrintedTotalPrice',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:{
+                        bills: that.tableData,
+                        confirmType: "",
+                    }
+                })
+                    .then(function (response) {
+                        console.log("success calculateTotalPrice");
+                        that.totalPrice = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }).catch(function (error) {console.log(error);});
         },
 
         methods: {
-
+            onPrint(){
+                this.dialogVisible = false;
+                setTimeout(
+                    function(){
+                        window.print();
+                    }
+                    , 500
+                )
+            }
         }
     })
 </script>

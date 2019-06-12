@@ -2,6 +2,7 @@ package com.neuedu.hismedicalsystem.model.mapper;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.neuedu.hismedicalsystem.model.po.Bill;
 import com.neuedu.hismedicalsystem.model.po.FrontPage;
 import com.neuedu.hismedicalsystem.model.po.Patient;
 import org.apache.ibatis.annotations.Param;
@@ -44,4 +45,10 @@ public interface PatientMapper {
     void addResultsToImage(JSONObject object);
 
     String getHomePageStateByRegid(JSONObject object);
+
+    Bill getBillBack(Integer exid);
+
+    void addRevokeBill(Bill lastBill);
+
+    void updateExam(Integer exid);
 }

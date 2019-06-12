@@ -28,7 +28,7 @@ public class FinancialController {
     }
 
     @RequestMapping("/getReceipts")
-    public List<Receipt> getReceipts(Date date) {
-        return receiptService.getReceipts(date);
+    public List<Receipt> getReceipts(Date condition) {
+        return receiptService.getReceipts(condition);
     }
 }

@@ -33,7 +33,8 @@
         </el-menu>
     </el-col>
     <el-col :span="21">
-        <iframe  height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url" style="overflow: hidden"></iframe>
+        <iframe height="1200" frameborder="0" width="102%" scrolling=auto v-bind:src="url"
+                style="overflow: hidden"></iframe>
     </el-col>
 </div>
 </body>
@@ -43,7 +44,7 @@
         data: function() {
             return {
                 url_sidebar: "",
-                url: "receipt.html",
+                url: "",
                 activeIndex: '1',
                 activeIndex2: '1'
             };

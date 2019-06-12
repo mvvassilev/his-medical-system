@@ -1,5 +1,7 @@
 package com.neuedu.hismedicalsystem.model.po;
 
+import java.util.List;
+
 public class Exam {
     private int exid;
     private int uRid;
@@ -12,6 +14,16 @@ public class Exam {
     private String result;
     private String feecode;
     private String itemcode;
+
+    private List<String> imgUrls;
+
+    public List<String> getImgUrls() {
+        return imgUrls;
+    }
+
+    public void setImgUrls(List<String> imgUrls) {
+        this.imgUrls = imgUrls;
+    }
 
     public String getItemcode() {
         return itemcode;

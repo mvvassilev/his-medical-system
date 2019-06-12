@@ -33,10 +33,12 @@ public class ShiftService {
     }
 
     public void insertShift(List<Shift> insertShifts) {
-        shiftMapper.insertShift(insertShifts);
+        if (insertShifts.size() != 0) {
+            shiftMapper.insertShift(insertShifts);
+        }
     }
 
-    public void deleteConflictShifts(Date startdate, Date enddate) {
-        shiftMapper.deleteConflictShifts(startdate, enddate);
+    public void deleteConflictShifts(int uRid, Date startdate, Date enddate) {
+        shiftMapper.deleteConflictShifts(uRid, startdate, enddate);
     }
 }
