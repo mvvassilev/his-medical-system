@@ -266,11 +266,12 @@
                     this.switchStep(this.deptDiagnosed[parseInt(select[2]) - 1].state);
                 }
 
-                this.url = 'homepageframe/frontpage.html';
-                myFrame.window.refreshPage();
+
 
                 this.resetActiveTab();
+                this.url = 'homepageframe/frontpage.html';
                 this.activeName = 'homepageframe/frontpage.html';
+                myFrame.window.refreshPage();
 
             },
 
