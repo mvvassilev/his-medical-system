@@ -156,7 +156,9 @@ public class ReceiptService {
         return billMapper.getBillsByRecid(recid);
     }
 
+
     public JSONArray getReceiptInfoForDepartment() {
+        int count = 0;
         User doctorCon = new User();
         doctorCon.setUsercat("门诊医生");
         List<User> doctorList = userMapper.getUsers(doctorCon);
@@ -171,6 +173,9 @@ public class ReceiptService {
         List<Financial> fList = new ArrayList<>();
 
         for (Dept dept : deptList) {
+            if (count == 5) {
+                break;
+            }
             Financial f = new Financial();
             f.setUsername(dept.getDeptname());
             //看诊人次
@@ -201,6 +206,7 @@ public class ReceiptService {
                 f.setFeecode21(receiptMapper.sumFeeCodePriceForDept(dept.getuRid(), "ZLF"));
             }
             fList.add(f);
+            count++;
         }
 
         return JSONArray.parseArray(JSON.toJSONString(fList));

@@ -65,7 +65,6 @@
     var app = new Vue({
         el: '#doctors',
         data: {
-            loading: "",
             username: "",
             datevalue: "",
             patientsamount: "",
@@ -92,6 +91,8 @@
             feecode20: "",
             feecode21: "",
 
+
+            loading: "",
             value: false,
             currentPage: 1,
             pagesize: 10,
@@ -109,6 +110,8 @@
             // ---------------     SEARCH      -----------------//
             search: function() {
                 var that = this;
+                that.loading = true;
+
                 console.log("Search called")
                 axios.post('/financial/getReceiptInfoForDoctor', {
 
@@ -170,11 +173,10 @@
                     .catch(function(error) {
                         console.log(error);
                     });
+                that.loading = false;
             }
         }
     });
 </script>
 
 </html>
-
-<!-- document.readyState === 'interactive' -->

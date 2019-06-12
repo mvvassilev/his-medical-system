@@ -25,7 +25,7 @@
             </el-col>
         </el-row>
 
-        <el-table :data="depts" style="width: 100%; height: fit-content;">
+        <el-table :data="depts" v-loading="loading" style="width: 100%; height: fit-content;">
             <el-table-column prop="deptname" label="Department name" width="210"></el-table-column>
             <el-table-column prop="patientsamount" label="看诊人次" width="40"></el-table-column>
             <el-table-column prop="receiptamount" label="发票数量" width="40"></el-table-column>
@@ -91,6 +91,7 @@
             feecode20: "",
             feecode21: "",
 
+            loading: "",
             value: false,
             currentPage: 1,
             pagesize: 10,
@@ -103,6 +104,16 @@
         },
 
         methods: {
+            handleSizeChange: function(pagesize) {
+                this.pagesize = pagesize;
+                console.log(pagesize);
+            },
+
+            handleCurrentChange: function(currentPage) {
+                this.currentPage = currentPage;
+                console.log(currentPage);
+            },
+
             //------------        PRINT RECORD         ----------//
             print: function() {
                 window.print();
@@ -111,12 +122,13 @@
             // ---------------     SEARCH      -----------------//
             search: function() {
                 var that = this;
+                that.loading = true;
+
                 console.log("Search called")
                 axios.post('/financial/getReceiptInfoForDepartment', {
 
-                })
-
-                .then(function(response) {
+                    })
+                    .then(function(response) {
                         that.docs = response.data;
                         console.log(that.docs);
 
@@ -172,6 +184,7 @@
                     .catch(function(error) {
                         console.log(error);
                     });
+                that.loading = false;
             }
         }
     });
