@@ -2,10 +2,7 @@ package com.neuedu.hismedicalsystem.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.neuedu.hismedicalsystem.model.po.NonMedic;
-import com.neuedu.hismedicalsystem.model.po.Patient;
-import com.neuedu.hismedicalsystem.model.po.Registration;
-import com.neuedu.hismedicalsystem.model.po.Shift;
+import com.neuedu.hismedicalsystem.model.po.*;
 import com.neuedu.hismedicalsystem.model.service.NonMedicService;
 import com.neuedu.hismedicalsystem.model.service.RegistrationService;
 import com.neuedu.hismedicalsystem.model.service.UserService;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,9 +43,8 @@ public class RegistrationController {
     }
 
     @RequestMapping("/submitRegistration")
-    public String submitRegistration(@RequestBody JSONObject obj){
-//        try {
-//
+    public List<Bill> submitRegistration(@RequestBody JSONObject obj){
+
         System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
         System.out.println("Submit Registration");
         System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
@@ -84,12 +81,14 @@ public class RegistrationController {
         NonMedic registrationType = nonMedicService.getNonMedicItems(nonMedicItem).get(0);
 
         //Add bill for new registration
-        registrationService.addRegistrationBill(patient,registrationType,newrecord,billcat);
+        Bill insertedBill = registrationService.addRegistrationBill(patient,registrationType,newrecord,billcat);
 
         //Add registration info into a shift
         registrationService.registerToShift(patient,registrationType,newrecord,shift);
 
-        return "{\"success\":\"true\"}";
+        List<Bill> bills = new ArrayList<>();
+        bills.add(insertedBill);
+        return bills;
     }
 
     @RequestMapping("/getRegistrationPrice")

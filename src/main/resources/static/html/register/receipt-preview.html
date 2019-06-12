@@ -190,7 +190,7 @@
                 <td></td>
 
                 <td>
-                    Total: {{receiptInfo.totalPrice}}元
+                    Total: {{totalPrice}}元
                 </td>
             </tr>
         </table>
@@ -204,7 +204,7 @@
         el: '#preview',
         data: {
             tableData: [],
-            sumPrice : 0,
+            totalPrice : 0,
             receiptInfo : {
                 pname: "",
                 recid:"",
@@ -246,7 +246,25 @@
                 that.tableData = response.data;
                 console.log("tableData")
                 console.log(that.tableData)
+                axios({
+                    url: '/charge/getPrintedTotalPrice',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data:{
+                        bills: that.tableData,
+                        confirmType: "",
+                    }
+                })
+                    .then(function (response) {
+                        console.log("success calculateTotalPrice");
+                        that.totalPrice = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }).catch(function (error) {console.log(error);});
+
+
         },
 
         methods: {
