@@ -56,6 +56,11 @@
         where recid = #{recid}
     </select>
 
+    <update id="changeReceiptState">
+        update receipt set recstate = '已打印'
+        where recid = #{recid}
+    </update>
+
 </mapper>
 
 

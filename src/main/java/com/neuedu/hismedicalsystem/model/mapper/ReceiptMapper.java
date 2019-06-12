@@ -20,4 +20,6 @@ public interface ReceiptMapper {
     Receipt getReceiptByRecid(int recid);
 
     double sumFeeCodePriceForDept(@Param("uRid") int uRid, @Param("feecode") String feecode);
+
+    void changeReceiptState(int recid);
 }

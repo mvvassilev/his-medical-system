@@ -220,4 +220,9 @@ public class ReceiptService {
         return JSONArray.parseArray(JSON.toJSONString(fList));
     }
 
+    public void changeReceiptState(JSONObject obj) {
+        System.out.println("changeReceiptState->obj.toString() = " + obj.toString());
+        int recid = obj.getInteger("recid");
+        receiptMapper.changeReceiptState(recid);
+    }
 }
