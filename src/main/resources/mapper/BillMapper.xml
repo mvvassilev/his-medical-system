@@ -6,28 +6,68 @@
 
     <insert id="insertBill">
         insert into bill
-        (totalprice, pid, count, billdate, isPaid, itemcode, isPrint, feecode, isDone, billcat)
+        (totalprice, pid, count, billdate, isPaid, itemcode, isPrint, feecode, isDone, billcat, treatcat)
         values
-        (#{totalprice}, #{pid}, #{count}, now(), #{isPaid}, #{itemcode}, #{isPrint}, #{feecode}, #{isDone}, #{billcat})
+        (#{totalprice}, #{pid}, #{count}, now(), #{isPaid}, #{itemcode}, #{isPrint}, #{feecode}, #{isDone}, #{billcat}, 'register')
     </insert>
 
-    <sql id="getBillsByPid">
+    <sql id="getNonMedicBillsByPid">
         select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
         nm.itemname as itemname, f.feename as feename
         from bill b
         join non_medic nm on nm.itemcode = b.itemcode
         join fee f on f.feecode = b.feecode
+        where pid = #{pid}
     </sql>
 
-    <select id="getUnpaidBills" resultType="Bill" >
-        <include refid="getBillsByPid"></include>
+    <sql id="getMedicBillsByPid">
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        m.itemname as itemname, f.feename as feename
+        from bill b
+        join medicine m on m.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
         where pid = #{pid}
+    </sql>
+
+
+    <select id="getBillsByRecid" resultType="Bill" >
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        nm.itemname as itemname, f.feename as feename
+        from bill b
+        join non_medic nm on nm.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
+        where b.recid = #{recid}
+        union
+        select billid, totalprice, pid, count, billdate, isPaid, b.itemcode, isPrint, b.feecode, isDone, billcat,
+        m.itemname as itemname, f.feename as feename
+        from bill b
+        join medicine m on m.itemcode = b.itemcode
+        join fee f on f.feecode = b.feecode
+        where b.recid = #{recid}
+    </select>
+
+
+    <select id="getBills" resultType="Bill" >
+        <include refid="getNonMedicBillsByPid"></include>
+        union
+        <include refid="getMedicBillsByPid"></include>
+    </select>
+
+    <select id="getUnpaidBills" resultType="Bill" >
+        <include refid="getNonMedicBillsByPid"></include>
         and  isPaid = #{isPaid}
+        and totalprice>0
+        union
+        <include refid="getMedicBillsByPid"></include>
+        and  isPaid = #{isPaid}
+        and totalprice>0
     </select>
 
     <select id="getUndoneBills" resultType="Bill" >
-        <include refid="getBillsByPid"></include>
-        where pid = #{pid}
+        <include refid="getNonMedicBillsByPid"></include>
+        and  isDone = #{isDone}
+        union
+        <include refid="getMedicBillsByPid"></include>
         and  isDone = #{isDone}
     </select>
 
@@ -39,6 +79,11 @@
     <delete id="deleteBill">
         delete from bill where billid = #{billId}
     </delete>
+
+    <update id="changeStateToDone">
+        update bill set isDone = true
+        where billid = #{billId}
+    </update>
 
     <!--  ADD BILLING OF OUTPATIENT PART  -->
     <insert id="addExamToBill" useGeneratedKeys="true" keyProperty="billid">
@@ -70,4 +115,9 @@
     <select id="getTreatcatByBillid" resultType="String">
         select treatcat from his.bill where billid = #{billid}
     </select>
+
+    <update id="updateRecid">
+        update bill set recid = #{recid}
+        where billid = #{billid}
+    </update>
 </mapper>

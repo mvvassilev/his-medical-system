@@ -27,7 +27,12 @@ public class BillService {
     }
 
     public void refundBill(int billId){
-        billMapper.deleteBill(billId);
+        //Set isDone for negative bill to 'true'
+        billMapper.changeStateToPaid(billId);
+        //Set isPaid for negative bill to 'true
+        billMapper.changeStateToDone(billId);
+        //Print 冲红发票
+        //Print 剩余项目的发票
     }
 
     public void addExamToBill(JSONObject object) { billMapper.addExamToBill(object);
@@ -36,8 +41,4 @@ public class BillService {
     public void addPreToBill(JSONObject object) { billMapper.addPreToBill(object);
     }
 
-    public int getURidByBillid(JSONObject object){
-        String treatcat = billMapper.getTreatcatByBillid(object.getInteger("billid"));
-        return billMapper.getURidByBillid(object.getInteger("billid"), treatcat);
-    }
 }

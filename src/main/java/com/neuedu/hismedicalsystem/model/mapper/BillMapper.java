@@ -15,9 +15,13 @@ public interface BillMapper {
     List<Bill> getUnpaidBills(Bill bill);
     List<Bill> getUndoneBills(Bill bill);
 
+    List<Bill> getBillsByRecid(int recid);
+
+
     void deleteBill(int billId);
 
     void changeStateToPaid(int billId);
+    void changeStateToDone(int billId);
 
     void addExamToBill(JSONObject object);
 
@@ -26,4 +30,6 @@ public interface BillMapper {
     int getURidByBillid(@Param("billid") int billid, @Param("treatcat") String treatcat);
 
     String getTreatcatByBillid(int billid);
+
+    void updateRecid(@Param("billid") int billid, @Param("recid") int recid);
 }

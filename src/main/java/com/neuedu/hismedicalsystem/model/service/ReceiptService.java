@@ -2,12 +2,12 @@ package com.neuedu.hismedicalsystem.model.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.neuedu.hismedicalsystem.model.mapper.BillMapper;
 import com.neuedu.hismedicalsystem.model.mapper.DeptMapper;
 import com.neuedu.hismedicalsystem.model.mapper.ReceiptMapper;
 import com.neuedu.hismedicalsystem.model.mapper.UserMapper;
-import com.neuedu.hismedicalsystem.model.po.Dept;
-import com.neuedu.hismedicalsystem.model.po.Financial;
-import com.neuedu.hismedicalsystem.model.po.User;
+import com.neuedu.hismedicalsystem.model.po.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -21,9 +21,12 @@ public class ReceiptService {
 
     @Resource
     private DeptMapper deptMapper;
-    
+
     @Resource
     private ReceiptMapper receiptMapper;
+
+    @Resource
+    private BillMapper billMapper;
 
 
     public JSONArray getReceiptInfoForDoctor(){
@@ -80,6 +83,79 @@ public class ReceiptService {
 //        }
     }
 
+    public int logReceipt(JSONObject obj){
+        Patient patientInfo = (Patient) JSONObject.toJavaObject(obj.getJSONObject("patientInfo"), Patient.class);
+        JSONArray array = obj.getJSONArray("bills");
+        List<Bill> bills = JSONObject.parseArray(array.toJSONString(), Bill.class);
+        String confirmType = obj.getString("confirmType");
+        int chargerid = obj.getInteger("chargerid");
+        int recid = insertNewReceipt(bills,chargerid,patientInfo,confirmType);
+        updateRecIdForBills(bills,recid);
+        return recid;
+    }
+
+    private void updateRecIdForBills(List<Bill> bills, int recid){
+        for(Bill b : bills){
+            billMapper.updateRecid(b.getBillid(), recid);
+        }
+    }
+
+    private int insertNewReceipt(List<Bill> bills, int chargerid, Patient patientInfo, String confirmType){
+        Receipt receipt = new Receipt();
+        receipt.setRecstate("未打印");
+
+        Bill firstBill = bills.get(0);
+        int billid = firstBill.getBillid();
+        receipt.setuRid(billid);
+
+        receipt.setChargerid(chargerid);
+        receipt.setTotalprice(getPrintedTotalPrice(bills, confirmType));
+        receipt.setPid(patientInfo.getPid());
+        receiptMapper.addRec(receipt);
+        return receipt.getRecid();
+    }
+
+    public double getPrintedTotalPrice(JSONObject obj){
+        JSONArray array = obj.getJSONArray("bills");
+        List<Bill> bills = JSONObject.parseArray(array.toJSONString(), Bill.class);
+        String confirmType = obj.getString("confirmType");
+        return getPrintedTotalPrice(bills, confirmType);
+    }
+
+    private double getPrintedTotalPrice(List<Bill> bills, String confirmType){
+        double value = 0;
+        for(Bill b : bills){
+            double add = b.getTotalprice();
+            if(confirmType.equals("Refund")){
+                if( add > 0 )
+                    add = -add;
+            }
+            value += add;
+        }
+        return value;
+    }
+
+    public int getURidByBillid(int billid){
+        String treatcat = billMapper.getTreatcatByBillid(billid);
+        return billMapper.getURidByBillid(billid, treatcat);
+    }
+
+    public List<Receipt> getRecsByPid(JSONObject obj){
+        long pid = obj.getLong("pid");
+        return receiptMapper.getRecsByPid(pid);
+    }
+
+
+    public Receipt getReceiptByRecid(JSONObject obj) {
+        int recid = obj.getInteger("recid");
+        return receiptMapper.getReceiptByRecid(recid).get(0);
+    }
+
+    public List<Bill> getBillsByRecid(JSONObject obj){
+        int recid = obj.getInteger("recid");
+        return billMapper.getBillsByRecid(recid);
+    }
+
     public JSONArray getReceiptInfoForDepartment() {
         int count = 0;
         User doctorCon = new User();
@@ -134,5 +210,5 @@ public class ReceiptService {
 
         return JSONArray.parseArray(JSON.toJSONString(fList));
     }
-    
+
 }

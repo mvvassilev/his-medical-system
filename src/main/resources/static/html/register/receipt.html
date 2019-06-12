@@ -1,4 +1,4 @@
-<html>
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>HIS System</title>
@@ -13,65 +13,282 @@
 </head>
 
 <body>
-<div id="receipt">
+<div id="cancel">
 
-    <!------    DATE SELECTOR    -------->
-    <el-row :span="18" style="left: 5%">
-        <el-date-picker style="width: 40%" v-model="dateRange" type="daterange" range-separator="To"
-                        start-placeholder="Start date" end-placeholder="End date">
-        </el-date-picker>
-        <el-button style="position: relative; left: 25%" icon="el-icon-search" type="primary" @click="getReceipts">
-            Search
-        </el-button>
+    <el-row>
+        <el-card class="el-card__body">
+            <el-row type="flex" justify="space-between" align="middle">
+                <el-col :span="8">
+                    <div style="padding-left:10px; font-weight: bold; font-size: larger">Receipt Management</div>
+                </el-col>
+                <el-col :span="10">
+                    <el-input placeholder="Enter Patient ID" v-model="searchingPid" class="input-with-select">
+                        <el-button @click="tryCompletePInfo" slot="append" icon="el-icon-search"></el-button>
+                    </el-input>
+                </el-col>
+            </el-row>
+        </el-card>
     </el-row>
 
-    <!-----   RECEIPT TABLE    ------>
-    <el-row :gutter="20" style="padding: 3%">
-        <el-col :span="6" style="padding-right: 0%">
-            <el-table :data="receiptdata" border style="width: fit-content; height: fit-content">
-                <el-table-column prop="usernname" label="Cashier" width="115"></el-table-column>
-                <el-table-column prop="date" label="Date" width="115"></el-table-column>
-            </el-table>
+    <el-row :gutter="10" style="margin-top: 5px;">
+        <el-col :span="18">
+            <!--      Table      -->
+            <el-row>
+                <el-card class="box-card" style="min-height: 280px; max-height: 900px;">
+                    <div slot="header" class="clearfix">
+                        <span style="font-weight: bold">Receipt History</span>
+                        <div style="float: right;  position:relative; top:-8px;">
+                            <el-select v-model="confirmType" placeholder="Select Operation Type" @change="changeConfirmType()">
+                                <el-option
+                                        v-for="item in operationList"
+                                        :key="item"
+                                        :label="item"
+                                        :value="item">
+                                </el-option>
+                            </el-select>
+                        </div>
+                    </div>
+                    <el-table
+                            ref="multipleTable"
+                            size="small"
+                            :data="tableData"
+                            tooltip-effect="dark"
+                            style="width: 100%"
+                            @selection-change="handleSelectionChange"
+                            :default-sort = "{prop: 'billdate', order: 'descending'}">
+                        <el-table-column
+                                type="selection"
+                                width="55">
+                        </el-table-column>
+                        <el-table-column prop="recid" label="ID" width="140"></el-table-column>
+                        <el-table-column prop="recstate" label="State" width="200"></el-table-column>
+                        <el-table-column prop="date" label="Date Created" width="240" sortable></el-table-column>
+                        <el-table-column prop="totalprice" label="Price" width="200"></el-table-column>
+                        <el-table-column fixed="right" label="Operations" width="120">
+                            <template slot-scope="scope">
+                                <el-button @click="onReprint(scope.row)" type="text" size="small">
+                                    重打
+                                </el-button>
+                                <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">
+                                    补打
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </el-card>
+            </el-row>
         </el-col>
-        <el-col :span="14" style="padding-right: 0%">
-            <el-tabs type="border-card" style="width: 50%; height: fit-content;">
-                <el-tab-pane label="Daily record">Daily record</el-tab-pane>
-                <el-tab-pane label="Invoice information">Invoice information</el-tab-pane>
-            </el-tabs>
+        <el-col :span="6">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="font-weight: bold">Patient Information</span>
+                </div>
+                <div style="padding: 15px;">
+                    <patient-info-line property="ID" :val="patientInfo.pid"></patient-info-line>
+                    <patient-info-line property="Name" :val="patientInfo.pname"></patient-info-line>
+                    <patient-info-line property="Gender" :val="patientInfo.pgender"></patient-info-line>
+                    <patient-info-line property="Age" :val="patientInfo.page"></patient-info-line>
+                    <patient-info-line property="Birth Date" :val="patientInfo.pbirth"></patient-info-line>
+                    <patient-info-line property="Address" :val="patientInfo.paddress"></patient-info-line>
+                </div>
+            </el-card>
         </el-col>
     </el-row>
+
+    <!--    Delete Dialogue -->
+    <el-dialog
+            title="Confirm Cancelling"
+            :visible.sync="refundDialogVisible"
+            width="30%"
+    >
+        <span>Are you sure to give refund for these items?</span>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="deleteDialogVisible = false">No</el-button>
+            <a href="receipt-preview.html"  target="_blank">
+                <el-button type="primary" @click="onConfirm">Yes</el-button>
+            </a>
+        </span>
+    </el-dialog>
+
 </div>
 </body>
 
-
 <script>
+    Vue.component('patient-info-line', {
+        props: ['property','val'],
+        template: `
+            <el-row
+                    type="flex"
+                    align="center"
+                    :gutter="20"
+                    style="font-weight: bold;
+                           margin-top: 15px">
+                <el-col style="padding-left:5px; font-size: small" :span="8">
+                    <div style="margin-top:8px;">
+                        {{property}}:
+                    </div>
+                </el-col>
+                <el-col :span="16">
+                    <el-tag v-if="val!=null" class="el-tag">{{val}}</el-tag>
+                </el-col>
+            </el-row>
+        `
+    })
+
     var app = new Vue({
-        el: '#receipt',
+        el: '#cancel',
         data: {
-            dateRange: '',
-            date: "",
-            dailyrecord: "",
-            invoiceinformation: "",
+            tableData: [
+                {}
+            ],
+            multipleSelection: [],
+            totalPrice: 0,
 
-
-            return: {
-
+            searchingPid: "",
+            patientInfo: {
+                pid: null,
+                pname: null,
+                page: null,
+                pbirth: null,
+                paddress: null,
+                pgender: null,
             },
 
-            receiptdata: [],
+            condition : {
+                billcat: "",
+                billdate: "",
+                billid: null,
+                count: null,
+                done: null,
+                feecode: "",
+                feename: "",
+                itemcode: "",
+                itemname: "",
+                paid: null,
+                pid: null,
+                print: null,
+                totalprice: null,
+            },
+
+            chargeDialogVisible: false,
+            refundDialogVisible: false,
+            activeName: '',
+
+            confirmType: 'Charge',
+            operationList:["补打","重打"],
+
+            paymentMethod:"",
+            paymentMethods:["现金","微信","支付宝"],
+            change: 0,
+            receivedpayment: 0,
+
+            receiptInfo : {
+                items : [],
+                paymentMethod: "",
+                patientInfo: "",
+                date: "",
+                recid: "",
+                totalPrice:"",
+                recid: ""
+            }
         },
 
+        mounted: function() {
+            // this.condition.pid = 20165048;
+            // this.patientInfo.pid = 20165048;
+            // this.condition.paid = false;
+            // var that = this;
+            // axios({
+            //     url: '/charge/getUnpaidBills',
+            //     method: 'post',
+            //     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+            //     data: {condition: this.condition},
+            // })
+            //     .then(function (response) {
+            //         console.log("success getBillsByPid");
+            //         console.log(response.data);
+            //         that.tableData = response.data;
+            //     })
+            //     .catch(function (error) {
+            //         console.log(error);
+            //     });
 
-        mounted: function() {},
+        },
 
         methods: {
+            tryCompletePInfo: function () {
+                console.log("Complete PInfo")
+                var that = this;
+            },
 
-            //---------NOT WORK----------//
-            getReceipts: function() {
+//---------------------Get Receipts-----------------------
 
+            getReceipts(){
+                console.log("getReceipts")
+                var that = this;
+                axios({
+                    url: '/charge/getReceipts',
+                    method: 'post',
+                    contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                    data: {
+                        pid: that.patientInfo.pid
+                    },
+                })
+                    .then(function (response) {
+                        console.log("success get receipts");
+                        console.log(response.data);
+                        that.tableData = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            onReprint(row){
+                window.open("receipt-preview.html?"+"recid="+row.recid);
             }
         }
-    });
+    })
 </script>
 
+<style>
+    a{
+        text-decoration:none;
+        color: white;
+    }
+    body{
+        font-family: Helvetica, sans-serif;
+    }
+    .el-card__body{
+        padding: 5px;
+    }
+    .el-tag{
+        background-color:#ecf5ff;
+        border-color:#d9ecff;
+        display:inline-block;
+        padding:0 10px;
+        line-height:30px;
+        height: auto;
+        font-size:12px;
+        color:#409EFF;
+        border-width:1px;
+        border-style:solid;
+        border-radius:4px;
+        box-sizing:border-box;
+        white-space: pre-line;
+    }
+    .el-table .used-row {
+        background: #8492a6;
+    }
+
+    .el-collapse-item__header {
+
+        margin-top: 0;
+        font-size: medium;
+        font-weight: bold;
+        margin-left: 20px;
+    }
+
+
+</style>
 </html>
