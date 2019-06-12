@@ -156,6 +156,7 @@ public class ReceiptService {
         return billMapper.getBillsByRecid(recid);
     }
 
+
     public JSONArray getReceiptInfoForDepartment() {
         int count = 0;
         User doctorCon = new User();
