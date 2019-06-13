@@ -32,7 +32,7 @@
     </update>
 
     <insert id="addItem">
-        insert into temprel (tempid, itemcode) values (#{tempid},#{itemcode})
+        insert into temprel (tempid, itemcode,count) values (#{tempid},#{itemcode},1)
     </insert>
 
     <select id="getMedItem" resultType="Medicine">
