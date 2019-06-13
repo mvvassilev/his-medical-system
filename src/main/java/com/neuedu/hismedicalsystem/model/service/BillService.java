@@ -22,7 +22,7 @@ public class BillService {
         return billMapper.getUndoneBills(bill);
     }
 
-    public List<Bill> getBills(Bill bill){
+    public List<Bill> getBills(Bill bill) {
         return billMapper.getBills(bill);
     }
 

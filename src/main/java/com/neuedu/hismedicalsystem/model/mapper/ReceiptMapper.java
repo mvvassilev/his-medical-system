@@ -3,6 +3,7 @@ package com.neuedu.hismedicalsystem.model.mapper;
 import com.neuedu.hismedicalsystem.model.po.Receipt;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ReceiptMapper {
@@ -20,4 +21,8 @@ public interface ReceiptMapper {
     Receipt getReceiptByRecid(int recid);
 
     double sumFeeCodePriceForDept(@Param("uRid") int uRid, @Param("feecode") String feecode);
+
+    void changeReceiptState(int recid);
+
+    List<Receipt> getReceipts(Date date);
 }

@@ -33,7 +33,7 @@ public class ShiftService {
     }
 
     public void insertShift(List<Shift> insertShifts) {
-        if(insertShifts.size() != 0){
+        if (insertShifts.size() != 0) {
             shiftMapper.insertShift(insertShifts);
         }
     }

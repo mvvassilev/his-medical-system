@@ -29,6 +29,11 @@
         where uRid = #{uRid}
     </select>
 
+    <select id="getReceipts" resultType="Receipt">
+        select * from receipt
+        where date = #{date}
+    </select>
+
     <select id="sumFeeCodePriceForDoc" resultType="Double">
         select IFNULL(SUM(totalprice), 0.0) from receipt where uRid = #{uRid} and feecode = #{feecode}
     </select>
@@ -55,6 +60,11 @@
         join patient p on r.pid = p.pid
         where recid = #{recid}
     </select>
+
+    <update id="changeReceiptState">
+        update receipt set recstate = '已打印'
+        where recid = #{recid}
+    </update>
 
 </mapper>
 

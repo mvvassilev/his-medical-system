@@ -288,8 +288,6 @@ public class ManagementController {
             JSONArray params = obj.getJSONArray("shifts");
 
 
-
-
             List<Shift> insertShifts = new ArrayList<>();
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -313,7 +311,7 @@ public class ManagementController {
                 tempShift.setuRid(uRid);
 
                 insertShifts.add(tempShift);
-                shiftService.deleteConflictShifts(uRid, startdate,enddate);
+                shiftService.deleteConflictShifts(uRid, startdate, enddate);
             }
 
 

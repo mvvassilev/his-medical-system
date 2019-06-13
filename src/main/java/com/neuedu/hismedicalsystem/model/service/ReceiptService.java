@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -221,4 +222,12 @@ public class ReceiptService {
     }
 
 
+    public List<Receipt> getReceipts(Date date) {
+        return receiptMapper.getReceipts(date);
+    }
+    public void changeReceiptState(JSONObject obj) {
+        System.out.println("changeReceiptState->obj.toString() = " + obj.toString());
+        int recid = obj.getInteger("recid");
+        receiptMapper.changeReceiptState(recid);
+    }
 }

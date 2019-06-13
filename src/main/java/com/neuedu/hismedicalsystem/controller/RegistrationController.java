@@ -43,7 +43,7 @@ public class RegistrationController {
     }
 
     @RequestMapping("/submitRegistration")
-    public List<Bill> submitRegistration(@RequestBody JSONObject obj){
+    public List<Bill> submitRegistration(@RequestBody JSONObject obj) {
 
         System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
         System.out.println("Submit Registration");
@@ -81,7 +81,7 @@ public class RegistrationController {
         NonMedic registrationType = nonMedicService.getNonMedicItems(nonMedicItem).get(0);
 
         //Add bill for new registration
-        Bill insertedBill = registrationService.addRegistrationBill(patient,registrationType,newrecord,billcat);
+        Bill insertedBill = registrationService.addRegistrationBill(patient, registrationType, newrecord, billcat);
 
         //Add registration info into a shift
         registrationService.registerToShift(patient,registrationType,newrecord,shift);
