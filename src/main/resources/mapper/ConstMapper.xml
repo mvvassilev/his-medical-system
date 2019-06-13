@@ -14,7 +14,7 @@
                 and consttype = #{consttype}
             </if>
             <if test="constname != null and constname!='' ">
-                and constnam = #{constname}
+                and constname = #{constname}
             </if>
             <if test="constcode != null and constcode!='' ">
                 and constcode = #{constcode}
@@ -23,8 +23,8 @@
     </select>
 
     <insert id="addConst">
-        insert into constant (constid,consttype,constname,constcode)
-        values (#{constid},#{consttype},#{constname},#{constcode})
+        insert into constant (consttype,constname,constcode)
+        values (#{consttype},#{constname},#{constcode})
     </insert>
 
     <delete id="delConst">

@@ -130,7 +130,7 @@
                 </el-col>
                 <!-----         TABLE for the Items content         ------>
                 <el-col :span="10">
-                    <el-table :data="recepits" style="width: 100%; height: fit-content">
+                    <el-table :data="receipts" style="width: 100%; height: fit-content">
                         <el-table-column prop="feecode" label="Item" width="140"></el-table-column>
                         <el-table-column prop="totalprice" label="Amount" width="140"></el-table-column>
                     </el-table>
@@ -154,7 +154,7 @@
                 </el-col>
 
                 <!--------    STAMP   --------->
-                <el-col :span="9" style="border: none"><img src="../../img/stamp.jpg" id="stp" /></el-col>
+                <el-col :span="9" id="stamp" style="border: none"></el-col>
             </el-row>
             <el-row :gutter="20">
                 <el-col :span="5">
@@ -192,13 +192,25 @@
     var app = new Vue({
         el: '#dailyrecord',
         data: {
+            date: "",
+            currentdate: "",
+            yesterday: "",
             feecode: "",
             totalprice: "",
             receipts: [],
         },
 
         mounted: function() {
+            //set the current day to today
+            const toTwoDigits = num => num < 10 ? '0' + num : num;
+            let today = new Date();
+            let year = today.getFullYear();
+            let month = toTwoDigits(today.getMonth() + 1);
+            let day = toTwoDigits(today.getDate());
+            this.currentdate = `${year}-${month}-${day}`;
 
+            //set the last date to yesterday
+            this.yesterday = `${year}-${month}-${day-1}`;
         },
 
         methods: {
@@ -210,34 +222,36 @@
             //-------------    CREATE NEW RECORD    ------------//
             createNewRecord: function() {
                 //get the data
-                let tfr = "timeframe";
+                var that = this;
+
+                let ran = Math.floor(Math.random() * 100000);
+
+                let tfr = `${that.yesterday} - ${that.currentdate}`;
                 let unm = "username";
                 let uid = "userid";
-                let dte = "currentdate";
-                let rid = "receiptid";
+                let dte = that.currentdate;
+                let rid = `${ran}`;
 
-                var that = this;
-                console.log("Search called")
-                axios.post('/registration/getReceipts', {
-                        //TODO: get the last date there was a daily record
-                        // and pass it together with current date
+                console.log("Search called");
+                axios.post('/financial/getReceipts', {
+                        date: that.currentdate
                     })
                     .then(function(response) {
                         that.receipts = response.data;
                         console.log(that.receipts.feecode, that.receipts.totalprice);
                         //calculate total (maybe in the sql statement)
-                        document.getElementById("ttl").innerHTML = ttl;
-                        let total;
-                        for (total in receipts) {
-                            total += that.receipts.totalprice;
+                        let total = 0;
+                        for (let i in that.receipts) {
+                            total += i.totalprice;
                         }
-                        ttl = total.toString;
+                        var ttl = total.toString;
                     })
                     .catch(function(error) {
                         console.log(error);
                     });
 
                 //set the fields in the record field
+                document.getElementById("stamp").innerHTML = `<img src="../../img/stamp.jpg" id="stp" />`;
                 document.getElementById("tfr").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("tfr").innerHTML = tfr;
                 document.getElementById("unm").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");

@@ -22,7 +22,7 @@ public class BillService {
         return billMapper.getUndoneBills(bill);
     }
 
-    public List<Bill> getBills(Bill bill){
+    public List<Bill> getBills(Bill bill) {
         return billMapper.getBills(bill);
     }
 
@@ -35,8 +35,6 @@ public class BillService {
         billMapper.changeStateToPaid(billId);
         //Set isPaid for negative bill to 'true
         billMapper.changeStateToDone(billId);
-        //Print 冲红发票
-        //Print 剩余项目的发票
     }
 
     public void addExamToBill(JSONObject object) { billMapper.addExamToBill(object);

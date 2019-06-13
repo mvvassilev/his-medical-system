@@ -1,6 +1,5 @@
 package com.neuedu.hismedicalsystem.model.mapper;
 
-import com.neuedu.hismedicalsystem.model.po.Dept;
 import com.neuedu.hismedicalsystem.model.po.User;
 import org.apache.ibatis.annotations.Param;
 
@@ -27,4 +26,6 @@ public interface UserMapper {
     int checkUserName(String username);
 
     int checkLogin(@Param("username") String username, @Param("password") String password);
+
+    User getUserid(@Param("username") String username, @Param("password") String password);
 }

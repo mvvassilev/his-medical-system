@@ -21,47 +21,70 @@
             <el-image
                     style="width: 100%  ; height: 100%"
                     src="../img/logo.jpg"
-                    ></el-image>
+            ></el-image>
         </el-col>
-        <el-col :span="20">
-            <el-menu style="margin-top: 10px" :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+        <el-col :span="16">
+            <el-menu style="margin-top: 10px" :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                     @select="handleSelect">
                 <el-menu-item id="mng" index="1" v-on:click="navigateSidebarTo('management/sidebar.html')">Management
                 </el-menu-item>
-                <el-menu-item id="reg" index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register & Payment
+                <el-menu-item id="reg" index="2" v-on:click="navigateSidebarTo('register/sidebar.html')">Register &
+                    Payment
                 </el-menu-item>
-                <el-menu-item id="outp" index="3" v-on:click="navigateSidebarTo('outpatient/sidebar.html')">Outpatient Doctor
+                <el-menu-item id="outp" index="3" v-on:click="navigateSidebarTo('outpatient/sidebar.html')">Outpatient
+                    Doctor
                 </el-menu-item>
-                <el-menu-item id="medt" index="4" v-on:click="navigateSidebarTo('medtech/sidebar.html')">Medical Treatment
+                <el-menu-item id="medt" index="4" v-on:click="navigateSidebarTo('medtech/sidebar.html')">Medical
+                    Treatment
                 </el-menu-item>
-                <el-menu-item id="phar" index="5" v-on:click="navigateSidebarTo('pharmacy/sidebar.html')">Pharmacy Management
+                <el-menu-item id="phar" index="5" v-on:click="navigateSidebarTo('pharmacy/sidebar.html')">Pharmacy
+                    Management
                 </el-menu-item>
-                <el-menu-item id="fin" index="6" v-on:click="navigateSidebarTo('financial/sidebar.html')">Financial Management
+                <el-menu-item id="fin" index="6" v-on:click="navigateSidebarTo('financial/sidebar.html')">Financial
+                    Management
                 </el-menu-item>
             </el-menu>
+        </el-col>
+        <el-col :span="4">
+            <el-card>
+                <el-row type="flex" justify="space-around">
+                    <el-col :span="10">
+                        <el-tag style="font-family: 'Microsoft Sans Serif';" type="primary">
+                            {{this.usercat}}:{{this.username}}
+                        </el-tag>
+                    </el-col>
+                    <el-col :span="6">
+                        <i style="padding: 8px" class="el-icon-s-custom"></i>
+                    </el-col>
+                </el-row>
+            </el-card>
+
+            </span>
         </el-col>
     </el-row>
 </div>
 <div id="app" style="text-align: center">
-<!--    <el-dialog :visible.sync="loginDialogVisible" style="text-align: center; width: 70%; left: 20%">-->
-<!--        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"-->
-<!--                 style="margin-left: auto;margin-right: auto;margin-top: 50px">-->
-<!--            <el-form-item prop="username">-->
-<!--                <el-input v-model="ruleForm.username" style="width:70%" autocomplete="off"-->
-<!--                          placeholder="User Name"></el-input>-->
-<!--            </el-form-item>-->
-<!--            <el-form-item prop="password">-->
-<!--                <el-input type="password" style="width: 70%" v-model="ruleForm.password" autocomplete="off"-->
-<!--                          placeholder="Password"></el-input>-->
-<!--            </el-form-item>-->
-<!--            <el-form-item>-->
-<!--                <el-button icon="el-icon-user" type="primary" @click="submitForm('ruleForm')">Login</el-button>-->
-<!--                <el-button @click="resetForm('ruleForm')">Reset</el-button>-->
-<!--            </el-form-item>-->
-<!--        </el-form>-->
-<!--    </el-dialog>-->
+    <el-dialog :visible.sync="loginDialogVisible" style="text-align: center; width: 70%; left: 20%">
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
+                 style="margin-left: auto;margin-right: auto;margin-top: 50px">
+            <el-form-item prop="username">
+                <el-input v-model="ruleForm.username" style="width:70%" autocomplete="off"
+                          placeholder="User Name"></el-input>
+            </el-form-item>
+            <el-form-item prop="password">
+                <el-input type="password" style="width: 70%" v-model="ruleForm.password" autocomplete="off"
+                          placeholder="Password"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button icon="el-icon-user" type="primary" @click="submitForm('ruleForm')">Login</el-button>
+                <el-button @click="resetForm('ruleForm')">Reset</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
     <div class="line"></div>
     <el-row :span="24">
-        <iframe  height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url_sidebar" style="overflow: hidden"></iframe>
+        <iframe height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url_sidebar"
+                style="overflow: hidden"></iframe>
     </el-row>
 </div>
 </body>
@@ -69,36 +92,17 @@
 <script>
     var app = new Vue({
         el: '#app',
-        data: function() {
-            return {
-                url_sidebar: "",
-                loginDialogVisible: true,
-
-                ruleForm: {
-                    username: '',
-                    password: '',
-                },
-                rules: {
-                    username: [{
-                        validator: validateUserName,
-                        trigger: 'blur'
-                    }],
-                    password: [
-                        /* {validator: validatePassword, trigger: 'blur'}*/
-                    ]
-                },
-                existUserName: [],
-            };
+        data: function () {
             var validateUserName = (rule, value, callback) => {
                 function checkUserName(value) {
                     var params = new URLSearchParams();
                     params.append("username", value);
                     axios.post('/management/checkUserName', params)
-                        .then(function(response) {
+                        .then(function (response) {
                             console.log(response.data);
                             check = response.data;
                         })
-                        .catch(function(error) {
+                        .catch(function (error) {
                             console.log(error);
                         });
                 }
@@ -116,26 +120,49 @@
                     } else {
                         callback(new Error('No Such User!'));
                     }
-                }, 3000);
+                }, 1000);
             };
-            /*var validatePassword = (rule, value, callback) => {
+            var validatePassword = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('Please Password'));
                 } else {
                     callback();
                 }
-            };*/
+            };
+
+            return {
+                url_sidebar: "",
+                loginDialogVisible: true,
+                usercat: '',
+                username: '',
+
+                ruleForm: {
+                    username: '',
+                    password: '',
+                },
+                rules: {
+                    username: [{
+                        validator: validateUserName,
+                        trigger: 'blur'
+                    }],
+                    password: [
+                        {validator: validatePassword, trigger: 'blur'}
+                    ]
+                },
+                existUserName: [],
+            };
+
         },
         methods: {
-            handleSelect(key, keypath) {},
-            handleOpen(key, keypath) {},
+            handleSelect(key, keypath) {
+            },
+            handleOpen(key, keypath) {
+            },
             navigateSidebarTo(url_sidebar) {
-                console.log('called in app')
+                console.log('called in app');
                 this.url_sidebar = url_sidebar;
             },
-            setUsertype(usertype) {
-                this.usertype = usertype;
-            },
+
             submitForm(formName) {
                 var that = this;
                 that.$refs[formName].validate((valid) => {
@@ -144,8 +171,8 @@
                         params.append("username", that.ruleForm.username);
                         params.append("password", that.ruleForm.password);
                         axios.post('/management/checkLogin', params)
-                            .then(function(response) {
-                                if (response.data) {
+                            .then(function (response) {
+                                if (response.data.check) {
                                     let mng = document.getElementById("mng");
                                     let reg = document.getElementById("reg");
                                     let outp = document.getElementById("outp");
@@ -153,20 +180,23 @@
                                     let phar = document.getElementById("phar");
                                     let fin = document.getElementById("fin");
 
-                                    /*"usertype" defines what kind of user entered the page
-                                        
+                                    /*"usercat" defines what kind of user entered the page
+
                                         manager - all privilages
                                         charger - only register tab
-                                        outpatientdoctor - only outpatient doctor tab
+                                        门诊医生 - only outpatient doctor tab
                                         medical - only medical tab
                                         pharmacy - only pharmacy tab
                                         financial - only financial tab
                                     */
-                                    var usertype = "manager";
+                                    this.usercat = response.data.loginUser.usercat;
+                                    topbar.username = response.data.loginUser.username;
+                                    topbar.usercat = response.data.loginUser.usercat;
+                                    console.log(response.data.loginUser)
 
-                                    if (usertype === "manager") {
+                                    if (this.usercat === "医院管理员") {
                                         //all privilages
-                                    } else if (usertype === "charger") {
+                                    } else if (this.usercat === "挂号收费员") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         outp.setAttribute("class", "el-menu-item is-disabled");
@@ -177,7 +207,7 @@
                                         phar.setAttribute("style", "pointer-events: none");
                                         fin.setAttribute("class", "el-menu-item is-disabled");
                                         fin.setAttribute("style", "pointer-events: none");
-                                    } else if (usertype === "outpatientdoctor") {
+                                    } else if (this.usercat === "门诊医生") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         reg.setAttribute("class", "el-menu-item is-disabled");
@@ -188,7 +218,7 @@
                                         phar.setAttribute("style", "pointer-events: none");
                                         fin.setAttribute("class", "el-menu-item is-disabled");
                                         fin.setAttribute("style", "pointer-events: none");
-                                    } else if (usertype == "medical") {
+                                    } else if (this.usercat == "医技医生") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         reg.setAttribute("class", "el-menu-item is-disabled");
@@ -199,7 +229,7 @@
                                         phar.setAttribute("style", "pointer-events: none");
                                         fin.setAttribute("class", "el-menu-item is-disabled");
                                         fin.setAttribute("style", "pointer-events: none");
-                                    } else if (usertype === "pharmacy") {
+                                    } else if (this.usercat === "药房管理员") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         reg.setAttribute("class", "el-menu-item is-disabled");
@@ -210,7 +240,7 @@
                                         medt.setAttribute("style", "pointer-events: none");
                                         fin.setAttribute("class", "el-menu-item is-disabled");
                                         fin.setAttribute("style", "pointer-events: none");
-                                    } else if (usertype === "financial") {
+                                    } else if (this.usercat === "财务管理员") {
                                         mng.setAttribute("class", "el-menu-item is-disabled");
                                         mng.setAttribute("style", "pointer-events: none");
                                         reg.setAttribute("class", "el-menu-item is-disabled");
@@ -231,7 +261,7 @@
                                     alert('Wrong Password.');
                                 }
                             })
-                            .catch(function(error) {
+                            .catch(function (error) {
                                 console.log(error);
                             });
 
@@ -248,14 +278,18 @@
     });
     var topbar = new Vue({
         el: '#topbar',
-        data: function() {
+        data: function () {
             return {
+                usercat: '',
+                username: '',
                 activeIndex: '1',
             };
         },
         methods: {
-            handleSelect(key, keypath) {},
-            handleOpen(key, keypath) {},
+            handleSelect(key, keypath) {
+            },
+            handleOpen(key, keypath) {
+            },
             navigateSidebarTo(url) {
                 console.log('called in topbar');
                 app.navigateSidebarTo(url);
