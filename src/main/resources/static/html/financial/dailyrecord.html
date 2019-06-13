@@ -131,7 +131,7 @@
                 <!-----         TABLE for the Items content         ------>
                 <el-col :span="10">
                     <el-table :data="receipts" style="width: 100%; height: fit-content">
-                        <el-table-column prop="feecode" label="Item" width="140"></el-table-column>
+                        <el-table-column prop="recid" label="Invoice ID" width="140"></el-table-column>
                         <el-table-column prop="totalprice" label="Amount" width="140"></el-table-column>
                     </el-table>
                 </el-col>
@@ -140,16 +140,18 @@
             <!-----      TOTAL and Record details (DATE and Record ID)      ------>
             <el-row :gutter="20">
                 <el-col :span="5" style="border: none">
-                    <div class="grid-content"></div>
+                    <div class="grid-content bg-purple-light gray-areas">
+                        <p></p>
+                    </div>
                 </el-col>
                 <el-col :span="4">
-                    <div class="grid-content bg-white">
-                        <p>TOTAL</p>
+                    <div class="grid-content bg-purple-light gray-areas">
+                        <p></p>
                     </div>
                 </el-col>
                 <el-col :span="6">
                     <div class="grid-content bg-purple-light gray-areas">
-                        <p id="ttl"></p>
+                        <p></p>
                     </div>
                 </el-col>
 
@@ -195,7 +197,7 @@
             date: "",
             currentdate: "",
             yesterday: "",
-            feecode: "",
+            recid: "",
             totalprice: "",
             username: "",
             userid: "",
@@ -233,17 +235,11 @@
 
                 console.log("Search called");
                 axios.post('/financial/getReceipts', {
-                        date: that.currentdate
+                        date: dte
                     })
                     .then(function(response) {
                         that.receipts = response.data;
-                        console.log(that.receipts.feecode, that.receipts.totalprice);
-                        //calculate total (maybe in the sql statement)
-                        let total = 0;
-                        for (let i in that.receipts) {
-                            total += i.totalprice;
-                        }
-                        var ttl = total.toString;
+                        console.log(that.receipts.recid, that.receipts.totalprice);
                     })
                     .catch(function(error) {
                         console.log(error);
@@ -257,8 +253,6 @@
                 document.getElementById("dte").innerHTML = dte;
                 document.getElementById("rid").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("rid").innerHTML = rid;
-                document.getElementById("ttl").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
-                document.getElementById("ttl").innerHTML = ttl;
                 document.getElementById("text").innerHTML = `The following record is being provided by user ${this.username} and issed by the 
                                                             financial management department of the HIS hospital information system. For
                                                             more information, please contact the financial managment department directly!`;

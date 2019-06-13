@@ -8,22 +8,22 @@
         select * from non_medic
         <where>
             <if test="itemcode != null and itemcode!='' ">
-                and itemcode = #{itemcode}
+                and itemcode like CONCAT(#{itemcode},'%')
             </if>
             <if test="feecode != null and feecode!='' ">
-                and feecode = #{feecode}
+                and feecode like CONCAT(#{feecode},'%')
             </if>
             <if test="deptcode != null and deptcode!='' ">
-                and deptcode = #{deptcode}
+                and deptcode like CONCAT(#{deptcode},'%')
             </if>
             <if test="itemname != null and itemname!='' ">
-                and itemname = #{itemname}
+                and itemname like CONCAT(#{itemname},'%')
             </if>
             <if test="size != null and size!='' ">
-                and size = #{size}
+                and size =#{size}
             </if>
             <if test="price != null and price!=''">
-                and price = #{price}
+                and price =#{price}
             </if>
         </where>
     </select>

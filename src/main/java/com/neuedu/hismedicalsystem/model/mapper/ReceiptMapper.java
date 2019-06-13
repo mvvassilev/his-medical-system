@@ -22,5 +22,7 @@ public interface ReceiptMapper {
 
     double sumFeeCodePriceForDept(@Param("uRid") int uRid, @Param("feecode") String feecode);
 
-    List<Receipt> getReceipts(@Param("date") Date date);
+    void changeReceiptState(int recid);
+
+    List<Receipt> getReceipts(java.sql.Date date);
 }

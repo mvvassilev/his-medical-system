@@ -369,6 +369,20 @@
                 setTimeout(
                     function(){
                         window.print();
+                        console.log("changeReceiptState")
+                        var searchURL = window.location.search;
+                        searchURL = searchURL.substring(1, searchURL.length);
+                        var recid = searchURL.split("&")[0].split("=")[1];
+                        console.log("onPrint->recid"+recid)
+                        var that = this;
+                        axios({
+                                url: '/charge/changeReceiptState',
+                                method: 'post',
+                                contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
+                                data: {recid: recid},
+                            }).then(function (response) {
+                            console.log("success changeReceiptState")
+                        }).catch(function (error) {console.log(error);});
                     }
                     , 500
                 )
