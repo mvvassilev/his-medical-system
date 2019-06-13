@@ -389,6 +389,7 @@
             },
 
             saveToTemplate() {
+                var that = this;
                 axios.post('/outpatient/saveExamToTemplate', {
                     items: this.multipleSelection,
                     tempname: this.tempname,
