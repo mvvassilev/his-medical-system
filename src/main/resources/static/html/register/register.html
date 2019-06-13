@@ -378,10 +378,15 @@
                         message: 'Successfully registered.',
                         type: 'success'
                     });
-                    that.logReceipt();
                     that.activeName = "";
-                    this.clearPInfo();
+                    that.clearPInfo();
                     that.refresh();
+                    setTimeout(
+                        function(){
+                            that.logReceipt();
+                        }
+                        , 1000
+                    )
                 })
                 .catch(function (error) {
                     console.log(error);
