@@ -1,6 +1,10 @@
 package com.neuedu.hismedicalsystem.controller;
 
+import java.util.Date;
+import java.util.List;
+
 import com.alibaba.fastjson.JSONArray;
+import com.neuedu.hismedicalsystem.model.po.Receipt;
 import com.neuedu.hismedicalsystem.model.service.ConstService;
 import com.neuedu.hismedicalsystem.model.service.ReceiptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +25,10 @@ public class FinancialController {
     @RequestMapping("/getReceiptInfoForDepartment")
     public JSONArray getReceiptInfoForDepartment() {
         return receiptService.getReceiptInfoForDepartment();
+    }
+
+    @RequestMapping("/getReceipts")
+    public List<Receipt> getReceipts(Date condition) {
+        return receiptService.getReceipts(condition);
     }
 }

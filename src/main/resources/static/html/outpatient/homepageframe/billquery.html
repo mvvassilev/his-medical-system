@@ -38,7 +38,8 @@
                     <div slot="header" class="clearfix">
                         <span style="font-weight: bold">Billing Items</span>
                         <div style="float: right;  position:relative; top:-8px;">
-                            <el-select v-model="confirmType" placeholder="Select Operation Type" @change="changeConfirmType()">
+                            <el-select v-model="confirmType" placeholder="Select Operation Type"
+                                       @change="changeConfirmType()">
                                 <el-option
                                         v-for="item in operationList"
                                         :key="item"
@@ -55,7 +56,7 @@
                             tooltip-effect="dark"
                             style="width: 100%"
                             @selection-change="handleSelectionChange"
-                            :default-sort = "{prop: 'billdate', order: 'descending'}">
+                            :default-sort="{prop: 'billdate', order: 'descending'}">
                         <el-table-column
                                 type="selection"
                                 width="55">
@@ -92,7 +93,6 @@
             </el-row>
 
 
-
         </el-col>
         <el-col :span="6">
             <el-card class="box-card">
@@ -115,7 +115,7 @@
         </el-col>
     </el-row>
 
-    </div>
+</div>
 </body>
 
 <script>
@@ -488,6 +488,7 @@
             }
         }
     })
+
 </script>
 
 <style>
@@ -527,6 +528,7 @@
         font-weight: bold;
         margin-left: 20px;
     }
+
 
 
 </style>

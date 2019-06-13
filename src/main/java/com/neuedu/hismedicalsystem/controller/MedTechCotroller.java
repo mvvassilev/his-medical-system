@@ -79,7 +79,7 @@ public class MedTechCotroller {
     }
 
     @RequestMapping("/cancelExam")
-    public void cancelExam(@RequestBody JSONObject object){
+    public void cancelExam(@RequestBody JSONObject object) {
         patientService.cancelExam(object);
     }
 }

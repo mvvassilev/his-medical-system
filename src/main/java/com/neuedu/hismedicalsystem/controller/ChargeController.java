@@ -43,8 +43,8 @@ public class ChargeController {
     }
 
     @RequestMapping("/getBills")
-    public List<Bill> getBills(@RequestBody JSONObject obj){
-        Bill condition = (Bill)JSONObject.toJavaObject(obj.getJSONObject("condition"), Bill.class);
+    public List<Bill> getBills(@RequestBody JSONObject obj) {
+        Bill condition = (Bill) JSONObject.toJavaObject(obj.getJSONObject("condition"), Bill.class);
         System.out.println("getBillsWithCondition = " + condition);
         List<Bill> l = billService.getBills(condition);
         System.out.println("list = " + l);
@@ -104,5 +104,11 @@ public class ChargeController {
     public List<Bill> getBillsByRecid(@RequestBody JSONObject obj)
     {
         return receiptService.getBillsByRecid(obj);
+    }
+
+    @RequestMapping("changeReceiptState")
+    public void changeReceiptState(@RequestBody JSONObject obj){
+        System.out.println("changeReceiptState controller");
+        receiptService.changeReceiptState(obj);
     }
 }
