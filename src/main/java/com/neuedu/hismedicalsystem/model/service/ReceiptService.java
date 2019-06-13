@@ -226,6 +226,7 @@ public class ReceiptService {
         java.sql.Date date = new java.sql.Date(utilDate.getTime());
         return receiptMapper.getReceipts(date);
     }
+
     public void changeReceiptState(JSONObject obj) {
         System.out.println("changeReceiptState->obj.toString() = " + obj.toString());
         int recid = obj.getInteger("recid");

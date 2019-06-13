@@ -107,7 +107,7 @@ public class ChargeController {
     }
 
     @RequestMapping("changeReceiptState")
-    public void changeReceiptState(@RequestBody JSONObject obj){
+    public void changeReceiptState(@RequestBody JSONObject obj) {
         System.out.println("changeReceiptState controller");
         receiptService.changeReceiptState(obj);
     }
