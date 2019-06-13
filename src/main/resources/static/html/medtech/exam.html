@@ -217,7 +217,7 @@
     <el-dialog title="Image Preview"
                :visible.sync="dialogVisible">
         <div class="demo-image__lazy">
-            <el-image v-for="url in imgUrls" :key="url" :src="url" lazy></el-image>
+            <el-image :fit="fits" v-for="url in imgUrls" :key="url" :src="url" lazy></el-image>
         </div>
 
     </el-dialog>
@@ -329,8 +329,9 @@
                 });
 
                 this.examForm = this.currentRow;
+                image.imgUrls = [];
                 for (var i = 0; i < this.currentRow.imgUrls.length; i++) {
-                    image.imgUrls.push('file:///D:/upload/' + this.currentRow.imgUrls[i]);
+                    image.imgUrls.push('../../upload/' + this.currentRow.imgUrls[i]);
                 }
 
 
@@ -487,7 +488,9 @@
             return {
                 dialogVisible: false,
 
-                imgUrls: []
+                fits:'scale-down',
+
+                imgUrls: [],
             }
         }
     })
