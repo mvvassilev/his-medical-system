@@ -665,12 +665,13 @@
                         param.ruleid = this.multipleSelection[j].ruleid;
                         param.itemname = this.multipleSelection[j].reglevel;
                         param.ration = this.multipleSelection[j].ration;
-                        param.dutydate.setDate(this.ruledate[0].getDate() + i);
+                        param.dutydate.setTime(this.ruledate[0].getTime() + i*(1000 * 60 * 60 * 24))
+
                         param.userid = this.opid;
                         param2.ruleid = this.multipleSelection[j].ruleid;
                         param2.itemname = this.multipleSelection[j].reglevel;
                         param2.ration = this.multipleSelection[j].ration;
-                        param2.dutydate.setDate(this.ruledate[0].getDate() + i);
+                        param2.dutydate.setTime(this.ruledate[0].getTime() + i*(1000 * 60 * 60 * 24));
                         param2.userid = this.opid;
 
                         var morning = parseInt(this.multipleSelection[j].timecode[(2 * (i + startwd)) % 14]);
