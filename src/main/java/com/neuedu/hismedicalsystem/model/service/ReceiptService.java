@@ -99,7 +99,6 @@ public class ReceiptService {
         return receiptMapper.getRecsByPid(pid);
     }
 
-
     public Receipt getReceiptByRecid(JSONObject obj) {
         int recid = obj.getInteger("recid");
         Receipt receipt = receiptMapper.getReceiptByRecid(recid);
@@ -222,7 +221,9 @@ public class ReceiptService {
     }
 
 
-    public List<Receipt> getReceipts(Date date) {
+    public List<Receipt> getReceipts(JSONObject obj) {
+        java.util.Date utilDate = obj.getDate("date");
+        java.sql.Date date = new java.sql.Date(utilDate.getTime());
         return receiptMapper.getReceipts(date);
     }
     public void changeReceiptState(JSONObject obj) {
