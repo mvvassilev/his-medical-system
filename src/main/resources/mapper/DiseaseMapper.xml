@@ -7,16 +7,16 @@
         select * from disease
         <where>
             <if test="icdcode != null and icdcode!='' ">
-                and icdcode = #{icdcode}
+                and icdcode =#{icdcode}
             </if>
             <if test="disname != null and disname!='' ">
-                and disname = #{disname}
+                and disname =#{disname}
             </if>
             <if test="discode != null and discode!='' ">
-                and discode = #{discode}
+                and discode like CONCAT(#{discode},'%')
             </if>
             <if test="discat != null and discat!='' ">
-                and discat = #{discat}
+                and discat like CONCAT(#{discat},'%')
             </if>
         </where>
     </select>

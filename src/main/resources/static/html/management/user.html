@@ -341,7 +341,6 @@
                 console.log("onSubmit->Form Content");
                 console.log(this.form);
                 this.dialogFormVisible = false;
-                this.refresh();
             },
 
             onSubmitAdd: function(){
@@ -353,16 +352,10 @@
                     method: 'post',
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
                     data:  this.form,
-                    success: function(data) {
-                        console.log("success...");
-                    },
-                    error: function(data) {
-                        console.log("error...");
-                    },
-                    then:function () {
-                        that.refresh();
-                    }
-                });
+                }).then(function (response) {
+                    console.log("success onSubmitAdd")
+                    that.refresh();
+                }).catch(function (error) {console.log(error);});
             },
 
             onSubmitUpdate: function () {
@@ -372,15 +365,11 @@
                     url: '/management/updateUser',
                     method: 'post',
                     contentType: 'application/json', // 这句不加出现415错误:Unsupported Media Type
-                    data:  this.form,
-                    success: function(data) {
-                        console.log("success...");
-                        that.refresh();
-                    },
-                    error: function(data) {
-                        console.log("error...");
-                    }
-                });
+                    data:  this.form
+                }).then(function (response) {
+                    console.log("success updateUser")
+                    that.refresh();
+                }).catch(function (error) {console.log(error);});
             },
 /**************************Delete******************************/
             showDeleteDialogForm: function(index, row){
@@ -390,19 +379,13 @@
             },
 
             onSubmitDelete: function(){
-                var that =this;
+                var that = this;
                 var params = new URLSearchParams();
                 params.append('userid', this.deletingObject.userid);
                 axios.post('/management/deleteUser', params)
-                    .then(function (response) {
-                        // console.log(index.data);
-                        /*console.log(that.deptcode);
-                        console.log(response.deptcode);
-                        that.deptcode = row.deptcode;
-                        that.deptcode = response.deptcode;*/
-                    }).then(function(response) {
-                    that.refresh();
-                })
+                    .then(function(response) {
+                        that.refresh();
+                    })
                     .catch(function (error) {
                         console.log(error);
                     });

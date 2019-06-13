@@ -24,5 +24,5 @@ public interface ReceiptMapper {
 
     void changeReceiptState(int recid);
 
-    List<Receipt> getReceipts(Date date);
+    List<Receipt> getReceipts(java.sql.Date date);
 }
