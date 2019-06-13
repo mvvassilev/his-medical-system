@@ -108,8 +108,8 @@
                     </div>
                 </el-col>
                 <el-col :span="10">
-                    <div class="grid-content bg-purple-light gray-areas">
-                        <p id="unm"></p>
+                    <div class="grid-content bg-purple-light gray-areas" style="margin-top: 5px; margin-bottom: 5px;">
+                        <el-input placeholder="Insert username..." v-model="username"></el-input>
                     </div>
                 </el-col>
                 <el-col :span="2">
@@ -118,8 +118,8 @@
                     </div>
                 </el-col>
                 <el-col :span="7">
-                    <div class="grid-content bg-purple-light gray-areas">
-                        <p id="uid"></p>
+                    <div class="grid-content bg-purple-light gray-areas" style="margin-top: 5px; margin-bottom: 5px;">
+                        <el-input placeholder="Insert user ID..." v-model="userid"></el-input>
                     </div>
                 </el-col>
             </el-row>
@@ -197,6 +197,8 @@
             yesterday: "",
             feecode: "",
             totalprice: "",
+            username: "",
+            userid: "",
             receipts: [],
         },
 
@@ -225,10 +227,7 @@
                 var that = this;
 
                 let ran = Math.floor(Math.random() * 100000);
-
                 let tfr = `${that.yesterday} - ${that.currentdate}`;
-                let unm = "username";
-                let uid = "userid";
                 let dte = that.currentdate;
                 let rid = `${ran}`;
 
@@ -254,17 +253,13 @@
                 document.getElementById("stamp").innerHTML = `<img src="../../img/stamp.jpg" id="stp" />`;
                 document.getElementById("tfr").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("tfr").innerHTML = tfr;
-                document.getElementById("unm").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
-                document.getElementById("unm").innerHTML = unm;
-                document.getElementById("uid").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
-                document.getElementById("uid").innerHTML = uid;
                 document.getElementById("dte").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("dte").innerHTML = dte;
                 document.getElementById("rid").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("rid").innerHTML = rid;
                 document.getElementById("ttl").setAttribute("style", "margin-top: 2px; margin-bottom: 2px;");
                 document.getElementById("ttl").innerHTML = ttl;
-                document.getElementById("text").innerHTML = `The following record is being provided by user {username} and issed by the 
+                document.getElementById("text").innerHTML = `The following record is being provided by user ${this.username} and issed by the 
                                                             financial management department of the HIS hospital information system. For
                                                             more information, please contact the financial managment department directly!`;
             }
