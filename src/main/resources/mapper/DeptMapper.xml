@@ -8,16 +8,16 @@
         select * from dept
         <where>
             <if test="deptcode != null and deptcode!='' ">
-                and deptcode = #{deptcode}
+                and deptcode =#{deptcode}
             </if>
             <if test="deptname != null and deptname!='' ">
-                and deptname = #{deptname}
+                and deptname like CONCAT(#{deptname},'%')
             </if>
             <if test="deptclass != null and deptclass!='' ">
-                and deptclass = #{deptclass}
+                and deptclass like CONCAT(#{deptclass},'%')
             </if>
             <if test="deptcat != null and deptcat!='' ">
-                and deptcat = #{deptcat}
+                and deptcat like CONCAT(#{deptcat},'%')
             </if>
         </where>
     </select>

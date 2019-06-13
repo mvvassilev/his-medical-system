@@ -7,7 +7,7 @@
         select * from medicine
         <where>
             <if test="itemcode != null and itemcode!='' ">
-                and itemcode = #{itemcode}
+                and itemcode like CONCAT(#{itemcode},'%')
             </if>
         </where>
     </select>
