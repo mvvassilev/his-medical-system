@@ -38,14 +38,9 @@
                     <div slot="header" class="clearfix">
                         <span style="font-weight: bold">Receipt History</span>
                         <div style="float: right;  position:relative; top:-8px;">
-                            <el-select v-model="confirmType" placeholder="Select Operation Type" @change="changeConfirmType()">
-                                <el-option
-                                        v-for="item in operationList"
-                                        :key="item"
-                                        :label="item"
-                                        :value="item">
-                                </el-option>
-                            </el-select>
+                            <el-button style="margin-left: 20px" size="medium" icon="el-icon-refresh" @click="getReceipts"
+                                       type="success" plain round>Reload
+                            </el-button>
                         </div>
                     </div>
                     <el-table
@@ -69,7 +64,7 @@
                                 <el-button @click="onReprint(scope.row)" type="text" size="small">
                                     重打
                                 </el-button>
-                                <el-button @click="showDialogForm('Update',scope.$index, scope.row)" type="text" size="small">
+                                <el-button @click="onReprint(scope.row)" type="text" size="small">
                                     补打
                                 </el-button>
                             </template>
