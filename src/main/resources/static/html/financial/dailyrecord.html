@@ -234,7 +234,7 @@
 
                 console.log("Search called");
                 axios.post('/financial/getReceipts', {
-                        date: that.currentdate
+                        date: dte
                     })
                     .then(function(response) {
                         that.receipts = response.data;

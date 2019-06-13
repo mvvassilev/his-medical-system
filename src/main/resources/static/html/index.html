@@ -53,8 +53,20 @@
                             {{this.usercat}}:{{this.username}}
                         </el-tag>
                     </el-col>
-                    <el-col :span="6">
-                        <i style="padding: 8px" class="el-icon-s-custom"></i>
+                    <el-col :span="8" style="padding:8px">
+                        <el-dropdown>
+                          <span class="el-dropdown-link" >
+                              <i class="el-icon-s-custom"></i>
+                              <i class="el-icon-arrow-down el-icon--right"></i>
+                          </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="logout" icon="el-icon-plus">log out</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-circle-plus">狮子头</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-circle-plus-outline">螺蛳粉</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-check">双皮奶</el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-circle-check-outline">蚵仔煎</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
                     </el-col>
                 </el-row>
             </el-card>
