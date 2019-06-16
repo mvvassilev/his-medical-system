@@ -380,7 +380,7 @@
                     });
                     that.logReceipt();
                     that.activeName = "";
-                    this.clearPInfo();
+                    that.clearPInfo();
                     that.refresh();
                 })
                 .catch(function (error) {
@@ -425,6 +425,7 @@
                     console.log(error);
                 });
             },
+
 //------------------Receipt--------------------------------
             logReceipt(){
                 var that = this;
