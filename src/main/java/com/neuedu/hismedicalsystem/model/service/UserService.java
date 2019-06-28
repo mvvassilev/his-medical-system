@@ -102,4 +102,6 @@ public class UserService {
     public User getUserid(String username, String password) {
         return userMapper.getUserid(username, password);
     }
+
+    public User loginGetUser(String username, String password){return userMapper.loginGetUser(username, password);};
 }

@@ -106,6 +106,7 @@
     <select id="getUserid" resultType="User">
         select * from user where username = #{username} and pwd = #{password};
     </select>
+
 </mapper>
 
 
