@@ -7,6 +7,7 @@ import com.neuedu.hismedicalsystem.model.service.NonMedicService;
 import com.neuedu.hismedicalsystem.model.service.RegistrationService;
 import com.neuedu.hismedicalsystem.model.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/registration")
 public class RegistrationController {
