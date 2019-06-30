@@ -12,6 +12,7 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <!-- import JavaScript -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
 </head>
 
 <body>
@@ -75,6 +76,10 @@
         </el-col>
     </el-row>
 </div>
+
+
+
+
 <div id="app" style="text-align: center">
     <el-dialog :visible.sync="loginDialogVisible" style="text-align: center; width: 70%; left: 20%">
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"
@@ -94,6 +99,7 @@
         </el-form>
     </el-dialog>
     <div class="line"></div>
+
     <el-row :span="24">
         <iframe height="1200" frameborder="no" width="100%" scrolling="no" v-bind:src="url_sidebar"
                 style="overflow: hidden"></iframe>

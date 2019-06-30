@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.HisMedicalSystemApplication;
 import com.neuedu.hismedicalsystem.controller.RegistrationController;
 import com.neuedu.hismedicalsystem.model.service.RegistrationService;
+import com.neuedu.hismedicalsystem.model.util.RedisPoolUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
@@ -26,6 +27,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+import redis.clients.jedis.Jedis;
+
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -184,6 +188,44 @@ public class HisMedicalSystemApplicationTests {
 		// 判断接口返回json中success字段是否为true
 		Assert.assertTrue(resultObj.getBooleanValue("success"));
 	}
+
+	@Test
+	public void testRedis() {
+		Jedis jedis = RedisPoolUtil.getJedis();
+		String key = "Hey";
+		if(jedis.exists(key)){
+			System.out.println("Searched from Redis: " + jedis.get(key));
+		}
+		else{
+			System.out.println("Nah");
+		}
+		RedisPoolUtil.close(jedis);
+	}
+
+	@Test
+	public void testRedisHash() {
+		Jedis jedis = RedisPoolUtil.getJedis();
+		String key = "users";
+		if(jedis.exists(key)){
+			Map<String, String> map = jedis.hgetAll(key);
+			System.out.println("Searched from Redis: " +
+					map.get("id") + "\t" +
+					map.get("name") + "\t" +
+					map.get("age") + "\t" +
+					map.get("remark")
+			);
+		}
+		else{
+			System.out.println("Monitor a process of loading from database into Redis");
+			String id = "1";
+			jedis.hset(key, "id", id);
+			jedis.hset(key, "name", "Max");
+			jedis.hset(key, "age", "21");
+			jedis.hset(key, "remark", "He really needs love.");
+		}
+		RedisPoolUtil.close(jedis);
+	}
+
 
 
 
