@@ -44,7 +44,7 @@ public class MedTechCotroller {
 
         //获取文件在服务器的储存位置
         //String path = request.getSession().getServletContext().getRealPath("/upload");
-        String path = "F://Workplace/java project/his-medical-system/src/main/resources/static/upload";
+        String path = "/Users/maxsun/IdeaProjects/his-medical-system/src/main/resources/static/upload";
         File filePath = new File(path);
         //System.out.println("文件的保存路径：" + path);
         if (!filePath.exists() && !filePath.isDirectory()) {

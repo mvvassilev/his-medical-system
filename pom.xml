@@ -56,7 +56,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.40</version>
+			<version>8.0.16</version>
 		</dependency>
 
         <dependency>
@@ -96,6 +96,7 @@
 			<artifactId>lombok</artifactId>
 			<version>1.16.22</version>
 		</dependency>
+
 		<dependency>
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
@@ -112,5 +113,6 @@
 			</plugin>
 		</plugins>
 	</build>
+
 
 </project>

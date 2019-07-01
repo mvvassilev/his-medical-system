@@ -104,7 +104,6 @@ public class RedisController {
         } else {
             result.put("status", false);
         }
-
         return result;
 
     }
