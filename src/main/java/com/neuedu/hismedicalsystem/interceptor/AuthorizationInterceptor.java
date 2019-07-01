@@ -49,7 +49,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         if (method.getAnnotation(AuthToken.class) != null || handlerMethod.getBeanType().getAnnotation(AuthToken.class) != null) {
 
 //            String token = request.getHeader(httpHeaderName);
-            String token = request.getParameter(httpHeaderName);
+            String token = request.getHeader(httpHeaderName);
             logger.info("Get token from request is {} ", token);
             String username = "";
             Jedis jedis = new Jedis("192.168.2.130", 6379);

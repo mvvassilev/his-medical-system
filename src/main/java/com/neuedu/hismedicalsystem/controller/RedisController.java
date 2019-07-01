@@ -1,6 +1,6 @@
 package com.neuedu.hismedicalsystem.controller;
-
 import com.alibaba.fastjson.JSONObject;
+import com.neuedu.hismedicalsystem.annotation.AuthToken;
 import com.neuedu.hismedicalsystem.model.po.User;
 import com.neuedu.hismedicalsystem.model.service.UserService;
 import com.neuedu.hismedicalsystem.utils.ConstantKit;
@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
 
@@ -59,15 +59,21 @@ public class RedisController {
     }
 
     @RequestMapping("/test")
-    public String testRedis() {
-        //string
-        redisTemplate.opsForValue().set("KeyNG", "BowDown");
+    @AuthToken
+    public JSONObject test() {
+        JSONObject object = new JSONObject();
 
-        return "{\"result\":true}";
+        logger.info("已进入test路径");
+
+        object.put("Status", "Success");
+
+        return object;
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public JSONObject login(String username, String password) {
+    @RequestMapping("/login")
+    public JSONObject login(@RequestBody JSONObject obj) {
+        String username = obj.getString("username");
+        String password = obj.getString("password");
 
         logger.info("username:"+username+"      password:"+password);
 
@@ -92,10 +98,11 @@ public class RedisController {
             //用完关闭
             jedis.close();
 
-            result.put("status", "登录成功");
+            result.put("user", user);
+            result.put("status", true);
             result.put("token", token);
         } else {
-            result.put("status", "登录失败");
+            result.put("status", false);
         }
 
         return result;
