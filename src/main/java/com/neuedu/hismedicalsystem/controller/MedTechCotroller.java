@@ -8,10 +8,7 @@ import com.neuedu.hismedicalsystem.model.service.NonMedicService;
 import com.neuedu.hismedicalsystem.model.service.PatientService;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -19,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/medtech")
 public class MedTechCotroller {

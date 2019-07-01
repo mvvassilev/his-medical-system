@@ -206,9 +206,9 @@
             },
 
             onSubmit: function() {
-                if (this.methodType == "Add")
+                if (this.methodType === "Add")
                     this.onSubmitAdd();
-                if (this.methodType == "Update")
+                if (this.methodType === "Update")
                     this.onSubmitUpdate();
                 this.dialogFormVisible = false;
                 this.refresh();

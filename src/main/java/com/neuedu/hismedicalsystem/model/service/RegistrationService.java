@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.model.mapper.*;
 import com.neuedu.hismedicalsystem.model.po.*;
+import com.neuedu.hismedicalsystem.model.util.RedisPoolUtil;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -57,18 +59,15 @@ public class RegistrationService {
         billMapper.insertBill(bill);
 
         return bill;
-
     }
 
     public void registerToShift(Patient patient, NonMedic registrationType, boolean newrecord, Shift shift) {
         Registration register = new Registration();
         register.setNewRecord(newrecord);
+
         //Get the current order for the patient ( maximum in shift +1 )
         int shiftid = shift.getShiftid();
-        int currentOrder = 1;
-        int countRegsInShift = registrationMapper.countRegsInShift(shiftid);
-        if(countRegsInShift > 0)
-            currentOrder = registrationMapper.getCurrentOrder(shift.getShiftid()) + 1;
+        int currentOrder = getOrderInShift(shiftid);
         register.setOrder(currentOrder);
 
         register.setPid(patient.getPid());
@@ -76,16 +75,33 @@ public class RegistrationService {
         register.setItemcode(registrationType.getItemcode());
         register.setShiftid(shiftid);
 
-        System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
-        System.out.println("registerToShift");
-        System.out.println("register = " + register);
-        System.out.println("_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_");
-
         registrationMapper.addRegister(register);
         //Deduct one in balance field for the shift
         shiftMapper.deductOneBalance(shiftid);
         //Create Homepage For this registration
         patientMapper.insertHomepage(register.getRegid());
+    }
+
+
+    /**
+     *
+     * @param shiftId 医生门诊排班的ID
+     * @return 返回一个当前号的整型数
+     * 注意下需要更改ReidsPoolUtil中的配置'String host = "自己redis的ip地址";'
+     */
+    private int getOrderInShift(int shiftId){
+        //set up redis connection
+        Jedis jedis = RedisPoolUtil.getJedis();
+        String key = "shift_order_" + (Integer)shiftId;
+        //examine if exists
+        //If yes return auto-incremented order
+        if(jedis.exists(key)) {
+            jedis.incr(key);
+            return Integer.parseInt(jedis.get(key));
+        }else{//Else, create the key and set the initial order with 0
+            jedis.set(key, "1");
+            return 1;
+        }
     }
 
     public JSONObject getPatientInfo(int id) {

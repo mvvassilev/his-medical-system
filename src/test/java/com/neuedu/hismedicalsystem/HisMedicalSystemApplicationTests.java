@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.neuedu.hismedicalsystem.HisMedicalSystemApplication;
 import com.neuedu.hismedicalsystem.controller.RegistrationController;
 import com.neuedu.hismedicalsystem.model.service.RegistrationService;
+import com.neuedu.hismedicalsystem.model.service.UserService;
 import com.neuedu.hismedicalsystem.model.util.RedisPoolUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -14,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
@@ -38,11 +40,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { HisMedicalSystemApplication.class, MockServletContext.class })
+@EnableAutoConfiguration
 public class HisMedicalSystemApplicationTests {
 
 	@Autowired
 	private WebApplicationContext context;
 	private MockMvc mockMvc;
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private RegistrationService registrationService;
 
 	@Before
 	public void setUp() {
@@ -226,7 +235,9 @@ public class HisMedicalSystemApplicationTests {
 		RedisPoolUtil.close(jedis);
 	}
 
-
-
-
+	@Test
+	public void getOrderInShiftTest(){
+//		int val = registrationService.getOrderInShift(3);
+//		System.out.println("getOrderInShiftTest -> val = " + val);
+	}
 }

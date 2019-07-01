@@ -4,6 +4,9 @@ package com.neuedu.hismedicalsystem.model.service;
 import com.neuedu.hismedicalsystem.model.mapper.UserMapper;
 import com.neuedu.hismedicalsystem.model.po.Dept;
 import com.neuedu.hismedicalsystem.model.po.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +16,9 @@ import java.util.List;
 
 @Service
 public class UserService {
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
+
     @Resource
     private UserMapper userMapper;
 
@@ -102,4 +108,8 @@ public class UserService {
     public User getUserid(String username, String password) {
         return userMapper.getUserid(username, password);
     }
+
+    public User loginGetUser(String username, String password){return userMapper.loginGetUser(username, password);};
+
+
 }
