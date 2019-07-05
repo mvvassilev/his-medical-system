@@ -1,21 +1,28 @@
 package com.neuedu.hismedicalsystem.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.neuedu.hismedicalsystem.model.po.NonMedic;
 import com.neuedu.hismedicalsystem.model.po.Patient;
 import com.neuedu.hismedicalsystem.model.service.BillService;
 import com.neuedu.hismedicalsystem.model.service.NonMedicService;
 import com.neuedu.hismedicalsystem.model.service.PatientService;
-import org.apache.ibatis.annotations.Param;
+import com.neuedu.hismedicalsystem.model.util.FastDFSFile;
+import com.neuedu.hismedicalsystem.utils.FastDFSClient;
+import com.neuedu.hismedicalsystem.utils.FileManager;
+import org.apache.commons.io.IOUtils;
+import org.csource.common.MyException;
+import org.csource.common.NameValuePair;
+import org.csource.fastdfs.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/medtech")
@@ -30,53 +37,80 @@ public class MedTechCotroller {
     private PatientService patientService;
 
     @RequestMapping("/loadExamPatients")
-    public List<Patient> loadExamPatients(@RequestBody JSONObject object){
+    public List<Patient> loadExamPatients(@RequestBody JSONObject object) {
         return patientService.loadExamPatients(object);
     }
 
     @RequestMapping("/getPatientByExid")
-    public Patient getPatientByExid(@RequestBody JSONObject object){
+    public Patient getPatientByExid(@RequestBody JSONObject object) {
         return patientService.getPatientByExid(object);
     }
 
-    @RequestMapping("/upload")
-    public void upload(@RequestParam("picture") MultipartFile picture, HttpServletRequest request) {
-
-        //获取文件在服务器的储存位置
-        //String path = request.getSession().getServletContext().getRealPath("/upload");
-        String path = "/Users/maxsun/IdeaProjects/his-medical-system/src/main/resources/static/upload";
-        File filePath = new File(path);
-        //System.out.println("文件的保存路径：" + path);
-        if (!filePath.exists() && !filePath.isDirectory()) {
-            System.out.println("目录不存在，创建目录:" + filePath);
-            filePath.mkdir();
-        }
-
-        //获取原始文件名称(包含格式)
-        String originalFileName = picture.getOriginalFilename();
-        System.out.println("原始文件名称：" + originalFileName);
-
-
-        //在指定路径下创建一个文件
-        File targetFile = new File(path, originalFileName);
-
-        //将文件保存到服务器指定位置
-        try {
-            picture.transferTo(targetFile);
-            System.out.println("上传成功");
-        } catch (IOException e) {
-            System.out.println("上传失败");
-            e.printStackTrace();
-        }
+    @RequestMapping("/addResults")
+    public void addResults(@RequestBody JSONObject object) {
+        patientService.addResults(object);
     }
 
-    @RequestMapping("/addResults")
-    public void addResults(@RequestBody JSONObject object){
-        patientService.addResults(object);
+    @RequestMapping("/addImg")
+    public void addImg(@RequestBody JSONObject object) {
+        patientService.addImg(object);
     }
 
     @RequestMapping("/cancelExam")
     public void cancelExam(@RequestBody JSONObject object) {
         patientService.cancelExam(object);
     }
+
+    /* FastDFS file manage*/
+    @RequestMapping("/upload")
+    public String singleFileUpload(@RequestParam("picture") MultipartFile picture) {
+        if (picture.isEmpty()) {
+            return "redirect:uploadStatus";
+        }
+        try {
+            // Get the file and save it somewhere
+            String path = saveFile(picture);
+            return path;
+        } catch (Exception e) {
+            //logger.error("upload file failed",e);
+        }
+        return "redirect:/uploadStatus";
+    }
+
+    @GetMapping("/uploadStatus")
+    public String uploadStatus() {
+        return "uploadStatus";
+    }
+
+    /**
+     * @param multipartFile
+     * @return
+     * @throws IOException
+     */
+    public String saveFile(MultipartFile multipartFile) throws IOException {
+        String[] fileAbsolutePath = {};
+        String fileName = multipartFile.getOriginalFilename();
+        String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
+        byte[] file_buff = null;
+        InputStream inputStream = multipartFile.getInputStream();
+        if (inputStream != null) {
+            int len1 = inputStream.available();
+            file_buff = new byte[len1];
+            inputStream.read(file_buff);
+        }
+        inputStream.close();
+        FastDFSFile file = new FastDFSFile(file_buff, ext);
+        try {
+            fileAbsolutePath = FastDFSClient.upload(file);  //upload to fastdfs
+        } catch (Exception e) {
+            //logger.error("upload file Exception!",e);
+        }
+        if (fileAbsolutePath == null) {
+            //logger.error("upload file failed,please upload again!");
+        }
+        String path = FastDFSClient.getTrackerUrl() + fileAbsolutePath[0] + "/" + fileAbsolutePath[1];
+        System.out.println(path);
+        return path;
+    }
+
 }

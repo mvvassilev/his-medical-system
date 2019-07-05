@@ -84,8 +84,8 @@ public class RedisController {
         JSONObject result = new JSONObject();
         if (user != null) {
 
-            Jedis jedis = new Jedis("192.168.2.130", 6379);
-            jedis.auth("545166");
+            Jedis jedis = new Jedis("192.168.37.141", 6379);
+            jedis.auth("123");
             String token = tokenGenerator.generate(username, password);
             jedis.set(username, token);
             //设置key生存时间，当key过期时，它会被自动删除，时间是秒

@@ -57,6 +57,9 @@ public class PatientService {
 
     public void addResults(JSONObject object) {
         patientMapper.addResultsToHomepage(object);
+    }
+
+    public void addImg(JSONObject object){
         patientMapper.addResultsToImage(object);
     }
 

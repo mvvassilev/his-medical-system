@@ -7,7 +7,7 @@ import redis.clients.jedis.JedisPoolConfig;
 public class RedisPoolUtil {
     private static JedisPool pool;
     static {
-        String host = "10.211.55.3";
+        String host = "192.168.37.141";
         int port = 6379;
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         pool = new JedisPool(poolConfig, host, port);
@@ -16,6 +16,7 @@ public class RedisPoolUtil {
 
     public static Jedis getJedis(){
         Jedis jedis = pool.getResource();
+        jedis.auth("123");
         return jedis;
     }
 

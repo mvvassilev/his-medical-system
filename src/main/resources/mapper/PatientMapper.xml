@@ -184,9 +184,8 @@
     
     <insert id="addResultsToImage" useGeneratedKeys="true" keyProperty="imgid">
         insert into examImgs (url, exid) values
-        <foreach item="item" collection="imgUrls" separator=",">
-            (#{item}, #{exid})
-        </foreach>
+            (#{imgUrls}, #{exid})
+
     </insert>
 
     <select id="getHomePageStateByRegid" resultType="String">
