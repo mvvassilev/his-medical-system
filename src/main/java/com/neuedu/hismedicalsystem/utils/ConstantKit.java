@@ -15,7 +15,7 @@ public final class ConstantKit {
     /**
      * redis存储token设置的过期时间，5分钟
      */
-    public static final Integer TOKEN_EXPIRE_TIME = 300;
+    public static final Integer TOKEN_EXPIRE_TIME = 45;
 
     /**
      * 设置可以重置token过期时间的时间界限
