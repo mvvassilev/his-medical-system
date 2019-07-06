@@ -84,7 +84,7 @@ public class RedisController {
         JSONObject result = new JSONObject();
         if (user != null) {
 
-            Jedis jedis = new Jedis("192.168.37.141", 6379);
+            Jedis jedis = new Jedis("192.168.37.142", 6379);
             jedis.auth("123");
             String token = tokenGenerator.generate(username, password);
             jedis.set(username, token);

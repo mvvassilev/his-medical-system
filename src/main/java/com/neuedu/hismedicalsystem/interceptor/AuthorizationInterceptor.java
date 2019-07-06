@@ -52,7 +52,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
             String token = request.getHeader(httpHeaderName);
             logger.info("Get token from request is {} ", token);
             String username = "";
-            Jedis jedis = new Jedis("192.168.37.141", 6379);
+            Jedis jedis = new Jedis("192.168.37.142", 6379);
             jedis.auth("123");
             if (token != null && token.length() != 0) {
                 username = jedis.get(token);
